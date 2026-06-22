@@ -10,3 +10,7 @@ __pycache__/
 *.swp
 .idea/
 .vscode/
+
+# Visuels reçus (artefacts générés à partir des prompts)
+departements/marketing/clients/la-grande-vision/_visuels-recus/*.png
+departements/marketing/clients/la-grande-vision/_visuels-recus/*.jpg

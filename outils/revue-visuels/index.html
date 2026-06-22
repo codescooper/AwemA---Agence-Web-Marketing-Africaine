@@ -177,6 +177,14 @@
           <button class="mini gold" id="copyVis">Copier le prompt</button>
         </div>
         <div class="promptbox" id="visBox" style="margin-top:6px">—</div>
+        <div class="row" style="margin-top:6px">
+          <button class="mini gold" id="toChatGPT">🤖 Générer sur ChatGPT</button>
+          <button class="mini" id="toClaude">📋 Claude Desktop</button>
+        </div>
+        <div style="font-size:10.5px;color:#9bb8e6;margin-top:6px;line-height:1.45">
+          Astuce : clique <b>🤖</b> (le prompt est copié + ChatGPT s'ouvre) → génère l'image →
+          reviens ici et <b>colle l'image (Ctrl/Cmd+V)</b> ou glisse-la sur l'aperçu.
+        </div>
       </div>
 
       <div class="sec">
@@ -328,7 +336,8 @@ function show(i){
   $("#visCible").value=s.visCible||"prompt_canva";
   $("#visBox").textContent=it[$("#visCible").value]||"—";
   // état annotation
-  $("#imgUrl").value=s.image||it.image||""; $("#notes").value=s.notes||""; $("#modifs").value=s.modifs||"";
+  const sImg=s.image||it.image||""; $("#imgUrl").value=sImg.startsWith("data:")?"[image collée / déposée]":sImg;
+  $("#notes").value=s.notes||""; $("#modifs").value=s.modifs||"";
   $("#promptCible").value=s.promptCible||"prompt_canva";
   $("#promptOut").textContent=s.promptOut||"—";
   $$("#statusRow button").forEach(b=>b.classList.toggle("on",(s.statut||"À produire")===b.dataset.s)|| (b.style.borderColor=(s.statut||"À produire")===b.dataset.s?statutColor(b.dataset.s):"var(--bord)"));
@@ -337,7 +346,7 @@ function show(i){
 function cur(){return ITEMS[idx];}
 
 // Annotation events
-$("#imgUrl").oninput=e=>{st(cur().id).image=e.target.value;save();};
+$("#imgUrl").oninput=e=>{if(e.target.value==="[image collée / déposée]")return;st(cur().id).image=e.target.value;save();};
 $("#notes").oninput=e=>{st(cur().id).notes=e.target.value;save();};
 $("#modifs").oninput=e=>{st(cur().id).modifs=e.target.value;save();};
 $("#promptCible").onchange=e=>{st(cur().id).promptCible=e.target.value;save();};
@@ -361,6 +370,43 @@ $("#copyDesc").onclick=()=>copy(cur().description||cur().legende||"");
 $("#copyTags").onclick=()=>copy(cur().hashtags||"");
 $("#visCible").onchange=e=>{st(cur().id).visCible=e.target.value;$("#visBox").textContent=cur()[e.target.value]||"—";save();};
 $("#copyVis").onclick=()=>copy(cur()[$("#visCible").value]||"");
+
+// === Génération externe (ChatGPT) + retour de l'image dans l'interface ===
+const CHATGPT_URL="https://chatgpt.com/";
+function curPrompt(){return cur()[$("#visCible").value]||"";}
+$("#toChatGPT").onclick=()=>{copy(curPrompt());window.open(CHATGPT_URL,"_blank","noopener");
+  toast("Prompt copié → colle-le dans ChatGPT (Ctrl/Cmd+V)");};
+$("#toClaude").onclick=()=>{
+  const it=cur(), p=curPrompt();
+  const nom=String(it.id).padStart(3,'0')+"-"+String(it.plateforme||"").replace(/\s+/g,'')+".png";
+  const instr=
+`Ouvre chatgpt.com dans mon navigateur (je suis déjà connecté). Démarre une NOUVELLE conversation, `+
+`envoie le message ci-dessous pour générer une image, attends la fin du rendu, puis télécharge `+
+`l'image générée sous le nom « ${nom} » dans le dossier des visuels reçus de la campagne. `+
+`Ne modifie pas le prompt.\n\n--- PROMPT IMAGE ---\n${p}`;
+  copy(instr); toast("Instruction Claude Desktop copiée");
+};
+
+// Charger une image dans l'aperçu (presse-papier ou glisser-déposer) → annotation
+function setImageData(dataUrl){
+  const it=cur(); st(it.id).image=dataUrl;
+  try{save();}catch(e){toast("Image lourde : affichée mais non sauvegardée (quota local)");}
+  show(idx); toast("Visuel chargé ✓");
+}
+function fileToImage(file){
+  if(!file||!file.type.startsWith("image/"))return false;
+  const r=new FileReader(); r.onload=()=>setImageData(r.result); r.readAsDataURL(file); return true;
+}
+document.addEventListener('paste',e=>{
+  if(!ITEMS.length||/INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
+  const img=[...(e.clipboardData?.items||[])].find(x=>x.type.startsWith("image/"));
+  if(img){e.preventDefault();fileToImage(img.getAsFile());}
+});
+(()=>{const stage=$(".stage");if(!stage)return;
+  ["dragover","dragenter"].forEach(ev=>stage.addEventListener(ev,e=>{e.preventDefault();stage.style.outline="2px dashed var(--gold)";stage.style.outlineOffset="-6px";}));
+  ["dragleave","drop"].forEach(ev=>stage.addEventListener(ev,e=>{e.preventDefault();stage.style.outline="";}));
+  stage.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)fileToImage(f);});
+})();
 
 // Navigation
 $("#prev").onclick=()=>show(idx-1);

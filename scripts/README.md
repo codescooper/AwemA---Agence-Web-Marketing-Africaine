@@ -6,6 +6,7 @@
 | `md2html.py` | Convertisseur Markdown → HTML (charte AWEMA), sans dépendance |
 | `csv2html.py` | Convertisseur CSV → HTML (tableau paysage, charte) |
 | `html2pdf.py` | Rendu HTML → PDF via Chromium (Playwright) |
+| `generer-image-openai.py` | Génère une image depuis un prompt via l'API OpenAI Images (voie 100 % auto) — voir `outils/revue-visuels/INTEGRATION-GENERATION-IMAGE.md` |
 
 ## Exporter les PDF
 
