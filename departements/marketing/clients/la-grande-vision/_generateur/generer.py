@@ -487,6 +487,42 @@ def ecrire_json(contenus):
 # --------------------------------------------------------------------------- #
 # Scripts vidéo (60) — basés sur PIL1 (pédagogie) et PIL2 (produits)
 # --------------------------------------------------------------------------- #
+# Réseaux vidéo : hashtags + format de couverture/miniature (vidéo verticale)
+VIDEO_RESEAUX = {
+    "Reel Instagram": {"reseau": "Instagram", "tags": HASHTAGS["Instagram"]},
+    "TikTok":         {"reseau": "TikTok",    "tags": HASHTAGS["TikTok"]},
+    "Short YouTube":  {"reseau": "YouTube Shorts",
+                       "tags": "#Shorts #SantéVisuelle #Yopougon #Abidjan #Lunettes #Opticien #Vue #CôteDIvoire225"},
+}
+COVER_PX, COVER_RATIO = "1080x1920", "9:16"   # couverture verticale (Reel/TikTok/Short)
+
+
+def legende_video(sujet, cta):
+    """Légende courte (style vidéo sociale), sans hashtags."""
+    return f"{accroche_video(sujet)}\n{sujet}\n\n{cta}\n📍 La Grande Vision · Yopougon"
+
+
+def prompt_cover_canva(sujet, reseau):
+    return (
+        f"[Couverture/miniature {reseau} · {COVER_PX} ({COVER_RATIO}), vidéo verticale] "
+        f"Charte: fond Bleu Nuit #0A1F44, accents Bleu Ciel #4BA3FF, détails Gold #D4AF37, texte blanc. "
+        f"Typographie: Montserrat ExtraBold. {STYLE_VISUEL} "
+        f"Illustration en avant: visage expressif (regard caméra) ou scène en lien avec « {sujet} », énergie, "
+        f"forte lisibilité en petite taille (contraste élevé). "
+        f"Accroche courte (≤4 mots) en haut: « {titre_court(sujet)} » + petit label « La Grande Vision ». "
+        f"Style premium médical, hook visuel qui donne envie de cliquer."
+    )
+
+
+def prompt_cover_mj(sujet, reseau):
+    return (
+        f"Vertical 9:16 short-video cover thumbnail for {reseau}, topic « {sujet} » — {CHARTE_PROMPT}. "
+        f"Expressive person looking straight at camera, bold simple illustration-forward composition, "
+        f"minimal text space at top, very high contrast for small preview. "
+        f"--ar 9:16 --stylize 250"
+    )
+
+
 def ecrire_scripts_video():
     sujets = [("PIL1", s) for s in BANQUE["PIL1"]] + [("PIL2", s) for s in BANQUE["PIL2"]]
     sujets = sujets[:60]
@@ -496,14 +532,19 @@ def ecrire_scripts_video():
         f.write("> Généré par `_generateur/generer.py`. Format Reels / TikTok / Shorts, "
                 "30–60 s. Structure : Hook → Problème → Démonstration → Solution → CTA.\n\n")
         f.write("Charte respectée : incrustations en Montserrat/Poppins, couleurs "
-                "Bleu Nuit / Bleu Ciel / Gold.\n\n---\n\n")
+                "Bleu Nuit / Bleu Ciel / Gold. Chaque script embarque sa **description prête à "
+                "copier** et son **prompt de couverture/miniature** à la charte (vertical 9:16, "
+                "texte minimaliste, illustration en avant).\n\n---\n\n")
         formats = ["Reel Instagram", "TikTok", "Short YouTube"]
         for i, (pil, sujet) in enumerate(sujets, 1):
             fmt = formats[i % 3]
+            res = VIDEO_RESEAUX[fmt]
             persona = PERSONAS[PILIERS[pil]["personas"][i % len(PILIERS[pil]["personas"])]]
             cta = CTA["RDV/Vente"] if pil == "PIL1" else CTA["Vente"]
+            description = f"{legende_video(sujet, cta)}\n\n{res['tags']}"
             f.write(f"## Script #{i:02d} — {sujet}\n\n")
-            f.write(f"- **Format :** {fmt} · **Durée :** 30–60 s · **Pilier :** {pil} "
+            f.write(f"- **Format :** {fmt} · **Durée :** 30–60 s · **Couverture cible :** "
+                    f"{COVER_PX} ({COVER_RATIO}) · **Pilier :** {pil} "
                     f"({PILIERS[pil]['nom']}) · **Persona :** {persona}\n\n")
             f.write("| Temps | Bloc | Voix off / Texte | À l'écran |\n|---|---|---|---|\n")
             f.write(f"| 0–3 s | **Hook** | « {accroche_video(sujet)} » | Gros titre Montserrat sur fond Bleu Nuit |\n")
@@ -512,7 +553,13 @@ def ecrire_scripts_video():
             f.write(f"| 35–50 s | **Solution** | « À La Grande Vision, on vous propose un bilan et la solution adaptée. » | Opticien souriant, montures, détails Gold |\n")
             f.write(f"| 50–60 s | **CTA** | « {cta} » | Bandeau Gold + logo + WhatsApp |\n\n")
             f.write(f"**Incrustations :** titre « {sujet} » · « Voir la vie en grand » · « 📲 WhatsApp »\n\n")
-            f.write(f"**Hashtags :** {HASHTAGS['TikTok']}\n\n---\n\n")
+            f.write(f"### 📝 Description du post — prête à copier ({res['reseau']})\n\n")
+            f.write(f"```\n{description}\n```\n\n")
+            f.write(f"### 📸 Prompt de couverture/miniature — {res['reseau']} ({COVER_PX}, {COVER_RATIO}) "
+                    f"· texte minimaliste, illustration en avant, charte\n\n")
+            f.write(f"**Prompt Canva**\n\n```\n{prompt_cover_canva(sujet, res['reseau'])}\n```\n\n")
+            f.write(f"**Prompt Midjourney**\n\n```\n{prompt_cover_mj(sujet, res['reseau'])}\n```\n\n")
+            f.write("---\n\n")
     return chemin
 
 
