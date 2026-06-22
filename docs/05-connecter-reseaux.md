@@ -1,0 +1,97 @@
+# 05 — Connecter les réseaux sociaux (présence digitale)
+
+> Objectif : afficher dans le dashboard, **par client**, les vraies données (audience, posts,
+> likes, commentaires, meilleurs fans, top posts, évolution). **Zéro donnée inventée** : le
+> dashboard reste en « à connecter » tant qu'une source réelle n'est pas branchée.
+
+## Comment ça marche (architecture)
+
+```
+Réseaux du client ──(autorisation/token)──▶ connecteur ──▶ reseaux.json ──▶ build.py ──▶ dashboard
+   FB / IG / ...          UNE FOIS         connect-reseaux.py   (par client)   agence.js   (affiche)
+```
+
+Le dashboard ne fait que **lire** `reseaux.json`. Tout l'enjeu est de **remplir** ce fichier.
+
+---
+
+## Point clé sur l'autonomie
+
+Aucune plateforme (Facebook, Instagram…) ne donne ses chiffres sans **autorisation du
+propriétaire du compte** (un *token* / OAuth). Il n'existe pas de raccourci magique : il faut
+**une fois** accorder un accès. Ensuite, ça peut tourner **tout seul**.
+
+État des intégrations branchées sur ce projet :
+- **`two_minutes_reports` (MCP)** : connecté mais **n'expose pas d'outil** appelable → inutilisable en l'état.
+- **PostHog (MCP)** : OK pour l'**analytics produit/web** (funnel, RDV, événements site) — **pas** les likes/fans sociaux.
+- **Google Drive (MCP)** : OK pour **lire un CSV** d'export que vous déposez.
+- **GitHub (MCP/Actions)** : OK — **support de l'autonomie** (voir Voie A).
+- **Meta Graph API** : nécessite **votre token** + Internet.
+
+---
+
+## Voie A — Autonome : GitHub Action + token Meta (recommandé)
+
+Le runner GitHub a accès à Internet (le sandbox de génération, non). Un workflow planifié
+récupère les données et met à jour le dépôt — **sans intervention**.
+
+### Pas à pas
+1. **Créer une app Meta + un token** (https://developers.facebook.com) avec les permissions :
+   `pages_read_engagement`, `instagram_basic`, `instagram_manage_insights`.
+   Récupérer aussi l'**ID de la Page Facebook** et l'**ID du compte Instagram Business**.
+2. Dans GitHub : **Settings → Secrets and variables → Actions**
+   - **Secret** `META_TOKEN` = le token.
+   - **Variables** `FB_PAGE_ID`, `IG_USER_ID`, `CLIENT_DIR`
+     (ex : `departements/marketing/clients/la-grande-vision`).
+3. Onglet **Actions → « Sync présence digitale » → Run workflow**
+   (ou attendre le déclenchement planifié, chaque lundi 06:00 UTC).
+4. Le workflow exécute `connect-reseaux.py` → `build.py` → **commit** `reseaux.json` + `agence.js`.
+5. Rouvrir le dashboard → la vue **Présence digitale** affiche les chiffres réels.
+
+> Fichier : `.github/workflows/sync-reseaux.yml` (déjà fourni).
+> ⚠️ Les tokens Meta longue durée expirent (~60 j) : prévoir un rafraîchissement.
+
+---
+
+## Voie B — Simple : export CSV (Meta Business Suite / TwoMinuteReports)
+
+Sans app Meta : exporter les chiffres depuis l'outil du client, puis :
+```bash
+python3 scripts/connect-reseaux.py --manuel departements/marketing/clients/<client> export.csv
+python3 outils/_data/build.py
+```
+CSV attendu (souple) : `reseau,abonnes,posts,likes,commentaires,portee`
+```
+reseau,abonnes,posts,likes,commentaires,portee
+facebook,5230,42,1875,240,41000
+instagram,3110,38,2950,180,28000
+```
+> Variante « Drive » : déposez le CSV sur Google Drive ; je peux le **lire via le MCP Drive**
+> et générer `reseaux.json` pour vous.
+
+---
+
+## Voie C — Manuel : éditer le fichier
+
+Éditer directement `departements/marketing/clients/<client>/_donnees/reseaux.json`
+(mêmes champs), passer `"connecte": true`, puis `python3 outils/_data/build.py`.
+
+---
+
+## Et le funnel / les conversions (PostHog)
+
+Likes & fans = réseaux (voies ci-dessus). Le **tunnel** (messages WhatsApp, RDV, ventes) se
+mesure mieux avec **PostHog** : il faut **émettre des événements** depuis le site / le tunnel
+(`message_recu`, `rdv_pris`, `vente`). Une fois ces événements présents, je peux construire le
+funnel réel via le MCP PostHog. Tant qu'ils n'existent pas, le tunnel reste en « — ».
+
+---
+
+## Ce dont j'ai besoin de vous pour démarrer
+- **Voie A** : confirmer que vous avez créé le `META_TOKEN` + les IDs, et les avoir mis en
+  Secret/Variables GitHub. Je peux alors déclencher et valider.
+- **Voie B** : un **CSV** (ou son lien Drive).
+- **PostHog** : me dire quels **événements** existent déjà (ou en faire émettre).
+
+> Tableau récap des champs attendus : voir `outils/_data/README.md` et le contrat
+> `reseaux.json` de chaque client.
