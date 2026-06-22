@@ -93,6 +93,8 @@ a{color:inherit;text-decoration:none}
   transition:transform .2s ease, border-color .2s}
 .card:hover{transform:translateY(-3px);border-color:var(--border2)}
 .card h3{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h3 svg{width:17px;height:17px;flex:0 0 auto;color:var(--muted)}
+.card h3 .tag,.card h3 .badge{flex:0 0 auto}
 .card .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
 .col3{grid-column:span 3}.col4{grid-column:span 4}.col5{grid-column:span 5}
 .col6{grid-column:span 6}.col7{grid-column:span 7}.col8{grid-column:span 8}.col12{grid-column:span 12}
@@ -187,6 +189,18 @@ a{color:inherit;text-decoration:none}
   .cmdk span{display:none}.cmdk{min-width:auto}
 }
 @media(max-width:560px){.col3,.col4,.col5,.col6{grid-column:span 12}.bar{grid-template-columns:92px 1fr 32px}}
+
+/* Vue Contenus : champs + table */
+.fld{background:var(--elev);border:1px solid var(--border);border-radius:10px;color:var(--tx);padding:9px 11px;font-size:13px;outline:none;transition:.16s}
+.fld:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(75,163,255,.16)}
+.ctable{margin-top:6px;font-size:12.5px}
+.trow{display:grid;grid-template-columns:46px 104px 132px 56px 1fr 120px;gap:10px;align-items:center;padding:9px 8px;border-bottom:1px solid var(--border)}
+.trow.thead{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;position:sticky;top:0;background:var(--surface-solid);z-index:1}
+.trow .tt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{font-size:10.5px;padding:3px 9px;border-radius:20px;border:1px solid var(--border2);color:var(--muted);white-space:nowrap}
+.kvr{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding:7px 0}
+.kvr b{color:var(--muted);font-weight:500}
+@media(max-width:760px){.trow{grid-template-columns:40px 1fr 96px}.trow span:nth-child(2),.trow span:nth-child(4){display:none}}
 </style>
 </head>
 <body>
@@ -329,105 +343,201 @@ const KPIS=[
   {ic:'target',c:'#FFC861',lab:'Taux de conversion',val:8,suf:'%',d:'-2%',up:0,s:[11,10,9,9,8,8,8]},
 ];
 
-function render(){
-  const g=$("#grid");g.innerHTML='';
-  // KPI cards
-  KPIS.forEach((k,i)=>{
-    const el=card('col3 kpi fade');
-    el.innerHTML=`<div class="top"><div class="ic" style="color:${k.c};background:${k.c}1a;border-color:${k.c}40">${ic(k.ic)}</div>
-      <span class="chip ${k.up?'up':'down'}">${k.up?'▲':'▼'} ${k.d}</span></div>
-      <div class="val" data-to="${k.val}" data-suf="${k.suf}">0</div><div class="lab">${k.lab}</div>
-      <div class="spark">${spark(k.s,k.c)}</div>`;
-    el.style.animationDelay=(i*60)+'ms';g.appendChild(el);
-  });
-  // objectifs note
-  const note=card('col12 fade');note.style.padding='12px 18px';
-  note.innerHTML=`<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)">
-    <span class="tag">Projections</span> Les métriques de performance sont des objectifs mensuels — branchez <b style="color:var(--tx)">PostHog / Meta</b> pour les valeurs réelles. Les analyses ci-dessous sont calculées sur les <b style="color:var(--tx)">${A.total} contenus</b> réels du plan.</div>`;
-  g.appendChild(note);
+function card(cls){const d=document.createElement('article');d.className='card '+cls;return d;}
+function add(html,cls){const c=card((cls||'')+' fade');c.innerHTML=html;$("#grid").appendChild(c);return c;}
+const PC=['#4BA3FF','#7C5CFF','#34E5C4','#FFC861','#FF7D9C'];
 
-  // Donut piliers
+/* ---------- Cartes réutilisables (renvoient l'HTML interne) ---------- */
+function cKpis(){
+  KPIS.forEach((k,i)=>{const el=add(`<div class="top"><div class="ic" style="color:${k.c};background:${k.c}1a;border-color:${k.c}40">${ic(k.ic)}</div>
+    <span class="chip ${k.up?'up':'down'}">${k.up?'▲':'▼'} ${k.d}</span></div>
+    <div class="val" data-to="${k.val}" data-suf="${k.suf}">0</div><div class="lab">${k.lab}</div>
+    <div class="spark">${spark(k.s,k.c)}</div>`,'col3 kpi');el.style.animationDelay=(i*60)+'ms';});
+  const note=add(`<div style="display:flex;align-items:center;gap:11px">
+    <span class="tag" style="flex:0 0 auto">Projections</span>
+    <span style="font-size:12.5px;color:var(--muted)">Les métriques de performance sont des <b style="color:var(--tx)">objectifs mensuels</b> — branchez PostHog / Meta pour les valeurs réelles. Les analyses ci-dessous sont calculées sur les <b style="color:var(--tx)">${A.total} contenus</b> réels du plan.</span></div>`,'col12');
+  note.style.padding='13px 18px';
+  $$('.kpi .val').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
+}
+function cPilDonut(){
   const pil=Object.entries(A.piliers).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v,c:PILCOLOR[k]||'#888'}));
-  const d1=card('col4 fade');
-  d1.innerHTML=`<h3>${ic('layers')} Répartition par pilier</h3><div class="sub">Équilibre éditorial</div>
+  return `<h3>${ic('layers')} Répartition par pilier</h3><div class="sub">Équilibre éditorial</div>
     <div class="donutWrap">${donut(pil)}<div class="legend" style="flex-direction:column;gap:8px">
     ${pil.map(p=>`<span><i style="background:${p.c}"></i><b>${p.v}</b> · ${PILNAME[p.k]||p.k}</span>`).join('')}</div></div>`;
-  g.appendChild(d1);
-
-  // Bars plateformes
+}
+function cPlatBars(){
   const plt=Object.entries(A.plateformes).sort((a,b)=>b[1]-a[1]);const mxp=Math.max(...plt.map(x=>x[1]));
-  const pc=['#4BA3FF','#7C5CFF','#34E5C4','#FFC861','#FF7D9C'];
-  const d2=card('col4 fade');
-  d2.innerHTML=`<h3>${ic('grid')} Contenus par plateforme</h3><div class="sub">Diffusion multi-canal</div>
-    <div class="bars">${plt.map(([k,v],i)=>`<div class="bar"><span>${k}</span><div class="tr"><div class="fl" style="width:${v/mxp*100}%;background:${pc[i%5]};animation-delay:${i*70}ms"></div></div><span class="n">${v}</span></div>`).join('')}</div>`;
-  g.appendChild(d2);
-
-  // Production ring + statut
+  return `<h3>${ic('grid')} Contenus par plateforme</h3><div class="sub">Diffusion multi-canal</div>
+    <div class="bars">${plt.map(([k,v],i)=>`<div class="bar"><span>${k}</span><div class="tr"><div class="fl" style="width:${v/mxp*100}%;background:${PC[i%5]};animation-delay:${i*70}ms"></div></div><span class="n">${v}</span></div>`).join('')}</div>`;
+}
+function cProduction(){
   const pct=Math.round(A.valide/A.total*100);
-  const d3=card('col4 fade');
-  d3.innerHTML=`<h3>${ic('chart')} Production</h3><div class="sub">Avancement du plan</div>
+  return `<h3>${ic('chart')} Production</h3><div class="sub">Avancement du plan</div>
     <div style="display:flex;align-items:center;gap:20px;margin-top:16px;position:relative">${ring(pct)}
     <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="font-size:12.5px"><b style="font-family:'Plus Jakarta Sans';font-size:18px">${A.valide}</b> <span style="color:var(--muted)">validés</span></div>
-      <div style="font-size:12.5px"><b style="font-family:'Plus Jakarta Sans';font-size:18px">${A.total-A.valide}</b> <span style="color:var(--muted)">à produire</span></div>
-      <div style="font-size:11.5px;color:var(--muted)">Objectif : 100% sur 90 jours</div>
-    </div></div>`;
-  g.appendChild(d3);
-
-  // Planning area (semaines)
-  const d4=card('col8 fade');
-  d4.innerHTML=`<h3>${ic('cal')} Planning éditorial — ${A.total} contenus sur 90 jours</h3>
+      <div style="font-size:12.5px"><b style="font-family:var(--font-disp);font-size:18px">${A.valide}</b> <span style="color:var(--muted)">validés</span></div>
+      <div style="font-size:12.5px"><b style="font-family:var(--font-disp);font-size:18px">${A.total-A.valide}</b> <span style="color:var(--muted)">à produire</span></div>
+      <div style="font-size:11.5px;color:var(--muted)">Objectif : 100% sur 90 jours</div></div></div>`;
+}
+function cPlanning(){
+  return `<h3>${ic('cal')} Planning éditorial — ${A.total} contenus / 90 jours</h3>
     <div class="sub">${A.start} → ${A.end} · 2 publications/jour</div>${area(A.semaines)}`;
-  g.appendChild(d4);
-
-  // Scoring distribution (repère)
+}
+function cScoring(){
   const scd=[['A','#34E5C4',18],['B','#4BA3FF',28],['C','#FFC861',30],['D','#FF9F45',16],['E','#FF7D9C',8]];
-  const d5=card('col4 fade');
-  d5.innerHTML=`<h3>${ic('target')} Scoring A→E <span class="tag" style="margin-left:auto">Repère</span></h3>
+  return `<h3>${ic('target')} Scoring A→E <span class="tag" style="margin-left:auto">Repère</span></h3>
     <div class="sub">Distribution cible des notes</div>
     <div class="score">${scd.map(([g_,c,v],i)=>`<div class="sc"><span class="g" style="color:${c}">${g_}</span>
       <div class="tr" style="height:9px;border-radius:20px;background:var(--elev);overflow:hidden"><div class="fl" style="height:100%;width:${v*2.6}%;background:${c};border-radius:20px;animation-delay:${i*70}ms"></div></div>
       <span class="n" style="text-align:right;color:var(--muted);font-size:12px">${v}%</span></div>`).join('')}</div>
-    <div style="margin-top:12px;font-size:11.5px;color:var(--muted)">A = à reproduire · C/B = à optimiser · E = à abandonner</div>`;
-  g.appendChild(d5);
-
-  // WhatsApp funnel
-  const fn=[['Vues publicité',100],['Messages reçus',28],['Leads qualifiés',19],['RDV pris',11],['Visites',8],['Ventes',5]];
-  const d6=card('col5 fade');
-  d6.innerHTML=`<h3>${ic('chat')} Tunnel WhatsApp <span class="tag" style="margin-left:auto">Projection</span></h3>
-    <div class="sub">Du clic publicitaire à la vente</div>
-    <div class="funnel">${fn.map(([l,v],i)=>`<div class="fstep"><div class="frow" style="width:${v}%;animation-delay:${i*70}ms;opacity:${1-i*0.08}">${l}</div><span class="v">${v}%</span></div>`).join('')}</div>`;
-  g.appendChild(d6);
-
-  // Upcoming
-  const d7=card('col4 fade');
-  d7.innerHTML=`<h3>${ic('cal')} Prochaines publications</h3><div class="sub">Programmées</div>
-    <div class="list">${A.upcoming.map(u=>`<div class="li"><span class="dt">${u.date.slice(5)} ${u.heure}</span>
-      <span class="t" title="${u.titre}">${u.titre}</span><span class="pill">${u.plateforme}</span></div>`).join('')}</div>`;
-  g.appendChild(d7);
-
-  // Automatisation
-  const steps=[['Analyse des résultats','ok'],['Détection meilleurs contenus','ok'],['Génération des sujets','ok'],
-    ['Génération du calendrier','ok'],['Génération des visuels','pend'],['Publication programmée','pend']];
-  const d8=card('col3 fade');
-  d8.innerHTML=`<h3>${ic('bolt')} Machine éditoriale</h3><div class="sub">Cycle mensuel autonome</div>
-    <div class="auto">${steps.map(([l,s])=>`<div class="arow"><span class="dot ${s}"></span>${l}<span class="s">${s==='ok'?'actif':'à brancher'}</span></div>`).join('')}</div>`;
-  g.appendChild(d8);
-
-  // count-up
-  $$('.kpi .val').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
+    <div style="margin-top:12px;font-size:11.5px;color:var(--muted)">A = à reproduire · B/C = à optimiser · E = à abandonner</div>`;
 }
-function card(cls){const d=document.createElement('article');d.className='card '+cls;return d;}
+const FUNNEL=[['Vues publicité',100],['Messages reçus',28],['Leads qualifiés',19],['RDV pris',11],['Visites',8],['Ventes',5]];
+function cFunnel(){
+  return `<h3>${ic('chat')} Tunnel WhatsApp <span class="tag" style="margin-left:auto">Projection</span></h3>
+    <div class="sub">Du clic publicitaire à la vente</div>
+    <div class="funnel">${FUNNEL.map(([l,v],i)=>`<div class="fstep"><div class="frow" style="width:${v}%;animation-delay:${i*70}ms;opacity:${1-i*0.08}">${l}</div><span class="v">${v}%</span></div>`).join('')}</div>`;
+}
+function cUpcoming(n){
+  const list=[...ITEMS].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure)).slice(0,n||6);
+  return `<h3>${ic('cal')} Prochaines publications</h3><div class="sub">Programmées</div>
+    <div class="list">${list.map(u=>`<div class="li"><span class="dt">${u.date.slice(5)} ${u.heure}</span>
+      <span class="t" title="${u.titre}">${u.titre}</span><span class="pill">${u.plateforme}</span></div>`).join('')}</div>`;
+}
+const STEPS=[['Analyse des résultats','ok'],['Détection meilleurs contenus','ok'],['Génération des sujets','ok'],
+  ['Génération du calendrier','ok'],['Génération des scripts','ok'],['Génération des visuels','pend'],['Publication programmée','pend']];
+function cMachine(){
+  return `<h3>${ic('bolt')} Machine éditoriale</h3><div class="sub">Cycle mensuel autonome</div>
+    <div class="auto">${STEPS.map(([l,s])=>`<div class="arow"><span class="dot ${s}"></span>${l}<span class="s">${s==='ok'?'actif':'à brancher'}</span></div>`).join('')}</div>`;
+}
+
+/* ---------- Vues ---------- */
+function viewOverview(){
+  cKpis();
+  add(cPilDonut(),'col4'); add(cPlatBars(),'col4'); add(cProduction(),'col4');
+  add(cPlanning(),'col8'); add(cScoring(),'col4');
+  add(cFunnel(),'col5'); add(cUpcoming(6),'col4'); add(cMachine(),'col3');
+}
+function viewCalendrier(){
+  add(cPlanning(),'col8'); add(cProduction(),'col4');
+  const wk=A.semaines,ks=Object.keys(wk).map(Number).sort((a,b)=>a-b),mx=Math.max(...ks.map(k=>wk[k]));
+  add(`<h3>${ic('cal')} Volume par semaine</h3><div class="sub">${ks.length} semaines</div>
+    <div class="bars">${ks.map((k,i)=>`<div class="bar"><span>Sem. ${k}</span><div class="tr"><div class="fl" style="width:${wk[k]/mx*100}%;background:${PC[i%5]};animation-delay:${i*35}ms"></div></div><span class="n">${wk[k]}</span></div>`).join('')}</div>`,'col4');
+  add(cUpcoming(14),'col8');
+}
+function viewContenus(){
+  add(`<h3>${ic('layers')} Contenus du plan — ${A.total}</h3>
+    <div class="sub">Filtrer et parcourir les ${A.total} contenus réels</div>
+    <div style="display:flex;gap:10px;margin:14px 0;flex-wrap:wrap">
+      <input id="cSearch" class="fld" style="flex:1;min-width:180px" placeholder="🔎 Rechercher un titre…">
+      <select id="cPlat" class="fld"><option value="">Toutes plateformes</option>${[...new Set(ITEMS.map(i=>i.plateforme))].map(p=>`<option>${p}</option>`).join('')}</select>
+      <select id="cPil" class="fld"><option value="">Tous piliers</option>${[...new Set(ITEMS.map(i=>i.pilier))].sort().map(p=>`<option>${p}</option>`).join('')}</select>
+    </div>
+    <div id="cTable" class="ctable"></div>`,'col12');
+  const draw=()=>{
+    const q=($("#cSearch").value||'').toLowerCase(),fp=$("#cPlat").value,fl=$("#cPil").value;
+    const rows=ITEMS.filter(it=>(!q||it.titre.toLowerCase().includes(q))&&(!fp||it.plateforme===fp)&&(!fl||it.pilier===fl));
+    $("#cTable").innerHTML=`<div class="trow thead"><span>#</span><span>Date</span><span>Plateforme</span><span>Pilier</span><span class="tt">Titre</span><span>Statut</span></div>`+
+      rows.slice(0,120).map(it=>`<div class="trow"><span style="color:var(--muted)">${String(it.id).padStart(3,'0')}</span>
+        <span style="color:var(--muted)">${it.date.slice(5)} ${it.heure}</span>
+        <span><span class="pill">${it.plateforme}</span></span>
+        <span style="color:${PILCOLOR[it.pilier]||'#888'};font-weight:600">${it.pilier}</span>
+        <span class="tt" title="${it.titre}">${it.titre}</span>
+        <span style="font-size:11.5px"><span class="dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:${it.statut==='Validé'?'var(--mint)':'var(--muted2)'}"></span>${it.statut}</span></div>`).join('')+
+      (rows.length>120?`<div style="padding:12px;color:var(--muted);font-size:12px">… ${rows.length-120} de plus — affinez les filtres.</div>`:(rows.length?'':`<div style="padding:20px;color:var(--muted);font-size:12.5px">Aucun contenu.</div>`));
+  };
+  ['cSearch','cPlat','cPil'].forEach(id=>{const el=$("#"+id);el.oninput=el.onchange=draw;});
+  draw();
+}
+function viewScoring(){
+  add(cScoring(),'col5');
+  add(`<h3>${ic('target')} Barème & décision</h3><div class="sub">Du score à l'action</div>
+    <div class="auto" style="margin-top:12px">
+      <div class="arow"><span class="dot ok"></span>A (≥ 80) — Excellent<span class="s">À reproduire</span></div>
+      <div class="arow"><span class="dot" style="background:var(--blue)"></span>B (60–79) — Bon<span class="s">À optimiser</span></div>
+      <div class="arow"><span class="dot pend"></span>C (40–59) — Moyen<span class="s">À optimiser</span></div>
+      <div class="arow"><span class="dot" style="background:#FF9F45"></span>D (20–39) — Faible<span class="s">Surveiller</span></div>
+      <div class="arow"><span class="dot" style="background:var(--pink)"></span>E (&lt; 20) — Très faible<span class="s">À abandonner</span></div>
+    </div>`,'col4');
+  add(`<h3>${ic('chart')} Variables & poids</h3><div class="sub">Score global pondéré</div>
+    <div class="bars">${[['Engagement',30],['Conversion (msgs)',25],['RDV',25],['Portée',20]].map(([l,v],i)=>`<div class="bar"><span>${l}</span><div class="tr"><div class="fl" style="width:${v*3.3}%;background:${PC[i%5]};animation-delay:${i*60}ms"></div></div><span class="n">${v}%</span></div>`).join('')}</div>
+    <div style="margin-top:12px;font-size:11.5px;color:var(--muted)">Source : insights natifs + PostHog → onglet Scoring (formules live).</div>`,'col3');
+}
+function viewTunnel(){
+  add(cFunnel(),'col5');
+  const steps=[['1 · Publicité','Accroche → message WhatsApp « VUE »'],['2 · Message auto','Accueil + orientation du besoin'],
+    ['3 · Qualification','Besoin, persona, disponibilité'],['4 · Prise de RDV','Créneaux proposés, choix'],
+    ['5 · Confirmation','Date, adresse, rappel J-1'],['6 · Relance','J-1, no-show, prospect tiède'],
+    ['7 · Suivi après visite','Satisfaction, avis, 2ᵉ paire']];
+  add(`<h3>${ic('chat')} Les 7 étapes du tunnel</h3><div class="sub">Messages rédigés — voir 06-tunnel-whatsapp</div>
+    <div class="list">${steps.map(([t,d])=>`<div class="li"><span class="t" style="font-weight:600;flex:0 0 150px">${t}</span><span style="flex:1;color:var(--muted);font-size:12px">${d}</span></div>`).join('')}</div>`,'col7');
+  add(`<h3>${ic('rdv')} CRM — relances J0→J90</h3><div class="sub">SMS · WhatsApp · Email</div>
+    <div class="list">${[['J0','Bienvenue / qualification'],['J1','Rappel & valeur'],['J3','Relance prospect'],['J7','Suivi + avis'],['J14','2ᵉ paire'],['J30','Contenu expert'],['J60','Réactivation'],['J90','Fidélité / parrainage']].map(([d,t])=>`<div class="li"><span class="dt">${d}</span><span class="t">${t}</span></div>`).join('')}</div>`,'col12');
+}
+function viewAuto(){
+  add(cMachine(),'col4');
+  add(`<h3>${ic('bolt')} Cycle mensuel automatisé</h3><div class="sub">Make · n8n · Zapier</div>
+    <div class="list">${['Analyse des résultats (KPI → scoring)','Détection des meilleurs contenus (notes A)','Génération des nouveaux sujets','Génération du calendrier','Génération des scripts','Génération des visuels','Publication programmée (validation humaine)'].map((t,i)=>`<div class="li"><span class="dt">Étape ${i+1}</span><span class="t">${t}</span></div>`).join('')}</div>`,'col8');
+  add(`<h3>${ic('layers')} Orchestrateurs supportés</h3><div class="sub">Voir 09-automatisation</div>
+    <div class="auto" style="margin-top:10px">
+      <div class="arow"><span class="dot ok"></span>Make (Integromat)<span class="s">scénarios</span></div>
+      <div class="arow"><span class="dot ok"></span>n8n (self-hosted)<span class="s">execute python</span></div>
+      <div class="arow"><span class="dot ok"></span>Zapier<span class="s">zaps + webhook</span></div>
+    </div>`,'col12');
+}
+function viewClients(){
+  add(`<h3>${ic('users')} La Grande Vision</h3><div class="sub">Cabinet d'optique · Yopougon, Abidjan</div>
+    <div style="margin-top:14px;font-size:13px">
+      <div class="kvr"><b>Secteur</b><span>Santé visuelle / optique</span></div>
+      <div class="kvr"><b>Canaux</b><span>FB · IG · TikTok · LinkedIn · WhatsApp</span></div>
+      <div class="kvr"><b>Contenus</b><span>${A.total} sur 90 jours</span></div>
+      <div class="kvr"><b>Statut</b><span><span class="chip up">Mission 1 active</span></span></div>
+    </div>`,'col5');
+  add(cProduction(),'col4'); add(cMachine(),'col3');
+}
+function viewReglages(){
+  add(`<h3>${ic('cog')} Apparence</h3><div class="sub">Thème de l'interface</div>
+    <div style="margin-top:14px"><button class="btn" id="rTheme" data-ic="moon" style="border:1px solid var(--border);background:var(--elev);padding:9px 14px;border-radius:11px;color:var(--tx)"> Basculer le thème</button></div>`,'col4');
+  add(`<h3>${ic('layers')} Source de données</h3><div class="sub">Campagne chargée</div>
+    <div style="margin-top:14px;font-size:13px">
+      <div class="kvr"><b>Client</b><span>${CAMP?.client||'—'}</span></div>
+      <div class="kvr"><b>Contenus</b><span>${A.total}</span></div>
+      <div class="kvr"><b>Fichier</b><span>_donnees/campagne.json → data.js</span></div>
+    </div>`,'col4');
+  add(`<h3>${ic('chart')} Métriques réelles</h3><div class="sub">Brancher l'analytics</div>
+    <div style="margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.6">Connectez <b style="color:var(--tx)">PostHog</b> et <b style="color:var(--tx)">Meta</b> pour remplacer les projections par les valeurs réelles (portée, messages, RDV, conversion).</div>`,'col4');
+  const r=$("#rTheme");if(r)r.onclick=()=>$("#themeBtn").click();
+}
+
+/* ---------- Routeur de vues ---------- */
+const SECTIONS={overview:["Vue d'ensemble",viewOverview],calendrier:["Calendrier éditorial",viewCalendrier],
+  contenus:["Contenus",viewContenus],scoring:["Scoring A→E",viewScoring],tunnel:["Tunnel WhatsApp",viewTunnel],
+  auto:["Automatisation",viewAuto],clients:["Clients",viewClients],reglages:["Réglages",viewReglages]};
+let CURRENT='overview';
+function skeleton(){
+  const g=$("#grid");g.innerHTML='';
+  ['col3','col3','col3','col3','col4','col4','col4','col8','col4'].forEach(s=>{const c=card(s);
+    c.innerHTML=`<div class="sk" style="height:14px;width:50%"></div><div class="sk" style="height:${s==='col8'?120:90}px;margin-top:16px"></div>`;g.appendChild(c);});
+}
+function go(section){
+  if(!SECTIONS[section])section='overview';
+  CURRENT=section;
+  $$('#nav a').forEach(x=>x.classList.toggle('active',x.dataset.go===section));
+  $("#ptitle").textContent=SECTIONS[section][0];
+  $("#side").classList.remove('open');
+  skeleton();
+  setTimeout(()=>{$("#grid").innerHTML='';SECTIONS[section][1]();},240);
+}
 
 /* ---------- Command palette ---------- */
-const NAV=[['overview','Vue d\'ensemble'],['calendrier','Calendrier'],['contenus','Contenus'],['scoring','Scoring'],['tunnel','Tunnel WhatsApp'],['auto','Automatisation']];
+const NAVITEMS=[['overview','Vue d\'ensemble'],['calendrier','Calendrier'],['contenus','Contenus'],['scoring','Scoring'],['tunnel','Tunnel WhatsApp'],['auto','Automatisation'],['clients','Clients'],['reglages','Réglages']];
 function openCmd(){$("#cmdOv").classList.add('on');$("#cmdIn").value='';$("#cmdIn").focus();cmdRender('');}
 function closeCmd(){$("#cmdOv").classList.remove('on');}
 let cmdSel=0,cmdList=[];
 function cmdRender(q){
   q=q.toLowerCase();
-  const navHits=NAV.filter(n=>n[1].toLowerCase().includes(q)).map(n=>({t:n[1],s:'Section',go:n[0]}));
-  const itemHits=ITEMS.filter(it=>it.titre.toLowerCase().includes(q)).slice(0,7).map(it=>({t:it.titre,s:it.plateforme+' · '+it.pilier,id:it.id}));
+  const navHits=NAVITEMS.filter(n=>n[1].toLowerCase().includes(q)).map(n=>({t:n[1],s:'Section',go:n[0]}));
+  const itemHits=ITEMS.filter(it=>it.titre.toLowerCase().includes(q)).slice(0,7).map(it=>({t:it.titre,s:it.plateforme+' · '+it.pilier,titre:it.titre}));
   cmdList=[...navHits,...itemHits].slice(0,10);cmdSel=0;
   $("#cmdRes").innerHTML=cmdList.length?cmdList.map((r,i)=>`<div class="r ${i===0?'sel':''}" data-i="${i}">
     ${ic(r.go?'grid':'layers')}<div><div>${r.t}</div><small>${r.s}</small></div><span class="k">↵</span></div>`).join('')
@@ -435,21 +545,17 @@ function cmdRender(q){
   $$('#cmdRes .r').forEach(el=>{el.onclick=()=>cmdGo(+el.dataset.i);el.onmouseenter=()=>{cmdSel=+el.dataset.i;cmdHi();};});
 }
 function cmdHi(){$$('#cmdRes .r').forEach((e,i)=>e.classList.toggle('sel',i===cmdSel));}
-function cmdGo(i){const r=cmdList[i];if(!r)return;closeCmd();if(r.go){toast('Section : '+r.t);}else{toast('Contenu #'+String(r.id).padStart(3,'0')+' — '+r.t);}}
+function cmdGo(i){const r=cmdList[i];if(!r)return;closeCmd();
+  if(r.go){go(r.go);}
+  else{go('contenus');setTimeout(()=>{const s=$("#cSearch");if(s){s.value=r.titre;s.dispatchEvent(new Event('input'));}},300);}}
 
 /* ---------- init ---------- */
-function skeleton(){
-  const g=$("#grid");g.innerHTML='';
-  const spans=['col3','col3','col3','col3','col4','col4','col4','col8','col4'];
-  spans.forEach(s=>{const c=card(s);c.innerHTML=`<div class="sk" style="height:14px;width:50%"></div>
-    <div class="sk" style="height:${s==='col8'?120:90}px;margin-top:16px"></div>`;g.appendChild(c);});
-}
 function boot(){
   if(CAMP){ITEMS=CAMP.contenus||[];}
   $("#psub").textContent=(CAMP?.client||'La Grande Vision')+' · '+(CAMP?.lieu||'Yopougon')+' · '+(CAMP?.total||ITEMS.length)+' contenus';
-  $("#who").innerHTML=(CAMP?.client?'AWEMA':'AWEMA')+'<small>Directeur Marketing</small>';
+  $("#who").innerHTML='AWEMA<small>Directeur Marketing</small>';
   skeleton();
-  setTimeout(()=>{aggregate();render();},650); // skeleton élégant puis contenu
+  setTimeout(()=>{aggregate();go('overview');},500);
 }
 // events
 $("#themeBtn").onclick=()=>{const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';
@@ -457,11 +563,10 @@ $("#themeBtn").onclick=()=>{const h=document.documentElement;const d=h.getAttrib
 $("#hamb").onclick=e=>{e.stopPropagation();$("#side").classList.toggle('open');};
 $("#main").addEventListener('click',e=>{if(e.target.closest('#hamb'))return;$("#side").classList.remove('open');});
 $("#cmdkBtn").onclick=openCmd;
-$("#newBtn").onclick=()=>toast('Nouveau contenu — ouvre le générateur / la fiche');
+$("#newBtn").onclick=()=>{go('contenus');toast('Contenus — générez via _generateur/generer.py');};
 $("#cmdIn").oninput=e=>cmdRender(e.target.value);
 $("#cmdOv").onclick=e=>{if(e.target===$("#cmdOv"))closeCmd();};
-$$('#nav a').forEach(a=>a.onclick=()=>{$$('#nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');
-  $("#ptitle").textContent=a.textContent.trim();$("#side").classList.remove('open');toast('Section : '+a.textContent.trim());});
+$$('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.go));
 document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCmd();}
   if(e.key==='Escape')closeCmd();
