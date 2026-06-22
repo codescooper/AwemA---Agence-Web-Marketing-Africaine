@@ -46,6 +46,9 @@ C'est pourquoi :
 │       └── clients/           ← un dossier par client
 │           └── la-grande-vision/   ← MISSION 1 (cabinet d'optique, Yopougon)
 │
+├── outils/                    ← outils d'agence réutilisables (transverses)
+│   └── revue-visuels/         ← app de revue/annotation des visuels (→ prompts)
+│
 └── scripts/                   ← utilitaires transverses (export PDF, etc.)
 ```
 
@@ -62,6 +65,7 @@ C'est pourquoi :
 | Un **nouveau collaborateur** | [`docs/02-onboarding.md`](docs/02-onboarding.md) |
 | Au **département Marketing** | [`departements/marketing/README.md`](departements/marketing/README.md) |
 | Sur la **mission La Grande Vision** | [`departements/marketing/clients/la-grande-vision/README.md`](departements/marketing/clients/la-grande-vision/README.md) |
+| À la recherche d'un **outil** (revue de visuels…) | [`outils/README.md`](outils/README.md) |
 
 ---
 

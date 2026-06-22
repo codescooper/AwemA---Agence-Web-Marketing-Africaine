@@ -7,6 +7,7 @@ Produit, de façon DÉTERMINISTE, l'ensemble des livrables de volume :
   - 03-contenus/contenus.md                           (180 fiches détaillées)
   - 04-scripts-video/scripts-video.md                 (60 scripts)
   - 08-scoring/scoring.csv                            (180 lignes + formules)
+  - _donnees/campagne.json                            (données pour l'outil de revue)
 
 Tout respecte la charte (docs/04-charte-graphique.md), les personas
 (01-strategie/02-personas.md) et les piliers (01-strategie/04-piliers-editoriaux.md).
@@ -14,10 +15,28 @@ Tout respecte la charte (docs/04-charte-graphique.md), les personas
 Usage :  python3 generer.py
 """
 import csv
+import json
 import os
 from datetime import date, timedelta
 
 from sujets import BANQUE
+
+# Aperçus Canva déjà générés (index de contenu -> liste d'URL de propositions).
+# Enrichi au fil des générations Canva ; l'outil de revue affiche ces aperçus.
+CANVA_PREVIEWS = {
+    1: [
+        "https://www.canva.com/d/S9d7ZI57VSQ7xgr",
+        "https://www.canva.com/d/Mpda0TPrfZrFm5x",
+        "https://www.canva.com/d/JdzI4qYsu03uBXa",
+        "https://www.canva.com/d/aKjGRN6fdI4IGuc",
+    ],
+    2: [
+        "https://www.canva.com/d/hy0TZ8YVIsQHlYj",
+        "https://www.canva.com/d/ISIoQQ1mCrjv8xO",
+        "https://www.canva.com/d/qRJch0fVqqYvggc",
+        "https://www.canva.com/d/fZGzJC6v45lr-_e",
+    ],
+}
 
 # --------------------------------------------------------------------------- #
 # Paramètres de campagne
@@ -355,6 +374,42 @@ def ecrire_scoring(contenus):
     return chemin
 
 
+def ecrire_json(contenus):
+    """Données structurées consommées par l'outil de revue des visuels
+    (outils/revue-visuels). Inclut prompts + aperçus Canva connus."""
+    dossier = os.path.join(RACINE, "_donnees")
+    os.makedirs(dossier, exist_ok=True)
+    items = []
+    for c in contenus:
+        d, h = date_heure(c["index"] - 1)
+        items.append({
+            "id": c["index"], "date": d, "heure": h,
+            "plateforme": c["plateforme"], "objectif": c["objectif"],
+            "persona": f'{c["persona_id"]} — {c["persona"]}',
+            "pilier": c["pilier"], "pilier_nom": c["pilier_nom"],
+            "titre": c["titre"], "hook": c["hook"], "cta": c["cta"],
+            "format": c["format"], "visuel": c["visuel"], "kpi": c["kpi"],
+            "hashtags": c["hashtags"],
+            "prompt_canva": c["prompt_canva"],
+            "prompt_mj": c["prompt_mj"],
+            "prompt_gpt": c["prompt_gpt"],
+            "apercus": CANVA_PREVIEWS.get(c["index"], []),
+            "statut": "À produire",
+        })
+    meta = {
+        "client": "La Grande Vision",
+        "secteur": "Cabinet d'optique",
+        "lieu": "Yopougon, Abidjan — Côte d'Ivoire",
+        "charte": {"bleu_nuit": "#0A1F44", "bleu_ciel": "#4BA3FF", "gold": "#D4AF37"},
+        "total": len(items),
+        "contenus": items,
+    }
+    chemin = os.path.join(dossier, "campagne.json")
+    with open(chemin, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+    return chemin
+
+
 # --------------------------------------------------------------------------- #
 # Scripts vidéo (60) — basés sur PIL1 (pédagogie) et PIL2 (produits)
 # --------------------------------------------------------------------------- #
@@ -415,6 +470,7 @@ def main():
     c2 = ecrire_contenus(contenus)
     c3 = ecrire_scoring(contenus)
     c4 = ecrire_scripts_video()
+    c5 = ecrire_json(contenus)
 
     # petit récapitulatif de répartition
     rep = {}
@@ -425,6 +481,7 @@ def main():
     print(f"   Contenus   : {c2}")
     print(f"   Scoring    : {c3}")
     print(f"   Scripts    : {c4}")
+    print(f"   Données    : {c5}")
     print(f"   Total contenus : {len(contenus)}")
     print(f"   Répartition par pilier : {rep}")
 
