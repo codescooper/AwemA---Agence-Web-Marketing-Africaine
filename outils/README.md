@@ -6,6 +6,7 @@ autonome, documenté, et pensé pour un **onboarding immédiat**.
 | Outil | Rôle | Techno |
 |---|---|---|
 | [`revue-visuels/`](revue-visuels/) | Étudier, naviguer, annoter les visuels d'une campagne et générer des prompts de modification | HTML statique (zéro install) |
+| [`dashboard/`](dashboard/) | **Command Center** : pilotage KPI, calendrier, piliers/plateformes, production, scoring A→E, tunnel WhatsApp. Dark mode néon, bento grid, Command+K | HTML statique (zéro install) |
 
 ## Ajouter un outil
 
