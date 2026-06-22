@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Construit le registre multi-clients de l'agence pour les outils web.
+
+Scanne departements/<dept>/clients/<client>/_donnees/ et agrège, par client :
+  - client.json   (profil + réseaux + chemins)   [requis pour être listé]
+  - campagne.json (les contenus du plan)          [optionnel]
+  - reseaux.json  (présence digitale, réelle)     [optionnel]
+
+Sortie : outils/_data/agence.js  →  window.AWEMA_REGISTRY = { genere, clients:[...] }
+Aucune donnée fictive : ce qui n'existe pas reste null/[].
+
+Usage : python3 build.py
+"""
+import glob
+import json
+import os
+from datetime import datetime, timezone
+
+ICI = os.path.dirname(os.path.abspath(__file__))
+RACINE = os.path.normpath(os.path.join(ICI, "..", ".."))
+
+
+def lire(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+
+
+def main():
+    clients = []
+    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    for cj in sorted(glob.glob(motif)):
+        donnees = os.path.dirname(cj)                 # .../_donnees
+        client = lire(cj) or {}
+        campagne = lire(os.path.join(donnees, "campagne.json"))
+        reseaux = lire(os.path.join(donnees, "reseaux.json"))
+        client_dir = os.path.dirname(donnees)         # .../<client>
+        rel = os.path.relpath(client_dir, RACINE).replace(os.sep, "/")
+        clients.append({
+            **client,
+            "_dir": rel,
+            "profils": client.get("reseaux", {}),          # handles (depuis client.json)
+            "campagne": {"total": (campagne or {}).get("total", 0),
+                         "contenus": (campagne or {}).get("contenus", [])} if campagne else None,
+            "reseaux": reseaux,                             # métriques (depuis reseaux.json) ou null
+        })
+
+    registre = {"genere": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "clients": clients}
+    out = os.path.join(ICI, "agence.js")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write("// Généré par outils/_data/build.py — ne pas éditer.\n")
+        f.write("window.AWEMA_REGISTRY = ")
+        json.dump(registre, f, ensure_ascii=False)
+        f.write(";\n")
+    noms = ", ".join(c.get("nom", c.get("id", "?")) for c in clients) or "(aucun)"
+    print(f"✅ agence.js — {len(clients)} client(s) : {noms}")
+    for c in clients:
+        n = (c.get("campagne") or {}).get("total", 0)
+        rc = "réseaux connectés" if (c.get("reseaux") or {}).get("connecte") else "réseaux à connecter"
+        print(f"   • {c.get('nom')} — {n} contenus — {rc}")
+
+
+if __name__ == "__main__":
+    main()

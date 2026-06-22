@@ -260,6 +260,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="../_design/awema-ui.js"></script>
+<script src="../_data/agence.js" onerror="window.__noReg=true"></script>
 <script src="data.js" onerror="window.__noData=true"></script>
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -473,8 +474,19 @@ function skeletonList(){$("#list").innerHTML=Array.from({length:9}).map(()=>
   '<div class="skitem"><div class="sk" style="height:12px;width:72%"></div>'+
   '<div class="sk" style="height:9px;width:46%;margin-top:8px"></div></div>').join('');}
 
+// Résout le client depuis le registre multi-clients (?client=<id>) sinon data.js
+function clientFromRegistry(){
+  const id=new URLSearchParams(location.search).get('client');
+  const reg=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+  const c=reg.find(x=>x.id===id)||(id?null:reg[0]);
+  if(c&&c.campagne&&c.campagne.contenus&&c.campagne.contenus.length)
+    return {client:c.nom,lieu:c.lieu,total:c.campagne.total,contenus:c.campagne.contenus,charte:(window.CAMPAGNE&&window.CAMPAGNE.charte)};
+  return null;
+}
 // Init (skeleton élégant puis chargement)
-if(window.CAMPAGNE){skeletonList();setTimeout(()=>load(window.CAMPAGNE),360);}
+const REGDATA=clientFromRegistry();
+if(REGDATA){skeletonList();setTimeout(()=>load(REGDATA),360);}
+else if(window.CAMPAGNE){skeletonList();setTimeout(()=>load(window.CAMPAGNE),360);}
 else {$("#drop").classList.remove("hidden");}
 </script>
 </body>

@@ -217,6 +217,7 @@ a{color:inherit;text-decoration:none}
       <a data-go="calendrier" data-ic="cal"><span>Calendrier</span></a>
       <a data-go="contenus" data-ic="layers"><span>Contenus</span></a>
       <a data-go="scoring" data-ic="chart"><span>Scoring</span></a>
+      <a data-go="reseaux" data-ic="bubble"><span>Présence digitale</span></a>
       <div class="lbl">Conversion</div>
       <a data-go="tunnel" data-ic="chat"><span>Tunnel WhatsApp</span></a>
       <a data-go="auto" data-ic="bolt"><span>Automatisation</span></a>
@@ -238,6 +239,7 @@ a{color:inherit;text-decoration:none}
         <h1 id="ptitle">Vue d'ensemble</h1>
         <p id="psub">Campagne — chargement…</p>
       </div>
+      <select id="clientSel" class="fld" title="Client" style="max-width:210px"></select>
       <div class="spacer"></div>
       <button class="cmdk" id="cmdkBtn" data-ic="search"><span>Rechercher</span><kbd>⌘K</kbd></button>
       <button class="iconbtn" id="themeBtn" title="Thème" data-ic="moon"></button>
@@ -257,6 +259,7 @@ a{color:inherit;text-decoration:none}
 </div>
 <div class="toast" id="toast"></div>
 
+<script src="../_data/agence.js" onerror="window.__noReg=1"></script>
 <script src="data.js" onerror="window.__noData=1"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -280,21 +283,26 @@ $$('[data-ic]').forEach(el=>el.insertAdjacentHTML('afterbegin', ic(el.dataset.ic
 
 const PILCOLOR={PIL1:'#4BA3FF',PIL2:'#7C5CFF',PIL3:'#34E5C4',PIL4:'#FF7D9C',PIL5:'#FFC861',PIL6:'#9AA7C2'};
 const PILNAME={PIL1:'Pédagogie',PIL2:'Produits',PIL3:'Preuve sociale',PIL4:'Offres',PIL5:'Vie locale',PIL6:'B2B/Coulisses'};
-let CAMP=window.CAMPAGNE||null, ITEMS=[], A={};
-
+let CLIENTS=[], ACTIVE=null, ITEMS=[], RES=null, A={};
+function revueURL(id){return '../revue-visuels/index.html?client='+encodeURIComponent(id||(ACTIVE&&ACTIVE.id)||'');}
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1700);}
 function countBy(k){const m={};ITEMS.forEach(x=>m[x[k]]=(m[x[k]]||0)+1);return m;}
 function aggregate(){
-  A.total=ITEMS.length;
-  A.plateformes=countBy('plateforme'); A.piliers=countBy('pilier'); A.objectifs=countBy('objectif'); A.statuts=countBy('statut');
+  A={total:ITEMS.length,plateformes:countBy('plateforme'),piliers:countBy('pilier'),objectifs:countBy('objectif'),statuts:countBy('statut')};
   A.valide=ITEMS.filter(x=>x.statut==='Validé').length;
-  // semaines (par date)
   const dts=ITEMS.map(x=>x.date).filter(Boolean).sort();
-  A.start=dts[0]; A.end=dts[dts.length-1];
+  A.start=dts[0]||'—'; A.end=dts[dts.length-1]||'—';
   const wk={}; ITEMS.forEach(x=>{if(!x.date)return;const w=Math.floor((new Date(x.date)-new Date(A.start))/(7*864e5))+1;wk[w]=(wk[w]||0)+1;});
   A.semaines=wk;
-  // prochaines publications
-  A.upcoming=[...ITEMS].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure)).slice(0,6);
+}
+function setClient(id){
+  ACTIVE=CLIENTS.find(c=>c.id===id)||CLIENTS[0]||null;
+  ITEMS=(ACTIVE&&ACTIVE.campagne&&ACTIVE.campagne.contenus)||[];
+  RES=(ACTIVE&&ACTIVE.reseaux)||null;
+  try{localStorage.setItem('awema-client',ACTIVE?ACTIVE.id:'');}catch(e){}
+  const sel=$("#clientSel"); if(sel&&ACTIVE)sel.value=ACTIVE.id;
+  $("#psub").textContent=ACTIVE?(ACTIVE.nom+' · '+(ACTIVE.lieu||'')+' · '+ITEMS.length+' contenus'):'Aucun client';
+  aggregate(); go(CURRENT||'overview');
 }
 
 /* ---------- charts ---------- */
@@ -335,29 +343,33 @@ function ring(pct,size=104){const R=size/2,r=R-9,C=2*Math.PI*r,o=C*(1-pct/100);
 function countup(el,to,suf=''){let s=null,dur=900;const step=t=>{if(!s)s=t;const p=Math.min((t-s)/dur,1);
   el.textContent=Math.round(to*(1-Math.pow(1-p,3))).toLocaleString('fr-FR')+suf;if(p<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
 
-/* ---------- KPIs (objectifs mensuels — projections) ---------- */
-const KPIS=[
-  {ic:'eye',c:'#4BA3FF',lab:'Portée estimée / mois',val:48000,suf:'',d:'+12%',up:1,s:[8,9,11,10,13,15,18]},
-  {ic:'bubble',c:'#34E5C4',lab:'Messages WhatsApp',val:540,suf:'',d:'+23%',up:1,s:[4,6,5,8,9,12,14]},
-  {ic:'rdv',c:'#7C5CFF',lab:'RDV générés',val:120,suf:'',d:'+18%',up:1,s:[2,4,5,6,8,9,12]},
-  {ic:'target',c:'#FFC861',lab:'Taux de conversion',val:8,suf:'%',d:'-2%',up:0,s:[11,10,9,9,8,8,8]},
-];
-
 function card(cls){const d=document.createElement('article');d.className='card '+cls;return d;}
 function add(html,cls){const c=card((cls||'')+' fade');c.innerHTML=html;$("#grid").appendChild(c);return c;}
 const PC=['#4BA3FF','#7C5CFF','#34E5C4','#FFC861','#FF7D9C'];
 
-/* ---------- Cartes réutilisables (renvoient l'HTML interne) ---------- */
-function cKpis(){
-  KPIS.forEach((k,i)=>{const el=add(`<div class="top"><div class="ic" style="color:${k.c};background:${k.c}1a;border-color:${k.c}40">${ic(k.ic)}</div>
-    <span class="chip ${k.up?'up':'down'}">${k.up?'▲':'▼'} ${k.d}</span></div>
-    <div class="val" data-to="${k.val}" data-suf="${k.suf}">0</div><div class="lab">${k.lab}</div>
-    <div class="spark">${spark(k.s,k.c)}</div>`,'col3 kpi');el.style.animationDelay=(i*60)+'ms';});
-  const note=add(`<div style="display:flex;align-items:center;gap:11px">
-    <span class="tag" style="flex:0 0 auto">Projections</span>
-    <span style="font-size:12.5px;color:var(--muted)">Les métriques de performance sont des <b style="color:var(--tx)">objectifs mensuels</b> — branchez PostHog / Meta pour les valeurs réelles. Les analyses ci-dessous sont calculées sur les <b style="color:var(--tx)">${A.total} contenus</b> réels du plan.</span></div>`,'col12');
-  note.style.padding='13px 18px';
-  $$('.kpi .val').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
+/* ---------- KPIs RÉELS (aucune donnée fictive) ---------- */
+function cKpisReal(){
+  const plt=Object.keys(A.plateformes).length;
+  const pct=A.total?Math.round(A.valide/A.total*100):0;
+  const wk=Object.keys(A.semaines).map(Number).sort((a,b)=>a-b).map(k=>A.semaines[k]);
+  const aud=RES&&RES.global?RES.global.audience:null;
+  const audS=(RES&&RES.evolution_audience&&RES.evolution_audience.length>1)?RES.evolution_audience.map(p=>p.valeur):null;
+  const cards=[
+    {ic:'layers',c:'#4BA3FF',lab:'Contenus planifiés',val:A.total,spark:wk.length>1?wk:null},
+    {ic:'check',c:'#34E5C4',lab:'Production validée',val:pct,suf:'%',sub:A.valide+' / '+A.total},
+    {ic:'grid',c:'#7C5CFF',lab:'Plateformes actives',val:plt},
+    {ic:'eye',c:'#FFC861',lab:'Audience réseaux',val:aud,spark:audS}
+  ];
+  cards.forEach((k,i)=>{const isNull=(k.val==null);
+    const el=add(`<div class="top"><div class="ic" style="color:${k.c};background:${k.c}1a;border-color:${k.c}40">${ic(k.ic)}</div>
+      ${isNull?'<span class="tag">à connecter</span>':(k.sub?`<span class="badge">${k.sub}</span>`:'')}</div>
+      <div class="val" ${isNull?'':`data-to="${k.val}" data-suf="${k.suf||''}"`}>${isNull?'—':'0'}</div>
+      <div class="lab">${k.lab}</div>
+      ${k.spark?`<div class="spark">${spark(k.spark,k.c)}</div>`:(isNull?`<div style="margin-top:10px;font-size:11px;color:var(--muted)">Brancher les réseaux →</div>`:'')}`,'col3 kpi');
+    el.style.animationDelay=(i*60)+'ms';
+    if(isNull){el.style.cursor='pointer';el.onclick=()=>go('reseaux');}
+  });
+  $$('.kpi .val[data-to]').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
 }
 function cPilDonut(){
   const pil=Object.entries(A.piliers).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v,c:PILCOLOR[k]||'#888'}));
@@ -383,20 +395,15 @@ function cPlanning(){
   return `<h3>${ic('cal')} Planning éditorial — ${A.total} contenus / 90 jours</h3>
     <div class="sub">${A.start} → ${A.end} · 2 publications/jour</div>${area(A.semaines)}`;
 }
-function cScoring(){
-  const scd=[['A','#34E5C4',18],['B','#4BA3FF',28],['C','#FFC861',30],['D','#FF9F45',16],['E','#FF7D9C',8]];
-  return `<h3>${ic('target')} Scoring A→E <span class="tag" style="margin-left:auto">Repère</span></h3>
-    <div class="sub">Distribution cible des notes</div>
-    <div class="score">${scd.map(([g_,c,v],i)=>`<div class="sc"><span class="g" style="color:${c}">${g_}</span>
-      <div class="tr" style="height:9px;border-radius:20px;background:var(--elev);overflow:hidden"><div class="fl" style="height:100%;width:${v*2.6}%;background:${c};border-radius:20px;animation-delay:${i*70}ms"></div></div>
-      <span class="n" style="text-align:right;color:var(--muted);font-size:12px">${v}%</span></div>`).join('')}</div>
-    <div style="margin-top:12px;font-size:11.5px;color:var(--muted)">A = à reproduire · B/C = à optimiser · E = à abandonner</div>`;
+function cBareme(){
+  const b=[['A','#34E5C4','À reproduire'],['B','#4BA3FF','À optimiser'],['C','#FFC861','À optimiser'],['D','#FF9F45','Surveiller'],['E','#FF7D9C','À abandonner']];
+  return `<h3>${ic('target')} Scoring A→E</h3><div class="sub">Barème de décision — scores réels après mesure</div>
+    <div class="auto" style="margin-top:12px">${b.map(([g,c,a])=>`<div class="arow"><span class="dot" style="background:${c}"></span>Note ${g}<span class="s">${a}</span></div>`).join('')}</div>`;
 }
-const FUNNEL=[['Vues publicité',100],['Messages reçus',28],['Leads qualifiés',19],['RDV pris',11],['Visites',8],['Ventes',5]];
-function cFunnel(){
-  return `<h3>${ic('chat')} Tunnel WhatsApp <span class="tag" style="margin-left:auto">Projection</span></h3>
-    <div class="sub">Du clic publicitaire à la vente</div>
-    <div class="funnel">${FUNNEL.map(([l,v],i)=>`<div class="fstep"><div class="frow" style="width:${v}%;animation-delay:${i*70}ms;opacity:${1-i*0.08}">${l}</div><span class="v">${v}%</span></div>`).join('')}</div>`;
+function cFunnelProcess(){
+  const st=['Vues pub','Messages','Qualifiés','RDV','Visites','Ventes'];
+  return `<h3>${ic('chat')} Tunnel WhatsApp</h3><div class="sub">Étapes — taux réels après connexion analytics</div>
+    <div class="funnel">${st.map((l,i)=>`<div class="fstep"><div class="frow" style="width:${100-i*14}%;opacity:${1-i*0.1}">${l}</div><span class="v">—</span></div>`).join('')}</div>`;
 }
 function cUpcoming(n){
   const list=[...ITEMS].sort((a,b)=>(a.date+a.heure).localeCompare(b.date+b.heure)).slice(0,n||6);
@@ -413,10 +420,14 @@ function cMachine(){
 
 /* ---------- Vues ---------- */
 function viewOverview(){
-  cKpis();
+  cKpisReal();
+  if(!A.total){add(`<h3>${ic('layers')} Pas encore de plan de contenu</h3>
+    <div class="sub">${ACTIVE?ACTIVE.nom:''}</div>
+    <div style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6">Générez le plan éditorial du client (générateur) ou consultez sa présence digitale.</div>
+    <div style="margin-top:14px"><button class="btn" onclick="go('reseaux')">Présence digitale →</button></div>`,'col12');return;}
   add(cPilDonut(),'col4'); add(cPlatBars(),'col4'); add(cProduction(),'col4');
-  add(cPlanning(),'col8'); add(cScoring(),'col4');
-  add(cFunnel(),'col5'); add(cUpcoming(6),'col4'); add(cMachine(),'col3');
+  add(cPlanning(),'col8'); add(cBareme(),'col4');
+  add(cFunnelProcess(),'col5'); add(cUpcoming(6),'col4'); add(cMachine(),'col3');
 }
 function viewCalendrier(){
   add(cPlanning(),'col8'); add(cProduction(),'col4');
@@ -426,8 +437,9 @@ function viewCalendrier(){
   add(cUpcoming(14),'col8');
 }
 function viewContenus(){
-  add(`<h3>${ic('layers')} Contenus du plan — ${A.total}</h3>
-    <div class="sub">Filtrer et parcourir les ${A.total} contenus réels</div>
+  add(`<h3>${ic('layers')} Contenus du plan — ${A.total}
+      <a class="mini gold" href="${revueURL()}" target="_blank" style="margin-left:auto;text-decoration:none">Ouvrir le visualiseur ↗</a></h3>
+    <div class="sub">Filtrer et parcourir les ${A.total} contenus réels du client</div>
     <div style="display:flex;gap:10px;margin:14px 0;flex-wrap:wrap">
       <input id="cSearch" class="fld" style="flex:1;min-width:180px" placeholder="🔎 Rechercher un titre…">
       <select id="cPlat" class="fld"><option value="">Toutes plateformes</option>${[...new Set(ITEMS.map(i=>i.plateforme))].map(p=>`<option>${p}</option>`).join('')}</select>
@@ -450,7 +462,7 @@ function viewContenus(){
   draw();
 }
 function viewScoring(){
-  add(cScoring(),'col5');
+  add(cBareme(),'col5');
   add(`<h3>${ic('target')} Barème & décision</h3><div class="sub">Du score à l'action</div>
     <div class="auto" style="margin-top:12px">
       <div class="arow"><span class="dot ok"></span>A (≥ 80) — Excellent<span class="s">À reproduire</span></div>
@@ -464,7 +476,7 @@ function viewScoring(){
     <div style="margin-top:12px;font-size:11.5px;color:var(--muted)">Source : insights natifs + PostHog → onglet Scoring (formules live).</div>`,'col3');
 }
 function viewTunnel(){
-  add(cFunnel(),'col5');
+  add(cFunnelProcess(),'col5');
   const steps=[['1 · Publicité','Accroche → message WhatsApp « VUE »'],['2 · Message auto','Accueil + orientation du besoin'],
     ['3 · Qualification','Besoin, persona, disponibilité'],['4 · Prise de RDV','Créneaux proposés, choix'],
     ['5 · Confirmation','Date, adresse, rappel J-1'],['6 · Relance','J-1, no-show, prospect tiède'],
@@ -486,33 +498,83 @@ function viewAuto(){
     </div>`,'col12');
 }
 function viewClients(){
-  add(`<h3>${ic('users')} La Grande Vision</h3><div class="sub">Cabinet d'optique · Yopougon, Abidjan</div>
-    <div style="margin-top:14px;font-size:13px">
-      <div class="kvr"><b>Secteur</b><span>Santé visuelle / optique</span></div>
-      <div class="kvr"><b>Canaux</b><span>FB · IG · TikTok · LinkedIn · WhatsApp</span></div>
-      <div class="kvr"><b>Contenus</b><span>${A.total} sur 90 jours</span></div>
-      <div class="kvr"><b>Statut</b><span><span class="chip up">Mission 1 active</span></span></div>
-    </div>`,'col5');
-  add(cProduction(),'col4'); add(cMachine(),'col3');
+  CLIENTS.forEach(c=>{
+    const n=(c.campagne&&c.campagne.total)||0;
+    const conn=c.reseaux&&c.reseaux.connecte;
+    const act=ACTIVE&&c.id===ACTIVE.id;
+    add(`<h3>${ic('users')} ${c.nom}${act?' <span class="chip up" style="margin-left:auto">actif</span>':''}</h3>
+      <div class="sub">${(c.secteur||'')} · ${(c.lieu||'')}</div>
+      <div style="margin-top:12px;font-size:12.5px">
+        <div class="kvr"><b>Contenus</b><span>${n}</span></div>
+        <div class="kvr"><b>Réseaux</b><span>${conn?'<span class="chip up">connectés</span>':'<span class="tag">à connecter</span>'}</span></div>
+        <div class="kvr"><b>Statut</b><span>${c.statut||'—'}</span></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="mini gold" data-sel="${c.id}">Sélectionner</button>
+        <a class="mini" href="${revueURL(c.id)}" target="_blank" style="text-decoration:none">Visualiseur ↗</a>
+      </div>`,'col4');
+  });
+  add(`<h3>${ic('plus')} Ajouter un client</h3><div class="sub">Nouveau dossier client</div>
+    <div style="margin-top:12px;font-size:12px;color:var(--muted);line-height:1.65">
+      Créez <code>departements/&lt;dept&gt;/clients/&lt;id&gt;/_donnees/client.json</code>,
+      puis <code>python3 outils/_data/build.py</code>.<br>Voir <code>outils/_data/README.md</code>.
+    </div>`,'col4');
+  $$('#grid [data-sel]').forEach(b=>b.onclick=()=>{setClient(b.dataset.sel);toast('Client : '+(ACTIVE?ACTIVE.nom:''));});
+}
+function viewReseaux(){
+  const m=RES, prof=(ACTIVE&&ACTIVE.profils)||{}, connected=m&&m.connecte, g=(m&&m.global)||{};
+  [['Audience','audience','users','#4BA3FF'],['Posts','posts','layers','#7C5CFF'],['Likes','likes','target','#34E5C4'],
+   ['Commentaires','commentaires','chat','#FFC861'],['Portée','portee','eye','#FF7D9C'],['Engagement','engagement_taux','bolt','#4BA3FF']]
+   .forEach(([lab,key,icn,c])=>{const v=g[key],isNull=(v==null);
+    add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
+      <div class="val" ${isNull?'':`data-to="${v}" data-suf="${key==='engagement_taux'?'%':''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
+  add(`<h3>${ic('bubble')} Profils du client</h3>
+    <div class="sub">${connected?('Connecté · '+(m.source||'')+(m.maj?' · '+m.maj.slice(0,10):'')):'Non connecté — aucune donnée inventée'}</div>
+    <div style="margin-top:12px;font-size:12.5px">${['facebook','instagram','tiktok','linkedin','whatsapp'].map(r=>
+      `<div class="kvr"><b style="text-transform:capitalize">${r}</b><span>${prof[r]?(/^https?:/.test(prof[r])?`<a href="${prof[r]}" target="_blank">lien ↗</a>`:prof[r]):'<span class="tag">à renseigner</span>'}</span></div>`).join('')}</div>`,'col6');
+  add(`<h3>${ic('bolt')} Brancher les réseaux</h3><div class="sub">Obtenir les vraies données</div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.7">
+      1. Renseigner les profils dans <code>client.json</code>.<br>
+      2. <code>python3 scripts/connect-reseaux.py --meta &lt;client_dir&gt;</code> (Meta API)<br>&nbsp;&nbsp;&nbsp;ou <code>--manuel &lt;client_dir&gt; export.csv</code>.<br>
+      3. <code>python3 outils/_data/build.py</code>.<br>
+      Détails : <code>outils/_data/README.md</code>.
+    </div>`,'col6');
+  const pr=(m&&m.par_reseau)||{}, hasPr=Object.values(pr).some(x=>x&&x.abonnes!=null);
+  add(`<h3>${ic('grid')} Abonnés par réseau</h3><div class="sub">${hasPr?'Données réelles':'À connecter'}</div>
+    ${hasPr?`<div class="bars" style="margin-top:12px">${Object.entries(pr).filter(([k,v])=>v&&v.abonnes!=null).map(([k,v],i)=>{const mx=Math.max(...Object.values(pr).map(x=>(x&&x.abonnes)||0))||1;return `<div class="bar"><span style="text-transform:capitalize">${k}</span><div class="tr"><div class="fl" style="width:${v.abonnes/mx*100}%;background:${PC[i%5]}"></div></div><span class="n">${v.abonnes}</span></div>`;}).join('')}</div>`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Aucune donnée — branchez les réseaux.</div>`}`,'col6');
+  const fans=(m&&m.top_fans)||[];
+  add(`<h3>${ic('users')} Meilleurs fans</h3><div class="sub">${fans.length?'Top interactions':'À connecter'}</div>
+    ${fans.length?`<div class="list">${fans.slice(0,6).map(f=>`<div class="li"><span class="t">${f.nom}</span><span class="pill">${f.interactions} interactions</span></div>`).join('')}</div>`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Disponible une fois les réseaux connectés.</div>`}`,'col6');
+  const tp=(m&&m.top_posts)||[];
+  add(`<h3>${ic('target')} Meilleurs posts</h3><div class="sub">${tp.length?'Par engagement':'À connecter'}</div>
+    ${tp.length?`<div class="list">${tp.slice(0,6).map(p=>`<div class="li"><span class="t" title="${p.titre}">${p.titre||'—'}</span><span class="pill">${p.plateforme}</span><span class="pill">❤ ${p.likes}</span><span class="pill">💬 ${p.commentaires}</span></div>`).join('')}</div>`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Disponible une fois les réseaux connectés.</div>`}`,'col12');
+  const ev=(m&&m.evolution_audience)||[];
+  if(ev.length>1){const map={};ev.forEach((p,i)=>map[i+1]=p.valeur);add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">${ev.length} points</div>${area(map)}`,'col12');}
+  $$('.kpi .val[data-to]').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
 }
 function viewReglages(){
   add(`<h3>${ic('cog')} Apparence</h3><div class="sub">Thème de l'interface</div>
     <div style="margin-top:14px"><button class="btn" id="rTheme" data-ic="moon" style="border:1px solid var(--border);background:var(--elev);padding:9px 14px;border-radius:11px;color:var(--tx)"> Basculer le thème</button></div>`,'col4');
-  add(`<h3>${ic('layers')} Source de données</h3><div class="sub">Campagne chargée</div>
+  add(`<h3>${ic('layers')} Source de données</h3><div class="sub">Registre multi-clients</div>
     <div style="margin-top:14px;font-size:13px">
-      <div class="kvr"><b>Client</b><span>${CAMP?.client||'—'}</span></div>
+      <div class="kvr"><b>Clients</b><span>${CLIENTS.length}</span></div>
+      <div class="kvr"><b>Client actif</b><span>${ACTIVE?ACTIVE.nom:'—'}</span></div>
       <div class="kvr"><b>Contenus</b><span>${A.total}</span></div>
-      <div class="kvr"><b>Fichier</b><span>_donnees/campagne.json → data.js</span></div>
+      <div class="kvr"><b>Registre</b><span>outils/_data/agence.js</span></div>
     </div>`,'col4');
-  add(`<h3>${ic('chart')} Métriques réelles</h3><div class="sub">Brancher l'analytics</div>
-    <div style="margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.6">Connectez <b style="color:var(--tx)">PostHog</b> et <b style="color:var(--tx)">Meta</b> pour remplacer les projections par les valeurs réelles (portée, messages, RDV, conversion).</div>`,'col4');
+  add(`<h3>${ic('chart')} Données réelles</h3><div class="sub">Brancher les réseaux & l'analytics</div>
+    <div style="margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.65">Aucune donnée fictive. Présence digitale via <code>scripts/connect-reseaux.py</code> (Meta API / import). Performance via PostHog/Meta. Voir <code>outils/_data/README.md</code>.</div>`,'col4');
   const r=$("#rTheme");if(r)r.onclick=()=>$("#themeBtn").click();
 }
 
 /* ---------- Routeur de vues ---------- */
 const SECTIONS={overview:["Vue d'ensemble",viewOverview],calendrier:["Calendrier éditorial",viewCalendrier],
-  contenus:["Contenus",viewContenus],scoring:["Scoring A→E",viewScoring],tunnel:["Tunnel WhatsApp",viewTunnel],
-  auto:["Automatisation",viewAuto],clients:["Clients",viewClients],reglages:["Réglages",viewReglages]};
+  contenus:["Contenus",viewContenus],reseaux:["Présence digitale",viewReseaux],scoring:["Scoring A→E",viewScoring],
+  tunnel:["Tunnel WhatsApp",viewTunnel],auto:["Automatisation",viewAuto],clients:["Clients",viewClients],
+  reglages:["Réglages",viewReglages]};
 let CURRENT='overview';
 function skeleton(){
   const g=$("#grid");g.innerHTML='';
@@ -530,7 +592,7 @@ function go(section){
 }
 
 /* ---------- Command palette ---------- */
-const NAVITEMS=[['overview','Vue d\'ensemble'],['calendrier','Calendrier'],['contenus','Contenus'],['scoring','Scoring'],['tunnel','Tunnel WhatsApp'],['auto','Automatisation'],['clients','Clients'],['reglages','Réglages']];
+const NAVITEMS=[['overview','Vue d\'ensemble'],['calendrier','Calendrier'],['contenus','Contenus'],['reseaux','Présence digitale'],['scoring','Scoring'],['tunnel','Tunnel WhatsApp'],['auto','Automatisation'],['clients','Clients'],['reglages','Réglages']];
 function openCmd(){$("#cmdOv").classList.add('on');$("#cmdIn").value='';$("#cmdIn").focus();cmdRender('');}
 function closeCmd(){$("#cmdOv").classList.remove('on');}
 let cmdSel=0,cmdList=[];
@@ -551,11 +613,21 @@ function cmdGo(i){const r=cmdList[i];if(!r)return;closeCmd();
 
 /* ---------- init ---------- */
 function boot(){
-  if(CAMP){ITEMS=CAMP.contenus||[];}
-  $("#psub").textContent=(CAMP?.client||'La Grande Vision')+' · '+(CAMP?.lieu||'Yopougon')+' · '+(CAMP?.total||ITEMS.length)+' contenus';
+  CLIENTS=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+  if(!CLIENTS.length&&window.CAMPAGNE){CLIENTS=[{id:'la-grande-vision',nom:window.CAMPAGNE.client||'Client',
+    lieu:window.CAMPAGNE.lieu||'',secteur:'',statut:'actif',profils:{},reseaux:null,
+    campagne:{total:window.CAMPAGNE.total,contenus:window.CAMPAGNE.contenus}}];}
   $("#who").innerHTML='AWEMA<small>Directeur Marketing</small>';
+  const sel=$("#clientSel");
+  sel.innerHTML=CLIENTS.length?CLIENTS.map(c=>`<option value="${c.id}">${c.nom}</option>`).join(''):'<option>— aucun client —</option>';
+  let saved=null;try{saved=localStorage.getItem('awema-client');}catch(e){}
+  const init=CLIENTS.find(c=>c.id===saved)||CLIENTS[0];
   skeleton();
-  setTimeout(()=>{aggregate();go('overview');},500);
+  if(!init){$("#psub").textContent='Aucun client';
+    setTimeout(()=>{$("#grid").innerHTML='';add(`<h3>${ic('users')} Aucun client</h3><div class="sub">Registre vide</div>
+      <div style="margin-top:12px;color:var(--muted);font-size:12.5px">Ajoutez un client (voir <code>outils/_data/README.md</code>) puis régénérez le registre.</div>`,'col12');},300);return;}
+  sel.value=init.id;
+  setTimeout(()=>setClient(init.id),400);
 }
 // events
 $("#themeBtn").onclick=()=>{const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';
@@ -567,6 +639,7 @@ $("#newBtn").onclick=()=>{go('contenus');toast('Contenus — générez via _gene
 $("#cmdIn").oninput=e=>cmdRender(e.target.value);
 $("#cmdOv").onclick=e=>{if(e.target===$("#cmdOv"))closeCmd();};
 $$('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.go));
+$("#clientSel").onchange=e=>setClient(e.target.value);
 document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCmd();}
   if(e.key==='Escape')closeCmd();

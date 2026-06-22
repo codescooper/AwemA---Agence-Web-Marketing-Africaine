@@ -1,0 +1,25 @@
+{
+  "client": "la-grande-vision",
+  "connecte": false,
+  "source": null,
+  "maj": null,
+  "_doc": "Contrat de données « présence digitale ». Toutes les valeurs sont null tant que les réseaux ne sont pas connectés (aucune donnée fictive). Rempli par scripts/connect-reseaux.py (Meta Graph API ou import manuel).",
+  "global": {
+    "audience": null,
+    "posts": null,
+    "likes": null,
+    "commentaires": null,
+    "partages": null,
+    "portee": null,
+    "engagement_taux": null
+  },
+  "par_reseau": {
+    "facebook":  { "abonnes": null, "posts": null, "likes": null, "commentaires": null, "portee": null },
+    "instagram": { "abonnes": null, "posts": null, "likes": null, "commentaires": null, "portee": null },
+    "tiktok":    { "abonnes": null, "posts": null, "likes": null, "commentaires": null, "portee": null },
+    "linkedin":  { "abonnes": null, "posts": null, "likes": null, "commentaires": null, "portee": null }
+  },
+  "top_fans": [],
+  "top_posts": [],
+  "evolution_audience": []
+}

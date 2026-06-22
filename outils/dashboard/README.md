@@ -20,11 +20,18 @@ machine éditoriale. **Un seul fichier HTML, zéro dépendance, zéro installati
   **skeletons** de chargement, compteurs animés, graphiques SVG épurés (donut, aire,
   barres, anneau de progression) **sans librairie**.
 
-## Données
-Calculé sur les **180 contenus réels** de `campagne.json` (répartition piliers/plateformes,
-statuts, planning 90 j, prochaines publications). Les **KPI de performance** (portée,
-messages, RDV, conversion) sont des **objectifs/projections** tant que **PostHog/Meta**
-ne sont pas branchés (badge « Projections » affiché).
+## Multi-clients
+Pilote **tous les clients de l'agence** via le registre `outils/_data/agence.js`
+(généré par `outils/_data/build.py`). Sélecteur de client dans la barre du haut ; toutes
+les vues sont **client-aware**. La vue **Clients** gère les clients ; la vue **Présence
+digitale** affiche leurs réseaux. Ajouter/brancher un client : [`../_data/README.md`](../_data/README.md).
+
+## Données — réelles uniquement (aucune fiction)
+- **Plan éditorial** : calculé sur les contenus réels du client (`campagne.json`).
+- **Présence digitale** (audience, likes, commentaires, posts, top fans/posts…) : affichée
+  seulement si `reseaux.json` est rempli par `scripts/connect-reseaux.py` (Meta Graph API /
+  import). Sinon : états **« à connecter »**.
+- **Lien visualiseur** : ouvre les contenus du client sélectionné dans `revue-visuels`.
 
 ## Reconstruire après une nouvelle génération
 ```bash
