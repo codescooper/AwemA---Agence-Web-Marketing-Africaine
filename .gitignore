@@ -1,0 +1,12 @@
+# Les PDF de _exports-pdf/ SONT des livrables : ils sont versionnés.
+# (Régénérables à tout moment via scripts/export-pdf.sh.)
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / éditeurs
+.DS_Store
+*.swp
+.idea/
+.vscode/

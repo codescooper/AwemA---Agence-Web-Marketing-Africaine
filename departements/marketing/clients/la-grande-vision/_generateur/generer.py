@@ -1,0 +1,433 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Générateur éditorial — La Grande Vision (cabinet d'optique, Yopougon).
+
+Produit, de façon DÉTERMINISTE, l'ensemble des livrables de volume :
+  - 02-calendrier-editorial/calendrier-editorial.csv  (180 lignes)
+  - 03-contenus/contenus.md                           (180 fiches détaillées)
+  - 04-scripts-video/scripts-video.md                 (60 scripts)
+  - 08-scoring/scoring.csv                            (180 lignes + formules)
+
+Tout respecte la charte (docs/04-charte-graphique.md), les personas
+(01-strategie/02-personas.md) et les piliers (01-strategie/04-piliers-editoriaux.md).
+
+Usage :  python3 generer.py
+"""
+import csv
+import os
+from datetime import date, timedelta
+
+from sujets import BANQUE
+
+# --------------------------------------------------------------------------- #
+# Paramètres de campagne
+# --------------------------------------------------------------------------- #
+DATE_DEBUT = date(2026, 7, 1)   # J0 de la campagne
+JOURS = 90
+POSTS_PAR_JOUR = 2
+HEURE_MATIN = "08:00"
+HEURE_SOIR = "18:30"
+TOTAL = JOURS * POSTS_PAR_JOUR   # 180
+
+RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# --------------------------------------------------------------------------- #
+# Charte (pour les prompts)
+# --------------------------------------------------------------------------- #
+CHARTE_PROMPT = (
+    "deep navy blue #0A1F44 (dominant), sky blue #4BA3FF (accent), "
+    "gold #D4AF37 (premium details); Montserrat + Poppins typography; "
+    "premium, modern, medical, trustworthy, family-friendly mood; "
+    "bright soft natural light; clean airy composition; "
+    "optical/eyewear clinic in Yopougon, Abidjan, Côte d'Ivoire"
+)
+
+# --------------------------------------------------------------------------- #
+# Métadonnées des piliers
+# --------------------------------------------------------------------------- #
+PILIERS = {
+    "PIL1": {"nom": "Pédagogie & Santé visuelle", "objectif": "Notoriété/Expertise",
+             "personas": ["P1", "P2", "P3"], "plateformes": ["Instagram", "TikTok", "Facebook", "LinkedIn"]},
+    "PIL2": {"nom": "Produits & Montures", "objectif": "Vente",
+             "personas": ["P4", "P3", "P2"], "plateformes": ["Instagram", "TikTok", "Facebook"]},
+    "PIL3": {"nom": "Preuve sociale & Témoignages", "objectif": "Confiance/Conversion",
+             "personas": ["P1", "P3", "P2", "P4"], "plateformes": ["Facebook", "Instagram", "LinkedIn"]},
+    "PIL4": {"nom": "Offres & Conversion", "objectif": "RDV/Vente",
+             "personas": ["P1", "P2", "P3", "P4"], "plateformes": ["WhatsApp Business", "Facebook", "Instagram"]},
+    "PIL5": {"nom": "Vie locale & Communauté", "objectif": "Notoriété locale",
+             "personas": ["P1", "P5"], "plateformes": ["Facebook", "Instagram"]},
+    "PIL6": {"nom": "Coulisses & Expertise B2B", "objectif": "Expertise/B2B",
+             "personas": ["P5", "P2"], "plateformes": ["LinkedIn", "Facebook"]},
+}
+
+# Nombre de contenus par pilier (≈ répartition de la stratégie, somme = 180)
+QUOTAS = {"PIL1": 54, "PIL2": 36, "PIL3": 27, "PIL4": 36, "PIL5": 18, "PIL6": 9}
+
+PERSONAS = {
+    "P1": "Awa, la maman prévoyante",
+    "P2": "Koffi, le pro hyperconnecté",
+    "P3": "Tante Mariam, la presbyte active",
+    "P4": "Yann, le jeune stylé",
+    "P5": "M. Diallo, le décideur B2B",
+}
+
+FORMATS = {
+    "PIL1": ["Carrousel pédagogique", "Reel explicatif", "Infographie", "Vidéo face caméra"],
+    "PIL2": ["Carrousel produit", "Reel essayage", "Photo studio", "Story collection"],
+    "PIL3": ["Témoignage vidéo", "Carrousel avant/après", "Photo + citation", "Story avis"],
+    "PIL4": ["Visuel CTA", "Story RDV", "Reel offre", "Carrousel offre"],
+    "PIL5": ["Photo lifestyle", "Carrousel communauté", "Story locale", "Reel ambiance"],
+    "PIL6": ["Article LinkedIn", "Carrousel expertise", "Vidéo coulisses", "Infographie pro"],
+}
+
+# Angles pour différencier les sujets réutilisés (garantit l'unicité des titres)
+ANGLES = ["", " (édition Yopougon)", " : le guide", " — ce qu'il faut savoir",
+          " expliqué simplement", " : nos conseils d'expert", " (cas réel)",
+          " — questions/réponses", " : le vrai du faux"]
+
+CTA = {
+    "Notoriété/Expertise": "Enregistrez ce post et partagez-le à un proche concerné. 👀",
+    "Vente": "Passez nous voir pour l'essayer, ou écrivez-nous sur WhatsApp. 👓",
+    "Confiance/Conversion": "Vous aussi ? Écrivez-nous « VUE » sur WhatsApp pour votre bilan. 💬",
+    "RDV/Vente": "📲 Réservez votre bilan en 2 clics : écrivez « RDV » sur WhatsApp.",
+    "Notoriété locale": "Suivez-nous et taguez un voisin de Yopougon ! 🏘️",
+    "Expertise/B2B": "Contactez-nous en message privé pour une offre entreprise. 🤝",
+}
+
+HASHTAGS = {
+    "Instagram": "#LaGrandeVision #Yopougon #Abidjan225 #SantéVisuelle #Opticien #Lunettes "
+                 "#Vue #CôteDIvoire #Optique #VoirLaVieEnGrand",
+    "TikTok": "#santévisuelle #yopougon #abidjan #lunettes #opticien #cotedivoire225 #vue #fyp",
+    "Facebook": "#LaGrandeVision #Yopougon #Abidjan #SantéVisuelle #Opticien #Optique",
+    "LinkedIn": "#SantéVisuelle #Optique #Entreprise #BienÊtreAuTravail #CôteDIvoire #Abidjan",
+    "WhatsApp Business": "#LaGrandeVision #Yopougon #RDV",
+}
+
+# --------------------------------------------------------------------------- #
+# Construction de la liste ordonnée des 180 contenus
+# --------------------------------------------------------------------------- #
+def construire_sujets():
+    """Retourne une liste de (pilier, titre) de longueur QUOTAS[pilier] par pilier,
+    en réutilisant les sujets avec un angle distinct si nécessaire (titres uniques)."""
+    out = {}
+    for pil, quota in QUOTAS.items():
+        pool = BANQUE[pil]
+        items, vus = [], set()
+        i = 0
+        while len(items) < quota:
+            base = pool[i % len(pool)]
+            tour = i // len(pool)
+            titre = base + ANGLES[tour % len(ANGLES)]
+            if titre in vus:                 # collision improbable -> angle suivant
+                titre = base + ANGLES[(tour + 1) % len(ANGLES)] + f" #{i}"
+            vus.add(titre)
+            items.append((pil, titre))
+            i += 1
+        out[pil] = items
+    return out
+
+
+def planifier():
+    """Interleave pondéré : répartit les 180 contenus dans le temps en évitant
+    les longues séries d'un même pilier. Renvoie la liste ordonnée (pilier, titre)."""
+    par_pilier = construire_sujets()
+    curseur = {p: 0 for p in QUOTAS}
+    restant = dict(QUOTAS)
+    sequence = []
+    # Ordre de priorité d'alternance (gros piliers d'abord pour bien étaler)
+    ordre = ["PIL1", "PIL4", "PIL2", "PIL3", "PIL5", "PIL6"]
+    while len(sequence) < TOTAL:
+        progres = False
+        for p in ordre:
+            # densité : on sert un pilier proportionnellement à son quota
+            cible = QUOTAS[p] / TOTAL
+            deja = sum(1 for s in sequence if s[0] == p)
+            if restant[p] > 0 and (deja + 1) <= round(cible * (len(sequence) + 1)) + 1:
+                pil_items = par_pilier[p]
+                sequence.append(pil_items[curseur[p]])
+                curseur[p] += 1
+                restant[p] -= 1
+                progres = True
+                if len(sequence) >= TOTAL:
+                    break
+        if not progres:  # filet de sécurité : vider ce qui reste
+            for p in ordre:
+                while restant[p] > 0 and len(sequence) < TOTAL:
+                    sequence.append(par_pilier[p][curseur[p]])
+                    curseur[p] += 1
+                    restant[p] -= 1
+    return sequence
+
+
+# --------------------------------------------------------------------------- #
+# Fabrique d'un contenu complet à partir de (index, pilier, titre)
+# --------------------------------------------------------------------------- #
+def hook_pour(titre, objectif):
+    t = titre.rstrip("?.!")
+    if "?" in titre:
+        return titre
+    if objectif in ("RDV/Vente",):
+        return f"Et si aujourd'hui était le bon jour pour {t.lower()} ?"
+    if objectif in ("Vente",):
+        return f"Vous hésitez encore ? {titre} 👇"
+    return f"Saviez-vous que... {t.lower()} ? On vous explique. 👇"
+
+
+def fabriquer(index, pil, titre):
+    meta = PILIERS[pil]
+    objectif = meta["objectif"]
+    persona_id = meta["personas"][index % len(meta["personas"])]
+    persona = PERSONAS[persona_id]
+    plateforme = meta["plateformes"][index % len(meta["plateformes"])]
+    fmt = FORMATS[pil][index % len(FORMATS[pil])]
+    hook = hook_pour(titre, objectif)
+    cta = CTA[objectif]
+    htags = HASHTAGS[plateforme]
+
+    # --- Textes par plateforme ------------------------------------------------
+    accroche = hook
+    corps = (
+        f"À La Grande Vision, votre cabinet d'optique à Yopougon, nous prenons soin "
+        f"de la santé visuelle de toute la famille. {titre} — un sujet qui compte pour "
+        f"votre confort au quotidien."
+    )
+    texte_fb = f"{accroche}\n\n{corps}\n\n{cta}\n\n📍 Yopougon, Abidjan · 📲 WhatsApp Business\n{HASHTAGS['Facebook']}"
+    texte_ig = f"{accroche}\n\n{corps}\n\n{cta}\n\n{HASHTAGS['Instagram']}"
+    texte_li = (
+        f"{titre}\n\n{corps}\n\nChez La Grande Vision, l'expertise au service de votre vue. "
+        f"{CTA['Expertise/B2B'] if objectif=='Expertise/B2B' else cta}\n\n{HASHTAGS['LinkedIn']}"
+    )
+    desc_tiktok = f"{accroche} {('— ' + titre) if titre not in accroche else ''}\n{HASHTAGS['TikTok']}"
+
+    # --- Prompts visuels (charte) --------------------------------------------
+    prompt_canva = (
+        f"Format: {('1080x1920 Story/Reel' if 'Story' in fmt or 'Reel' in fmt else '1080x1350 portrait 4:5')}. "
+        f"Palette: Bleu Nuit #0A1F44 (fond/dominante), Bleu Ciel #4BA3FF (accents), Gold #D4AF37 (CTA & détails premium). "
+        f"Typographie: titre en Montserrat Bold, texte en Poppins. "
+        f"Composition: visuel épuré, beaucoup d'espace blanc, pictogrammes ligne fine. "
+        f"Visuel: thème « {titre} ». "
+        f"Texte titre: « {titre} ». Sous-titre: « La Grande Vision · Yopougon ». "
+        f"Bouton/CTA en Gold: « {cta_court(objectif)} ». Logo en bas. Style premium médical."
+    )
+    prompt_mj = (
+        f"Professional photograph illustrating « {titre} » — {CHARTE_PROMPT}. "
+        f"Subject: realistic scene relevant to the topic (people, eyewear, clinic, screens as needed). "
+        f"Style: editorial, premium healthcare. Lighting: soft natural. Camera: 50mm, shallow depth of field. "
+        f"Composition: rule of thirds, copy space for text overlay. High detail, photorealistic. "
+        f"--ar 4:5 --stylize 250"
+    )
+    prompt_gpt = (
+        f"Photographie professionnelle réaliste, compatible publicité Meta, illustrant « {titre} ». "
+        f"Scène crédible d'un cabinet d'optique premium à Abidjan (personnes, lunettes, ambiance médicale moderne). "
+        f"Lumière douce et naturelle, couleurs cohérentes avec Bleu Nuit #0A1F44, Bleu Ciel #4BA3FF et touches Gold #D4AF37. "
+        f"Cadrage portrait 4:5, espace pour le texte, ambiance confiance/familiale, qualité studio."
+    )
+
+    visuel_reco = recommander_visuel(pil)
+    kpi = kpi_pour(objectif)
+
+    return {
+        "index": index + 1,
+        "pilier": pil, "pilier_nom": meta["nom"], "objectif": objectif,
+        "persona_id": persona_id, "persona": persona, "plateforme": plateforme,
+        "format": fmt, "titre": titre, "hook": hook, "cta": cta, "hashtags": htags,
+        "texte_fb": texte_fb, "texte_ig": texte_ig, "texte_li": texte_li,
+        "desc_tiktok": desc_tiktok, "prompt_canva": prompt_canva,
+        "prompt_mj": prompt_mj, "prompt_gpt": prompt_gpt,
+        "visuel": visuel_reco, "kpi": kpi,
+    }
+
+
+def cta_court(objectif):
+    return {"RDV/Vente": "Prendre RDV", "Vente": "Voir en boutique",
+            "Confiance/Conversion": "Écrire « VUE »", "Notoriété/Expertise": "En savoir plus",
+            "Notoriété locale": "Nous suivre", "Expertise/B2B": "Nous contacter"}[objectif]
+
+
+def recommander_visuel(pil):
+    return {
+        "PIL1": "Infographie/carrousel pédagogique, icônes ligne fine sur fond Bleu Nuit.",
+        "PIL2": "Photo studio de montures sur fond neutre, lumière premium, détails Gold.",
+        "PIL3": "Portrait client souriant + citation, ambiance chaleureuse et authentique.",
+        "PIL4": "Visuel CTA fort, bouton Gold, mention WhatsApp bien visible.",
+        "PIL5": "Photo lifestyle locale (Yopougon, famille), ambiance proximité.",
+        "PIL6": "Visuel corporate sobre, coulisses du cabinet, technologie de mesure.",
+    }[pil]
+
+
+def kpi_pour(objectif):
+    return {
+        "Notoriété/Expertise": "Portée + enregistrements (sauvegardes) + partages",
+        "Vente": "Clics profil + messages produit + visites boutique",
+        "Confiance/Conversion": "Messages WhatsApp entrants + taux de confiance (avis)",
+        "RDV/Vente": "Nombre de RDV générés via WhatsApp",
+        "Notoriété locale": "Portée locale + abonnés + mentions/taggs",
+        "Expertise/B2B": "Leads B2B + connexions/MP LinkedIn qualifiés",
+    }[objectif]
+
+
+# --------------------------------------------------------------------------- #
+# Écriture des livrables
+# --------------------------------------------------------------------------- #
+def date_heure(i):
+    jour = i // POSTS_PAR_JOUR
+    d = DATE_DEBUT + timedelta(days=jour)
+    h = HEURE_MATIN if i % POSTS_PAR_JOUR == 0 else HEURE_SOIR
+    return d.isoformat(), h
+
+
+def ecrire_calendrier(contenus):
+    chemin = os.path.join(RACINE, "02-calendrier-editorial", "calendrier-editorial.csv")
+    with open(chemin, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["ID", "Date", "Heure", "Plateforme", "Objectif", "Persona", "Pilier",
+                    "Sujet", "Titre", "Hook", "CTA", "Format", "Prompt Visuel",
+                    "Prompt Video", "Statut"])
+        for c in contenus:
+            d, h = date_heure(c["index"] - 1)
+            prompt_video = "Voir 04-scripts-video/" if c["index"] <= 60 else "—"
+            w.writerow([c["index"], d, h, c["plateforme"], c["objectif"],
+                        f'{c["persona_id"]} {c["persona"]}', f'{c["pilier"]} {c["pilier_nom"]}',
+                        c["pilier_nom"], c["titre"], c["hook"], c["cta"], c["format"],
+                        c["prompt_canva"][:80] + "…", prompt_video, "À produire"])
+    return chemin
+
+
+def ecrire_contenus(contenus):
+    chemin = os.path.join(RACINE, "03-contenus", "contenus.md")
+    with open(chemin, "w", encoding="utf-8") as f:
+        f.write("# Les 180 contenus — La Grande Vision\n\n")
+        f.write("> Généré automatiquement par `_generateur/generer.py`. "
+                "Ne pas éditer à la main : modifier le générateur ou `sujets.py`.\n\n")
+        f.write("Chaque fiche est directement exploitable (textes par plateforme, CTA, "
+                "hashtags, prompts visuels, KPI).\n\n---\n\n")
+        for c in contenus:
+            d, h = date_heure(c["index"] - 1)
+            f.write(f"## Contenu #{c['index']:03d} — {c['titre']}\n\n")
+            f.write(f"- **Date/Heure :** {d} à {h}\n")
+            f.write(f"- **Plateforme :** {c['plateforme']}\n")
+            f.write(f"- **Objectif :** {c['objectif']}\n")
+            f.write(f"- **Persona :** {c['persona_id']} — {c['persona']}\n")
+            f.write(f"- **Pilier :** {c['pilier']} — {c['pilier_nom']}\n")
+            f.write(f"- **Format recommandé :** {c['format']}\n")
+            f.write(f"- **Visuel recommandé :** {c['visuel']}\n")
+            f.write(f"- **KPI attendu :** {c['kpi']}\n\n")
+            f.write(f"**Hook :** {c['hook']}\n\n")
+            f.write(f"**Texte Facebook**\n\n```\n{c['texte_fb']}\n```\n\n")
+            f.write(f"**Texte Instagram**\n\n```\n{c['texte_ig']}\n```\n\n")
+            f.write(f"**Texte LinkedIn**\n\n```\n{c['texte_li']}\n```\n\n")
+            f.write(f"**Description TikTok**\n\n```\n{c['desc_tiktok']}\n```\n\n")
+            f.write(f"**CTA :** {c['cta']}\n\n")
+            f.write(f"**Hashtags :** {c['hashtags']}\n\n")
+            f.write(f"**Prompt Canva**\n\n```\n{c['prompt_canva']}\n```\n\n")
+            f.write(f"**Prompt Midjourney**\n\n```\n{c['prompt_mj']}\n```\n\n")
+            f.write(f"**Prompt GPT Image**\n\n```\n{c['prompt_gpt']}\n```\n\n")
+            f.write("---\n\n")
+    return chemin
+
+
+def ecrire_scoring(contenus):
+    """CSV prêt pour Google Sheets : colonnes de mesure vides + formules de score.
+    Les formules sont écrites en syntaxe Google Sheets (lignes à partir de 2)."""
+    chemin = os.path.join(RACINE, "08-scoring", "scoring.csv")
+    with open(chemin, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["ID", "Titre", "Plateforme", "Objectif",
+                    "Portee", "Engagement", "Partages", "Commentaires", "Messages", "RDV",
+                    "Score Engagement", "Score Portee", "Score Conversion", "Score RDV",
+                    "Score Global", "Note", "Recommandation"])
+        for c in contenus:
+            r = c["index"] + 1  # ligne tableur (en-tête = ligne 1)
+            # Pondérations : engagement = (eng+partages+comm)/portée
+            score_eng = f"=IFERROR(ROUND(((F{r}+G{r}+H{r})/MAX(E{r},1))*100,1),0)"
+            score_por = f"=IFERROR(ROUND((E{r}/MAX(MAX($E$2:$E${TOTAL+1}),1))*100,1),0)"
+            score_conv = f"=IFERROR(ROUND((I{r}/MAX(E{r},1))*100,1),0)"
+            score_rdv = f"=IFERROR(ROUND((J{r}/MAX(I{r},1))*100,1),0)"
+            # Score global pondéré (engagement 30, portée 20, conversion 25, rdv 25)
+            score_glob = f"=ROUND(K{r}*0.3+L{r}*0.2+M{r}*0.25+N{r}*0.25,1)"
+            note = (f'=IFS(O{r}>=80,"A",O{r}>=60,"B",O{r}>=40,"C",O{r}>=20,"D",TRUE,"E")')
+            reco = (f'=IFS(P{r}="A","À reproduire",OR(P{r}="B",P{r}="C"),'
+                    f'"À optimiser",TRUE,"À abandonner")')
+            w.writerow([c["index"], c["titre"], c["plateforme"], c["objectif"],
+                        "", "", "", "", "", "",
+                        score_eng, score_por, score_conv, score_rdv,
+                        score_glob, note, reco])
+    return chemin
+
+
+# --------------------------------------------------------------------------- #
+# Scripts vidéo (60) — basés sur PIL1 (pédagogie) et PIL2 (produits)
+# --------------------------------------------------------------------------- #
+def ecrire_scripts_video():
+    sujets = [("PIL1", s) for s in BANQUE["PIL1"]] + [("PIL2", s) for s in BANQUE["PIL2"]]
+    sujets = sujets[:60]
+    chemin = os.path.join(RACINE, "04-scripts-video", "scripts-video.md")
+    with open(chemin, "w", encoding="utf-8") as f:
+        f.write("# 60 Scripts Vidéo courts — La Grande Vision\n\n")
+        f.write("> Généré par `_generateur/generer.py`. Format Reels / TikTok / Shorts, "
+                "30–60 s. Structure : Hook → Problème → Démonstration → Solution → CTA.\n\n")
+        f.write("Charte respectée : incrustations en Montserrat/Poppins, couleurs "
+                "Bleu Nuit / Bleu Ciel / Gold.\n\n---\n\n")
+        formats = ["Reel Instagram", "TikTok", "Short YouTube"]
+        for i, (pil, sujet) in enumerate(sujets, 1):
+            fmt = formats[i % 3]
+            persona = PERSONAS[PILIERS[pil]["personas"][i % len(PILIERS[pil]["personas"])]]
+            cta = CTA["RDV/Vente"] if pil == "PIL1" else CTA["Vente"]
+            f.write(f"## Script #{i:02d} — {sujet}\n\n")
+            f.write(f"- **Format :** {fmt} · **Durée :** 30–60 s · **Pilier :** {pil} "
+                    f"({PILIERS[pil]['nom']}) · **Persona :** {persona}\n\n")
+            f.write("| Temps | Bloc | Voix off / Texte | À l'écran |\n|---|---|---|---|\n")
+            f.write(f"| 0–3 s | **Hook** | « {accroche_video(sujet)} » | Gros titre Montserrat sur fond Bleu Nuit |\n")
+            f.write(f"| 3–10 s | **Problème** | « {probleme_video(sujet)} » | Plan rapproché, ambiance quotidienne |\n")
+            f.write(f"| 10–35 s | **Démonstration** | « {demo_video(sujet)} » | Démonstration au cabinet / à l'écran |\n")
+            f.write(f"| 35–50 s | **Solution** | « À La Grande Vision, on vous propose un bilan et la solution adaptée. » | Opticien souriant, montures, détails Gold |\n")
+            f.write(f"| 50–60 s | **CTA** | « {cta} » | Bandeau Gold + logo + WhatsApp |\n\n")
+            f.write(f"**Incrustations :** titre « {sujet} » · « Voir la vie en grand » · « 📲 WhatsApp »\n\n")
+            f.write(f"**Hashtags :** {HASHTAGS['TikTok']}\n\n---\n\n")
+    return chemin
+
+
+def accroche_video(s):
+    if "?" in s:
+        return s
+    return f"Stop ! Si vous vous demandez « {s.lower()} », regardez ça."
+
+
+def probleme_video(s):
+    return ("Beaucoup de gens à Yopougon vivent avec ce problème sans le savoir : "
+            "fatigue, vision floue, maux de tête...")
+
+
+def demo_video(s):
+    return (f"Voici ce qu'il faut comprendre sur « {s.lower()} » — en clair, "
+            "sans jargon, avec un exemple concret.")
+
+
+# --------------------------------------------------------------------------- #
+# Main
+# --------------------------------------------------------------------------- #
+def main():
+    sequence = planifier()
+    assert len(sequence) == TOTAL, f"{len(sequence)} != {TOTAL}"
+    contenus = [fabriquer(i, pil, titre) for i, (pil, titre) in enumerate(sequence)]
+
+    c1 = ecrire_calendrier(contenus)
+    c2 = ecrire_contenus(contenus)
+    c3 = ecrire_scoring(contenus)
+    c4 = ecrire_scripts_video()
+
+    # petit récapitulatif de répartition
+    rep = {}
+    for c in contenus:
+        rep[c["pilier"]] = rep.get(c["pilier"], 0) + 1
+    print("✅ Génération terminée.")
+    print(f"   Calendrier : {c1}")
+    print(f"   Contenus   : {c2}")
+    print(f"   Scoring    : {c3}")
+    print(f"   Scripts    : {c4}")
+    print(f"   Total contenus : {len(contenus)}")
+    print(f"   Répartition par pilier : {rep}")
+
+
+if __name__ == "__main__":
+    main()
