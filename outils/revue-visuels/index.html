@@ -152,10 +152,32 @@
       <div class="kv"><b>Objectif :</b> <span id="mObjectif">—</span></div>
       <div class="kv"><b>Persona :</b> <span id="mPersona">—</span></div>
       <div class="kv"><b>Pilier :</b> <span id="mPilier">—</span></div>
-      <div class="kv"><b>Format :</b> <span id="mFormat">—</span></div>
+      <div class="kv"><b>Format cible :</b> <span id="mFormat">—</span></div>
       <div class="kv"><b>Hook :</b> <span id="mHook">—</span></div>
       <div class="kv"><b>CTA :</b> <span id="mCta">—</span></div>
       <div class="kv"><b>KPI :</b> <span id="mKpi">—</span></div>
+
+      <div class="sec">
+        <h3>📝 Description du post (prête à copier)</h3>
+        <div class="promptbox" id="descBox">—</div>
+        <div class="row" style="margin-top:6px">
+          <button class="mini gold" id="copyDesc">Copier la description</button>
+          <button class="mini" id="copyTags">Copier les #</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h3>📸 Prompt visuel — <span id="visPlat" style="text-transform:none;color:#cfe0fa">—</span></h3>
+        <div class="row">
+          <select id="visCible">
+            <option value="prompt_canva">Canva</option>
+            <option value="prompt_mj">Midjourney</option>
+            <option value="prompt_gpt">GPT Image</option>
+          </select>
+          <button class="mini gold" id="copyVis">Copier le prompt</button>
+        </div>
+        <div class="promptbox" id="visBox" style="margin-top:6px">—</div>
+      </div>
 
       <div class="sec">
         <h3>Statut</h3>
@@ -297,8 +319,14 @@ function show(i){
   if(!(it.apercus||[]).length) pv.innerHTML=`<span style="font-size:11px;color:#9bb8e6">Aucun aperçu généré — utilisez les prompts ci-contre pour produire le visuel.</span>`;
   // fiche
   $("#mObjectif").textContent=it.objectif; $("#mPersona").textContent=it.persona;
-  $("#mPilier").textContent=it.pilier+" — "+it.pilier_nom; $("#mFormat").textContent=it.format;
+  $("#mPilier").textContent=it.pilier+" — "+it.pilier_nom;
+  $("#mFormat").textContent=it.format+(it.px?` · ${it.px} (${it.ratio})`:"");
   $("#mHook").textContent=it.hook; $("#mCta").textContent=it.cta; $("#mKpi").textContent=it.kpi;
+  // description prête à copier + prompt visuel plateforme
+  $("#descBox").textContent=it.description||it.legende||"—";
+  $("#visPlat").textContent=(it.plateforme||"")+(it.px?` · ${it.px} (${it.ratio})`:"");
+  $("#visCible").value=s.visCible||"prompt_canva";
+  $("#visBox").textContent=it[$("#visCible").value]||"—";
   // état annotation
   $("#imgUrl").value=s.image||it.image||""; $("#notes").value=s.notes||""; $("#modifs").value=s.modifs||"";
   $("#promptCible").value=s.promptCible||"prompt_canva";
@@ -328,6 +356,11 @@ function copy(t){navigator.clipboard?.writeText(t).then(()=>toast("Copié ✓"),
 function fallbackCopy(t){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();toast("Copié ✓");}
 $("#copyPrompt").onclick=()=>copy($("#promptOut").textContent);
 $("#copyOrig").onclick=()=>copy(cur()[$("#promptCible").value]||"");
+// Description + prompt visuel plateforme
+$("#copyDesc").onclick=()=>copy(cur().description||cur().legende||"");
+$("#copyTags").onclick=()=>copy(cur().hashtags||"");
+$("#visCible").onchange=e=>{st(cur().id).visCible=e.target.value;$("#visBox").textContent=cur()[e.target.value]||"—";save();};
+$("#copyVis").onclick=()=>copy(cur()[$("#visCible").value]||"");
 
 // Navigation
 $("#prev").onclick=()=>show(idx-1);

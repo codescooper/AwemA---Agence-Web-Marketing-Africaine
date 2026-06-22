@@ -19,6 +19,8 @@ Outil **transverse** (réutilisable pour tout client de l'agence).
 | Besoin | Fonction |
 |---|---|
 | **Visualiser & étudier** chaque visuel | Aperçu central à la charte (titre, pilier, CTA, visuel recommandé) + aperçus Canva cliquables |
+| **Copier la description du post** | Bloc **légende + hashtags prêt à coller**, adapté à la plateforme de destination (+ bouton « Copier les # ») |
+| **Copier le prompt visuel** | Prompt **pro à la charte, optimisé pour la plateforme** (format natif, texte minimaliste, illustration en avant) — au choix Canva / Midjourney / GPT |
 | **Passer au suivant simplement** | Boutons ← → et **flèches clavier** ; liste filtrable (pilier, plateforme, statut, recherche) |
 | **Annoter** | Notes d'étude + URL/chemin d'image, sauvegarde automatique (localStorage) |
 | **Demander des modifications → prompts** | Champ « modifications » + bouton **Générer prompt mis à jour** (Canva / Midjourney / GPT) prêt à copier |

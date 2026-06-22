@@ -69,6 +69,38 @@ CHARTE_PROMPT = (
     "optical/eyewear clinic in Yopougon, Abidjan, Côte d'Ivoire"
 )
 
+# Direction artistique imposée à TOUS les visuels :
+# texte minimaliste + illustration mise en avant (le visuel domine, le texte respire).
+STYLE_VISUEL = (
+    "Style: TEXTE MINIMALISTE (un titre accrocheur de 3 à 6 mots maximum, aucun pavé de "
+    "texte), ILLUSTRATION/VISUEL MIS EN AVANT (le sujet visuel occupe ~75-85% de la "
+    "surface), une seule idée, hiérarchie claire, beaucoup d'espace négatif."
+)
+
+# Spécifications par plateforme de destination (format natif optimal).
+PLATEFORMES_SPEC = {
+    "Instagram":         {"ratio": "4:5",  "px": "1080x1350", "ar": "4:5"},
+    "Facebook":          {"ratio": "4:5",  "px": "1080x1350", "ar": "4:5"},
+    "TikTok":            {"ratio": "9:16", "px": "1080x1920", "ar": "9:16"},
+    "LinkedIn":          {"ratio": "1:1",  "px": "1080x1080", "ar": "1:1"},
+    "WhatsApp Business": {"ratio": "9:16", "px": "1080x1920", "ar": "9:16"},
+}
+
+
+def spec_visuel(plateforme, fmt):
+    """Format cible : un format Story/Reel force le 9:16, sinon format natif plateforme."""
+    if any(k in fmt for k in ("Story", "Reel")):
+        return {"ratio": "9:16", "px": "1080x1920", "ar": "9:16"}
+    return PLATEFORMES_SPEC.get(plateforme, {"ratio": "4:5", "px": "1080x1350", "ar": "4:5"})
+
+
+def titre_court(titre):
+    """Titre d'accroche court (≤ 6 mots) pour l'incrustation minimaliste du visuel."""
+    mots = titre.replace("« ", "").replace(" »", "").split()
+    court = " ".join(mots[:6])
+    return court + ("…" if len(mots) > 6 else "")
+
+
 # --------------------------------------------------------------------------- #
 # Métadonnées des piliers
 # --------------------------------------------------------------------------- #
@@ -211,6 +243,9 @@ def fabriquer(index, pil, titre):
     cta = CTA[objectif]
     htags = HASHTAGS[plateforme]
 
+    spec = spec_visuel(plateforme, fmt)
+    court = titre_court(titre)
+
     # --- Textes par plateforme ------------------------------------------------
     accroche = hook
     corps = (
@@ -226,28 +261,34 @@ def fabriquer(index, pil, titre):
     )
     desc_tiktok = f"{accroche} {('— ' + titre) if titre not in accroche else ''}\n{HASHTAGS['TikTok']}"
 
-    # --- Prompts visuels (charte) --------------------------------------------
+    # --- Légende + description PRÊTE À COPIER (plateforme de destination) ------
+    legende = legende_pour(plateforme, accroche, corps, cta, titre, objectif)
+    description = f"{legende}\n\n{htags}"   # légende + hashtags, prêt à coller
+
+    # --- Prompt visuel optimisé pour la PLATEFORME DE DESTINATION -------------
+    # (texte minimaliste, illustration en avant, format natif, charte stricte)
     prompt_canva = (
-        f"Format: {('1080x1920 Story/Reel' if 'Story' in fmt or 'Reel' in fmt else '1080x1350 portrait 4:5')}. "
-        f"Palette: Bleu Nuit #0A1F44 (fond/dominante), Bleu Ciel #4BA3FF (accents), Gold #D4AF37 (CTA & détails premium). "
-        f"Typographie: titre en Montserrat Bold, texte en Poppins. "
-        f"Composition: visuel épuré, beaucoup d'espace blanc, pictogrammes ligne fine. "
-        f"Visuel: thème « {titre} ». "
-        f"Texte titre: « {titre} ». Sous-titre: « La Grande Vision · Yopougon ». "
-        f"Bouton/CTA en Gold: « {cta_court(objectif)} ». Logo en bas. Style premium médical."
+        f"[Visuel {plateforme} · {spec['px']} ({spec['ratio']})] "
+        f"Charte: fond Bleu Nuit #0A1F44 (dominante), accents Bleu Ciel #4BA3FF, détails & bouton en Gold #D4AF37, texte blanc. "
+        f"Typographie: titre Montserrat ExtraBold, texte Poppins. "
+        f"{STYLE_VISUEL} "
+        f"Illustration mise en avant: scène/élément en lien avec « {titre} » "
+        f"({recommander_visuel(pil).lower()}), pictogrammes ligne fine. "
+        f"Incrustation texte (minimal): titre court « {court} » + petit label « La Grande Vision · Yopougon ». "
+        f"Bouton Gold: « {cta_court(objectif)} ». Logo discret en bas. Rendu premium, médical, épuré."
     )
     prompt_mj = (
-        f"Professional photograph illustrating « {titre} » — {CHARTE_PROMPT}. "
-        f"Subject: realistic scene relevant to the topic (people, eyewear, clinic, screens as needed). "
-        f"Style: editorial, premium healthcare. Lighting: soft natural. Camera: 50mm, shallow depth of field. "
-        f"Composition: rule of thirds, copy space for text overlay. High detail, photorealistic. "
-        f"--ar 4:5 --stylize 250"
+        f"Editorial illustration/photograph for {plateforme}, topic « {titre} » — {CHARTE_PROMPT}. "
+        f"Illustration-forward, single strong focal subject (people, eyewear, eye, screen or clinic as relevant), "
+        f"minimal on-image text, generous negative space for a short headline overlay. "
+        f"Premium healthcare, soft natural light, 50mm look, clean composition. "
+        f"--ar {spec['ar']} --stylize 250"
     )
     prompt_gpt = (
-        f"Photographie professionnelle réaliste, compatible publicité Meta, illustrant « {titre} ». "
-        f"Scène crédible d'un cabinet d'optique premium à Abidjan (personnes, lunettes, ambiance médicale moderne). "
-        f"Lumière douce et naturelle, couleurs cohérentes avec Bleu Nuit #0A1F44, Bleu Ciel #4BA3FF et touches Gold #D4AF37. "
-        f"Cadrage portrait 4:5, espace pour le texte, ambiance confiance/familiale, qualité studio."
+        f"Photographie professionnelle réaliste pour {plateforme} ({spec['px']}, {spec['ratio']}), compatible publicité Meta, sujet « {titre} ». "
+        f"Sujet visuel mis en avant, texte minimal, espace négatif pour un titre court. "
+        f"Cabinet d'optique premium à Abidjan (personnes, lunettes, ambiance médicale moderne). "
+        f"Couleurs Bleu Nuit #0A1F44 / Bleu Ciel #4BA3FF / touches Gold #D4AF37, lumière douce, qualité studio."
     )
 
     visuel_reco = recommander_visuel(pil)
@@ -257,12 +298,30 @@ def fabriquer(index, pil, titre):
         "index": index + 1,
         "pilier": pil, "pilier_nom": meta["nom"], "objectif": objectif,
         "persona_id": persona_id, "persona": persona, "plateforme": plateforme,
-        "format": fmt, "titre": titre, "hook": hook, "cta": cta, "hashtags": htags,
+        "format": fmt, "ratio": spec["ratio"], "px": spec["px"],
+        "titre": titre, "hook": hook, "cta": cta, "hashtags": htags,
         "texte_fb": texte_fb, "texte_ig": texte_ig, "texte_li": texte_li,
-        "desc_tiktok": desc_tiktok, "prompt_canva": prompt_canva,
+        "desc_tiktok": desc_tiktok, "legende": legende, "description": description,
+        "prompt_canva": prompt_canva,
         "prompt_mj": prompt_mj, "prompt_gpt": prompt_gpt,
         "visuel": visuel_reco, "kpi": kpi,
     }
+
+
+def legende_pour(plateforme, accroche, corps, cta, titre, objectif):
+    """Légende (caption) sans hashtags, adaptée à la plateforme de destination."""
+    if plateforme == "LinkedIn":
+        cta_li = CTA["Expertise/B2B"] if objectif == "Expertise/B2B" else cta
+        return (f"{titre}\n\n{corps}\n\nChez La Grande Vision, l'expertise au service de "
+                f"votre vue. {cta_li}")
+    if plateforme == "TikTok":
+        return f"{accroche}\n{titre}"
+    if plateforme == "Facebook":
+        return f"{accroche}\n\n{corps}\n\n{cta}\n\n📍 Yopougon, Abidjan · 📲 WhatsApp Business"
+    if plateforme == "WhatsApp Business":
+        return (f"{accroche}\n\n{corps}\n\n{cta}\n\n📍 La Grande Vision · Yopougon, Abidjan")
+    # Instagram (défaut)
+    return f"{accroche}\n\n{corps}\n\n{cta}"
 
 
 def cta_court(objectif):
@@ -336,19 +395,23 @@ def ecrire_contenus(contenus):
             f.write(f"- **Objectif :** {c['objectif']}\n")
             f.write(f"- **Persona :** {c['persona_id']} — {c['persona']}\n")
             f.write(f"- **Pilier :** {c['pilier']} — {c['pilier_nom']}\n")
-            f.write(f"- **Format recommandé :** {c['format']}\n")
+            f.write(f"- **Format recommandé :** {c['format']} — cible **{c['px']} ({c['ratio']})** pour {c['plateforme']}\n")
             f.write(f"- **Visuel recommandé :** {c['visuel']}\n")
             f.write(f"- **KPI attendu :** {c['kpi']}\n\n")
             f.write(f"**Hook :** {c['hook']}\n\n")
-            f.write(f"**Texte Facebook**\n\n```\n{c['texte_fb']}\n```\n\n")
-            f.write(f"**Texte Instagram**\n\n```\n{c['texte_ig']}\n```\n\n")
-            f.write(f"**Texte LinkedIn**\n\n```\n{c['texte_li']}\n```\n\n")
-            f.write(f"**Description TikTok**\n\n```\n{c['desc_tiktok']}\n```\n\n")
-            f.write(f"**CTA :** {c['cta']}\n\n")
-            f.write(f"**Hashtags :** {c['hashtags']}\n\n")
+            f.write(f"### 📝 Description du post — prête à copier ({c['plateforme']})\n\n")
+            f.write(f"```\n{c['description']}\n```\n\n")
+            f.write(f"### 📸 Prompt visuel — {c['plateforme']} ({c['px']}, {c['ratio']}) "
+                    f"· texte minimaliste, illustration en avant, charte\n\n")
             f.write(f"**Prompt Canva**\n\n```\n{c['prompt_canva']}\n```\n\n")
             f.write(f"**Prompt Midjourney**\n\n```\n{c['prompt_mj']}\n```\n\n")
             f.write(f"**Prompt GPT Image**\n\n```\n{c['prompt_gpt']}\n```\n\n")
+            f.write("<details><summary>Textes pour les autres plateformes</summary>\n\n")
+            f.write(f"**Facebook**\n\n```\n{c['texte_fb']}\n```\n\n")
+            f.write(f"**Instagram**\n\n```\n{c['texte_ig']}\n```\n\n")
+            f.write(f"**LinkedIn**\n\n```\n{c['texte_li']}\n```\n\n")
+            f.write(f"**TikTok**\n\n```\n{c['desc_tiktok']}\n```\n\n")
+            f.write("</details>\n\n")
             f.write("---\n\n")
     return chemin
 
@@ -396,8 +459,10 @@ def ecrire_json(contenus):
             "persona": f'{c["persona_id"]} — {c["persona"]}',
             "pilier": c["pilier"], "pilier_nom": c["pilier_nom"],
             "titre": c["titre"], "hook": c["hook"], "cta": c["cta"],
-            "format": c["format"], "visuel": c["visuel"], "kpi": c["kpi"],
+            "format": c["format"], "ratio": c["ratio"], "px": c["px"],
+            "visuel": c["visuel"], "kpi": c["kpi"],
             "hashtags": c["hashtags"],
+            "legende": c["legende"], "description": c["description"],
             "prompt_canva": c["prompt_canva"],
             "prompt_mj": c["prompt_mj"],
             "prompt_gpt": c["prompt_gpt"],
