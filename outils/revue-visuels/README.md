@@ -6,6 +6,10 @@ campagne — les modifications **réinjectent automatiquement dans les prompts**
 
 Outil **transverse** (réutilisable pour tout client de l'agence).
 
+> 🎨 Habillé avec le **design system AWEMA** (`outils/_design/`) : dark mode néon +
+> glassmorphism, **thème clair en 1 clic**, **Command+K** (palette de recherche), skeletons
+> de chargement, micro-interactions. Cohérent avec le Dashboard et les futurs outils.
+
 ## Ouvrir (1 double-clic)
 
 1. `python3 build-data.py` → génère `data.js` (campagne La Grande Vision par défaut).
