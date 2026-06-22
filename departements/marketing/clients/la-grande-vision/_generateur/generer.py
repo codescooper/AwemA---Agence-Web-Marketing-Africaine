@@ -21,21 +21,29 @@ from datetime import date, timedelta
 
 from sujets import BANQUE
 
-# Aperçus Canva déjà générés (index de contenu -> liste d'URL de propositions).
+# Visuels Canva produits (index de contenu -> aperçus + vignette).
 # Enrichi au fil des générations Canva ; l'outil de revue affiche ces aperçus.
-CANVA_PREVIEWS = {
-    1: [
-        "https://www.canva.com/d/S9d7ZI57VSQ7xgr",
-        "https://www.canva.com/d/Mpda0TPrfZrFm5x",
-        "https://www.canva.com/d/JdzI4qYsu03uBXa",
-        "https://www.canva.com/d/aKjGRN6fdI4IGuc",
-    ],
-    2: [
-        "https://www.canva.com/d/hy0TZ8YVIsQHlYj",
-        "https://www.canva.com/d/ISIoQQ1mCrjv8xO",
-        "https://www.canva.com/d/qRJch0fVqqYvggc",
-        "https://www.canva.com/d/fZGzJC6v45lr-_e",
-    ],
+#   image   : vignette renderable dans l'outil (repli gracieux si hors-ligne)
+#   apercus : liens Canva durables (vue) des propositions finalisées
+CANVA_VISUELS = {
+    1: {  # Post pédagogique « 5 signes que vos lunettes ne sont plus adaptées »
+        "image": "https://design.canva.ai/bLDBKd3Skc9Thw-",
+        "apercus": [
+            "https://www.canva.com/d/atEPIY42hLuU28y",
+            "https://www.canva.com/d/Q9GLMuBEZeAGIwZ",
+            "https://www.canva.com/d/3_kvb3xgkjBhOUy",
+            "https://www.canva.com/d/wM3D4WtSBlT7-l6",
+        ],
+    },
+    2: {  # Story conversion « Réservez votre bilan en 2 clics »
+        "image": "https://design.canva.ai/rYl4kFxFP64dAWn",
+        "apercus": [
+            "https://www.canva.com/d/-4fRJbr6SgBekC6",
+            "https://www.canva.com/d/Qyo0W_xBly63IYJ",
+            "https://www.canva.com/d/CGc06VcZGfKNg9S",
+            "https://www.canva.com/d/2k_NP02D8uyMSNt",
+        ],
+    },
 }
 
 # --------------------------------------------------------------------------- #
@@ -393,8 +401,9 @@ def ecrire_json(contenus):
             "prompt_canva": c["prompt_canva"],
             "prompt_mj": c["prompt_mj"],
             "prompt_gpt": c["prompt_gpt"],
-            "apercus": CANVA_PREVIEWS.get(c["index"], []),
-            "statut": "À produire",
+            "apercus": CANVA_VISUELS.get(c["index"], {}).get("apercus", []),
+            "image": CANVA_VISUELS.get(c["index"], {}).get("image", ""),
+            "statut": "Validé" if c["index"] in CANVA_VISUELS else "À produire",
         })
     meta = {
         "client": "La Grande Vision",

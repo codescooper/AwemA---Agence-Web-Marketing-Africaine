@@ -286,9 +286,9 @@ function show(i){
   $("#vTtl").textContent=it.titre;
   $("#vReco").textContent=it.visuel||"";
   $("#vCta").textContent=it.cta;
-  // image si fournie
+  // image : annotation prioritaire, sinon visuel Canva du contenu (repli gracieux)
   v.querySelectorAll('img').forEach(n=>n.remove());
-  const img=(s.image||"").trim();
+  const img=(s.image||it.image||"").trim();
   if(img){const im=new Image();im.src=img;im.onerror=()=>im.remove();v.appendChild(im);}
   if(!v.querySelector(".sign")){const sg=document.createElement('div');sg.className="sign";sg.textContent="La Grande Vision · « Voir la vie en grand. »";v.appendChild(sg);}
   // previews
@@ -300,7 +300,7 @@ function show(i){
   $("#mPilier").textContent=it.pilier+" — "+it.pilier_nom; $("#mFormat").textContent=it.format;
   $("#mHook").textContent=it.hook; $("#mCta").textContent=it.cta; $("#mKpi").textContent=it.kpi;
   // état annotation
-  $("#imgUrl").value=s.image||""; $("#notes").value=s.notes||""; $("#modifs").value=s.modifs||"";
+  $("#imgUrl").value=s.image||it.image||""; $("#notes").value=s.notes||""; $("#modifs").value=s.modifs||"";
   $("#promptCible").value=s.promptCible||"prompt_canva";
   $("#promptOut").textContent=s.promptOut||"—";
   $$("#statusRow button").forEach(b=>b.classList.toggle("on",(s.statut||"À produire")===b.dataset.s)|| (b.style.borderColor=(s.statut||"À produire")===b.dataset.s?statutColor(b.dataset.s):"var(--bord)"));
