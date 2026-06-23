@@ -72,7 +72,7 @@ def _vide():
         "global": {k: None for k in ["audience", "posts", "likes", "commentaires",
                                       "partages", "portee", "vues", "engagement_taux"]},
         "par_reseau": {r: {k: None for k in ["abonnes", "posts", "likes", "commentaires",
-                                             "portee", "vues"]}
+                                             "partages", "portee", "vues"]}
                        for r in ["facebook", "instagram", "tiktok", "linkedin"]},
         "reactions": None,            # {like,love,care,haha,wow,sad,angry} (Facebook, posts récents)
         "portee_post": None,          # {moyenne, max} portée par post (reach réel)
@@ -185,7 +185,7 @@ def via_manuel(client_dir, csv_path):
 def _consolider(data):
     pr = data["par_reseau"]
     def somme(k):
-        vals = [pr[r][k] for r in pr if pr[r][k] is not None]
+        vals = [pr[r].get(k) for r in pr if pr[r].get(k) is not None]
         return sum(vals) if vals else None
     g = data["global"]
     g["audience"] = somme("abonnes"); g["posts"] = somme("posts")
