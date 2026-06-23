@@ -1,0 +1,85 @@
+name: Sync TikTok (présence digitale)
+
+# Récupère, pour chaque compte TikTok autorisé, les vraies métriques (abonnés, vidéos,
+# vues/likes/commentaires/partages) via la Display API v2, et les fusionne dans reseaux.json.
+#
+# PARTICULARITÉ TikTok : le refresh_token est ROTATIF (un nouveau à chaque rafraîchissement).
+# On le stocke donc dans une VARIABLE (vars.TIKTOK_TOKENS), pas un Secret, pour pouvoir la
+# réécrire automatiquement après chaque run via l'API GitHub (un Secret ne peut pas être mis
+# à jour sans chiffrement libsodium ; une Variable, si).
+#
+# PRÉ-REQUIS (une fois) — Settings → Secrets and variables → Actions :
+#   Secret    TIKTOK_CLIENT_KEY      (app TikTok)
+#   Secret    TIKTOK_CLIENT_SECRET   (app TikTok)
+#   Secret    TIKTOK_PAT             (PAT fin avec « Variables: Read and write » sur ce dépôt)
+#   Variable  TIKTOK_TOKENS          ({"client-slug":"<refresh_token>", ...})
+#
+# Voir docs/07-connecter-tiktok.md pour obtenir client_key/secret et les refresh tokens.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 6 * * 1"   # lundi 06:30 UTC (après le sync Meta de 06:00)
+
+permissions:
+  contents: write
+
+jobs:
+  tiktok:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Synchroniser les comptes TikTok
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_TOKENS: ${{ vars.TIKTOK_TOKENS }}
+          TIKTOK_TOKENS_OUT: tiktok_tokens.out
+        run: |
+          if [ -z "$TIKTOK_CLIENT_KEY" ] || [ -z "$TIKTOK_TOKENS" ]; then
+            echo "::error::Secrets TIKTOK_CLIENT_KEY/SECRET et Variable TIKTOK_TOKENS requis."; exit 1
+          fi
+          python3 scripts/connect-reseaux.py --tiktok-all
+
+      - name: Sauvegarder les refresh tokens rotés (Variable TIKTOK_TOKENS)
+        if: ${{ hashFiles('tiktok_tokens.out') != '' }}
+        env:
+          GH_PAT: ${{ secrets.TIKTOK_PAT }}
+        run: |
+          if [ -z "$GH_PAT" ]; then
+            echo "::warning::TIKTOK_PAT absent — refresh tokens NON sauvegardés (le prochain run échouera)."; exit 0
+          fi
+          PAYLOAD=$(jq -n --arg v "$(cat tiktok_tokens.out)" '{name:"TIKTOK_TOKENS", value:$v}')
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X PATCH \
+            -H "Authorization: Bearer $GH_PAT" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TIKTOK_TOKENS" \
+            -d "$PAYLOAD")
+          echo "MAJ Variable TIKTOK_TOKENS → HTTP $code"
+          if [ "$code" != "204" ]; then
+            echo "::warning::Échec MAJ Variable (PAT a-t-il le scope « Variables: Read and write » ?)."
+          fi
+
+      - name: Nettoyer le fichier de tokens (ne jamais committer)
+        if: always()
+        run: rm -f tiktok_tokens.out
+
+      - name: Régénérer le registre agence
+        run: python3 outils/_data/build.py
+
+      - name: Commit si changements
+        run: |
+          git config user.name "awema-bot"
+          git config user.email "bot@awema.local"
+          rm -f tiktok_tokens.out
+          if git diff --quiet; then
+            echo "ℹ️ Aucune nouvelle donnée."; exit 0
+          fi
+          git add -A
+          git commit -m "chore(tiktok): sync présence digitale ($(date -u +%F))"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "✅ Données TikTok mises à jour."

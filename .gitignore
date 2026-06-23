@@ -14,3 +14,6 @@ __pycache__/
 # Visuels reçus (artefacts générés à partir des prompts)
 departements/marketing/clients/la-grande-vision/_visuels-recus/*.png
 departements/marketing/clients/la-grande-vision/_visuels-recus/*.jpg
+
+# Refresh tokens TikTok (jamais dans le dépôt)
+tiktok_tokens.out

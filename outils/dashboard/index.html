@@ -577,6 +577,17 @@ function viewReseaux(){
     ${tc&&Object.keys(tc).length?bars(Object.entries(tc).sort((a,b)=>b[1].engagement_moyen-a[1].engagement_moyen).map(([t,v])=>[`${t} (${v.n})`,v.engagement_moyen]),v=>v)
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'—':'À connecter.'}</div>`}`,'col6');
 
+  /* ---- TikTok (si compte connecté) ---- */
+  const tk=(m&&m.tiktok)||null; const nf=v=>(v==null?'—':(+v).toLocaleString('fr-FR'));
+  if(tk){add(`<h3>${ic('bolt')} TikTok${tk.display_name?` · ${tk.display_name}`:''}</h3><div class="sub">Compte TikTok connecté${tk.maj?' · maj '+tk.maj.slice(0,10):''}</div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="kpibox"><div class="val2">${nf(tk.abonnes)}</div><div class="lab">abonnés</div></div>
+      <div class="kpibox"><div class="val2">${nf(tk.video_count)}</div><div class="lab">vidéos</div></div>
+      <div class="kpibox"><div class="val2">${nf(tk.likes_total)}</div><div class="lab">likes cumulés</div></div>
+      <div class="kpibox"><div class="val2">${nf(tk.vues_recentes)}</div><div class="lab">vues (récentes)</div></div>
+    </div>
+    ${tk.top_videos&&tk.top_videos.length?`<div class="list" style="margin-top:10px">${tk.top_videos.slice(0,5).map(v=>`<div class="li"><span class="t" title="${(v.titre||'').replace(/"/g,'&quot;')}">${v.titre||'—'}</span><span class="pill">👁 ${nf(v.vues)}</span><span class="pill">👍 ${v.likes}</span>${v.lien?`<a href="${v.lien}" target="_blank" class="pill">voir ↗</a>`:''}</div>`).join('')}</div>`:''}`,'col6');}
+
   /* ---- Abonnés les plus actifs (vrais « top fans ») ---- */
   const fans=(m&&m.top_commentateurs)||(m&&m.top_fans)||[];
   add(`<h3>${ic('users')} Abonnés les plus actifs</h3><div class="sub">${fans.length?'Top commentateurs':'À connecter'}</div>

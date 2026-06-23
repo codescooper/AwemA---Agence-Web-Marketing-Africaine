@@ -16,6 +16,15 @@ Remplit le contrat outils/_data (reseaux.json) à partir des réseaux sociaux. V
   3) IMPORT MANUEL (CSV exporté depuis Meta Business Suite / TwoMinuteReports / autre)
      python3 connect-reseaux.py --manuel <client_dir> <export.csv>
 
+  4) TIKTOK — comptes autorisés (Display API v2) — voir docs/07-connecter-tiktok.md
+     export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=... TIKTOK_TOKENS='{"slug":"refresh"}'
+     python3 connect-reseaux.py --tiktok-all
+     # Onboarding (échange d'un code OAuth contre un refresh_token) :
+     python3 connect-reseaux.py --tiktok-auth <code> <redirect_uri>
+
+Les réseaux fusionnent : Facebook (--meta-all) et TikTok (--tiktok-all) coexistent dans le
+même reseaux.json sans s'écraser.
+
 Aucune donnée inventée : si une source est absente, les champs restent null.
 Le réseau du sandbox peut bloquer graph.facebook.com → lancer depuis une machine
 connectée (ou via le GitHub Action .github/workflows/sync-reseaux.yml).
@@ -163,7 +172,6 @@ def via_meta(client_dir):
         except Exception as e:
             print("⚠️ IG media:", e)
 
-    _consolider(data)
     _ecrire(client_dir, data)
 
 
@@ -177,7 +185,6 @@ def via_manuel(client_dir, csv_path):
                 for k in ["abonnes", "posts", "likes", "commentaires", "portee"]:
                     v = row.get(k)
                     data["par_reseau"][r][k] = int(v) if v and v.isdigit() else None
-    _consolider(data)
     _ecrire(client_dir, data)
 
 
@@ -207,7 +214,17 @@ def _consolider(data):
     data["maj"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
+RESEAUX = ["facebook", "instagram", "tiktok", "linkedin"]
+PLATEFORME = {"facebook": "Facebook", "instagram": "Instagram",
+              "tiktok": "TikTok", "linkedin": "LinkedIn"}
+# Sections dérivées spécifiques à Facebook (issues des posts FB) — préservées si FB n'a pas tourné.
+SECTIONS_FB = ["reactions", "cadence", "meilleur_creneau", "types_contenu",
+               "a_repondre", "top_commentateurs", "top_fans"]
+
+
 def _ecrire(client_dir, data):
+    """Fusionne les données du réseau qui vient de tourner DANS le reseaux.json existant,
+    sans écraser les autres réseaux (Facebook et TikTok coexistent), puis reconsolide."""
     out = os.path.join(client_dir, "_donnees", "reseaux.json")
     base = {}
     try:
@@ -215,22 +232,52 @@ def _ecrire(client_dir, data):
             base = json.load(f)
     except FileNotFoundError:
         pass
-    # Conserve l'historique d'audience et ajoute le point du jour (vraie courbe dans le temps).
     ancienne_ev = base.get("evolution_audience") or []
-    base.update(data); base["client"] = os.path.basename(client_dir.rstrip("/"))
-    for k in ("_doc", "portee_post", "croissance"):   # clés obsolètes (indispo en v21)
+
+    # Réseaux réellement remplis par CE sync (les autres sont préservés)
+    owned = {net for net, bloc in data["par_reseau"].items()
+             if any(v is not None for v in bloc.values())}
+
+    bpr = base.get("par_reseau") or {}
+    for net in RESEAUX:
+        if net in owned or net not in bpr:
+            bpr[net] = data["par_reseau"][net]
+        bpr.setdefault(net, {k: None for k in
+                             ["abonnes", "posts", "likes", "commentaires", "partages", "portee", "vues"]})
+    base["par_reseau"] = bpr
+
+    # top_posts : garde ceux des AUTRES plateformes + ceux de ce sync
+    owned_labels = {PLATEFORME[n] for n in owned}
+    gardes = [p for p in (base.get("top_posts") or []) if p.get("plateforme") not in owned_labels]
+    base["top_posts"] = gardes + (data.get("top_posts") or [])
+
+    if "facebook" in owned:                          # sections dérivées des posts FB
+        for k in SECTIONS_FB:
+            base[k] = data.get(k)
+    if "tiktok" in owned and data.get("tiktok") is not None:
+        base["tiktok"] = data["tiktok"]
+
+    base["source"] = data.get("source") or base.get("source")
+    base["client"] = os.path.basename(client_dir.rstrip("/"))
+    base.setdefault("global", {k: None for k in ["audience", "posts", "likes", "commentaires",
+                                                 "partages", "portee", "vues", "engagement_taux"]})
+    for k in ("_doc", "portee_post", "croissance"):  # clés obsolètes
         base.pop(k, None)
-    audience = (data.get("global") or {}).get("audience")
+
+    _consolider(base)                                # reconsolide sur les réseaux fusionnés
+
+    audience = base["global"].get("audience")
     if audience is not None:
         jour = datetime.now(timezone.utc).date().isoformat()
         ev = [p for p in ancienne_ev if p.get("date") != jour]
         ev.append({"date": jour, "valeur": audience})
-        base["evolution_audience"] = ev[-90:]   # garde 90 derniers points
+        base["evolution_audience"] = ev[-90:]
     else:
         base["evolution_audience"] = ancienne_ev
+
     with open(out, "w", encoding="utf-8") as f:
         json.dump(base, f, ensure_ascii=False, indent=2)
-    print(f"✅ {out} — connecté={base['connecte']} source={base['source']}")
+    print(f"✅ {out} — connecté={base['connecte']} source={base['source']} réseaux={sorted(owned)}")
     print("   Pense à régénérer le registre : python3 outils/_data/build.py")
 
 
@@ -556,7 +603,6 @@ def via_meta_all():
         data["par_reseau"]["facebook"]["abonnes"] = ab
         _engagement_page(data, page_id, ptok)
         _engagement_ig(data, pg.get("instagram_business_account") or {}, ptok)
-        _consolider(data)
         _ecrire(client_dir, data)
         n += 1
         print(f"  ✓ {pg.get('name')} ({ab if ab is not None else '—'} abonnés) → "
@@ -564,10 +610,162 @@ def via_meta_all():
     print(f"✅ {n} page(s) synchronisée(s). Régénère le registre : python3 outils/_data/build.py")
 
 
+# --------------------------------------------------------------------------- #
+# TIKTOK — Display API v2 (un compte = une autorisation OAuth, refresh token rotatif)
+# --------------------------------------------------------------------------- #
+TIKTOK_OAUTH = "https://open.tiktokapis.com/v2/oauth/token/"
+TIKTOK_API = "https://open.tiktokapis.com/v2"
+TIKTOK_USER_FIELDS = "open_id,display_name,follower_count,following_count,likes_count,video_count"
+TIKTOK_VIDEO_FIELDS = ("id,title,video_description,view_count,like_count,"
+                       "comment_count,share_count,create_time,share_url")
+
+
+def _tiktok_refresh(client_key, client_secret, refresh_token):
+    """Échange un refresh_token contre un access_token + un NOUVEAU refresh_token (rotatif)."""
+    body = urllib.parse.urlencode({
+        "client_key": client_key, "client_secret": client_secret,
+        "grant_type": "refresh_token", "refresh_token": refresh_token}).encode()
+    req = urllib.request.Request(TIKTOK_OAUTH, data=body,
+                                 headers={"Content-Type": "application/x-www-form-urlencoded"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        d = json.load(r)
+    if d.get("error"):
+        raise RuntimeError(f"refresh: {d.get('error')} — {d.get('error_description')}")
+    return d  # access_token, refresh_token, expires_in, ...
+
+
+def _tiktok_get(path, token):
+    req = urllib.request.Request(f"{TIKTOK_API}/{path}",
+                                 headers={"Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.load(r)
+
+
+def _tiktok_post(path, token, payload):
+    req = urllib.request.Request(f"{TIKTOK_API}/{path}", data=json.dumps(payload).encode(),
+                                 headers={"Authorization": f"Bearer {token}",
+                                          "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.load(r)
+
+
+def _tiktok_data(user, videos):
+    """Façonne un objet reseaux.json (bloc tiktok + top_posts) à partir des réponses API."""
+    data = _vide(); data["source"] = "tiktok-display-api"
+    tk = data["par_reseau"]["tiktok"]
+    tk["abonnes"] = user.get("follower_count")
+    tk["posts"] = user.get("video_count")
+    tk["likes"] = sum(v.get("like_count", 0) for v in videos) or None
+    tk["commentaires"] = sum(v.get("comment_count", 0) for v in videos) or None
+    tk["partages"] = sum(v.get("share_count", 0) for v in videos) or None
+    tk["vues"] = sum(v.get("view_count", 0) for v in videos) or None
+    top = []
+    for v in videos:
+        titre = (v.get("title") or v.get("video_description") or "")[:80]
+        top.append({
+            "titre": titre, "plateforme": "TikTok", "date": _ts(v.get("create_time")),
+            "lien": v.get("share_url"), "likes": v.get("like_count", 0),
+            "commentaires": v.get("comment_count", 0), "partages": v.get("share_count", 0),
+            "vues": v.get("view_count", 0), "type": "vidéo"})
+    data["top_posts"] = top
+    data["tiktok"] = {
+        "abonnes": user.get("follower_count"), "video_count": user.get("video_count"),
+        "likes_total": user.get("likes_count"),
+        "vues_recentes": tk["vues"], "display_name": user.get("display_name"),
+        "top_videos": sorted(top, key=lambda p: p["vues"], reverse=True)[:8],
+        "maj": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    return data
+
+
+def _ts(unix):
+    try:
+        return datetime.fromtimestamp(int(unix), timezone.utc).isoformat(timespec="seconds")
+    except Exception:
+        return None
+
+
+def _client_par_slug(slug):
+    d = os.path.join(RACINE, "departements", "marketing", "clients", slug)
+    return d if os.path.isdir(os.path.join(d, "_donnees")) else None
+
+
+def via_tiktok_auth(code, redirect_uri):
+    """Onboarding : échange un CODE d'autorisation OAuth contre un refresh_token (à coller
+    dans la Variable TIKTOK_TOKENS). Usage :
+      export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=...
+      python3 connect-reseaux.py --tiktok-auth <code> <redirect_uri>"""
+    ck = os.environ.get("TIKTOK_CLIENT_KEY"); cs = os.environ.get("TIKTOK_CLIENT_SECRET")
+    if not (ck and cs):
+        sys.exit("❌ export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=... d'abord.")
+    body = urllib.parse.urlencode({
+        "client_key": ck, "client_secret": cs, "code": code,
+        "grant_type": "authorization_code", "redirect_uri": redirect_uri}).encode()
+    req = urllib.request.Request(TIKTOK_OAUTH, data=body,
+                                 headers={"Content-Type": "application/x-www-form-urlencoded"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        d = json.load(r)
+    if d.get("error"):
+        sys.exit(f"❌ {d.get('error')} — {d.get('error_description')}")
+    print("✅ refresh_token obtenu (valable ~365 j). Ajoute-le à la Variable TIKTOK_TOKENS :")
+    print(f'   {{"<slug-du-client>": "{d.get("refresh_token")}"}}')
+    print(f"   (open_id={d.get('open_id')}, expires_in={d.get('expires_in')}s)")
+
+
+def via_tiktok_all():
+    """Pour chaque compte TikTok autorisé (TIKTOK_TOKENS = {slug: refresh_token}), rafraîchit
+    le token, récupère profil + vidéos, et fusionne dans reseaux.json. Écrit les refresh
+    tokens ROTÉS dans le fichier TIKTOK_TOKENS_OUT pour que le workflow mette à jour la Variable."""
+    ck = os.environ.get("TIKTOK_CLIENT_KEY")
+    cs = os.environ.get("TIKTOK_CLIENT_SECRET")
+    raw = os.environ.get("TIKTOK_TOKENS")
+    if not (ck and cs and raw):
+        sys.exit("❌ TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET et TIKTOK_TOKENS (JSON) requis.")
+    try:
+        comptes = json.loads(raw)              # {slug: refresh_token}
+    except Exception:
+        sys.exit("❌ TIKTOK_TOKENS doit être un JSON : {\"client-slug\": \"refresh_token\"}")
+    nouveaux, n = {}, 0
+    for slug, rt in comptes.items():
+        try:
+            tok = _tiktok_refresh(ck, cs, rt)
+        except Exception as e:
+            print(f"  ⚠️ {slug} : refresh échoué ({e}) — re-autorisation nécessaire.")
+            nouveaux[slug] = rt                # conserve l'ancien (sera à renouveler à la main)
+            continue
+        access = tok.get("access_token")
+        nouveaux[slug] = tok.get("refresh_token") or rt   # ROTATION : on garde le nouveau
+        try:
+            user = (_tiktok_get(f"user/info/?fields={TIKTOK_USER_FIELDS}", access)
+                    .get("data", {}).get("user", {}))
+            videos = (_tiktok_post(f"video/list/?fields={TIKTOK_VIDEO_FIELDS}", access,
+                                   {"max_count": 20}).get("data", {}).get("videos", []))
+        except Exception as e:
+            print(f"  ⚠️ {slug} : récupération données échouée ({e}).")
+            continue
+        client_dir = _client_par_slug(slug)
+        if not client_dir:
+            client_dir = os.path.join(RACINE, "departements", "marketing", "clients", slug)
+            os.makedirs(os.path.join(client_dir, "_donnees"), exist_ok=True)
+        _ecrire(client_dir, _tiktok_data(user, videos))
+        n += 1
+        print(f"  ✓ TikTok {slug} ({user.get('follower_count', '—')} abonnés, "
+              f"{user.get('video_count', '—')} vidéos)")
+    out = os.environ.get("TIKTOK_TOKENS_OUT")
+    if out:
+        with open(out, "w", encoding="utf-8") as f:
+            json.dump(nouveaux, f, ensure_ascii=False)
+        print(f"🔑 Refresh tokens rotés écrits dans {out} (à reporter dans la Variable TIKTOK_TOKENS).")
+    print(f"✅ {n} compte(s) TikTok synchronisé(s). Régénère le registre : python3 outils/_data/build.py")
+
+
 def main():
     a = sys.argv[1:]
     if a and a[0] == "--meta-all":
         via_meta_all()
+    elif a and a[0] == "--tiktok-all":
+        via_tiktok_all()
+    elif len(a) >= 3 and a[0] == "--tiktok-auth":
+        via_tiktok_auth(a[1], a[2])
     elif len(a) >= 2 and a[0] == "--meta":
         via_meta(a[1])
     elif len(a) >= 3 and a[0] == "--manuel":
