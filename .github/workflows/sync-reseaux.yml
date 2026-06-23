@@ -48,11 +48,12 @@ jobs:
         run: |
           git config user.name "awema-bot"
           git config user.email "bot@awema.local"
-          if ! git diff --quiet; then
-            git add -A
-            git commit -m "chore(réseaux): sync présence digitale ($(date -u +%F))"
-            git push
-            echo "✅ Données réseaux mises à jour."
-          else
-            echo "ℹ️ Aucune nouvelle donnée."
+          if git diff --quiet; then
+            echo "ℹ️ Aucune nouvelle donnée."; exit 0
           fi
+          git add -A
+          git commit -m "chore(réseaux): sync présence digitale ($(date -u +%F))"
+          # Évite un échec de push si la branche a bougé entre-temps
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "✅ Données réseaux mises à jour."
