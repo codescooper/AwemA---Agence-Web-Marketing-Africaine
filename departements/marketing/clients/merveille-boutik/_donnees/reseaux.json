@@ -1,15 +1,15 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:11:39+00:00",
+  "maj": "2026-06-23T04:30:09+00:00",
   "global": {
     "audience": 24642,
     "posts": 25,
     "likes": 751,
     "commentaires": 32,
     "partages": null,
-    "portee": null,
-    "engagement_taux": null
+    "portee": 6165,
+    "engagement_taux": 12.7
   },
   "par_reseau": {
     "facebook": {
@@ -17,7 +17,7 @@
       "posts": 25,
       "likes": 751,
       "commentaires": 32,
-      "portee": null
+      "portee": 6165
     },
     "instagram": {
       "abonnes": null,
@@ -69,14 +69,14 @@
       "plateforme": "Facebook",
       "likes": 79,
       "commentaires": 0,
-      "partages": 23
+      "partages": 22
     },
     {
       "titre": "Sinon à la base skinny même c’est femme de milliardaire oubien 😌😏\nOù sont mes pe",
       "plateforme": "Facebook",
       "likes": 71,
       "commentaires": 0,
-      "partages": 12
+      "partages": 11
     },
     {
       "titre": "À la demande générale 🥰😍👌￼ \nnous avons stocké nos Lingerie de Qualité.\nDisponibl",
@@ -90,7 +90,7 @@
       "plateforme": "Facebook",
       "likes": 27,
       "commentaires": 23,
-      "partages": 51
+      "partages": 50
     },
     {
       "titre": "String  chap chap et lingerie fine disponible actuellement \n\nPrix: 3 string à 10",

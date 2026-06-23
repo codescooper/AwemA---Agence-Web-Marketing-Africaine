@@ -1,15 +1,15 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:11:50+00:00",
+  "maj": "2026-06-23T04:30:20+00:00",
   "global": {
     "audience": 3823,
     "posts": 21,
     "likes": 30,
     "commentaires": 6,
     "partages": null,
-    "portee": null,
-    "engagement_taux": null
+    "portee": 12,
+    "engagement_taux": 300.0
   },
   "par_reseau": {
     "facebook": {
@@ -17,7 +17,7 @@
       "posts": 21,
       "likes": 30,
       "commentaires": 6,
-      "portee": null
+      "portee": 12
     },
     "instagram": {
       "abonnes": null,
