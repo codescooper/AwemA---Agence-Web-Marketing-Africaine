@@ -29,6 +29,7 @@ import os
 import re
 import sys
 import unicodedata
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -63,8 +64,24 @@ def _vide():
 
 
 def _get(url):
-    with urllib.request.urlopen(url, timeout=30) as r:
-        return json.load(r)
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        # Remonte le vrai message d'erreur Graph (sinon on n'a que "400 Bad Request")
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")
+        except Exception:
+            pass
+        msg = body
+        try:
+            err = json.loads(body).get("error", {})
+            msg = (f"{err.get('message')} "
+                   f"(code={err.get('code')}, subcode={err.get('error_subcode')})")
+        except Exception:
+            pass
+        raise RuntimeError(f"HTTP {e.code} — {msg}") from None
 
 
 def via_meta(client_dir):
