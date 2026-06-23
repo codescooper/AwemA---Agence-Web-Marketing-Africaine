@@ -1,12 +1,11 @@
 {
-  "client": "la-grande-vision",
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T03:17:48+00:00",
+  "maj": "2026-06-23T03:17:54+00:00",
   "global": {
-    "audience": 0,
-    "posts": 0,
-    "likes": 0,
+    "audience": 24,
+    "posts": 25,
+    "likes": 18,
     "commentaires": 0,
     "partages": null,
     "portee": null,
@@ -14,9 +13,9 @@
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 0,
-      "posts": 0,
-      "likes": 0,
+      "abonnes": 24,
+      "posts": 25,
+      "likes": 18,
       "commentaires": 0,
       "portee": null
     },
@@ -43,6 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
-  "evolution_audience": []
+  "top_posts": [
+    {
+      "titre": "Aujourd’hui, nous rendons hommage à toutes les mamans 🤱, ces femmes de vision 👓,",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Lorsque nous utilisons longtemps les écrans, nous avons tendance à moins cligner",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Beaucoup de personnes attendent que leur vision devienne vraiment gênante avant ",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Bienvenue en Juin !\nUn nouveau mois commence, une nouvelle opportunité de grandi",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "Vos lunettes vous accompagnent chaque jour.\nMais avec le temps, votre vision peu",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Bonne fête de la Tabaski à tous les musulmans de la Côte d'Ivoire et du monde\n#A",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Une bonne vision influence le confort au quotidien. Mais aussi la confiance, la ",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Que l’Esprit Saint remplisse vos cœurs de paix, de lumière et de sagesse. 🔥✨\nLa ",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    }
+  ],
+  "evolution_audience": [],
+  "client": "la-grande-vision"
 }

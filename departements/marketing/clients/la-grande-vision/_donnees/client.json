@@ -8,7 +8,7 @@
   "initiales": "GV",
   "slogan": "Voir la vie en grand.",
   "reseaux": {
-    "facebook": "",
+    "facebook": "https://facebook.com/106652335814884",
     "instagram": "",
     "tiktok": "",
     "linkedin": "",
@@ -19,5 +19,5 @@
     "reseaux": "_donnees/reseaux.json",
     "revue": "../../../../outils/revue-visuels/index.html?client=la-grande-vision"
   },
-  "fb_page_id": "1020811574455073"
+  "fb_page_id": "106652335814884"
 }
