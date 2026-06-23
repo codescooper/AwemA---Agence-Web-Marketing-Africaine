@@ -102,6 +102,7 @@
       <div class="brand">AWEMA · <b>Revue des Visuels</b></div>
       <div class="sub" id="clientSub">—</div>
     </div>
+    <select id="clientSel" title="Client" style="background:rgba(127,127,127,.12);color:inherit;border:1px solid rgba(127,127,127,.28);border-radius:10px;padding:8px 11px;font:inherit;max-width:230px;cursor:pointer;margin-left:14px"></select>
     <div class="spacer"></div>
     <button class="cmdk" id="cmdkBtn" data-ic="search"><span>Rechercher</span><kbd>⌘K</kbd></button>
     <span class="stat" id="progress">0 / 0 traités</span>
@@ -474,20 +475,38 @@ function skeletonList(){$("#list").innerHTML=Array.from({length:9}).map(()=>
   '<div class="skitem"><div class="sk" style="height:12px;width:72%"></div>'+
   '<div class="sk" style="height:9px;width:46%;margin-top:8px"></div></div>').join('');}
 
-// Résout le client depuis le registre multi-clients (?client=<id>) sinon data.js
-function clientFromRegistry(){
-  const id=new URLSearchParams(location.search).get('client');
-  const reg=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
-  const c=reg.find(x=>x.id===id)||(id?null:reg[0]);
-  if(c&&c.campagne&&c.campagne.contenus&&c.campagne.contenus.length)
-    return {client:c.nom,lieu:c.lieu,total:c.campagne.total,contenus:c.campagne.contenus,charte:(window.CAMPAGNE&&window.CAMPAGNE.charte)};
-  return null;
+// ----- Multi-clients : sélecteur + résolution depuis le registre (?client=<id>) -----
+const REG=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+function clientData(c){
+  return {client:c.nom,lieu:c.lieu,total:(c.campagne&&c.campagne.total)||0,
+    contenus:(c.campagne&&c.campagne.contenus)||[],charte:(window.CAMPAGNE&&window.CAMPAGNE.charte)};
+}
+function buildClientSelector(curId){
+  const sel=$("#clientSel"); if(!sel)return;
+  if(!REG.length){sel.style.display='none';return;}
+  sel.innerHTML=REG.map(c=>`<option value="${c.id}">${c.nom}${(c.campagne&&c.campagne.total)?' · '+c.campagne.total+' contenus':' · à générer'}</option>`).join('');
+  if(curId)sel.value=curId;
+  sel.onchange=()=>{const u=new URL(location);u.searchParams.set('client',sel.value);location.href=u.toString();};
+}
+function showEmpty(c){
+  $("#drop").classList.add("hidden");
+  $("#clientSub").textContent=(c.nom||"")+(c.lieu?" · "+c.lieu:"")+" · 0 contenu";
+  const pg=$("#progress"); if(pg)pg.textContent="0 / 0 traités";
+  $("#list").innerHTML='<div style="padding:22px;color:#8aa;font-size:13px;line-height:1.65">Aucun contenu pour <b>'+(c.nom||'ce client')+'</b>.<br>Génère son plan éditorial puis régénère le registre — ou choisis un autre client en haut.</div>';
+  const set=(id,t)=>{const e=$(id);if(e)e.textContent=t;};
+  set("#vPil","—"); set("#vTtl","Pas encore de visuels");
+  set("#vReco","Ce client n'a pas encore de plan de contenu. Sélectionne un autre client dans le menu en haut, ou génère son calendrier éditorial.");
+  set("#vCta",""); set("#pos","—");
 }
 // Init (skeleton élégant puis chargement)
-const REGDATA=clientFromRegistry();
-if(REGDATA){skeletonList();setTimeout(()=>load(REGDATA),360);}
-else if(window.CAMPAGNE){skeletonList();setTimeout(()=>load(window.CAMPAGNE),360);}
-else {$("#drop").classList.remove("hidden");}
+const _want=new URLSearchParams(location.search).get('client');
+const _cur=REG.find(c=>c.id===_want)||REG[0]||null;
+buildClientSelector(_cur?_cur.id:null);
+if(_cur && _cur.campagne && _cur.campagne.contenus && _cur.campagne.contenus.length){
+  skeletonList(); setTimeout(()=>load(clientData(_cur)),360);
+} else if(_cur){ showEmpty(_cur); }
+else if(window.CAMPAGNE){ skeletonList(); setTimeout(()=>load(window.CAMPAGNE),360); }
+else { $("#drop").classList.remove("hidden"); }
 </script>
 </body>
 </html>
