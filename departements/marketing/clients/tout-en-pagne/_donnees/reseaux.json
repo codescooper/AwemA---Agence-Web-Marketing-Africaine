@@ -10,7 +10,7 @@
     "partages": 0,
     "portee": null,
     "vues": 3,
-    "engagement_taux": null
+    "engagement_taux": 0.2
   },
   "par_reseau": {
     "facebook": {
@@ -129,8 +129,6 @@
     "sad": 0,
     "angry": 0
   },
-  "portee_post": null,
-  "croissance": null,
   "cadence": {
     "dernier_post": "2020-02-29T09:58:57+0000",
     "jours_depuis": 2305,

@@ -56,11 +56,12 @@ IGNOREES = _pages_ignorees()
 #   • page_impressions_unique / page_impressions = portée/impressions (souvent dépréciées en v21)
 #   • page_views_total = nombre de vues de la Page (disponible en v21)
 # Pour chaque indicateur, on essaie les candidats dans l'ordre et on garde le 1er qui répond.
-PORTEE_CANDIDATS = ["page_impressions_unique", "page_impressions"]   # portée réelle (reach)
-VUES_CANDIDATS = ["page_views_total"]                                # vues de la Page
-GAGNES_CANDIDATS = ["page_fan_adds_unique", "page_fan_adds"]         # nouveaux abonnés (28 j)
-PERDUS_CANDIDATS = ["page_fan_removes_unique", "page_fan_removes"]   # désabonnements (28 j)
-_METRIQUE = {"portee": None, "vues": None, "gagnes": None, "perdus": None}
+# Insights Page (28 j) — en API v21, Meta a déprécié la quasi-totalité des métriques :
+# page_impressions*, post_impressions*, page_fan_adds/removes → (#100) « invalid metric ».
+# SEULE page_views_total répond encore. On ne sonde donc QUE les vues (les autres indicateurs
+# « portée » / « croissance » ne sont plus exposés par l'API — on ne les invente pas).
+VUES_CANDIDATS = ["page_views_total"]            # vues de la Page (28 j) — disponible en v21
+_METRIQUE = {"vues": None}
 
 REACTIONS = ["like", "love", "care", "haha", "wow", "sad", "angry"]
 JOURS_FR = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
@@ -75,8 +76,6 @@ def _vide():
                                              "partages", "portee", "vues"]}
                        for r in ["facebook", "instagram", "tiktok", "linkedin"]},
         "reactions": None,            # {like,love,care,haha,wow,sad,angry} (Facebook, posts récents)
-        "portee_post": None,          # {moyenne, max} portée par post (reach réel)
-        "croissance": None,           # {gagnes_28j, perdus_28j, net_28j}
         "cadence": None,              # {dernier_post, jours_depuis, posts_30j, posts_par_semaine}
         "meilleur_creneau": None,     # {jour, heure, par_jour, recommandation}
         "types_contenu": None,        # {photo:{n,eng_moyen}, video:{...}, ...}
@@ -191,15 +190,16 @@ def _consolider(data):
     g["audience"] = somme("abonnes"); g["posts"] = somme("posts")
     g["likes"] = somme("likes"); g["commentaires"] = somme("commentaires")
     g["partages"] = somme("partages")
-    g["portee"] = somme("portee")   # vraie portée Page (reach) — null si indisponible (API v21)
+    g["portee"] = somme("portee")   # portée Page (reach) — non exposée par l'API v21 → null
     g["vues"] = somme("vues")        # vues de la Page (28 j)
-    # Taux d'engagement RÉEL = engagement moyen par post / portée moyenne par post (×100).
-    pp = (data.get("portee_post") or {}).get("moyenne")
-    nb = pr["facebook"]["posts"]
-    if pp and nb:
+    # Taux d'engagement PAR ABONNÉ = engagement moyen par post / nb d'abonnés (×100).
+    # (La portée/reach n'étant plus exposée en v21, on rapporte l'engagement aux abonnés —
+    #  indicateur CM standard, toujours disponible.)
+    nb, aud = pr["facebook"]["posts"], pr["facebook"]["abonnes"]
+    if nb and aud:
         eng = (pr["facebook"].get("likes") or 0) + (pr["facebook"].get("commentaires") or 0) \
             + (pr["facebook"].get("partages") or 0)
-        g["engagement_taux"] = round((eng / nb) / pp * 100, 1)
+        g["engagement_taux"] = round((eng / nb) / aud * 100, 1)
     data["top_posts"] = sorted(
         data["top_posts"],
         key=lambda p: p["likes"] + p["commentaires"] + p.get("partages", 0), reverse=True)[:8]
@@ -218,7 +218,8 @@ def _ecrire(client_dir, data):
     # Conserve l'historique d'audience et ajoute le point du jour (vraie courbe dans le temps).
     ancienne_ev = base.get("evolution_audience") or []
     base.update(data); base["client"] = os.path.basename(client_dir.rstrip("/"))
-    base.pop("_doc", None)
+    for k in ("_doc", "portee_post", "croissance"):   # clés obsolètes (indispo en v21)
+        base.pop(k, None)
     audience = (data.get("global") or {}).get("audience")
     if audience is not None:
         jour = datetime.now(timezone.utc).date().isoformat()
@@ -359,14 +360,12 @@ def _engagement_page(data, page_id, ptok):
         fb["commentaires"] = sum(p["_ncom"] for p in posts)
         fb["partages"] = partages
         data["reactions"] = rea_tot
-        _portee_posts(data, posts, ptok)
         _derive_commentaires(data, page_id, posts)
         _cadence(data, posts)
         _creneau(data, posts)
         _types_contenu(data, posts)
 
     _insights_page(data, page_id, ptok)
-    _croissance(data, page_id, ptok)
 
 
 def _type_post(p):
@@ -374,31 +373,6 @@ def _type_post(p):
     mt = (att[0].get("media_type") or "").lower() if att else ""
     return {"photo": "photo", "video": "vidéo", "share": "lien",
             "album": "album", "link": "lien"}.get(mt, "statut")
-
-
-def _portee_posts(data, posts, ptok):
-    """Portée RÉELLE par post (post_impressions_unique), best-effort sur les posts récents."""
-    vals = []
-    for p in posts[:12]:
-        pid = p.get("id")
-        if not pid:
-            continue
-        try:
-            rep = _get(f"{GRAPH}/{pid}/insights/post_impressions_unique"
-                       f"?access_token={ptok}").get("data", [])
-            v = rep[0]["values"][0]["value"] if rep and rep[0].get("values") else None
-            if v is not None:
-                p["portee"] = v
-                # reporte la portée dans le top_post correspondant
-                for tp in data["top_posts"]:
-                    if tp.get("lien") == p.get("permalink_url"):
-                        tp["portee"] = v
-                vals.append(v)
-        except Exception as e:
-            print(f"  ⚠️ portée post {pid}: {e}")
-            break  # métrique probablement indisponible → on arrête de marteler l'API
-    if vals:
-        data["portee_post"] = {"moyenne": round(sum(vals) / len(vals)), "max": max(vals)}
 
 
 def _derive_commentaires(data, page_id, posts):
@@ -434,12 +408,10 @@ def _cadence(data, posts):
     now = datetime.now(timezone.utc)
     jours_depuis = (now - dernier).days if dernier else None
     p30 = sum(1 for d in dates if (_parse_dt(d) and (now - _parse_dt(d)).days <= 30))
-    # rythme = posts / nb de semaines couvertes par l'échantillon
-    plus_vieux = _parse_dt(dates[-1])
-    semaines = max(((dernier - plus_vieux).days / 7.0), 1) if (dernier and plus_vieux) else 1
+    # rythme actuel = posts des 30 derniers jours ramenés à la semaine (4,345 sem./mois)
     data["cadence"] = {
         "dernier_post": dates[0], "jours_depuis": jours_depuis, "posts_30j": p30,
-        "posts_par_semaine": round(len(dates) / semaines, 1)}
+        "posts_par_semaine": round(p30 / 4.345, 1)}
 
 
 def _creneau(data, posts):
@@ -473,14 +445,6 @@ def _types_contenu(data, posts):
                              for t, v in grp.items()}
 
 
-def _croissance(data, page_id, ptok):
-    g = _insight_28j(page_id, ptok, "gagnes", GAGNES_CANDIDATS)
-    p = _insight_28j(page_id, ptok, "perdus", PERDUS_CANDIDATS)
-    if g is not None or p is not None:
-        data["croissance"] = {"gagnes_28j": g, "perdus_28j": p,
-                              "net_28j": (g or 0) - (p or 0)}
-
-
 def _parse_dt(s):
     if not s:
         return None
@@ -491,15 +455,11 @@ def _parse_dt(s):
 
 
 def _insights_page(data, page_id, ptok):
-    """Insights Page (28 j) via read_insights : portée réelle (reach) ET vues de page.
-    Pour chaque indicateur on essaie plusieurs métriques candidates (les noms valides
-    changent selon la version de l'API) et on garde la 1re qui répond. Chaque indicateur
-    reste null si aucune candidate ne marche (ex. portée dépréciée en v21)."""
+    """Vues de la Page (28 j) via read_insights — seule métrique insights encore valide en v21.
+    Reste null si la permission read_insights manque."""
     if FIXTURE or not ptok:
         return
-    fb = data["par_reseau"]["facebook"]
-    fb["portee"] = _insight_28j(page_id, ptok, "portee", PORTEE_CANDIDATS)
-    fb["vues"] = _insight_28j(page_id, ptok, "vues", VUES_CANDIDATS)
+    data["par_reseau"]["facebook"]["vues"] = _insight_28j(page_id, ptok, "vues", VUES_CANDIDATS)
 
 
 def _insight_28j(page_id, ptok, cle, candidats):

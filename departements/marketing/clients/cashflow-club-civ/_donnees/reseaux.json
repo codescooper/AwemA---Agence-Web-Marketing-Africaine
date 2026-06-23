@@ -109,13 +109,11 @@
     "sad": 0,
     "angry": 0
   },
-  "portee_post": null,
-  "croissance": null,
   "cadence": {
     "dernier_post": "2021-04-12T01:25:43+0000",
     "jours_depuis": 1898,
     "posts_30j": 0,
-    "posts_par_semaine": 2.0
+    "posts_par_semaine": 0.0
   },
   "meilleur_creneau": {
     "jour": "Lundi",

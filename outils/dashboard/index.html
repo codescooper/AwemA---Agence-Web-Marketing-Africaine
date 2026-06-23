@@ -533,9 +533,7 @@ function viewReseaux(){
   const kpis=[['Audience',g.audience,'users','#4BA3FF'],['Posts (récents)',g.posts,'layers','#7C5CFF'],
     ['Réactions',g.likes,'bolt','#34E5C4'],['Commentaires',g.commentaires,'chat','#FFC861'],
     ['Partages',g.partages,'target','#9AA7C2'],['Vues (28j)',g.vues,'eye','#FF7D9C']];
-  if(m&&m.portee_post)kpis.push(['Portée/post',m.portee_post.moyenne,'eye','#7C5CFF']);
-  if(g.engagement_taux!=null)kpis.push(['Engagement',g.engagement_taux,'bolt','#4BA3FF','%']);
-  if(m&&m.croissance)kpis.push(['Net 28j',m.croissance.net_28j,'chart','#34E5C4']);
+  if(g.engagement_taux!=null)kpis.push(['Engag./abonné',g.engagement_taux,'bolt','#4BA3FF','%']);
   kpis.forEach(([lab,v,icn,c,suf])=>{const isNull=(v==null);
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
       <div class="val" ${isNull?'':`data-to="${v}" data-suf="${suf||''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
@@ -578,15 +576,6 @@ function viewReseaux(){
   add(`<h3>${ic('layers')} Types de contenu</h3><div class="sub">Engagement moyen par format</div>
     ${tc&&Object.keys(tc).length?bars(Object.entries(tc).sort((a,b)=>b[1].engagement_moyen-a[1].engagement_moyen).map(([t,v])=>[`${t} (${v.n})`,v.engagement_moyen]),v=>v)
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'—':'À connecter.'}</div>`}`,'col6');
-
-  /* ---- Croissance abonnés (28 j) ---- */
-  const cs=(m&&m.croissance)||null;
-  add(`<h3>${ic('chart')} Croissance (28 j)</h3><div class="sub">Nouveaux vs désabonnements</div>
-    ${cs?`<div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center">
-        <div class="kpibox"><div class="val2" style="color:#34E5C4">+${cs.gagnes_28j??0}</div><div class="lab">gagnés</div></div>
-        <div class="kpibox"><div class="val2" style="color:#FF7D9C">−${cs.perdus_28j??0}</div><div class="lab">perdus</div></div>
-        <div class="kpibox"><div class="val2" style="color:${cs.net_28j>=0?'#34E5C4':'#FF7D9C'}">${cs.net_28j>=0?'+':''}${cs.net_28j}</div><div class="lab">net</div></div>
-      </div>`:`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Indisponible (insights).':'À connecter.'}</div>`}`,'col6');
 
   /* ---- Abonnés les plus actifs (vrais « top fans ») ---- */
   const fans=(m&&m.top_commentateurs)||(m&&m.top_fans)||[];

@@ -87,19 +87,23 @@ des simples vues, pour ne pas afficher un chiffre trompeur).
 ### Cockpit community management (Facebook, automatique)
 
 À chaque sync `--meta-all`, en plus des abonnés/posts/likes, le connecteur dérive **pour chaque
-Page** (données réelles, jamais inventées) :
+Page** (données réelles, jamais inventées), **à partir des posts** (pas des insights) :
 - **Réactions détaillées** par type (👍 ❤️ 🤗 😂 😮 😢 😡).
-- **Portée réelle par post** (`post_impressions_unique`) → portée moyenne + taux d'engagement réel.
 - **Commentaires à répondre** : commentaires sans réponse de la Page (inbox CM) + liens directs.
 - **Abonnés les plus actifs** : top commentateurs (le vrai « meilleur fan », dérivé des commentaires).
-- **Cadence** : dernier post, jours depuis, posts/semaine, posts (30 j).
+- **Cadence** : dernier post, jours depuis, posts/semaine (sur 30 j), posts (30 j).
 - **Meilleur créneau** : jour/heure où l'engagement est le plus fort.
 - **Types de contenu** : engagement moyen par format (photo / vidéo / lien / statut).
-- **Croissance 28 j** : nouveaux abonnés vs désabonnements (`page_fan_adds`/`page_fan_removes`).
+- **Taux d'engagement par abonné** : engagement moyen par post ÷ abonnés.
+- **Vues de la Page (28 j)** : `page_views_total` (seule métrique insights encore valide en v21).
 - **Évolution de l'audience** : un point horodaté est ajouté à chaque sync → vraie courbe dans le temps.
 
-Tout s'affiche dans le dashboard, vue **Présence digitale**. Ce qui n'est pas disponible (ex.
-portée Page en v21, Instagram non relié) reste en « à connecter » — aucune donnée fabriquée.
+> ⚠️ **Limites API v21** : Meta a déprécié la quasi-totalité des métriques *insights*
+> (`page_impressions*`, `post_impressions*`, `page_fan_adds/removes` → `(#100) invalid metric`).
+> La **portée/reach** (Page et post) et la **croissance détaillée** ne sont donc **plus exposées**
+> → non affichées (zéro donnée inventée). Tout le reste est dérivé des posts et reste disponible.
+
+Tout s'affiche dans le dashboard, vue **Présence digitale**.
 
 ## Voie B — Simple : export CSV (Meta Business Suite / TwoMinuteReports)
 

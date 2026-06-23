@@ -10,7 +10,7 @@
     "partages": 7,
     "portee": null,
     "vues": 0,
-    "engagement_taux": null
+    "engagement_taux": 0.5
   },
   "par_reseau": {
     "facebook": {
@@ -229,13 +229,11 @@
     "sad": 0,
     "angry": 0
   },
-  "portee_post": null,
-  "croissance": null,
   "cadence": {
     "dernier_post": "2020-06-18T17:11:31+0000",
     "jours_depuis": 2195,
     "posts_30j": 0,
-    "posts_par_semaine": 0.3
+    "posts_par_semaine": 0.0
   },
   "meilleur_creneau": {
     "jour": "Samedi",
