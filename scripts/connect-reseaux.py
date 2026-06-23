@@ -697,6 +697,7 @@ def via_tiktok_auth(code, redirect_uri):
     ck = os.environ.get("TIKTOK_CLIENT_KEY"); cs = os.environ.get("TIKTOK_CLIENT_SECRET")
     if not (ck and cs):
         sys.exit("❌ export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=... d'abord.")
+    code = urllib.parse.unquote(code)               # accepte le code brut copié depuis l'URL
     body = urllib.parse.urlencode({
         "client_key": ck, "client_secret": cs, "code": code,
         "grant_type": "authorization_code", "redirect_uri": redirect_uri}).encode()
