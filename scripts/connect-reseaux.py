@@ -38,6 +38,19 @@ RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIXTURE = os.environ.get("AWEMA_PAGES_FIXTURE")  # tests hors-ligne
 
 
+def _pages_ignorees():
+    """IDs de Pages à ne JAMAIS synchroniser (anciennes pages, doublons, pages vides).
+    Éditer scripts/reseaux-ignore.json : {"pages_ignorees": ["<page_id>", ...]}."""
+    f = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reseaux-ignore.json")
+    try:
+        return {str(x) for x in json.load(open(f, encoding="utf-8")).get("pages_ignorees", [])}
+    except Exception:
+        return set()
+
+
+IGNOREES = _pages_ignorees()
+
+
 def _vide():
     return {
         "connecte": False, "source": None, "maj": None,
@@ -305,6 +318,9 @@ def via_meta_all():
     for pg in pages:
         page_id = pg.get("id")
         if not page_id:
+            continue
+        if str(page_id) in IGNOREES:
+            print(f"  ⏭️  {pg.get('name') or page_id} ignorée (reseaux-ignore.json)")
             continue
         ptok = pg.get("access_token")
         # Abonnés + nom fiables via le token de Page
