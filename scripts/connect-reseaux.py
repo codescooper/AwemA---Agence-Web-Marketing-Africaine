@@ -272,6 +272,24 @@ def _engagement_page(data, page_id, ptok):
                 "partages": (p.get("shares") or {}).get("count", 0)})
     except Exception as e:
         print(f"  ⚠️ FB posts {page_id}: {e}")
+    _insights_page(data, page_id, ptok)
+
+
+def _insights_page(data, page_id, ptok):
+    """Portée Page (28 j) via read_insights. Reste null si la permission manque."""
+    if FIXTURE or not ptok:
+        return
+    fb = data["par_reseau"]["facebook"]
+    try:
+        rep = _get(f"{GRAPH}/{page_id}/insights?metric=page_impressions_unique"
+                   f"&period=days_28&access_token={ptok}").get("data", [])
+        for m in rep:
+            vals = m.get("values") or []
+            val = vals[-1].get("value") if vals else None
+            if m.get("name") == "page_impressions_unique" and val is not None:
+                fb["portee"] = val      # → global.portee + engagement_taux (cf. _consolider)
+    except Exception as e:
+        print(f"  ⚠️ insights {page_id} (read_insights manquant ?): {e}")
 
 
 def _engagement_ig(data, ig, ptok):

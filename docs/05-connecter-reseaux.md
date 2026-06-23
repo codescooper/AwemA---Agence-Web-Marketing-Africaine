@@ -62,6 +62,22 @@ python3 outils/_data/build.py
 
 ---
 
+### Portée / impressions (permission `read_insights`)
+
+Par défaut, `portee` reste `null` (audience, posts, likes, commentaires et top posts
+fonctionnent sans). Pour remonter la **portée Page (28 j)** et le **taux d'engagement** :
+
+1. Régénérer le `META_TOKEN` en cochant **`read_insights`** dans l'Explorateur de l'API Graph
+   (pas d'App Review pour **tes propres** pages dont tu es admin).
+2. Mettre à jour le Secret `META_TOKEN` → **Run workflow**.
+
+Le script appelle alors `/{page_id}/insights?metric=page_impressions_unique&period=days_28`
+→ `par_reseau.facebook.portee` → `global.portee` + `global.engagement_taux`.
+
+> ⚠️ Le **« meilleur fan » nominatif n'est plus exposé** par l'API Graph (liste des fans fermée
+> par Meta). On dispose des **top posts**, de la **portée**, des **impressions** et de
+> l'**engagement** — pas d'un classement individuel des fans.
+
 ## Voie B — Simple : export CSV (Meta Business Suite / TwoMinuteReports)
 
 Sans app Meta : exporter les chiffres depuis l'outil du client, puis :
