@@ -2,33 +2,40 @@
 # -*- coding: utf-8 -*-
 """Connecteur « présence digitale » → écrit reseaux.json (données RÉELLES).
 
-Remplit le contrat outils/_data (reseaux.json) d'un client à partir des réseaux
-sociaux. Deux voies :
+Remplit le contrat outils/_data (reseaux.json) à partir des réseaux sociaux. Voies :
 
-  1) META GRAPH API (Facebook Page + Instagram Business)
-     Requiert un token d'accès (Page/IG) avec les permissions de lecture insights.
-     export META_TOKEN="EAAB..."   export FB_PAGE_ID="..."   export IG_USER_ID="..."
+  1) META — TOUTES LES PAGES (recommandé pour l'agence)
+     Un seul token : découvre toutes les Pages gérées et crée/maj un client par Page.
+     export META_TOKEN="EAAB..."
+     python3 connect-reseaux.py --meta-all
 
-  2) IMPORT MANUEL (CSV exporté depuis Meta Business Suite / TwoMinuteReports / autre)
+  2) META — UNE PAGE précise
+     export META_TOKEN="EAAB..." FB_PAGE_ID="..." IG_USER_ID="..."
+     python3 connect-reseaux.py --meta departements/marketing/clients/la-grande-vision
+
+  3) IMPORT MANUEL (CSV exporté depuis Meta Business Suite / TwoMinuteReports / autre)
      python3 connect-reseaux.py --manuel <client_dir> <export.csv>
 
 Aucune donnée inventée : si une source est absente, les champs restent null.
-Le réseau du sandbox peut bloquer les appels externes → lancer ce script depuis
-une machine ayant accès à graph.facebook.com.
+Le réseau du sandbox peut bloquer graph.facebook.com → lancer depuis une machine
+connectée (ou via le GitHub Action .github/workflows/sync-reseaux.yml).
 
-Usage :
-  python3 connect-reseaux.py --meta departements/marketing/clients/la-grande-vision
-  python3 connect-reseaux.py --manuel <client_dir> <export.csv>
+TEST hors-ligne : définir AWEMA_PAGES_FIXTURE=<fichier.json> pour simuler me/accounts.
 """
 import csv
+import glob
 import json
 import os
+import re
 import sys
+import unicodedata
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
 GRAPH = "https://graph.facebook.com/v21.0"
+RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FIXTURE = os.environ.get("AWEMA_PAGES_FIXTURE")  # tests hors-ligne
 
 
 def _vide():
@@ -154,9 +161,156 @@ def _ecrire(client_dir, data):
     print("   Pense à régénérer le registre : python3 outils/_data/build.py")
 
 
+# --------------------------------------------------------------------------- #
+# META — découverte de TOUTES les Pages (un client par Page)
+# --------------------------------------------------------------------------- #
+def slugify(s):
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode()
+    s = re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
+    return s or "page"
+
+
+def initiales(nom):
+    parts = [p for p in re.split(r"\s+", nom or "") if p]
+    if not parts:
+        return "AW"
+    if len(parts) >= 2:
+        return (parts[0][:1] + parts[1][:1]).upper()
+    return parts[0][:2].upper()
+
+
+def _pages():
+    """Liste les Pages gérées (me/accounts) avec IG lié. Pagination gérée.
+    En mode FIXTURE, lit un JSON {"data":[...]} pour tester hors-ligne."""
+    if FIXTURE:
+        with open(FIXTURE, encoding="utf-8") as f:
+            return json.load(f).get("data", [])
+    token = os.environ.get("META_TOKEN")
+    if not token:
+        sys.exit("❌ META_TOKEN manquant. export META_TOKEN=\"EAAB...\"")
+    fields = ("name,id,access_token,fan_count,followers_count,"
+              "instagram_business_account{id,username,followers_count,media_count}")
+    url = f"{GRAPH}/me/accounts?fields={fields}&limit=50&access_token={token}"
+    out = []
+    while url:
+        d = _get(url)
+        out += d.get("data", [])
+        url = (d.get("paging") or {}).get("next")
+    return out
+
+
+def _trouver_client_par_pageid(page_id):
+    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    for cj in glob.glob(motif):
+        try:
+            d = json.load(open(cj, encoding="utf-8"))
+        except Exception:
+            continue
+        if str(d.get("fb_page_id")) == str(page_id):
+            return os.path.dirname(os.path.dirname(cj))
+    return None
+
+
+def _assurer_client_json(client_dir, pg):
+    donnees = os.path.join(client_dir, "_donnees")
+    os.makedirs(donnees, exist_ok=True)
+    cj = os.path.join(donnees, "client.json")
+    nom = pg.get("name") or pg.get("id")
+    ig = pg.get("instagram_business_account") or {}
+    slug = os.path.basename(client_dir)
+    if os.path.exists(cj):
+        d = json.load(open(cj, encoding="utf-8"))            # préserve les éditions humaines
+    else:
+        d = {
+            "id": slug, "nom": nom, "secteur": "", "lieu": "",
+            "departement": "marketing", "statut": "actif", "initiales": initiales(nom),
+            "reseaux": {
+                "facebook": f"https://facebook.com/{pg.get('id')}",
+                "instagram": (f"https://instagram.com/{ig.get('username')}" if ig.get("username") else ""),
+                "tiktok": "", "linkedin": "", "whatsapp": "",
+            },
+            "chemins": {
+                "campagne": "_donnees/campagne.json", "reseaux": "_donnees/reseaux.json",
+                "revue": f"../../../../outils/revue-visuels/index.html?client={slug}",
+            },
+        }
+    d["fb_page_id"] = pg.get("id")
+    if ig.get("id"):
+        d["ig_user_id"] = ig.get("id")
+    json.dump(d, open(cj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
+
+def _engagement_page(data, page_id, ptok):
+    """Likes/commentaires + top posts FB (sautés en mode FIXTURE)."""
+    if FIXTURE or not ptok:
+        return
+    fb = data["par_reseau"]["facebook"]
+    try:
+        posts = _get(f"{GRAPH}/{page_id}/posts?fields=message,likes.summary(true),"
+                     f"comments.summary(true),shares&limit=25&access_token={ptok}")["data"]
+        fb["posts"] = len(posts)
+        fb["likes"] = sum(p.get("likes", {}).get("summary", {}).get("total_count", 0) for p in posts)
+        fb["commentaires"] = sum(p.get("comments", {}).get("summary", {}).get("total_count", 0) for p in posts)
+        for p in posts:
+            data["top_posts"].append({
+                "titre": (p.get("message") or "")[:80], "plateforme": "Facebook",
+                "likes": p.get("likes", {}).get("summary", {}).get("total_count", 0),
+                "commentaires": p.get("comments", {}).get("summary", {}).get("total_count", 0),
+                "partages": (p.get("shares") or {}).get("count", 0)})
+    except Exception as e:
+        print(f"  ⚠️ FB posts {page_id}: {e}")
+
+
+def _engagement_ig(data, ig, ptok):
+    if not ig:
+        return
+    ins = data["par_reseau"]["instagram"]
+    ins["abonnes"] = ig.get("followers_count")
+    ins["posts"] = ig.get("media_count")
+    if FIXTURE or not ptok or not ig.get("id"):
+        return
+    try:
+        media = _get(f"{GRAPH}/{ig['id']}/media?fields=caption,like_count,"
+                     f"comments_count&limit=25&access_token={ptok}")["data"]
+        ins["likes"] = sum(m.get("like_count", 0) for m in media)
+        ins["commentaires"] = sum(m.get("comments_count", 0) for m in media)
+        for m in media:
+            data["top_posts"].append({
+                "titre": (m.get("caption") or "")[:80], "plateforme": "Instagram",
+                "likes": m.get("like_count", 0), "commentaires": m.get("comments_count", 0),
+                "partages": 0})
+    except Exception as e:
+        print(f"  ⚠️ IG media: {e}")
+
+
+def via_meta_all():
+    """Un client par Page gérée. Crée les dossiers manquants, met à jour reseaux.json."""
+    pages = _pages()
+    n = 0
+    for pg in pages:
+        page_id = pg.get("id")
+        if not page_id:
+            continue
+        client_dir = _trouver_client_par_pageid(page_id) or os.path.join(
+            RACINE, "departements", "marketing", "clients", slugify(pg.get("name") or page_id))
+        _assurer_client_json(client_dir, pg)
+        data = _vide()
+        data["source"] = "meta-graph-api"
+        data["par_reseau"]["facebook"]["abonnes"] = pg.get("followers_count") or pg.get("fan_count")
+        _engagement_page(data, page_id, pg.get("access_token"))
+        _engagement_ig(data, pg.get("instagram_business_account") or {}, pg.get("access_token"))
+        _consolider(data)
+        _ecrire(client_dir, data)
+        n += 1
+        print(f"  ✓ {pg.get('name')} → {os.path.relpath(client_dir, RACINE)}")
+    print(f"✅ {n} page(s) synchronisée(s). Régénère le registre : python3 outils/_data/build.py")
+
+
 def main():
     a = sys.argv[1:]
-    if len(a) >= 2 and a[0] == "--meta":
+    if a and a[0] == "--meta-all":
+        via_meta_all()
+    elif len(a) >= 2 and a[0] == "--meta":
         via_meta(a[1])
     elif len(a) >= 3 and a[0] == "--manuel":
         via_manuel(a[1], a[2])

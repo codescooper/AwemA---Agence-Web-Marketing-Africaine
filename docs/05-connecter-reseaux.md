@@ -35,22 +35,30 @@ propriétaire du compte** (un *token* / OAuth). Il n'existe pas de raccourci mag
 Le runner GitHub a accès à Internet (le sandbox de génération, non). Un workflow planifié
 récupère les données et met à jour le dépôt — **sans intervention**.
 
-### Pas à pas
-1. **Créer une app Meta + un token** (https://developers.facebook.com) avec les permissions :
-   `pages_read_engagement`, `instagram_basic`, `instagram_manage_insights`.
-   Récupérer aussi l'**ID de la Page Facebook** et l'**ID du compte Instagram Business**.
-   ➡️ **Démarche détaillée pas-à-pas : [`06-obtenir-token-meta.md`](06-obtenir-token-meta.md).**
-2. Dans GitHub : **Settings → Secrets and variables → Actions**
-   - **Secret** `META_TOKEN` = le token.
-   - **Variables** `FB_PAGE_ID`, `IG_USER_ID`, `CLIENT_DIR`
-     (ex : `departements/marketing/clients/la-grande-vision`).
-3. Onglet **Actions → « Sync présence digitale » → Run workflow**
-   (ou attendre le déclenchement planifié, chaque lundi 06:00 UTC).
-4. Le workflow exécute `connect-reseaux.py` → `build.py` → **commit** `reseaux.json` + `agence.js`.
-5. Rouvrir le dashboard → la vue **Présence digitale** affiche les chiffres réels.
+### Pas à pas (UN seul token → TOUTES les Pages)
+1. **Créer une app Meta + un token utilisateur** (https://developers.facebook.com) avec :
+   `pages_show_list`, `pages_read_engagement`, `read_insights`, `instagram_basic`,
+   `instagram_manage_insights`.
+   ➡️ **Démarche détaillée : [`06-obtenir-token-meta.md`](06-obtenir-token-meta.md).**
+   *(Pas besoin d'IDs par Page : le script les découvre via `me/accounts`.)*
+2. GitHub → **Settings → Secrets and variables → Actions** → **Secret** `META_TOKEN`.
+3. Onglet **Actions → « Sync présence digitale (réseaux) » → Run workflow**
+   (ou planifié chaque lundi 06:00 UTC).
+4. Le workflow exécute `connect-reseaux.py --meta-all` → **crée/maj un client par Page**
+   → `build.py` → **commit** des `reseaux.json` + `agence.js`.
+5. Rouvrir le dashboard → **toutes les Pages apparaissent comme clients**, vue **Présence
+   digitale** = chiffres réels.
 
-> Fichier : `.github/workflows/sync-reseaux.yml` (déjà fourni).
-> ⚠️ Les tokens Meta longue durée expirent (~60 j) : prévoir un rafraîchissement.
+> Fichier : `.github/workflows/sync-reseaux.yml`.
+> 🔐 Le token ne vit **que** dans le Secret GitHub (jamais dans le dépôt). Régénérable à tout
+> moment sans rien casser. Les tokens longue durée expirent (~60 j) → rafraîchir.
+
+### En local (équivalent)
+```bash
+export META_TOKEN="EAAB..."
+python3 scripts/connect-reseaux.py --meta-all     # toutes les Pages
+python3 outils/_data/build.py
+```
 
 ---
 

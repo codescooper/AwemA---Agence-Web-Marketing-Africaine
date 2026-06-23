@@ -1,0 +1,22 @@
+{
+  "id": "awema-models",
+  "nom": "Awema Models",
+  "secteur": "",
+  "lieu": "",
+  "departement": "marketing",
+  "statut": "actif",
+  "initiales": "AM",
+  "reseaux": {
+    "facebook": "https://facebook.com/607541526344638",
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": "",
+    "whatsapp": ""
+  },
+  "chemins": {
+    "campagne": "_donnees/campagne.json",
+    "reseaux": "_donnees/reseaux.json",
+    "revue": "../../../../outils/revue-visuels/index.html?client=awema-models"
+  },
+  "fb_page_id": "607541526344638"
+}

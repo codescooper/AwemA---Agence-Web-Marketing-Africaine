@@ -1,25 +1,21 @@
 name: Sync présence digitale (réseaux)
 
-# Récupère les métriques sociales réelles d'un client (Meta Graph API) et met à jour
-# son reseaux.json + le registre agence.js. Le runner GitHub a accès à Internet
-# (contrairement au sandbox de génération) → graph.facebook.com fonctionne ici.
+# Récupère les métriques sociales réelles de TOUTES les Pages gérées (Meta Graph API)
+# et met à jour leur reseaux.json + le registre agence.js. Le runner GitHub a accès à
+# Internet (contrairement au sandbox de génération) → graph.facebook.com fonctionne ici.
 #
 # PRÉ-REQUIS (une fois) — dans le dépôt :
 #   Settings → Secrets and variables → Actions
-#     Secret  : META_TOKEN     (token Page/IG avec pages_read_engagement, instagram_basic,
-#                               instagram_manage_insights)
-#     Variable: FB_PAGE_ID     (ID de la Page Facebook)
-#     Variable: IG_USER_ID     (ID du compte Instagram Business)
-#     Variable: CLIENT_DIR     (ex: departements/marketing/clients/la-grande-vision)
+#     Secret  : META_TOKEN   (token utilisateur avec pages_show_list, pages_read_engagement,
+#                             read_insights, instagram_basic, instagram_manage_insights)
+#
+# UN SEUL token suffit : le script découvre toutes les Pages (me/accounts), crée/maj un
+# client par Page et remplit ses données. Aucun ID par page à saisir.
 #
 # Lancement : onglet Actions → ce workflow → "Run workflow" (ou planifié chaque lundi 06:00).
 
 on:
   workflow_dispatch:
-    inputs:
-      client_dir:
-        description: "Dossier client (laisser vide pour utiliser la variable CLIENT_DIR)"
-        required: false
   schedule:
     - cron: "0 6 * * 1"   # tous les lundis à 06:00 UTC
 
@@ -36,19 +32,14 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Récupérer les métriques réseaux (Meta Graph API)
+      - name: Synchroniser TOUTES les Pages (Meta Graph API)
         env:
-          META_TOKEN:  ${{ secrets.META_TOKEN }}
-          FB_PAGE_ID:  ${{ vars.FB_PAGE_ID }}
-          IG_USER_ID:  ${{ vars.IG_USER_ID }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
         run: |
-          CLIENT="${{ github.event.inputs.client_dir }}"
-          [ -z "$CLIENT" ] && CLIENT="${{ vars.CLIENT_DIR }}"
-          if [ -z "$META_TOKEN" ] || [ -z "$CLIENT" ]; then
-            echo "::error::META_TOKEN (secret) et CLIENT_DIR (variable) sont requis."; exit 1
+          if [ -z "$META_TOKEN" ]; then
+            echo "::error::Secret META_TOKEN requis."; exit 1
           fi
-          echo "Sync réseaux pour: $CLIENT"
-          python3 scripts/connect-reseaux.py --meta "$CLIENT"
+          python3 scripts/connect-reseaux.py --meta-all
 
       - name: Régénérer le registre agence
         run: python3 outils/_data/build.py
@@ -61,7 +52,7 @@ jobs:
             git add -A
             git commit -m "chore(réseaux): sync présence digitale ($(date -u +%F))"
             git push
-            echo "✅ reseaux.json mis à jour."
+            echo "✅ Données réseaux mises à jour."
           else
             echo "ℹ️ Aucune nouvelle donnée."
           fi

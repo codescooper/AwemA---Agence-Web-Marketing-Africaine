@@ -18,5 +18,6 @@
     "campagne": "_donnees/campagne.json",
     "reseaux": "_donnees/reseaux.json",
     "revue": "../../../../outils/revue-visuels/index.html?client=la-grande-vision"
-  }
+  },
+  "fb_page_id": "1020811574455073"
 }
