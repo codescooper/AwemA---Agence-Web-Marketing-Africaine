@@ -30,6 +30,30 @@ Compte TikTok ──(OAuth, 1 fois)──▶ refresh_token ──▶ Variable TI
 > + `video.list`. En **sandbox**, ça marche pour les comptes ajoutés comme testeurs.
 
 ## Étape 2 — Autoriser chaque compte (récupérer un refresh_token)
+
+### 🟢 Méthode automatisée (recommandée) — `scripts/tiktok-onboard.py`
+Un assistant qui automatise **tout** sauf le clic « Authorize » (qu'OAuth impose) : il capture le
+code (petit serveur local, **zéro copier-coller**), échange le token, propose le slug, **boucle**
+sur plusieurs comptes, et **met à jour la Variable `TIKTOK_TOKENS` tout seul**.
+
+Pré-requis (une fois) : dans l'app TikTok → *URL properties / Login Kit*, ajoute la Redirect URI
+`http://127.0.0.1:8723/callback` (et `http://localhost:8723/callback`). Si TikTok refuse
+localhost, lance avec `--paste` (utilise la redirect github.io existante).
+
+```bash
+# Windows : set ... / mac-linux : export ...
+set TIKTOK_CLIENT_KEY=...
+set TIKTOK_CLIENT_SECRET=...
+set GH_PAT=...                 # PAT fin « Variables: Read and write » → MAJ auto de la Variable
+python scripts/tiktok-onboard.py          # capture auto
+python scripts/tiktok-onboard.py --paste  # repli (coller l'URL)
+```
+Déroulé : connecte-toi au compte voulu dans le navigateur → Entrée → autorise → l'assistant
+enregistre le compte, puis demande « un autre ? ». À la fin, la Variable est à jour → **Run
+workflow**. Pour ajouter d'autres comptes plus tard, relance le script (il fusionne avec
+l'existant). **Change de compte TikTok dans le navigateur entre chaque autorisation.**
+
+### Méthode manuelle (équivalent, pas à pas)
 Pour **chaque** compte TikTok à suivre :
 
 1. Ouvre dans le navigateur (en étant connecté au bon compte TikTok) :
