@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:19+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 10,
+    "posts": 12,
+    "likes": 1,
+    "commentaires": 0,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 10,
+      "posts": 12,
+      "likes": 1,
+      "commentaires": 0,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nous sommes à la recherche d'une jeune fille pour assurer le service de cocktail",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Societé spécialisé dans la vente en ligne cherche fournisseur de produit Africai",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nous sommes à la recherche d'une jeune fille élégante et presentable pour assure",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nous sommes à la recherche d’un gérant à temps plein qui aime travailler avec le",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nous sommes à la recherche d’une Caissière à temps plein qui aime travailler ave",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "peri-bara-cote-d-ivoire"
 }

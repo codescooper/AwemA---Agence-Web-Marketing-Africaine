@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:30+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 285,
+    "posts": 25,
+    "likes": 86,
+    "commentaires": 7,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 285,
+      "posts": 25,
+      "likes": 86,
+      "commentaires": 7,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Cette je dérobe à la règle , c'est Manon Wanders qui va traiter le sujet à ma pl",
+      "plateforme": "Facebook",
+      "likes": 14,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "Envie de quotidiennement améliorer ton anglais ? rdv ce soir pour de très bonnes",
+      "plateforme": "Facebook",
+      "likes": 11,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "[FILM] conseillé au geek voila pourquoi je vous en parle mes chers scooper !\nAhh",
+      "plateforme": "Facebook",
+      "likes": 9,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nouvelle vidéos ce soir ( ou demain , selon la connexion :D ) , je vous fais déc",
+      "plateforme": "Facebook",
+      "likes": 9,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "------------------------------[ATTENTION]---------------------------\nLes utilisa",
+      "plateforme": "Facebook",
+      "likes": 5,
+      "commentaires": 2,
+      "partages": 7
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 5,
+      "commentaires": 1,
+      "partages": 2
+    },
+    {
+      "titre": "Videos disponible ;) , abonne toi à la chaîne youtube , et laisse un pouce bleu ",
+      "plateforme": "Facebook",
+      "likes": 6,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "À 5 ans il apprenait à coder, à 9 ans il créait son appli pour iPhone et depuis ",
+      "plateforme": "Facebook",
+      "likes": 5,
+      "commentaires": 0,
+      "partages": 1
+    }
+  ],
   "evolution_audience": [],
   "client": "code-scooper"
 }

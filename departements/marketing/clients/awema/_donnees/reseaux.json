@@ -1,22 +1,22 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:47:17+00:00",
+  "maj": "2026-06-23T02:47:33+00:00",
   "global": {
-    "audience": 102,
-    "posts": 15,
-    "likes": 15,
-    "commentaires": 0,
+    "audience": 588,
+    "posts": 24,
+    "likes": 37,
+    "commentaires": 4,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 102,
-      "posts": 15,
-      "likes": 15,
-      "commentaires": 0,
+      "abonnes": 588,
+      "posts": 24,
+      "likes": 37,
+      "commentaires": 4,
       "portee": null
     },
     "instagram": {
@@ -44,53 +44,53 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "",
+      "titre": "🎬 De l’idée au réel.\nCette vidéo n’est pas juste une création visuelle.\nC’est le",
       "plateforme": "Facebook",
-      "likes": 3,
+      "likes": 13,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "🚀 MASTERCLASS 100 % PRATIQUE – INTELLIGENCE ARTIFICIELLE 🤖✨\n\nTu veux créer des c",
+      "plateforme": "Facebook",
+      "likes": 12,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "Merci surtout à vous pour votre attention , à bientôt pour un nouveau repas de c",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 2,
+      "partages": 2
+    },
+    {
+      "titre": "🐝🤖 AWEMA PRÉSENTE : MASTERCLASS INTELLIGENCE ARTIFICIELLE – PARTICIPATION GRATUI",
+      "plateforme": "Facebook",
+      "likes": 2,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "",
+      "titre": "Une cliente nous a envoyé les photos de ses produits via WhatsApp pour voir ce q",
       "plateforme": "Facebook",
-      "likes": 2,
+      "likes": 1,
       "commentaires": 0,
-      "partages": 2
+      "partages": 1
     },
     {
       "titre": "",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Vous n'aurais jamais été autant vous même, \nSOON .....   | 😌  🤗  👕 |\n#EgoIpse #E",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "Alors on vous à manqué ici ?",
       "plateforme": "Facebook",
       "likes": 1,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Animal collection deep",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 5
-    },
-    {
       "titre": "",
       "plateforme": "Facebook",
       "likes": 1,
       "commentaires": 0,
-      "partages": 2
+      "partages": 0
     },
     {
       "titre": "",
@@ -101,5 +101,5 @@
     }
   ],
   "evolution_audience": [],
-  "client": "ego-ipse"
+  "client": "awema"
 }

@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:14+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 524,
+    "posts": 25,
+    "likes": 33,
+    "commentaires": 8,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 524,
+      "posts": 25,
+      "likes": 33,
+      "commentaires": 8,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Les malinois sont disponible <3",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "qu'attend tu pour venir chercher le tiens <3",
+      "plateforme": "Facebook",
+      "likes": 3,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "Accouplement",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 0,
+      "partages": 3
+    },
+    {
+      "titre": "Ils cherchent une nouvelle famille , est ce la votre ??",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "Foncer profiter de l'occaz ;)",
+      "plateforme": "Facebook",
+      "likes": 3,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "Dog Allemang pure race cherche famille d'accueil ! \n#IvoirePetShop #ChienDeRace ",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nous attendons vos Pets de chou pour en prendre soin ;)",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 1,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "ivoire-petshop"
 }

@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:10+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 1,
+    "posts": 0,
+    "likes": 0,
+    "commentaires": 0,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 1,
+      "posts": 0,
+      "likes": 0,
+      "commentaires": 0,
       "portee": null
     },
     "instagram": {

@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:09+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 0,
+    "posts": 2,
+    "likes": 0,
+    "commentaires": 0,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 0,
+      "posts": 2,
+      "likes": 0,
+      "commentaires": 0,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,22 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Toi aussi tu cherches des partenaires de jeu pour cashflow ? rejoins notre mini-",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "cashflow-club-civ"
 }

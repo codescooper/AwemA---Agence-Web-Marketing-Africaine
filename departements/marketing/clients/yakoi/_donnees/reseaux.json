@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:41+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 212,
+    "posts": 9,
+    "likes": 72,
+    "commentaires": 27,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 212,
+      "posts": 9,
+      "likes": 72,
+      "commentaires": 27,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Une perle de wesley kam, j imagine trop mes parent comme ça !",
+      "plateforme": "Facebook",
+      "likes": 26,
+      "commentaires": 3,
+      "partages": 4
+    },
+    {
+      "titre": "Vraiment  rad lala \n#yakoi",
+      "plateforme": "Facebook",
+      "likes": 10,
+      "commentaires": 15,
+      "partages": 14
+    },
+    {
+      "titre": "Un mot pour notre frère ?\n#YAKOI",
+      "plateforme": "Facebook",
+      "likes": 15,
+      "commentaires": 2,
+      "partages": 17
+    },
+    {
+      "titre": "Incroyable ce que ce mec fait sur un escalator !\n-------------------------------",
+      "plateforme": "Facebook",
+      "likes": 12,
+      "commentaires": 1,
+      "partages": 3
+    },
+    {
+      "titre": "Quand les éléphants gagnent un match\n-----------------------------------------\nL",
+      "plateforme": "Facebook",
+      "likes": 5,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "Comprenez le cest pas facile heun",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 2,
+      "partages": 2
+    },
+    {
+      "titre": "eh ils nous met un peut a l'amande quand même non ? \n#YAKOI",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "Ah nos sœur changez svp !",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 1,
+      "partages": 3
+    }
+  ],
   "evolution_audience": [],
   "client": "yakoi"
 }

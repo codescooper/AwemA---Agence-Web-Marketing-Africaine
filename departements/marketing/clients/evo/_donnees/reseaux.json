@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:35+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 340,
+    "posts": 16,
+    "likes": 238,
+    "commentaires": 3,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 340,
+      "posts": 16,
+      "likes": 238,
+      "commentaires": 3,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Chemises Evo disponibles",
+      "plateforme": "Facebook",
+      "likes": 23,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "Choisissez un de nos modèles en ligne 💻, appelez nous (au 📱78317400 ou au 📞42776",
+      "plateforme": "Facebook",
+      "likes": 20,
+      "commentaires": 1,
+      "partages": 12
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 20,
+      "commentaires": 1,
+      "partages": 2
+    },
+    {
+      "titre": "Choisissez le modèle qui vous convient, appelez nous #78317400 et faites vous li",
+      "plateforme": "Facebook",
+      "likes": 21,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 20,
+      "commentaires": 0,
+      "partages": 5
+    },
+    {
+      "titre": "Chemise Evo disponible, commander dès maintenant sur notre page Facebook ou joig",
+      "plateforme": "Facebook",
+      "likes": 20,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "Découvrez des chemises faites pour vous, commander et faites vous livrer partout",
+      "plateforme": "Facebook",
+      "likes": 19,
+      "commentaires": 1,
+      "partages": 1
+    },
+    {
+      "titre": "Découvrez les kimonos Evo à des prix abordables",
+      "plateforme": "Facebook",
+      "likes": 18,
+      "commentaires": 0,
+      "partages": 1
+    }
+  ],
   "evolution_audience": [],
   "client": "evo"
 }

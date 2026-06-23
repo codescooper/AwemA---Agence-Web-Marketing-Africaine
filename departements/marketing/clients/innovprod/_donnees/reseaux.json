@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:08+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 2098,
+    "posts": 25,
+    "likes": 133,
+    "commentaires": 3,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 2098,
+      "posts": 25,
+      "likes": 133,
+      "commentaires": 3,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Soyez passionne(e)s\nSoyez Audacieux(se)\nSoyez déterminé(e)\nSoyez vous!\nNous vous",
+      "plateforme": "Facebook",
+      "likes": 21,
+      "commentaires": 1,
+      "partages": 5
+    },
+    {
+      "titre": "~ Le Plus Difficile Est De Se Décider À Agir, Le Reste N’est Que De La Ténacité ",
+      "plateforme": "Facebook",
+      "likes": 12,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "A vos marques, prêts, souriez!\n\nService commercial: +225 0759856025\nEmail: innov",
+      "plateforme": "Facebook",
+      "likes": 11,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "Les portes de l’avenir sont ouvertes à ceux qui savent les pousser. Passez une e",
+      "plateforme": "Facebook",
+      "likes": 7,
+      "commentaires": 1,
+      "partages": 4
+    },
+    {
+      "titre": "Couleur ou Blanc Noir?\n\nService Commercial: 0759856025\nEmail: innovprodvideo@gma",
+      "plateforme": "Facebook",
+      "likes": 6,
+      "commentaires": 1,
+      "partages": 1
+    },
+    {
+      "titre": "Pinceau\nCostume \nAmbiance \nNous nous occupons de votre image avec soins.\n\nNous s",
+      "plateforme": "Facebook",
+      "likes": 7,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "Shoot Artistique\nMuse: Nisa Kouame \nRéalisation: Innov Prod \n\nNous réalisons des",
+      "plateforme": "Facebook",
+      "likes": 6,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Si vous pouvez le rêver, vous pouvez le faire.\nPassez une excellente semaine.\n\n#",
+      "plateforme": "Facebook",
+      "likes": 6,
+      "commentaires": 0,
+      "partages": 1
+    }
+  ],
   "evolution_audience": [],
   "client": "innovprod"
 }

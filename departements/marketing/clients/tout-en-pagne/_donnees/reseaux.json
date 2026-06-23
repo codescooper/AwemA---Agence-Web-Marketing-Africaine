@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:38+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 2811,
+    "posts": 3,
+    "likes": 11,
+    "commentaires": 4,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 2811,
+      "posts": 3,
+      "likes": 11,
+      "commentaires": 4,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,29 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "la belle edwige rita diroha dans sa magnifique robe qui la drap avec justesse ju",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 4,
+      "partages": 0
+    },
+    {
+      "titre": "Habiller vos articles avec du pagne est désormais un jeu d'enfant avec les servi",
+      "plateforme": "Facebook",
+      "likes": 6,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Nous recherchons des artisans ayant un talent pour la personnalisation d'article",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "tout-en-pagne"
 }

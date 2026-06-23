@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:25+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 468,
+    "posts": 25,
+    "likes": 144,
+    "commentaires": 29,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 468,
+      "posts": 25,
+      "likes": 144,
+      "commentaires": 29,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "les Choses se précisent!!!\nMontée en Capacité et en Puissance...\nSmartTop, c'est",
+      "plateforme": "Facebook",
+      "likes": 19,
+      "commentaires": 11,
+      "partages": 8
+    },
+    {
+      "titre": "Ce lundi, à la Primature, Bilan de l'action gouvernementale, échange entre le Pr",
+      "plateforme": "Facebook",
+      "likes": 10,
+      "commentaires": 5,
+      "partages": 1
+    },
+    {
+      "titre": "Bonsoir,\nBrava Afreeca a le plaisir de vous annoncer sa  toute dernière INNOVATI",
+      "plateforme": "Facebook",
+      "likes": 14,
+      "commentaires": 1,
+      "partages": 14
+    },
+    {
+      "titre": "Bonjour à tous!\n\nSoyez les premiers servis lors du lancement officiel du premier",
+      "plateforme": "Facebook",
+      "likes": 9,
+      "commentaires": 4,
+      "partages": 4
+    },
+    {
+      "titre": "Lors de la rencontre de S.E.M Alassane OUATTARA et les jeunes entrepreneurs et C",
+      "plateforme": "Facebook",
+      "likes": 10,
+      "commentaires": 2,
+      "partages": 8
+    },
+    {
+      "titre": "Fondateur de BRAVA AFREECA, Président des Jeunes entreprises innovantes de COTE ",
+      "plateforme": "Facebook",
+      "likes": 10,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "Coming Soon\nBrava vous souhaite une très bonne journée!\n#Made #By #Ivorian, #Sma",
+      "plateforme": "Facebook",
+      "likes": 9,
+      "commentaires": 1,
+      "partages": 4
+    },
+    {
+      "titre": "Un Ordinateur avec des particularités très avantageux .\n\npassez vos commande ici",
+      "plateforme": "Facebook",
+      "likes": 7,
+      "commentaires": 1,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "brava-afreeca"
 }

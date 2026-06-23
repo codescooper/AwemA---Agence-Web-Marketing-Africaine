@@ -1,22 +1,22 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:47:17+00:00",
+  "maj": "2026-06-23T02:47:05+00:00",
   "global": {
-    "audience": 102,
-    "posts": 15,
-    "likes": 15,
-    "commentaires": 0,
+    "audience": 82,
+    "posts": 17,
+    "likes": 39,
+    "commentaires": 2,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 102,
-      "posts": 15,
-      "likes": 15,
-      "commentaires": 0,
+      "abonnes": 82,
+      "posts": 17,
+      "likes": 39,
+      "commentaires": 2,
       "portee": null
     },
     "instagram": {
@@ -46,60 +46,60 @@
     {
       "titre": "",
       "plateforme": "Facebook",
+      "likes": 5,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "🎉✨ Le grand jour approche ! ✨🎉\nJOUR J-1\nLe Festival de la Charité est enfin là ❤",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "🎉 Tu viens au Festicharité le 14 août ? Voici le KIT DU FESTIVALIER pour vivre à",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
       "likes": 3,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "",
+      "titre": "📺✨ [SPOT OFFICIEL – FESTICHARITÉ 2025]\n🔊 Monte le son. Regarde. Ressens. Et part",
       "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 2,
+      "likes": 3,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Vous n'aurais jamais été autant vous même, \nSOON .....   | 😌  🤗  👕 |\n#EgoIpse #E",
+      "titre": "🎯 Envie de faire partie de l'aventure Festicharité 2025 ?\nTu veux aider, accueil",
       "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "Alors on vous à manqué ici ?",
-      "plateforme": "Facebook",
-      "likes": 1,
+      "likes": 3,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Animal collection deep",
+      "titre": "👋🏾 Hey les amis, vous faites quoi le 14 août ?\n\nJ’aimerais vraiment vous parler ",
       "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 5
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
+      "likes": 3,
       "commentaires": 0,
       "partages": 0
     }
   ],
   "evolution_audience": [],
-  "client": "ego-ipse"
+  "client": "festicharite"
 }

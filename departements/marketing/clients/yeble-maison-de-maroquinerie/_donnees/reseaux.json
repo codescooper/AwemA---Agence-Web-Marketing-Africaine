@@ -1,11 +1,11 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:47:17+00:00",
+  "maj": "2026-06-23T02:47:02+00:00",
   "global": {
-    "audience": 102,
-    "posts": 15,
-    "likes": 15,
+    "audience": 15,
+    "posts": 7,
+    "likes": 1,
     "commentaires": 0,
     "partages": null,
     "portee": null,
@@ -13,9 +13,9 @@
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 102,
-      "posts": 15,
-      "likes": 15,
+      "abonnes": 15,
+      "posts": 7,
+      "likes": 1,
       "commentaires": 0,
       "portee": null
     },
@@ -44,62 +44,55 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 3,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Vous n'aurais jamais été autant vous même, \nSOON .....   | 😌  🤗  👕 |\n#EgoIpse #E",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "Alors on vous à manqué ici ?",
+      "titre": "YEBLE — Modèle KÔRÔ\nLa force du calme.\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte p",
       "plateforme": "Facebook",
       "likes": 1,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Animal collection deep",
+      "titre": "Les sandales yeble pour l’elegance et la durabilité contactez nous au +225 07093",
       "plateforme": "Facebook",
-      "likes": 1,
+      "likes": 0,
       "commentaires": 0,
-      "partages": 5
+      "partages": 0
+    },
+    {
+      "titre": "YEBLE — Modèle N’KÔ\nL’audace maîtrisée\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte p",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "YEBLE — Modèle ZÊZÊ\nL’élégance tissée\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte po",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "YEBLE — Modèle KÂN \nLa force du silence\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte ",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "BOBO — La chaussure du boss\n\nCe n’est pas une chaussure qui fait du bruit.\nC’est",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
     },
     {
       "titre": "",
       "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
+      "likes": 0,
       "commentaires": 0,
       "partages": 0
     }
   ],
   "evolution_audience": [],
-  "client": "ego-ipse"
+  "client": "yeble-maison-de-maroquinerie"
 }

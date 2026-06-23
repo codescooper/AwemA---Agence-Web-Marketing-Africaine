@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:18+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 2,
+    "posts": 6,
+    "likes": 1,
+    "commentaires": 0,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 2,
+      "posts": 6,
+      "likes": 1,
+      "commentaires": 0,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,50 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Juste à l'entrée  de Bingerville-cité Bnetd derrière l' hotel free-word.\nVilla  ",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "#Opportunité VENTE  EXCEPTIONNELLE !!!!\n\nANGRÉ PETRO-IVOIRE (CITÉ OSCAR) :\nSUPER",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "《EN VENTE 》COCODY RIVIERA PALMERAIE \n\nDans la cité SIPIM 4 près de  l'école Sain",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "HÔTEL EN VENTE\n\nHÔTEL DES LACS YAMOUSSOUKRO\n- 28 Chambres\n- 01 Salle de réunion\n",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "TRIPLEX  5 pièces                        📲78317400\nSTATUT : A VENDRE\nLIEU: RIVIE",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "afriq-btp"
 }

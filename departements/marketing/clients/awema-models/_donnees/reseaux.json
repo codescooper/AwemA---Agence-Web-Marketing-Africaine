@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:12+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 3823,
+    "posts": 21,
+    "likes": 30,
+    "commentaires": 6,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 3823,
+      "posts": 21,
+      "likes": 30,
+      "commentaires": 6,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "🌟 REJOINS LA RUCHE DES TALENTS ! 🌟\n\nTu rêves de devenir mannequin, acteur, hôtes",
+      "plateforme": "Facebook",
+      "likes": 13,
+      "commentaires": 5,
+      "partages": 0
+    },
+    {
+      "titre": "Shooting Photo avec notre awema models Precious , le photographe JAY et Liking (",
+      "plateforme": "Facebook",
+      "likes": 13,
+      "commentaires": 0,
+      "partages": 1
+    },
+    {
+      "titre": "AWEMA Models | La cellule de la ruche AWEMA dédiée aux talents.\nMannequins, hôte",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "🌟 RECRUTEMENT DE MODÈLES – 100% GRATUIT ! 🌟\n\nTu rêves de rejoindre le monde du m",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 4
+    },
+    {
+      "titre": "✨ AWEMA Models ouvre ses portes !\nTu rêves de défiler, de poser devant l’objecti",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "#HPN #AWEMA",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "juste wahou <3 !",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "awema-models"
 }

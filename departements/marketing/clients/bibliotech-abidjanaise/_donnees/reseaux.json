@@ -1,22 +1,22 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:47:17+00:00",
+  "maj": "2026-06-23T02:47:16+00:00",
   "global": {
-    "audience": 102,
-    "posts": 15,
-    "likes": 15,
-    "commentaires": 0,
+    "audience": 472,
+    "posts": 25,
+    "likes": 27,
+    "commentaires": 15,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 102,
-      "posts": 15,
-      "likes": 15,
-      "commentaires": 0,
+      "abonnes": 472,
+      "posts": 25,
+      "likes": 27,
+      "commentaires": 15,
       "portee": null
     },
     "instagram": {
@@ -44,62 +44,62 @@
   "top_fans": [],
   "top_posts": [
     {
+      "titre": "Gratuit et exceptionnel. Laissez nous votre adresse mail en message et recevez l",
+      "plateforme": "Facebook",
+      "likes": 3,
+      "commentaires": 10,
+      "partages": 0
+    },
+    {
+      "titre": "Laissez votre adresse mail en message et recevez le pdf gratuit résumant le livr",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 4,
+      "partages": 0
+    },
+    {
       "titre": "",
+      "plateforme": "Facebook",
+      "likes": 4,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Ce n’est pas parce que les choses sont difficiles que nous n’osons pas, c’est pa",
+      "plateforme": "Facebook",
+      "likes": 2,
+      "commentaires": 1,
+      "partages": 0
+    },
+    {
+      "titre": "Portrait de Napoléon hill\n\nNé en Virginie dans la plus grande pauvreté, Napoleon",
       "plateforme": "Facebook",
       "likes": 3,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
+      "titre": "Découvrez la puissance REFLECHISSEZ ET DEVENEZ RICHE Enseignée, pour la première",
       "plateforme": "Facebook",
       "likes": 2,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Vous n'aurais jamais été autant vous même, \nSOON .....   | 😌  🤗  👕 |\n#EgoIpse #E",
+      "titre": "Le succès est une science qui dépend en grande partie de la qualité de nos pensé",
       "plateforme": "Facebook",
       "likes": 2,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "Alors on vous à manqué ici ?",
-      "plateforme": "Facebook",
-      "likes": 1,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Animal collection deep",
+      "titre": "Se plaindre est une façon de reconnaître un problème sans essayer de le régler. ",
       "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 5
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
+      "likes": 2,
       "commentaires": 0,
       "partages": 0
     }
   ],
   "evolution_audience": [],
-  "client": "ego-ipse"
+  "client": "bibliotech-abidjanaise"
 }

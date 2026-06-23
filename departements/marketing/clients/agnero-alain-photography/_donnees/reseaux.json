@@ -1,22 +1,22 @@
 {
-  "connecte": false,
+  "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:21:13+00:00",
+  "maj": "2026-06-23T02:47:40+00:00",
   "global": {
-    "audience": null,
-    "posts": null,
-    "likes": null,
-    "commentaires": null,
+    "audience": 274,
+    "posts": 15,
+    "likes": 267,
+    "commentaires": 13,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": null,
-      "posts": null,
-      "likes": null,
-      "commentaires": null,
+      "abonnes": 274,
+      "posts": 15,
+      "likes": 267,
+      "commentaires": 13,
       "portee": null
     },
     "instagram": {
@@ -42,7 +42,64 @@
     }
   },
   "top_fans": [],
-  "top_posts": [],
+  "top_posts": [
+    {
+      "titre": "Bill Brandt\n« Cela fait partie du travail du photographe de voir plus intensémen",
+      "plateforme": "Facebook",
+      "likes": 75,
+      "commentaires": 5,
+      "partages": 0
+    },
+    {
+      "titre": "« Ne perdez pas espoir, c'est souvent la dernière clé du trousseau qui ouvre la ",
+      "plateforme": "Facebook",
+      "likes": 41,
+      "commentaires": 2,
+      "partages": 1
+    },
+    {
+      "titre": "Roland Barthes\n« Ce que la photographie reproduit à l'infini n'a lieu qu'une foi",
+      "plateforme": "Facebook",
+      "likes": 23,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "bonne soirée et douce nuit a vous  jvs mouak ! \nbientot : \nAgnero Alain photogra",
+      "plateforme": "Facebook",
+      "likes": 19,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "<Quand on ne peut revenir en arrière, on ne doit que se préoccuper de la meilleu",
+      "plateforme": "Facebook",
+      "likes": 17,
+      "commentaires": 2,
+      "partages": 0
+    },
+    {
+      "titre": "<  Avoir peur, c'est une très bonne chose : ça veut dire que vous avez encore qu",
+      "plateforme": "Facebook",
+      "likes": 19,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Les hypocrites c'est comme mon répondeur, ça parlent toujours quand je ne suis p",
+      "plateforme": "Facebook",
+      "likes": 18,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "La photographie est une brève complicité entre la prévoyance et le hasard. – Joh",
+      "plateforme": "Facebook",
+      "likes": 16,
+      "commentaires": 1,
+      "partages": 0
+    }
+  ],
   "evolution_audience": [],
   "client": "agnero-alain-photography"
 }
