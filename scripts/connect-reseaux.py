@@ -283,6 +283,21 @@ def _engagement_ig(data, ig, ptok):
         print(f"  ⚠️ IG media: {e}")
 
 
+def _page_info(page_id, ptok):
+    """Abonnés + nom à jour via le TOKEN DE PAGE (plus fiable que me/accounts)."""
+    if FIXTURE or not ptok:
+        return None, None
+    try:
+        d = _get(f"{GRAPH}/{page_id}?fields=name,followers_count,fan_count&access_token={ptok}")
+        ab = d.get("followers_count")
+        if ab is None:
+            ab = d.get("fan_count")
+        return ab, d.get("name")
+    except Exception as e:
+        print(f"  ⚠️ page info {page_id}: {e}")
+        return None, None
+
+
 def via_meta_all():
     """Un client par Page gérée. Crée les dossiers manquants, met à jour reseaux.json."""
     pages = _pages()
@@ -291,18 +306,26 @@ def via_meta_all():
         page_id = pg.get("id")
         if not page_id:
             continue
+        ptok = pg.get("access_token")
+        # Abonnés + nom fiables via le token de Page
+        ab, nom_maj = _page_info(page_id, ptok)
+        if nom_maj:
+            pg["name"] = nom_maj
+        if ab is None:
+            ab = pg.get("followers_count") or pg.get("fan_count")
         client_dir = _trouver_client_par_pageid(page_id) or os.path.join(
             RACINE, "departements", "marketing", "clients", slugify(pg.get("name") or page_id))
         _assurer_client_json(client_dir, pg)
         data = _vide()
         data["source"] = "meta-graph-api"
-        data["par_reseau"]["facebook"]["abonnes"] = pg.get("followers_count") or pg.get("fan_count")
-        _engagement_page(data, page_id, pg.get("access_token"))
-        _engagement_ig(data, pg.get("instagram_business_account") or {}, pg.get("access_token"))
+        data["par_reseau"]["facebook"]["abonnes"] = ab
+        _engagement_page(data, page_id, ptok)
+        _engagement_ig(data, pg.get("instagram_business_account") or {}, ptok)
         _consolider(data)
         _ecrire(client_dir, data)
         n += 1
-        print(f"  ✓ {pg.get('name')} → {os.path.relpath(client_dir, RACINE)}")
+        print(f"  ✓ {pg.get('name')} ({ab if ab is not None else '—'} abonnés) → "
+              f"{os.path.relpath(client_dir, RACINE)}")
     print(f"✅ {n} page(s) synchronisée(s). Régénère le registre : python3 outils/_data/build.py")
 
 
