@@ -34,22 +34,35 @@
 ## 2. Obtenir un token (le plus simple : Graph API Explorer)
 
 1. Ouvrir **https://developers.facebook.com/tools/explorer**
-2. En haut à droite : sélectionner votre **app** (`AWEMA Reporting`).
-3. **Meta App** → menu *User or Page* : choisir **User Token**.
-4. **Add permissions** — ajouter (cocher) exactement :
+2. En haut à droite : sélectionner votre **app**.
+3. Menu **« Utilisateur ou Page »** → **« Obtenir un token d'accès utilisateur »**.
+4. **Autorisations → « Ajouter une autorisation »** — ajouter une par une :
    - `pages_show_list`
    - `pages_read_engagement`
    - `read_insights`
    - `instagram_basic`
    - `instagram_manage_insights`
    - *(optionnel)* `business_management`
-5. Cliquer **Generate Access Token** → une fenêtre Facebook demande l'autorisation →
-   **accepter** (et bien cocher la/les Page(s) du client).
-6. Vous obtenez un **token utilisateur court** (valable ~1–2 h). On va le rendre durable
-   à l'étape 4. Pour un simple test immédiat, il suffit déjà.
+5. Cliquer **Generate Access Token** → fenêtre Facebook → **autoriser** et **cocher la Page**
+   du client → le token apparaît dans **« Token d'accès »**.
 
-> 💡 Le token utilisé par le connecteur sera de préférence un **Page access token**
-> (étape 3), plus stable.
+> ❗ Erreur *« An active access token must be used »* (code 2500) = le champ token est
+> **vide**, il faut générer le token (étape 5). C'est normal au départ.
+
+> ❗ Aucune Page proposée à l'étape 5 ? Vous n'êtes **pas admin d'une Page Facebook** pour ce
+> client → créez la Page ou faites-vous ajouter admin (pré-requis 0).
+
+> 💡 Le token de l'Explorateur est **court (~1–2 h)** : suffisant pour un **premier test**.
+> Pour le rendre durable → étape 5 (token longue durée).
+
+### Méthode rapide pour les IDs (sans parser `me/accounts`)
+Après avoir généré le token utilisateur : recliquer **« Utilisateur ou Page »** et
+**sélectionner la Page** → le token devient un **Page token** (= votre `META_TOKEN`). Puis,
+dans la barre de requête en haut :
+```
+me?fields=id,name,fan_count,followers_count   → id = FB_PAGE_ID (+ abonnés)
+me?fields=instagram_business_account          → instagram_business_account.id = IG_USER_ID
+```
 
 ---
 
