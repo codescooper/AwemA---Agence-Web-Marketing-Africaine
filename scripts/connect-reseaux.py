@@ -51,24 +51,23 @@ def _pages_ignorees():
 
 IGNOREES = _pages_ignorees()
 
-# Portée Page : les noms de métriques valides varient selon la version de l'API Graph.
-# Le script essaie ces candidats dans l'ordre et garde le premier qui renvoie une valeur.
-PORTEE_CANDIDATS = [
-    "page_impressions_unique",      # portée (28 j) — historique
-    "page_impressions",             # impressions
-    "page_views_total",             # vues de la Page
-    "page_total_actions",           # actions sur la Page
-    "page_post_engagements",        # engagements sur les posts
-]
-_METRIQUE_PORTEE = None  # mémorise la métrique qui marche (découverte au 1er succès)
+# Insights Page (28 j) — les noms de métriques valides varient selon la version de l'API.
+# On distingue la VRAIE portée (reach) des simples VUES de page : ce ne sont pas la même chose.
+#   • page_impressions_unique / page_impressions = portée/impressions (souvent dépréciées en v21)
+#   • page_views_total = nombre de vues de la Page (disponible en v21)
+# Pour chaque indicateur, on essaie les candidats dans l'ordre et on garde le 1er qui répond.
+PORTEE_CANDIDATS = ["page_impressions_unique", "page_impressions"]   # portée réelle (reach)
+VUES_CANDIDATS = ["page_views_total"]                                # vues de la Page
+_METRIQUE = {"portee": None, "vues": None}  # mémorise la métrique qui marche par indicateur
 
 
 def _vide():
     return {
         "connecte": False, "source": None, "maj": None,
         "global": {k: None for k in ["audience", "posts", "likes", "commentaires",
-                                      "partages", "portee", "engagement_taux"]},
-        "par_reseau": {r: {k: None for k in ["abonnes", "posts", "likes", "commentaires", "portee"]}
+                                      "partages", "portee", "vues", "engagement_taux"]},
+        "par_reseau": {r: {k: None for k in ["abonnes", "posts", "likes", "commentaires",
+                                             "portee", "vues"]}
                        for r in ["facebook", "instagram", "tiktok", "linkedin"]},
         "top_fans": [], "top_posts": [], "evolution_audience": [],
     }
@@ -178,7 +177,9 @@ def _consolider(data):
     g = data["global"]
     g["audience"] = somme("abonnes"); g["posts"] = somme("posts")
     g["likes"] = somme("likes"); g["commentaires"] = somme("commentaires")
-    g["portee"] = somme("portee")
+    g["portee"] = somme("portee")   # vraie portée (reach) — null si indisponible (API v21)
+    g["vues"] = somme("vues")        # vues de la Page (28 j)
+    # Taux d'engagement = engagements / portée RÉELLE uniquement (jamais à partir des vues).
     if g["portee"] and g["likes"] is not None and g["commentaires"] is not None:
         g["engagement_taux"] = round((g["likes"] + g["commentaires"]) / g["portee"] * 100, 2)
     data["top_posts"] = sorted(data["top_posts"], key=lambda p: p["likes"] + p["commentaires"], reverse=True)[:8]
@@ -304,16 +305,23 @@ def _engagement_page(data, page_id, ptok):
 
 
 def _insights_page(data, page_id, ptok):
-    """Portée Page (28 j) via read_insights. Essaie plusieurs métriques (les noms
-    valides changent selon la version de l'API) ; garde la 1re qui répond.
-    Reste null si aucune ne marche (ex. permission read_insights absente)."""
+    """Insights Page (28 j) via read_insights : portée réelle (reach) ET vues de page.
+    Pour chaque indicateur on essaie plusieurs métriques candidates (les noms valides
+    changent selon la version de l'API) et on garde la 1re qui répond. Chaque indicateur
+    reste null si aucune candidate ne marche (ex. portée dépréciée en v21)."""
     if FIXTURE or not ptok:
         return
     fb = data["par_reseau"]["facebook"]
-    global _METRIQUE_PORTEE
-    candidats = ([_METRIQUE_PORTEE] if _METRIQUE_PORTEE else []) + [
-        m for m in PORTEE_CANDIDATS if m != _METRIQUE_PORTEE]
-    for metric in candidats:
+    fb["portee"] = _insight_28j(page_id, ptok, "portee", PORTEE_CANDIDATS)
+    fb["vues"] = _insight_28j(page_id, ptok, "vues", VUES_CANDIDATS)
+
+
+def _insight_28j(page_id, ptok, cle, candidats):
+    """Retourne la valeur (28 j) du 1er métrique candidat qui répond, sinon None.
+    Mémorise la métrique gagnante par indicateur pour accélérer les pages suivantes."""
+    ordre = ([_METRIQUE[cle]] if _METRIQUE[cle] else []) + [
+        m for m in candidats if m != _METRIQUE[cle]]
+    for metric in ordre:
         try:
             rep = _get(f"{GRAPH}/{page_id}/insights?metric={metric}"
                        f"&period=days_28&access_token={ptok}").get("data", [])
@@ -321,12 +329,11 @@ def _insights_page(data, page_id, ptok):
                 vals = m.get("values") or []
                 val = vals[-1].get("value") if vals else None
                 if val is not None:
-                    fb["portee"] = val          # → global.portee + engagement_taux
-                    _METRIQUE_PORTEE = metric    # mémorise pour les pages suivantes
-                    return
+                    _METRIQUE[cle] = metric
+                    return val
         except Exception as e:
             print(f"  ⚠️ insights {page_id} [{metric}]: {e}")
-    # Aucune métrique valide → portée laissée à null (déjà le cas)
+    return None
 
 
 def _engagement_ig(data, ig, ptok):

@@ -524,7 +524,7 @@ function viewClients(){
 function viewReseaux(){
   const m=RES, prof=(ACTIVE&&ACTIVE.profils)||{}, connected=m&&m.connecte, g=(m&&m.global)||{};
   [['Audience','audience','users','#4BA3FF'],['Posts','posts','layers','#7C5CFF'],['Likes','likes','target','#34E5C4'],
-   ['Commentaires','commentaires','chat','#FFC861'],['Portée','portee','eye','#FF7D9C'],['Engagement','engagement_taux','bolt','#4BA3FF']]
+   ['Commentaires','commentaires','chat','#FFC861'],['Vues (28j)','vues','eye','#FF7D9C'],['Engagement','engagement_taux','bolt','#4BA3FF']]
    .forEach(([lab,key,icn,c])=>{const v=g[key],isNull=(v==null);
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
       <div class="val" ${isNull?'':`data-to="${v}" data-suf="${key==='engagement_taux'?'%':''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});

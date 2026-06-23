@@ -71,12 +71,18 @@ fonctionnent sans). Pour remonter la **portée Page (28 j)** et le **taux d'enga
    (pas d'App Review pour **tes propres** pages dont tu es admin).
 2. Mettre à jour le Secret `META_TOKEN` → **Run workflow**.
 
-Le script appelle alors `/{page_id}/insights?metric=page_impressions_unique&period=days_28`
-→ `par_reseau.facebook.portee` → `global.portee` + `global.engagement_taux`.
+Le script essaie plusieurs métriques (les noms valides changent selon la version de l'API) :
+- **Portée réelle (reach)** : `page_impressions_unique` / `page_impressions` → `…facebook.portee`.
+  ⚠️ **Ces métriques sont dépréciées en API v21** (`(#100) must be a valid insights metric`) :
+  la portée reste donc `null` tant que Meta ne les réexpose pas (ou via une version d'API plus ancienne).
+- **Vues de la Page (28 j)** : `page_views_total` → `…facebook.vues` (disponible en v21) → `global.vues`.
+
+Le **taux d'engagement** n'est calculé **que** si la vraie portée est disponible (jamais à partir
+des simples vues, pour ne pas afficher un chiffre trompeur).
 
 > ⚠️ Le **« meilleur fan » nominatif n'est plus exposé** par l'API Graph (liste des fans fermée
-> par Meta). On dispose des **top posts**, de la **portée**, des **impressions** et de
-> l'**engagement** — pas d'un classement individuel des fans.
+> par Meta). On dispose des **top posts**, des **vues de Page**, des **likes/commentaires** —
+> pas d'un classement individuel des fans, ni (en v21) de la portée/reach.
 
 ## Voie B — Simple : export CSV (Meta Business Suite / TwoMinuteReports)
 

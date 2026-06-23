@@ -8,8 +8,9 @@
     "likes": 1,
     "commentaires": 0,
     "partages": null,
-    "portee": 0,
-    "engagement_taux": null
+    "portee": null,
+    "engagement_taux": null,
+    "vues": 0
   },
   "par_reseau": {
     "facebook": {
@@ -17,28 +18,32 @@
       "posts": 6,
       "likes": 1,
       "commentaires": 0,
-      "portee": 0
+      "portee": null,
+      "vues": 0
     },
     "instagram": {
       "abonnes": null,
       "posts": null,
       "likes": null,
       "commentaires": null,
-      "portee": null
+      "portee": null,
+      "vues": null
     },
     "tiktok": {
       "abonnes": null,
       "posts": null,
       "likes": null,
       "commentaires": null,
-      "portee": null
+      "portee": null,
+      "vues": null
     },
     "linkedin": {
       "abonnes": null,
       "posts": null,
       "likes": null,
       "commentaires": null,
-      "portee": null
+      "portee": null,
+      "vues": null
     }
   },
   "top_fans": [],
