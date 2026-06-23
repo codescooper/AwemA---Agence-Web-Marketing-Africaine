@@ -39,6 +39,7 @@ récupère les données et met à jour le dépôt — **sans intervention**.
 1. **Créer une app Meta + un token** (https://developers.facebook.com) avec les permissions :
    `pages_read_engagement`, `instagram_basic`, `instagram_manage_insights`.
    Récupérer aussi l'**ID de la Page Facebook** et l'**ID du compte Instagram Business**.
+   ➡️ **Démarche détaillée pas-à-pas : [`06-obtenir-token-meta.md`](06-obtenir-token-meta.md).**
 2. Dans GitHub : **Settings → Secrets and variables → Actions**
    - **Secret** `META_TOKEN` = le token.
    - **Variables** `FB_PAGE_ID`, `IG_USER_ID`, `CLIENT_DIR`
