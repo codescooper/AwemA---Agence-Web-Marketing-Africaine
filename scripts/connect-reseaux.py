@@ -51,6 +51,17 @@ def _pages_ignorees():
 
 IGNOREES = _pages_ignorees()
 
+# Portée Page : les noms de métriques valides varient selon la version de l'API Graph.
+# Le script essaie ces candidats dans l'ordre et garde le premier qui renvoie une valeur.
+PORTEE_CANDIDATS = [
+    "page_impressions_unique",      # portée (28 j) — historique
+    "page_impressions",             # impressions
+    "page_views_total",             # vues de la Page
+    "page_total_actions",           # actions sur la Page
+    "page_post_engagements",        # engagements sur les posts
+]
+_METRIQUE_PORTEE = None  # mémorise la métrique qui marche (découverte au 1er succès)
+
 
 def _vide():
     return {
@@ -293,20 +304,29 @@ def _engagement_page(data, page_id, ptok):
 
 
 def _insights_page(data, page_id, ptok):
-    """Portée Page (28 j) via read_insights. Reste null si la permission manque."""
+    """Portée Page (28 j) via read_insights. Essaie plusieurs métriques (les noms
+    valides changent selon la version de l'API) ; garde la 1re qui répond.
+    Reste null si aucune ne marche (ex. permission read_insights absente)."""
     if FIXTURE or not ptok:
         return
     fb = data["par_reseau"]["facebook"]
-    try:
-        rep = _get(f"{GRAPH}/{page_id}/insights?metric=page_impressions_unique"
-                   f"&period=days_28&access_token={ptok}").get("data", [])
-        for m in rep:
-            vals = m.get("values") or []
-            val = vals[-1].get("value") if vals else None
-            if m.get("name") == "page_impressions_unique" and val is not None:
-                fb["portee"] = val      # → global.portee + engagement_taux (cf. _consolider)
-    except Exception as e:
-        print(f"  ⚠️ insights {page_id} (read_insights manquant ?): {e}")
+    global _METRIQUE_PORTEE
+    candidats = ([_METRIQUE_PORTEE] if _METRIQUE_PORTEE else []) + [
+        m for m in PORTEE_CANDIDATS if m != _METRIQUE_PORTEE]
+    for metric in candidats:
+        try:
+            rep = _get(f"{GRAPH}/{page_id}/insights?metric={metric}"
+                       f"&period=days_28&access_token={ptok}").get("data", [])
+            for m in rep:
+                vals = m.get("values") or []
+                val = vals[-1].get("value") if vals else None
+                if val is not None:
+                    fb["portee"] = val          # → global.portee + engagement_taux
+                    _METRIQUE_PORTEE = metric    # mémorise pour les pages suivantes
+                    return
+        except Exception as e:
+            print(f"  ⚠️ insights {page_id} [{metric}]: {e}")
+    # Aucune métrique valide → portée laissée à null (déjà le cas)
 
 
 def _engagement_ig(data, ig, ptok):
