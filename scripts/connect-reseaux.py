@@ -614,6 +614,8 @@ def via_meta_all():
 # TIKTOK — Display API v2 (un compte = une autorisation OAuth, refresh token rotatif)
 # --------------------------------------------------------------------------- #
 TIKTOK_OAUTH = "https://open.tiktokapis.com/v2/oauth/token/"
+TIKTOK_REDIRECT_DEFAUT = ("https://codescooper.github.io/"
+                          "AwemA---Agence-Web-Marketing-Africaine/oauth.html")
 TIKTOK_API = "https://open.tiktokapis.com/v2"
 TIKTOK_USER_FIELDS = "open_id,display_name,follower_count,following_count,likes_count,video_count"
 TIKTOK_VIDEO_FIELDS = ("id,title,video_description,view_count,like_count,"
@@ -689,15 +691,27 @@ def _client_par_slug(slug):
     return d if os.path.isdir(os.path.join(d, "_donnees")) else None
 
 
-def via_tiktok_auth(code, redirect_uri):
+def via_tiktok_auth(code_ou_url, redirect_uri=None):
     """Onboarding : échange un CODE d'autorisation OAuth contre un refresh_token (à coller
-    dans la Variable TIKTOK_TOKENS). Usage :
+    dans la Variable TIKTOK_TOKENS). Accepte soit le code brut, soit l'URL de redirection
+    complète (le code en est extrait + décodé automatiquement). Usage :
       export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=...
-      python3 connect-reseaux.py --tiktok-auth <code> <redirect_uri>"""
+      python3 connect-reseaux.py --tiktok-auth "<code ou URL collée>"  [redirect_uri]"""
     ck = os.environ.get("TIKTOK_CLIENT_KEY"); cs = os.environ.get("TIKTOK_CLIENT_SECRET")
     if not (ck and cs):
         sys.exit("❌ export TIKTOK_CLIENT_KEY=... TIKTOK_CLIENT_SECRET=... d'abord.")
-    code = urllib.parse.unquote(code)               # accepte le code brut copié depuis l'URL
+    # Si on a collé l'URL complète (…oauth.html?code=…&scopes=…), on en extrait le code.
+    if "code=" in code_ou_url:
+        q = urllib.parse.urlparse(code_ou_url).query or code_ou_url.split("?", 1)[-1]
+        code = urllib.parse.parse_qs(q).get("code", [""])[0]
+        if not redirect_uri:
+            base = code_ou_url.split("?", 1)[0]
+            if base.startswith("http"):
+                redirect_uri = base
+    else:
+        code = urllib.parse.unquote(code_ou_url)
+    if not redirect_uri:
+        redirect_uri = os.environ.get("TIKTOK_REDIRECT_URI", TIKTOK_REDIRECT_DEFAUT)
     body = urllib.parse.urlencode({
         "client_key": ck, "client_secret": cs, "code": code,
         "grant_type": "authorization_code", "redirect_uri": redirect_uri}).encode()
@@ -765,8 +779,8 @@ def main():
         via_meta_all()
     elif a and a[0] == "--tiktok-all":
         via_tiktok_all()
-    elif len(a) >= 3 and a[0] == "--tiktok-auth":
-        via_tiktok_auth(a[1], a[2])
+    elif len(a) >= 2 and a[0] == "--tiktok-auth":
+        via_tiktok_auth(a[1], a[2] if len(a) >= 3 else None)
     elif len(a) >= 2 and a[0] == "--meta":
         via_meta(a[1])
     elif len(a) >= 3 and a[0] == "--manuel":
