@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWEMA — Connecter TikTok (guide pas à pas)</title>
+<style>
+  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
+    --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.65;
+    background:radial-gradient(1100px 650px at 50% -12%,#16294f,#0A1F44 62%,#07162f);min-height:100vh;padding-bottom:60px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  header{padding:54px 0 14px}
+  .back{color:var(--muted);text-decoration:none;font-size:13px}
+  h1{font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(26px,4.6vw,38px);margin-top:14px;letter-spacing:-.02em}
+  h1 .g{background:linear-gradient(120deg,var(--gold),#f2d479);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);margin-top:10px;font-size:15px}
+  .pill{display:inline-block;font-size:12px;color:var(--muted);border:1px solid var(--bord);border-radius:20px;padding:5px 12px;background:var(--card);margin-top:14px}
+  .step{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:22px 22px 20px;margin-top:18px;backdrop-filter:blur(8px)}
+  .step h2{font-family:Montserrat,sans-serif;font-size:18px;display:flex;align-items:center;gap:12px}
+  .num{flex:0 0 30px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:800;
+    color:#06122a;background:linear-gradient(135deg,var(--ciel),var(--violet))}
+  .step p{color:#c9d6ef;font-size:13.6px;margin-top:10px}
+  .step ul{margin:8px 0 0 20px;color:#c9d6ef;font-size:13.4px}
+  .step li{margin:5px 0}
+  .btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:linear-gradient(135deg,var(--ciel),var(--violet));
+    color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;border:0;border-radius:11px;padding:11px 16px;cursor:pointer}
+  .btn.ghost{background:transparent;border:1px solid var(--bord);color:var(--tx);font-weight:600}
+  .cmd{position:relative;margin-top:12px;background:rgba(0,0,0,.32);border:1px solid var(--bord);border-radius:12px;
+    padding:13px 88px 13px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;white-space:pre-wrap;word-break:break-all;color:#dbe7ff}
+  .copy{position:absolute;top:9px;right:9px;font-size:11.5px;border:1px solid var(--bord);background:rgba(255,255,255,.08);
+    color:var(--tx);border-radius:8px;padding:6px 10px;cursor:pointer}
+  .copy.ok{background:var(--mint);color:#06231d;border-color:var(--mint)}
+  .note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:3px solid var(--gold);padding-left:12px}
+  .tag{font-size:11px;color:#06231d;background:var(--mint);border-radius:6px;padding:2px 7px;font-weight:700}
+  code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:6px;font-size:12.5px}
+  a.inl{color:var(--ciel)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">← AWEMA · Centre de pilotage</a>
+    <h1>Connecter <span class="g">TikTok</span> — guide pas à pas</h1>
+    <p class="lead">Suis les étapes dans l'ordre. La seule action « manuelle » imposée par TikTok :
+      te connecter au compte + cliquer <b>Authorize</b>. L'assistant fait tout le reste
+      (capture du code, échange, mise à jour de la liste des comptes).</p>
+    <span class="pill">⏱️ ~10 min la 1ʳᵉ fois · puis 30 s par compte</span>
+  </header>
+
+  <!-- 1 — PAT -->
+  <div class="step">
+    <h2><span class="num">1</span> Créer le « PAT » GitHub (clé d'automatisation)</h2>
+    <p>Le PAT autorise l'assistant à enregistrer tout seul tes comptes TikTok dans le projet.
+      C'est une clé personnelle, à créer <b>une seule fois</b>.</p>
+    <ul>
+      <li>Ouvre la page de création (bouton ci-dessous).</li>
+      <li><b>Token name</b> : <code>awema-tiktok</code> · <b>Expiration</b> : 90 jours (ou plus).</li>
+      <li><b>Repository access</b> : <i>Only select repositories</i> → choisis
+        <code>AwemA---Agence-Web-Marketing-Africaine</code>.</li>
+      <li><b>Permissions</b> → <i>Repository permissions</i> → <b>Variables</b> → <span class="tag">Read and write</span>.</li>
+      <li><b>Generate token</b> → <b>copie</b> le token (tu ne le reverras plus).</li>
+    </ul>
+    <a class="btn" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Créer le PAT ↗</a>
+    <div class="note">Garde ce token privé. Ne le colle nulle part en ligne — il sert juste à la commande
+      <code>set GH_PAT=…</code> de l'étape 3.</div>
+  </div>
+
+  <!-- 2 — Redirect URI -->
+  <div class="step">
+    <h2><span class="num">2</span> Autoriser l'adresse locale dans l'app TikTok</h2>
+    <p>Pour que l'assistant récupère le code automatiquement, ajoute cette <b>Redirect URI</b>
+      dans l'app TikTok (section <i>URL properties</i> / <i>Login Kit</i>) :</p>
+    <div class="cmd" id="c-redir">http://127.0.0.1:8723/callback<button class="copy" data-c="c-redir">Copier</button></div>
+    <div class="note">Si TikTok refuse les adresses <code>localhost</code> : pas grave, tu lanceras l'assistant
+      avec l'option <code>--paste</code> (étape 4) — il réutilise l'adresse du projet déjà autorisée.</div>
+  </div>
+
+  <!-- 3 — Terminal -->
+  <div class="step">
+    <h2><span class="num">3</span> Préparer le terminal</h2>
+    <p>Ouvre un terminal <b>dans le dossier du projet</b> et colle ces lignes
+      (remplace <code>TON_SECRET</code> et <code>TON_PAT</code>) :</p>
+    <div class="cmd" id="c-win">cd chemin\vers\awema---agence-web-marketing-africaine
+git pull
+set TIKTOK_CLIENT_KEY=sbaww0y3bflk3knbkj
+set TIKTOK_CLIENT_SECRET=TON_SECRET
+set GH_PAT=TON_PAT<button class="copy" data-c="c-win">Copier</button></div>
+    <div class="note">Mac / Linux : remplace chaque <code>set X=Y</code> par <code>export X=Y</code>.</div>
+  </div>
+
+  <!-- 4 — Lancer l'assistant -->
+  <div class="step">
+    <h2><span class="num">4</span> Lancer l'assistant</h2>
+    <div class="cmd" id="c-run">python scripts\tiktok-onboard.py<button class="copy" data-c="c-run">Copier</button></div>
+    <p>Repli si TikTok a refusé l'adresse locale (étape 2) :</p>
+    <div class="cmd" id="c-paste">python scripts\tiktok-onboard.py --paste<button class="copy" data-c="c-paste">Copier</button></div>
+    <div class="note">Si <code>python</code> ne marche pas, essaie <code>py</code> à la place.</div>
+  </div>
+
+  <!-- 5 — Autoriser chaque compte -->
+  <div class="step">
+    <h2><span class="num">5</span> Autoriser chaque compte (en boucle)</h2>
+    <ul>
+      <li>Dans le navigateur, <b>connecte-toi au compte TikTok</b> à ajouter.</li>
+      <li>Reviens au terminal, appuie sur <b>Entrée</b> → le navigateur s'ouvre → clique <b>Authorize</b>.</li>
+      <li>L'assistant affiche le nom du compte et <b>propose un slug</b> (nom de dossier client) → <b>Entrée</b>.</li>
+      <li>« Ajouter un autre ? » → <b>change de compte TikTok</b> dans le navigateur et recommence.</li>
+      <li>Quand c'est fini, tape <b>q</b> → l'assistant <b>met à jour la liste des comptes tout seul</b>.</li>
+    </ul>
+    <div class="note">Important : c'est le compte <b>connecté dans le navigateur</b> au moment du clic qui est
+      capturé. Change donc de compte entre chaque autorisation.</div>
+  </div>
+
+  <!-- 6 — Synchroniser -->
+  <div class="step">
+    <h2><span class="num">6</span> Lancer la synchronisation</h2>
+    <p>Va sur la page du workflow et clique <b>Run workflow</b> → tous les comptes se synchronisent,
+      et leurs vraies stats apparaissent dans le dashboard.</p>
+    <a class="btn" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/actions/workflows/sync-tiktok.yml" target="_blank" rel="noopener">Ouvrir « Sync TikTok » ↗</a>
+    <a class="btn ghost" href="outils/dashboard/index.html">Voir le dashboard →</a>
+    <div class="note">Ensuite, c'est <b>automatique</b> chaque lundi : le PAT permet de rafraîchir et
+      resauvegarder les jetons sans aucune intervention.</div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.addEventListener('click',async()=>{
+      const el=document.getElementById(b.dataset.c);
+      const txt=el.childNodes[0].textContent.trim();
+      try{await navigator.clipboard.writeText(txt);b.textContent='Copié ✓';b.classList.add('ok');
+        setTimeout(()=>{b.textContent='Copier';b.classList.remove('ok');},1400);}
+      catch(e){b.textContent='Sélectionne';}
+    });
+  });
+</script>
+</body>
+</html>

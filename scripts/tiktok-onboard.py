@@ -186,10 +186,24 @@ def gh_set_tokens(repo, pat, mapping):
 
 def main():
     paste = "--paste" in sys.argv
+    print("=" * 64)
+    print("  AWEMA · Assistant de connexion TikTok")
+    print("  (OAuth impose une seule action manuelle : se connecter au compte")
+    print("   + cliquer « Authorize ». Le reste est automatique.)")
+    print("=" * 64)
     ck = os.environ.get("TIKTOK_CLIENT_KEY") or ask("Client key TikTok")
     cs = os.environ.get("TIKTOK_CLIENT_SECRET") or ask("Client secret TikTok")
     repo = os.environ.get("GITHUB_REPOSITORY", REPO_DEFAUT)
     pat = os.environ.get("GH_PAT")
+
+    if not pat:
+        print("\nℹ️  Aucun GH_PAT détecté → je ne pourrai pas mettre à jour la Variable tout seul.")
+        print("   Pour l'automatiser (recommandé), crée un PAT « fine-grained » :")
+        print("   1) https://github.com/settings/personal-access-tokens/new")
+        print("   2) Repository access : Only select repositories → ton dépôt")
+        print("   3) Permissions → Repository → Variables : Read and write")
+        print("   4) Generate, copie le token, puis relance avec :  set GH_PAT=<le token>")
+        print("   (Sans PAT, pas de souci : j'affiche le JSON final à coller à la main.)\n")
 
     mapping = {}
     if pat:
