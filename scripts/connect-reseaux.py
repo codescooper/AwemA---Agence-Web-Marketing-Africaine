@@ -58,7 +58,12 @@ IGNOREES = _pages_ignorees()
 # Pour chaque indicateur, on essaie les candidats dans l'ordre et on garde le 1er qui répond.
 PORTEE_CANDIDATS = ["page_impressions_unique", "page_impressions"]   # portée réelle (reach)
 VUES_CANDIDATS = ["page_views_total"]                                # vues de la Page
-_METRIQUE = {"portee": None, "vues": None}  # mémorise la métrique qui marche par indicateur
+GAGNES_CANDIDATS = ["page_fan_adds_unique", "page_fan_adds"]         # nouveaux abonnés (28 j)
+PERDUS_CANDIDATS = ["page_fan_removes_unique", "page_fan_removes"]   # désabonnements (28 j)
+_METRIQUE = {"portee": None, "vues": None, "gagnes": None, "perdus": None}
+
+REACTIONS = ["like", "love", "care", "haha", "wow", "sad", "angry"]
+JOURS_FR = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
 
 
 def _vide():
@@ -69,6 +74,14 @@ def _vide():
         "par_reseau": {r: {k: None for k in ["abonnes", "posts", "likes", "commentaires",
                                              "portee", "vues"]}
                        for r in ["facebook", "instagram", "tiktok", "linkedin"]},
+        "reactions": None,            # {like,love,care,haha,wow,sad,angry} (Facebook, posts récents)
+        "portee_post": None,          # {moyenne, max} portée par post (reach réel)
+        "croissance": None,           # {gagnes_28j, perdus_28j, net_28j}
+        "cadence": None,              # {dernier_post, jours_depuis, posts_30j, posts_par_semaine}
+        "meilleur_creneau": None,     # {jour, heure, par_jour, recommandation}
+        "types_contenu": None,        # {photo:{n,eng_moyen}, video:{...}, ...}
+        "a_repondre": None,           # {total, exemples:[...]}  ← inbox community management
+        "top_commentateurs": [],      # abonnés les plus actifs (vrais « top fans »)
         "top_fans": [], "top_posts": [], "evolution_audience": [],
     }
 
@@ -177,12 +190,19 @@ def _consolider(data):
     g = data["global"]
     g["audience"] = somme("abonnes"); g["posts"] = somme("posts")
     g["likes"] = somme("likes"); g["commentaires"] = somme("commentaires")
-    g["portee"] = somme("portee")   # vraie portée (reach) — null si indisponible (API v21)
+    g["partages"] = somme("partages")
+    g["portee"] = somme("portee")   # vraie portée Page (reach) — null si indisponible (API v21)
     g["vues"] = somme("vues")        # vues de la Page (28 j)
-    # Taux d'engagement = engagements / portée RÉELLE uniquement (jamais à partir des vues).
-    if g["portee"] and g["likes"] is not None and g["commentaires"] is not None:
-        g["engagement_taux"] = round((g["likes"] + g["commentaires"]) / g["portee"] * 100, 2)
-    data["top_posts"] = sorted(data["top_posts"], key=lambda p: p["likes"] + p["commentaires"], reverse=True)[:8]
+    # Taux d'engagement RÉEL = engagement moyen par post / portée moyenne par post (×100).
+    pp = (data.get("portee_post") or {}).get("moyenne")
+    nb = pr["facebook"]["posts"]
+    if pp and nb:
+        eng = (pr["facebook"].get("likes") or 0) + (pr["facebook"].get("commentaires") or 0) \
+            + (pr["facebook"].get("partages") or 0)
+        g["engagement_taux"] = round((eng / nb) / pp * 100, 1)
+    data["top_posts"] = sorted(
+        data["top_posts"],
+        key=lambda p: p["likes"] + p["commentaires"] + p.get("partages", 0), reverse=True)[:8]
     data["connecte"] = any(pr[r]["abonnes"] is not None for r in pr)
     data["maj"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
@@ -195,8 +215,18 @@ def _ecrire(client_dir, data):
             base = json.load(f)
     except FileNotFoundError:
         pass
+    # Conserve l'historique d'audience et ajoute le point du jour (vraie courbe dans le temps).
+    ancienne_ev = base.get("evolution_audience") or []
     base.update(data); base["client"] = os.path.basename(client_dir.rstrip("/"))
     base.pop("_doc", None)
+    audience = (data.get("global") or {}).get("audience")
+    if audience is not None:
+        jour = datetime.now(timezone.utc).date().isoformat()
+        ev = [p for p in ancienne_ev if p.get("date") != jour]
+        ev.append({"date": jour, "valeur": audience})
+        base["evolution_audience"] = ev[-90:]   # garde 90 derniers points
+    else:
+        base["evolution_audience"] = ancienne_ev
     with open(out, "w", encoding="utf-8") as f:
         json.dump(base, f, ensure_ascii=False, indent=2)
     print(f"✅ {out} — connecté={base['connecte']} source={base['source']}")
@@ -282,26 +312,182 @@ def _assurer_client_json(client_dir, pg):
     json.dump(d, open(cj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 
 
+def _champs_posts():
+    """Champs riches récupérés en UN appel /posts (réactions par type, commentaires+réponses)."""
+    rea = ",".join(f"reactions.type({t.upper()}).limit(0).summary(total_count).as(r_{t})"
+                   for t in REACTIONS)
+    return ("message,created_time,permalink_url,shares,"
+            "attachments{media_type},"
+            "comments.summary(true).limit(60){from,message,created_time,"
+            "comments.limit(30){from}}," + rea)
+
+
 def _engagement_page(data, page_id, ptok):
-    """Likes/commentaires + top posts FB (sautés en mode FIXTURE)."""
+    """Récupère les posts FB enrichis (réactions, commentaires, réponses) puis dérive
+    tous les indicateurs community management. Sauté en mode FIXTURE."""
     if FIXTURE or not ptok:
         return
     fb = data["par_reseau"]["facebook"]
+    posts = []
     try:
-        posts = _get(f"{GRAPH}/{page_id}/posts?fields=message,likes.summary(true),"
-                     f"comments.summary(true),shares&limit=25&access_token={ptok}")["data"]
-        fb["posts"] = len(posts)
-        fb["likes"] = sum(p.get("likes", {}).get("summary", {}).get("total_count", 0) for p in posts)
-        fb["commentaires"] = sum(p.get("comments", {}).get("summary", {}).get("total_count", 0) for p in posts)
-        for p in posts:
-            data["top_posts"].append({
-                "titre": (p.get("message") or "")[:80], "plateforme": "Facebook",
-                "likes": p.get("likes", {}).get("summary", {}).get("total_count", 0),
-                "commentaires": p.get("comments", {}).get("summary", {}).get("total_count", 0),
-                "partages": (p.get("shares") or {}).get("count", 0)})
+        posts = _get(f"{GRAPH}/{page_id}/posts?fields={_champs_posts()}"
+                     f"&limit=30&access_token={ptok}")["data"]
     except Exception as e:
         print(f"  ⚠️ FB posts {page_id}: {e}")
+
+    if posts:
+        rea_tot = {t: 0 for t in REACTIONS}
+        partages = 0
+        for p in posts:
+            n_com = (p.get("comments", {}).get("summary", {}) or {}).get("total_count", 0)
+            rea = {t: (p.get(f"r_{t}", {}).get("summary", {}) or {}).get("total_count", 0)
+                   for t in REACTIONS}
+            for t in REACTIONS:
+                rea_tot[t] += rea[t]
+            n_rea = sum(rea.values())
+            sh = (p.get("shares") or {}).get("count", 0)
+            partages += sh
+            p["_rea"], p["_ncom"], p["_sh"] = n_rea, n_com, sh
+            p["_eng"] = n_rea + n_com + sh
+            data["top_posts"].append({
+                "titre": (p.get("message") or "")[:80], "plateforme": "Facebook",
+                "date": p.get("created_time"), "lien": p.get("permalink_url"),
+                "likes": n_rea, "commentaires": n_com, "partages": sh,
+                "type": _type_post(p), "reactions": rea, "portee": None})
+        fb["posts"] = len(posts)
+        fb["likes"] = sum(p["_rea"] for p in posts)
+        fb["commentaires"] = sum(p["_ncom"] for p in posts)
+        fb["partages"] = partages
+        data["reactions"] = rea_tot
+        _portee_posts(data, posts, ptok)
+        _derive_commentaires(data, page_id, posts)
+        _cadence(data, posts)
+        _creneau(data, posts)
+        _types_contenu(data, posts)
+
     _insights_page(data, page_id, ptok)
+    _croissance(data, page_id, ptok)
+
+
+def _type_post(p):
+    att = ((p.get("attachments") or {}).get("data") or [{}])
+    mt = (att[0].get("media_type") or "").lower() if att else ""
+    return {"photo": "photo", "video": "vidéo", "share": "lien",
+            "album": "album", "link": "lien"}.get(mt, "statut")
+
+
+def _portee_posts(data, posts, ptok):
+    """Portée RÉELLE par post (post_impressions_unique), best-effort sur les posts récents."""
+    vals = []
+    for p in posts[:12]:
+        pid = p.get("id")
+        if not pid:
+            continue
+        try:
+            rep = _get(f"{GRAPH}/{pid}/insights/post_impressions_unique"
+                       f"?access_token={ptok}").get("data", [])
+            v = rep[0]["values"][0]["value"] if rep and rep[0].get("values") else None
+            if v is not None:
+                p["portee"] = v
+                # reporte la portée dans le top_post correspondant
+                for tp in data["top_posts"]:
+                    if tp.get("lien") == p.get("permalink_url"):
+                        tp["portee"] = v
+                vals.append(v)
+        except Exception as e:
+            print(f"  ⚠️ portée post {pid}: {e}")
+            break  # métrique probablement indisponible → on arrête de marteler l'API
+    if vals:
+        data["portee_post"] = {"moyenne": round(sum(vals) / len(vals)), "max": max(vals)}
+
+
+def _derive_commentaires(data, page_id, posts):
+    """Top commentateurs (abonnés les plus actifs) + commentaires SANS réponse de la Page."""
+    compte = {}
+    a_repondre = []
+    for p in posts:
+        for c in (p.get("comments", {}).get("data") or []):
+            auteur = (c.get("from") or {})
+            nom, aid = auteur.get("name"), auteur.get("id")
+            if not nom or str(aid) == str(page_id):
+                continue
+            compte[nom] = compte.get(nom, 0) + 1
+            reponses = (c.get("comments", {}).get("data") or [])
+            page_a_repondu = any(str((r.get("from") or {}).get("id")) == str(page_id)
+                                 for r in reponses)
+            if not page_a_repondu:
+                a_repondre.append({
+                    "auteur": nom, "message": (c.get("message") or "")[:140],
+                    "date": c.get("created_time"), "lien": p.get("permalink_url")})
+    top = sorted(compte.items(), key=lambda kv: kv[1], reverse=True)[:8]
+    data["top_commentateurs"] = [{"nom": n, "commentaires": k} for n, k in top]
+    data["top_fans"] = [{"nom": n, "interactions": k} for n, k in top]  # alias dashboard
+    a_repondre.sort(key=lambda x: x.get("date") or "", reverse=True)
+    data["a_repondre"] = {"total": len(a_repondre), "exemples": a_repondre[:12]}
+
+
+def _cadence(data, posts):
+    dates = sorted([p["created_time"] for p in posts if p.get("created_time")], reverse=True)
+    if not dates:
+        return
+    dernier = _parse_dt(dates[0])
+    now = datetime.now(timezone.utc)
+    jours_depuis = (now - dernier).days if dernier else None
+    p30 = sum(1 for d in dates if (_parse_dt(d) and (now - _parse_dt(d)).days <= 30))
+    # rythme = posts / nb de semaines couvertes par l'échantillon
+    plus_vieux = _parse_dt(dates[-1])
+    semaines = max(((dernier - plus_vieux).days / 7.0), 1) if (dernier and plus_vieux) else 1
+    data["cadence"] = {
+        "dernier_post": dates[0], "jours_depuis": jours_depuis, "posts_30j": p30,
+        "posts_par_semaine": round(len(dates) / semaines, 1)}
+
+
+def _creneau(data, posts):
+    """Engagement moyen par jour de semaine et par heure → meilleur créneau pour publier."""
+    par_jour, par_heure = {}, {}
+    for p in posts:
+        dt = _parse_dt(p.get("created_time"))
+        if not dt:
+            continue
+        eng = p.get("_eng", 0)
+        par_jour.setdefault(dt.weekday(), []).append(eng)
+        par_heure.setdefault(dt.hour, []).append(eng)
+    if not par_jour:
+        return
+    moy_jour = {j: sum(v) / len(v) for j, v in par_jour.items()}
+    moy_heure = {h: sum(v) / len(v) for h, v in par_heure.items()}
+    best_j = max(moy_jour, key=moy_jour.get)
+    best_h = max(moy_heure, key=moy_heure.get)
+    data["meilleur_creneau"] = {
+        "jour": JOURS_FR[best_j], "heure": f"{best_h:02d}h",
+        "par_jour": {JOURS_FR[j]: round(m, 1) for j, m in sorted(moy_jour.items())},
+        "recommandation": f"{JOURS_FR[best_j]} vers {best_h:02d}h"}
+
+
+def _types_contenu(data, posts):
+    grp = {}
+    for p in posts:
+        t = _type_post(p)
+        grp.setdefault(t, []).append(p.get("_eng", 0))
+    data["types_contenu"] = {t: {"n": len(v), "engagement_moyen": round(sum(v) / len(v), 1)}
+                             for t, v in grp.items()}
+
+
+def _croissance(data, page_id, ptok):
+    g = _insight_28j(page_id, ptok, "gagnes", GAGNES_CANDIDATS)
+    p = _insight_28j(page_id, ptok, "perdus", PERDUS_CANDIDATS)
+    if g is not None or p is not None:
+        data["croissance"] = {"gagnes_28j": g, "perdus_28j": p,
+                              "net_28j": (g or 0) - (p or 0)}
+
+
+def _parse_dt(s):
+    if not s:
+        return None
+    try:
+        return datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
 
 
 def _insights_page(data, page_id, ptok):

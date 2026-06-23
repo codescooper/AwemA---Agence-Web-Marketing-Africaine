@@ -84,6 +84,23 @@ des simples vues, pour ne pas afficher un chiffre trompeur).
 > par Meta). On dispose des **top posts**, des **vues de Page**, des **likes/commentaires** —
 > pas d'un classement individuel des fans, ni (en v21) de la portée/reach.
 
+### Cockpit community management (Facebook, automatique)
+
+À chaque sync `--meta-all`, en plus des abonnés/posts/likes, le connecteur dérive **pour chaque
+Page** (données réelles, jamais inventées) :
+- **Réactions détaillées** par type (👍 ❤️ 🤗 😂 😮 😢 😡).
+- **Portée réelle par post** (`post_impressions_unique`) → portée moyenne + taux d'engagement réel.
+- **Commentaires à répondre** : commentaires sans réponse de la Page (inbox CM) + liens directs.
+- **Abonnés les plus actifs** : top commentateurs (le vrai « meilleur fan », dérivé des commentaires).
+- **Cadence** : dernier post, jours depuis, posts/semaine, posts (30 j).
+- **Meilleur créneau** : jour/heure où l'engagement est le plus fort.
+- **Types de contenu** : engagement moyen par format (photo / vidéo / lien / statut).
+- **Croissance 28 j** : nouveaux abonnés vs désabonnements (`page_fan_adds`/`page_fan_removes`).
+- **Évolution de l'audience** : un point horodaté est ajouté à chaque sync → vraie courbe dans le temps.
+
+Tout s'affiche dans le dashboard, vue **Présence digitale**. Ce qui n'est pas disponible (ex.
+portée Page en v21, Instagram non relié) reste en « à connecter » — aucune donnée fabriquée.
+
 ## Voie B — Simple : export CSV (Meta Business Suite / TwoMinuteReports)
 
 Sans app Meta : exporter les chiffres depuis l'outil du client, puis :

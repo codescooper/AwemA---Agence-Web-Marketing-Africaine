@@ -130,6 +130,9 @@ a{color:inherit;text-decoration:none}
 .fstep .v{width:54px;text-align:right;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* upcoming list */
+.kpibox{background:var(--elev);border:1px solid var(--border);border-radius:14px;padding:12px 14px}
+.kpibox .val2{font-family:'Plus Jakarta Sans';font-weight:800;font-size:22px;letter-spacing:-.02em}
+.kpibox .lab{font-size:11px;color:var(--muted);margin-top:3px}
 .list{margin-top:8px;display:flex;flex-direction:column}
 .li{display:flex;gap:12px;align-items:center;padding:11px 6px;border-bottom:1px solid var(--border)}
 .li:last-child{border-bottom:none}
@@ -521,38 +524,94 @@ function viewClients(){
     </div>`,'col4');
   $$('#grid [data-sel]').forEach(b=>b.onclick=()=>{setClient(b.dataset.sel);toast('Client : '+(ACTIVE?ACTIVE.nom:''));});
 }
+function bars(rows,fmt){const mx=Math.max(...rows.map(r=>r[1]),1);
+  return `<div class="bars" style="margin-top:12px">${rows.map(([l,v],i)=>`<div class="bar"><span style="text-transform:capitalize">${l}</span><div class="tr"><div class="fl" style="width:${Math.max(v/mx*100,2)}%;background:${PC[i%5]}"></div></div><span class="n">${fmt?fmt(v):v}</span></div>`).join('')}</div>`;}
+function tempsRel(iso){if(!iso)return '—';const d=Math.floor((Date.now()-new Date(iso))/864e5);return d<=0?"aujourd'hui":d===1?'hier':'il y a '+d+' j';}
+
 function viewReseaux(){
   const m=RES, prof=(ACTIVE&&ACTIVE.profils)||{}, connected=m&&m.connecte, g=(m&&m.global)||{};
-  [['Audience','audience','users','#4BA3FF'],['Posts','posts','layers','#7C5CFF'],['Likes','likes','target','#34E5C4'],
-   ['Commentaires','commentaires','chat','#FFC861'],['Vues (28j)','vues','eye','#FF7D9C'],['Engagement','engagement_taux','bolt','#4BA3FF']]
-   .forEach(([lab,key,icn,c])=>{const v=g[key],isNull=(v==null);
+  const kpis=[['Audience',g.audience,'users','#4BA3FF'],['Posts (récents)',g.posts,'layers','#7C5CFF'],
+    ['Réactions',g.likes,'bolt','#34E5C4'],['Commentaires',g.commentaires,'chat','#FFC861'],
+    ['Partages',g.partages,'target','#9AA7C2'],['Vues (28j)',g.vues,'eye','#FF7D9C']];
+  if(m&&m.portee_post)kpis.push(['Portée/post',m.portee_post.moyenne,'eye','#7C5CFF']);
+  if(g.engagement_taux!=null)kpis.push(['Engagement',g.engagement_taux,'bolt','#4BA3FF','%']);
+  if(m&&m.croissance)kpis.push(['Net 28j',m.croissance.net_28j,'chart','#34E5C4']);
+  kpis.forEach(([lab,v,icn,c,suf])=>{const isNull=(v==null);
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
-      <div class="val" ${isNull?'':`data-to="${v}" data-suf="${key==='engagement_taux'?'%':''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
-  add(`<h3>${ic('bubble')} Profils du client</h3>
-    <div class="sub">${connected?('Connecté · '+(m.source||'')+(m.maj?' · '+m.maj.slice(0,10):'')):'Non connecté — aucune donnée inventée'}</div>
-    <div style="margin-top:12px;font-size:12.5px">${['facebook','instagram','tiktok','linkedin','whatsapp'].map(r=>
-      `<div class="kvr"><b style="text-transform:capitalize">${r}</b><span>${prof[r]?(/^https?:/.test(prof[r])?`<a href="${prof[r]}" target="_blank">lien ↗</a>`:prof[r]):'<span class="tag">à renseigner</span>'}</span></div>`).join('')}</div>`,'col6');
-  add(`<h3>${ic('bolt')} Brancher les réseaux</h3><div class="sub">Obtenir les vraies données</div>
-    <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.7">
-      1. Renseigner les profils dans <code>client.json</code>.<br>
-      2. <code>python3 scripts/connect-reseaux.py --meta &lt;client_dir&gt;</code> (Meta API)<br>&nbsp;&nbsp;&nbsp;ou <code>--manuel &lt;client_dir&gt; export.csv</code>.<br>
-      3. <code>python3 outils/_data/build.py</code>.<br>
-      Détails : <code>outils/_data/README.md</code>.
-    </div>`,'col6');
-  const pr=(m&&m.par_reseau)||{}, hasPr=Object.values(pr).some(x=>x&&x.abonnes!=null);
-  add(`<h3>${ic('grid')} Abonnés par réseau</h3><div class="sub">${hasPr?'Données réelles':'À connecter'}</div>
-    ${hasPr?`<div class="bars" style="margin-top:12px">${Object.entries(pr).filter(([k,v])=>v&&v.abonnes!=null).map(([k,v],i)=>{const mx=Math.max(...Object.values(pr).map(x=>(x&&x.abonnes)||0))||1;return `<div class="bar"><span style="text-transform:capitalize">${k}</span><div class="tr"><div class="fl" style="width:${v.abonnes/mx*100}%;background:${PC[i%5]}"></div></div><span class="n">${v.abonnes}</span></div>`;}).join('')}</div>`
-      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Aucune donnée — branchez les réseaux.</div>`}`,'col6');
-  const fans=(m&&m.top_fans)||[];
-  add(`<h3>${ic('users')} Meilleurs fans</h3><div class="sub">${fans.length?'Top interactions':'À connecter'}</div>
-    ${fans.length?`<div class="list">${fans.slice(0,6).map(f=>`<div class="li"><span class="t">${f.nom}</span><span class="pill">${f.interactions} interactions</span></div>`).join('')}</div>`
+      <div class="val" ${isNull?'':`data-to="${v}" data-suf="${suf||''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
+
+  /* ---- INBOX : commentaires à répondre (cœur du community management) ---- */
+  const ar=(m&&m.a_repondre)||null;
+  add(`<h3>${ic('chat')} À répondre <span class="pill" style="background:${ar&&ar.total?'#FF7D9C22':'#34E5C422'};color:${ar&&ar.total?'#FF7D9C':'#34E5C4'}">${ar?ar.total:'—'}</span></h3>
+    <div class="sub">Commentaires sans réponse de la Page</div>
+    ${ar&&ar.total?`<div class="list" style="margin-top:10px">${ar.exemples.map(c=>`<div class="li" style="flex-direction:column;align-items:flex-start;gap:3px">
+        <div style="display:flex;gap:8px;width:100%;align-items:center"><b>${c.auteur||'—'}</b><span class="pill">${tempsRel(c.date)}</span>${c.lien?`<a href="${c.lien}" target="_blank" style="margin-left:auto" class="pill">répondre ↗</a>`:''}</div>
+        <span class="t" title="${(c.message||'').replace(/"/g,'&quot;')}" style="opacity:.85">${c.message||'—'}</span></div>`).join('')}</div>`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'🎉 Tout est répondu — aucun commentaire en attente.':'Disponible une fois les réseaux connectés.'}</div>`}`,'col6');
+
+  /* ---- Cadence de publication ---- */
+  const cad=(m&&m.cadence)||null;
+  add(`<h3>${ic('cal')} Cadence de publication</h3><div class="sub">Régularité = clé de l'algorithme</div>
+    ${cad?`<div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="kpibox"><div class="val2" style="color:${cad.jours_depuis>7?'#FF7D9C':'#34E5C4'}">${cad.jours_depuis==null?'—':cad.jours_depuis+' j'}</div><div class="lab">depuis le dernier post</div></div>
+        <div class="kpibox"><div class="val2">${cad.posts_par_semaine}</div><div class="lab">posts / semaine</div></div>
+        <div class="kpibox"><div class="val2">${cad.posts_30j}</div><div class="lab">posts (30 j)</div></div>
+        <div class="kpibox"><div class="val2" style="font-size:14px">${tempsRel(cad.dernier_post)}</div><div class="lab">dernière publication</div></div>
+      </div>`:`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Pas assez de posts récents.':'À connecter.'}</div>`}`,'col6');
+
+  /* ---- Réactions détaillées ---- */
+  const EMO={like:'👍 J\'aime',love:'❤️ J\'adore',care:'🤗 Solidaire',haha:'😂 Haha',wow:'😮 Wouah',sad:'😢 Triste',angry:'😡 Grrr'};
+  const rea=(m&&m.reactions)||null;
+  add(`<h3>${ic('bolt')} Réactions</h3><div class="sub">Répartition sur les posts récents</div>
+    ${rea&&Object.values(rea).some(v=>v>0)?bars(Object.keys(EMO).filter(k=>rea[k]>0).map(k=>[EMO[k],rea[k]]).sort((a,b)=>b[1]-a[1]))
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Aucune réaction sur les posts récents.':'À connecter.'}</div>`}`,'col6');
+
+  /* ---- Meilleur créneau ---- */
+  const cr=(m&&m.meilleur_creneau)||null;
+  add(`<h3>${ic('cal')} Meilleur créneau</h3><div class="sub">Quand l'engagement est le plus fort</div>
+    ${cr?`<div style="margin:12px 0"><span class="pill" style="background:#4BA3FF22;color:#4BA3FF;font-size:13px">📅 ${cr.recommandation}</span></div>
+      ${bars(Object.entries(cr.par_jour).map(([j,v])=>[j,v]),v=>Math.round(v))}`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Pas assez de données.':'À connecter.'}</div>`}`,'col6');
+
+  /* ---- Types de contenu ---- */
+  const tc=(m&&m.types_contenu)||null;
+  add(`<h3>${ic('layers')} Types de contenu</h3><div class="sub">Engagement moyen par format</div>
+    ${tc&&Object.keys(tc).length?bars(Object.entries(tc).sort((a,b)=>b[1].engagement_moyen-a[1].engagement_moyen).map(([t,v])=>[`${t} (${v.n})`,v.engagement_moyen]),v=>v)
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'—':'À connecter.'}</div>`}`,'col6');
+
+  /* ---- Croissance abonnés (28 j) ---- */
+  const cs=(m&&m.croissance)||null;
+  add(`<h3>${ic('chart')} Croissance (28 j)</h3><div class="sub">Nouveaux vs désabonnements</div>
+    ${cs?`<div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center">
+        <div class="kpibox"><div class="val2" style="color:#34E5C4">+${cs.gagnes_28j??0}</div><div class="lab">gagnés</div></div>
+        <div class="kpibox"><div class="val2" style="color:#FF7D9C">−${cs.perdus_28j??0}</div><div class="lab">perdus</div></div>
+        <div class="kpibox"><div class="val2" style="color:${cs.net_28j>=0?'#34E5C4':'#FF7D9C'}">${cs.net_28j>=0?'+':''}${cs.net_28j}</div><div class="lab">net</div></div>
+      </div>`:`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Indisponible (insights).':'À connecter.'}</div>`}`,'col6');
+
+  /* ---- Abonnés les plus actifs (vrais « top fans ») ---- */
+  const fans=(m&&m.top_commentateurs)||(m&&m.top_fans)||[];
+  add(`<h3>${ic('users')} Abonnés les plus actifs</h3><div class="sub">${fans.length?'Top commentateurs':'À connecter'}</div>
+    ${fans.length?`<div class="list">${fans.slice(0,8).map((f,i)=>`<div class="li"><span class="pill" style="background:${PC[i%5]}22;color:${PC[i%5]}">#${i+1}</span><span class="t">${f.nom}</span><span class="pill">${f.commentaires||f.interactions} comm.</span></div>`).join('')}</div>`
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Disponible une fois les réseaux connectés.</div>`}`,'col6');
+
+  /* ---- Meilleurs posts ---- */
   const tp=(m&&m.top_posts)||[];
-  add(`<h3>${ic('target')} Meilleurs posts</h3><div class="sub">${tp.length?'Par engagement':'À connecter'}</div>
-    ${tp.length?`<div class="list">${tp.slice(0,6).map(p=>`<div class="li"><span class="t" title="${p.titre}">${p.titre||'—'}</span><span class="pill">${p.plateforme}</span><span class="pill">❤ ${p.likes}</span><span class="pill">💬 ${p.commentaires}</span></div>`).join('')}</div>`
+  add(`<h3>${ic('target')} Meilleurs posts</h3><div class="sub">${tp.length?'Classés par engagement':'À connecter'}</div>
+    ${tp.length?`<div class="list">${tp.slice(0,8).map(p=>`<div class="li"><span class="t" title="${(p.titre||'').replace(/"/g,'&quot;')}">${p.titre||'—'}</span>
+      ${p.type?`<span class="pill">${p.type}</span>`:''}<span class="pill">👍 ${p.likes}</span><span class="pill">💬 ${p.commentaires}</span>${p.partages?`<span class="pill">↗ ${p.partages}</span>`:''}${p.portee!=null?`<span class="pill">👁 ${p.portee}</span>`:''}${p.lien?`<a href="${p.lien}" target="_blank" class="pill">voir ↗</a>`:''}</div>`).join('')}</div>`
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Disponible une fois les réseaux connectés.</div>`}`,'col12');
+
+  /* ---- Évolution audience ---- */
   const ev=(m&&m.evolution_audience)||[];
-  if(ev.length>1){const map={};ev.forEach((p,i)=>map[i+1]=p.valeur);add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">${ev.length} points</div>${area(map)}`,'col12');}
+  if(ev.length>1){const map={};ev.forEach((p,i)=>map[i+1]=p.valeur);add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">${ev.length} relevés · du ${ev[0].date} à ${ev[ev.length-1].date}</div>${area(map)}`,'col12');}
+  else if(connected){add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">La courbe se construit à chaque sync</div><div style="margin-top:14px;color:var(--muted);font-size:12.5px">1 relevé pour l'instant — un point est ajouté à chaque synchronisation.</div>`,'col12');}
+
+  /* ---- Profils + source ---- */
+  add(`<h3>${ic('bubble')} Profils & source</h3>
+    <div class="sub">${connected?('Connecté · '+(m.source||'')+(m.maj?' · maj '+m.maj.slice(0,10):'')):'Non connecté — aucune donnée inventée'}</div>
+    <div style="margin-top:12px;font-size:12.5px">${['facebook','instagram','tiktok','linkedin','whatsapp'].map(r=>
+      `<div class="kvr"><b style="text-transform:capitalize">${r}</b><span>${prof[r]?(/^https?:/.test(prof[r])?`<a href="${prof[r]}" target="_blank">lien ↗</a>`:prof[r]):'<span class="tag">à renseigner</span>'}</span></div>`).join('')}</div>`,'col12');
+
   $$('.kpi .val[data-to]').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
 }
 function viewReglages(){
