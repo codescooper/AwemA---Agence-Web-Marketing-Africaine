@@ -1,16 +1,16 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:35+00:00",
+  "maj": "2026-06-23T05:19:21+00:00",
   "global": {
     "audience": 10,
     "posts": 12,
     "likes": 1,
     "commentaires": 0,
-    "partages": null,
+    "partages": 6,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 4
+    "vues": 4,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
@@ -18,6 +18,7 @@
       "posts": 12,
       "likes": 1,
       "commentaires": 0,
+      "partages": 6,
       "portee": null,
       "vues": 4
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,217 @@
   "top_fans": [],
   "top_posts": [
     {
+      "titre": "Salon de coiffure sis à yopougon Toit rouge cherche une jeune fille pour la manu",
+      "plateforme": "Facebook",
+      "date": "2018-04-13T12:48:43+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/516649758736644",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 4,
+      "type": "photo",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
       "titre": "",
       "plateforme": "Facebook",
+      "date": "2019-07-30T07:39:47+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/814649258936691",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2018-10-15T20:45:57+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/640074473060838",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "lien",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2018-10-15T19:56:58+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/640061193062166",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Nous sommes à la recherche d'une jeune fille pour assurer le service de cocktail",
       "plateforme": "Facebook",
+      "date": "2020-01-07T08:23:51+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/943643776037238",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Societé spécialisé dans la vente en ligne cherche fournisseur de produit Africai",
       "plateforme": "Facebook",
+      "date": "2020-01-07T08:20:44+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/943641509370798",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Nous sommes à la recherche d'une jeune fille élégante et presentable pour assure",
       "plateforme": "Facebook",
+      "date": "2020-01-06T20:39:38+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/943249289410020",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Nous sommes à la recherche d’un gérant à temps plein qui aime travailler avec le",
       "plateforme": "Facebook",
+      "date": "2019-07-30T08:05:44+0000",
+      "lien": "https://www.facebook.com/1032933485971997/posts/814659625602321",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 0,
-      "commentaires": 0,
-      "partages": 1
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 0,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Nous sommes à la recherche d’une Caissière à temps plein qui aime travailler ave",
-      "plateforme": "Facebook",
-      "likes": 0,
-      "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "peri-bara-cote-d-ivoire"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 10
+    }
+  ],
+  "client": "peri-bara-cote-d-ivoire",
+  "reactions": {
+    "like": 1,
+    "love": 0,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2020-01-07T08:23:51+0000",
+    "jours_depuis": 2358,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Vendredi",
+    "heure": "12h",
+    "par_jour": {
+      "Lundi": 0.4,
+      "Mardi": 0.2,
+      "Vendredi": 2.0
+    },
+    "recommandation": "Vendredi vers 12h"
+  },
+  "types_contenu": {
+    "statut": {
+      "n": 9,
+      "engagement_moyen": 0.2
+    },
+    "lien": {
+      "n": 2,
+      "engagement_moyen": 0.5
+    },
+    "photo": {
+      "n": 1,
+      "engagement_moyen": 4.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

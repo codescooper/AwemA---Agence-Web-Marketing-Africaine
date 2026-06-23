@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:02+00:00",
+  "maj": "2026-06-23T05:18:02+00:00",
   "global": {
     "audience": 82,
     "posts": 17,
-    "likes": 39,
+    "likes": 45,
     "commentaires": 2,
-    "partages": null,
+    "partages": 0,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 3
+    "vues": 3,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 82,
       "posts": 17,
-      "likes": 39,
+      "likes": 45,
       "commentaires": 2,
+      "partages": 0,
       "portee": null,
       "vues": 3
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,222 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 5,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
       "titre": "🎉✨ Le grand jour approche ! ✨🎉\nJOUR J-1\nLe Festival de la Charité est enfin là ❤",
       "plateforme": "Facebook",
-      "likes": 4,
+      "date": "2025-08-13T13:24:41+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122106244874969078",
+      "likes": 5,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "🎉 Tu viens au Festicharité le 14 août ? Voici le KIT DU FESTIVALIER pour vivre à",
-      "plateforme": "Facebook",
-      "likes": 4,
-      "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 4,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 1,
-      "partages": 0
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 3,
+      "date": "2025-08-05T20:02:30+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122098827464969078?substory_index=670313622842149",
+      "likes": 5,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 5,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "📺✨ [SPOT OFFICIEL – FESTICHARITÉ 2025]\n🔊 Monte le son. Regarde. Ressens. Et part",
       "plateforme": "Facebook",
-      "likes": 3,
+      "date": "2025-08-06T00:40:04+0000",
+      "lien": "https://www.facebook.com/122173013822969078/videos/1409497586821966",
+      "likes": 4,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 3,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "🎯 Envie de faire partie de l'aventure Festicharité 2025 ?\nTu veux aider, accueil",
+      "titre": "🎉 Tu viens au Festicharité le 14 août ? Voici le KIT DU FESTIVALIER pour vivre à",
       "plateforme": "Facebook",
-      "likes": 3,
+      "date": "2025-08-06T00:06:13+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122098983422969078",
+      "likes": 4,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 4,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "👋🏾 Hey les amis, vous faites quoi le 14 août ?\n\nJ’aimerais vraiment vous parler ",
+      "titre": "🎉 FESTICHARITÉ 2025 – 3ᵉ ÉDITION 🎉\n📅 Le 14 août 2025 | 📍 Centre Ivoiro-Coréen, A",
       "plateforme": "Facebook",
+      "date": "2025-08-05T20:54:04+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122098858472969078",
+      "likes": 4,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 3,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2025-08-19T07:11:42+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122110436684969078",
+      "likes": 2,
+      "commentaires": 1,
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 1,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2025-08-19T07:10:24+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122110436216969078",
+      "likes": 2,
+      "commentaires": 1,
+      "partages": 0,
+      "type": "lien",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2025-08-15T23:30:14+0000",
+      "lien": "https://www.facebook.com/122173013822969078/posts/122108779880969078",
       "likes": 3,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 3,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "festicharite"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 82
+    }
+  ],
+  "client": "festicharite",
+  "reactions": {
+    "like": 39,
+    "love": 6,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2025-08-19T07:17:54+0000",
+    "jours_depuis": 307,
+    "posts_30j": 0,
+    "posts_par_semaine": 9.2
+  },
+  "meilleur_creneau": {
+    "jour": "Mercredi",
+    "heure": "13h",
+    "par_jour": {
+      "Mardi": 2.5,
+      "Mercredi": 4.0,
+      "Jeudi": 2.0,
+      "Vendredi": 2.0
+    },
+    "recommandation": "Mercredi vers 13h"
+  },
+  "types_contenu": {
+    "album": {
+      "n": 6,
+      "engagement_moyen": 2.3
+    },
+    "lien": {
+      "n": 2,
+      "engagement_moyen": 2.0
+    },
+    "photo": {
+      "n": 7,
+      "engagement_moyen": 3.3
+    },
+    "vidéo": {
+      "n": 2,
+      "engagement_moyen": 3.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

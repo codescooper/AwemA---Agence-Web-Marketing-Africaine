@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:52+00:00",
+  "maj": "2026-06-23T05:20:05+00:00",
   "global": {
     "audience": 588,
-    "posts": 24,
-    "likes": 37,
+    "posts": 29,
+    "likes": 42,
     "commentaires": 4,
-    "partages": null,
+    "partages": 8,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 7
+    "vues": 7,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 588,
-      "posts": 24,
-      "likes": 37,
+      "posts": 29,
+      "likes": 42,
       "commentaires": 4,
+      "partages": 8,
       "portee": null,
       "vues": 7
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,69 +45,246 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
   },
-  "top_fans": [],
+  "top_fans": [
+    {
+      "nom": "COMMUNAUTE VIRTUELLE DE YOPOUGON NORD",
+      "interactions": 1
+    }
+  ],
   "top_posts": [
     {
       "titre": "🎬 De l’idée au réel.\nCette vidéo n’est pas juste une création visuelle.\nC’est le",
       "plateforme": "Facebook",
+      "date": "2026-02-17T00:59:14+0000",
+      "lien": "https://www.facebook.com/reel/1916141202326831/",
       "likes": 13,
       "commentaires": 1,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 13,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "🚀 MASTERCLASS 100 % PRATIQUE – INTELLIGENCE ARTIFICIELLE 🤖✨\n\nTu veux créer des c",
       "plateforme": "Facebook",
+      "date": "2026-02-16T21:49:51+0000",
+      "lien": "https://www.facebook.com/100063939399977/posts/1401245452016755/",
       "likes": 12,
       "commentaires": 1,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 12,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Merci surtout à vous pour votre attention , à bientôt pour un nouveau repas de c",
       "plateforme": "Facebook",
-      "likes": 4,
+      "date": "2026-02-25T03:27:34+0000",
+      "lien": "https://www.facebook.com/100063939399977/posts/1408623917945575/",
+      "likes": 8,
       "commentaires": 2,
-      "partages": 2
-    },
-    {
-      "titre": "🐝🤖 AWEMA PRÉSENTE : MASTERCLASS INTELLIGENCE ARTIFICIELLE – PARTICIPATION GRATUI",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 0
+      "partages": 2,
+      "type": "album",
+      "reactions": {
+        "like": 4,
+        "love": 4,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Une cliente nous a envoyé les photos de ses produits via WhatsApp pour voir ce q",
       "plateforme": "Facebook",
+      "date": "2026-03-18T18:10:00+0000",
+      "lien": "https://www.facebook.com/reel/2572633389798959/",
       "likes": 1,
       "commentaires": 0,
-      "partages": 1
+      "partages": 1,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "",
+      "titre": "🐝 LA RUCHE RECRUTE – POUR UN PARTENAIRE\n📌 Poste : Chargé(e) des Systèmes d’Infor",
       "plateforme": "Facebook",
-      "likes": 1,
+      "date": "2026-02-26T13:02:37+0000",
+      "lien": "https://www.facebook.com/100063939399977/posts/1410027124471921/",
+      "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "",
+      "titre": "🐝🤖 AWEMA PRÉSENTE : MASTERCLASS INTELLIGENCE ARTIFICIELLE – PARTICIPATION GRATUI",
       "plateforme": "Facebook",
-      "likes": 1,
+      "date": "2026-02-04T12:04:17+0000",
+      "lien": "https://www.facebook.com/reel/1203271694842772/",
+      "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "",
+      "titre": "🚀 ASILIDERM PARIS est née !\nNous sommes heureux de vous annoncer le lancement im",
       "plateforme": "Facebook",
-      "likes": 1,
+      "date": "2025-11-17T19:31:34+0000",
+      "lien": "https://www.facebook.com/100063939399977/posts/1325746949566606/",
+      "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 1,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Tu veux vendre tes produits en ligne mais tes visuels ne donnent pas envie ?\nTu ",
+      "plateforme": "Facebook",
+      "date": "2026-03-18T17:59:29+0000",
+      "lien": "https://www.facebook.com/reel/1038425909354048/",
+      "likes": 0,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "vidéo",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "awema"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 588
+    }
+  ],
+  "client": "awema",
+  "reactions": {
+    "like": 37,
+    "love": 5,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2026-03-24T19:33:18+0000",
+    "jours_depuis": 90,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.4
+  },
+  "meilleur_creneau": {
+    "jour": "Mardi",
+    "heure": "00h",
+    "par_jour": {
+      "Lundi": 5.0,
+      "Mardi": 7.0,
+      "Mercredi": 1.4,
+      "Jeudi": 0.8,
+      "Vendredi": 0.0,
+      "Dimanche": 0.7
+    },
+    "recommandation": "Mardi vers 00h"
+  },
+  "types_contenu": {
+    "vidéo": {
+      "n": 9,
+      "engagement_moyen": 2.2
+    },
+    "lien": {
+      "n": 5,
+      "engagement_moyen": 0.4
+    },
+    "photo": {
+      "n": 8,
+      "engagement_moyen": 2.0
+    },
+    "album": {
+      "n": 6,
+      "engagement_moyen": 2.5
+    },
+    "statut": {
+      "n": 1,
+      "engagement_moyen": 1.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": [
+    {
+      "nom": "COMMUNAUTE VIRTUELLE DE YOPOUGON NORD",
+      "commentaires": 1
+    }
+  ]
 }

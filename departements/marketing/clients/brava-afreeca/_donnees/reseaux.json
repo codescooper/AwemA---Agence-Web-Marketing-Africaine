@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:39+00:00",
+  "maj": "2026-06-23T05:19:29+00:00",
   "global": {
     "audience": 468,
-    "posts": 25,
-    "likes": 144,
-    "commentaires": 29,
-    "partages": null,
+    "posts": 30,
+    "likes": 172,
+    "commentaires": 32,
+    "partages": 49,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 468,
-      "posts": 25,
-      "likes": 144,
-      "commentaires": 29,
+      "posts": 30,
+      "likes": 172,
+      "commentaires": 32,
+      "partages": 49,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,227 @@
     {
       "titre": "les Choses se précisent!!!\nMontée en Capacité et en Puissance...\nSmartTop, c'est",
       "plateforme": "Facebook",
+      "date": "2015-11-01T16:20:01+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=920954107939718&set=a.463863605750921&type=3",
       "likes": 19,
       "commentaires": 11,
-      "partages": 8
-    },
-    {
-      "titre": "Ce lundi, à la Primature, Bilan de l'action gouvernementale, échange entre le Pr",
-      "plateforme": "Facebook",
-      "likes": 10,
-      "commentaires": 5,
-      "partages": 1
+      "partages": 8,
+      "type": "photo",
+      "reactions": {
+        "like": 19,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Bonsoir,\nBrava Afreeca a le plaisir de vous annoncer sa  toute dernière INNOVATI",
       "plateforme": "Facebook",
+      "date": "2015-10-15T20:40:18+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=903576183010844&set=a.463863605750921&type=3",
       "likes": 14,
       "commentaires": 1,
-      "partages": 14
-    },
-    {
-      "titre": "Bonjour à tous!\n\nSoyez les premiers servis lors du lancement officiel du premier",
-      "plateforme": "Facebook",
-      "likes": 9,
-      "commentaires": 4,
-      "partages": 4
+      "partages": 14,
+      "type": "photo",
+      "reactions": {
+        "like": 14,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Lors de la rencontre de S.E.M Alassane OUATTARA et les jeunes entrepreneurs et C",
       "plateforme": "Facebook",
+      "date": "2015-10-13T06:06:17+0000",
+      "lien": "https://www.facebook.com/1542186787918592/posts/902583099776819",
       "likes": 10,
       "commentaires": 2,
-      "partages": 8
+      "partages": 8,
+      "type": "album",
+      "reactions": {
+        "like": 10,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Fondateur de BRAVA AFREECA, Président des Jeunes entreprises innovantes de COTE ",
+      "titre": "Ce lundi, à la Primature, Bilan de l'action gouvernementale, échange entre le Pr",
       "plateforme": "Facebook",
-      "likes": 10,
-      "commentaires": 1,
-      "partages": 0
+      "date": "2016-06-07T08:56:39+0000",
+      "lien": "https://www.facebook.com/1542186787918592/posts/1058804964154631",
+      "likes": 12,
+      "commentaires": 5,
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 10,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Bonjour à tous!\n\nSoyez les premiers servis lors du lancement officiel du premier",
+      "plateforme": "Facebook",
+      "date": "2015-11-17T11:02:53+0000",
+      "lien": "https://www.facebook.com/1542186787918592/posts/930840986951030",
+      "likes": 9,
+      "commentaires": 4,
+      "partages": 4,
+      "type": "statut",
+      "reactions": {
+        "like": 9,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Coming Soon\nBrava vous souhaite une très bonne journée!\n#Made #By #Ivorian, #Sma",
       "plateforme": "Facebook",
+      "date": "2016-03-04T07:18:09+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1000709823297479&set=a.463863605750921&type=3",
       "likes": 9,
       "commentaires": 1,
-      "partages": 4
+      "partages": 4,
+      "type": "photo",
+      "reactions": {
+        "like": 9,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Un Ordinateur avec des particularités très avantageux .\n\npassez vos commande ici",
+      "titre": "Brava Afreeca encore honoré ce Jeudi 8 Janvier 2015 par le FIDEN ( Fond Ivoirien",
       "plateforme": "Facebook",
-      "likes": 7,
+      "date": "2015-01-09T11:04:33+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=785267668175030&set=a.463863605750921&type=3",
+      "likes": 10,
+      "commentaires": 3,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 10,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Fondateur de BRAVA AFREECA, Président des Jeunes entreprises innovantes de COTE ",
+      "plateforme": "Facebook",
+      "date": "2015-11-17T19:04:47+0000",
+      "lien": "https://www.facebook.com/760075960694201/posts/931288690239593/",
+      "likes": 10,
       "commentaires": 1,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 10,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "brava-afreeca"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 468
+    }
+  ],
+  "client": "brava-afreeca",
+  "reactions": {
+    "like": 168,
+    "love": 3,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 1
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2016-06-07T08:56:39+0000",
+    "jours_depuis": 3667,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.4
+  },
+  "meilleur_creneau": {
+    "jour": "Dimanche",
+    "heure": "16h",
+    "par_jour": {
+      "Lundi": 2.5,
+      "Mardi": 10.7,
+      "Mercredi": 7.5,
+      "Jeudi": 8.8,
+      "Vendredi": 7.0,
+      "Samedi": 7.0,
+      "Dimanche": 11.0
+    },
+    "recommandation": "Dimanche vers 16h"
+  },
+  "types_contenu": {
+    "album": {
+      "n": 6,
+      "engagement_moyen": 8.2
+    },
+    "photo": {
+      "n": 10,
+      "engagement_moyen": 11.9
+    },
+    "lien": {
+      "n": 5,
+      "engagement_moyen": 3.4
+    },
+    "statut": {
+      "n": 6,
+      "engagement_moyen": 6.8
+    },
+    "vidéo": {
+      "n": 3,
+      "engagement_moyen": 9.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

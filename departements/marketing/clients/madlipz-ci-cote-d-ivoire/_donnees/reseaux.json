@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:42+00:00",
+  "maj": "2026-06-23T05:19:39+00:00",
   "global": {
     "audience": 3939,
-    "posts": 25,
-    "likes": 374,
-    "commentaires": 96,
-    "partages": null,
+    "posts": 30,
+    "likes": 850,
+    "commentaires": 116,
+    "partages": 317,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 3939,
-      "posts": 25,
-      "likes": 374,
-      "commentaires": 96,
+      "posts": 30,
+      "likes": 850,
+      "commentaires": 116,
+      "partages": 317,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,227 @@
     {
       "titre": "Depuis la tu pleures orh ... \n#MadLipz #MadLipzCi",
       "plateforme": "Facebook",
-      "likes": 41,
+      "date": "2019-02-08T12:03:40+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/377279883067310",
+      "likes": 107,
       "commentaires": 14,
-      "partages": 32
-    },
-    {
-      "titre": "Je vais jamais me laver !\nTag tes potes qui aiment à cause de qui il manque cabr",
-      "plateforme": "Facebook",
-      "likes": 29,
-      "commentaires": 21,
-      "partages": 25
-    },
-    {
-      "titre": "Mon petit Moi meme j'ai yohi !!! \nTag tes amis qui ont peur d'ABOBO !\n#MadLipz #",
-      "plateforme": "Facebook",
-      "likes": 36,
-      "commentaires": 6,
-      "partages": 23
-    },
-    {
-      "titre": "Moi j'aime les gens inteligent comme ça la ;) ! mdr \nalors as tu voté pour ton a",
-      "plateforme": "Facebook",
-      "likes": 24,
-      "commentaires": 9,
-      "partages": 46
+      "partages": 32,
+      "type": "vidéo",
+      "reactions": {
+        "like": 41,
+        "love": 2,
+        "care": 0,
+        "haha": 64,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "J'en peut plus moi mdr\n#MadLipz #MadLipzCi",
       "plateforme": "Facebook",
-      "likes": 25,
+      "date": "2019-02-08T13:00:05+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/352445498932386",
+      "likes": 60,
       "commentaires": 6,
-      "partages": 67
+      "partages": 67,
+      "type": "vidéo",
+      "reactions": {
+        "like": 25,
+        "love": 1,
+        "care": 0,
+        "haha": 34,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Je vais jamais me laver !\nTag tes potes qui aiment à cause de qui il manque cabr",
+      "plateforme": "Facebook",
+      "date": "2019-02-17T20:10:37+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/2035861676527423",
+      "likes": 70,
+      "commentaires": 21,
+      "partages": 25,
+      "type": "vidéo",
+      "reactions": {
+        "like": 29,
+        "love": 0,
+        "care": 0,
+        "haha": 41,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Moi j'aime les gens inteligent comme ça la ;) ! mdr \nalors as tu voté pour ton a",
+      "plateforme": "Facebook",
+      "date": "2018-10-19T20:08:00+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/318577075593577",
+      "likes": 55,
+      "commentaires": 9,
+      "partages": 46,
+      "type": "vidéo",
+      "reactions": {
+        "like": 24,
+        "love": 0,
+        "care": 0,
+        "haha": 31,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Mon petit Moi meme j'ai yohi !!! \nTag tes amis qui ont peur d'ABOBO !\n#MadLipz #",
+      "plateforme": "Facebook",
+      "date": "2019-02-08T11:40:51+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/2398011296936489",
+      "likes": 72,
+      "commentaires": 6,
+      "partages": 23,
+      "type": "vidéo",
+      "reactions": {
+        "like": 36,
+        "love": 1,
+        "care": 0,
+        "haha": 35,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "les gars taguez les gos qui ont les formes :D ! \nLes gos taguez les gars qui dra",
+      "plateforme": "Facebook",
+      "date": "2018-10-19T11:16:36+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/685344825169560",
+      "likes": 57,
+      "commentaires": 15,
+      "partages": 17,
+      "type": "vidéo",
+      "reactions": {
+        "like": 26,
+        "love": 0,
+        "care": 0,
+        "haha": 31,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "T'es un bg, bg faut pas pleurer !!!\nc'est elle qui voit pas claire ow.\nTaguons l",
       "plateforme": "Facebook",
-      "likes": 24,
+      "date": "2019-11-21T17:57:36+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/2627818807294065",
+      "likes": 55,
       "commentaires": 4,
-      "partages": 15
+      "partages": 15,
+      "type": "vidéo",
+      "reactions": {
+        "like": 24,
+        "love": 0,
+        "care": 0,
+        "haha": 31,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Lui faut pas jouer avec as game 😅🤣🤣\n#MadLipzCi #MadLipz\nInstalle l'application e",
+      "titre": "Vié môgo pardon !\nVas dormir maintenant :)\n#Madlipz #MadlipzCi",
       "plateforme": "Facebook",
-      "likes": 21,
-      "commentaires": 5,
-      "partages": 20
-    },
-    {
-      "titre": "Tag quelqu'un qui fatigue comme ça mdr ! \n\nRendez vous sur la page Mr Sondage po",
-      "plateforme": "Facebook",
-      "likes": 15,
-      "commentaires": 11,
-      "partages": 17
+      "date": "2019-10-30T01:33:05+0000",
+      "lien": "https://www.facebook.com/1312538164359101/videos/1337101226498474",
+      "likes": 59,
+      "commentaires": 2,
+      "partages": 11,
+      "type": "vidéo",
+      "reactions": {
+        "like": 22,
+        "love": 0,
+        "care": 0,
+        "haha": 37,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "madlipz-ci-cote-d-ivoire"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 3939
+    }
+  ],
+  "client": "madlipz-ci-cote-d-ivoire",
+  "reactions": {
+    "like": 407,
+    "love": 12,
+    "care": 0,
+    "haha": 429,
+    "wow": 2,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2024-07-21T20:37:04+0000",
+    "jours_depuis": 701,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Vendredi",
+    "heure": "13h",
+    "par_jour": {
+      "Lundi": 24.5,
+      "Mardi": 11.7,
+      "Mercredi": 27.3,
+      "Jeudi": 32.0,
+      "Vendredi": 77.4,
+      "Samedi": 59.0,
+      "Dimanche": 41.5
+    },
+    "recommandation": "Vendredi vers 13h"
+  },
+  "types_contenu": {
+    "album": {
+      "n": 1,
+      "engagement_moyen": 0.0
+    },
+    "vidéo": {
+      "n": 18,
+      "engagement_moyen": 65.0
+    },
+    "photo": {
+      "n": 4,
+      "engagement_moyen": 13.5
+    },
+    "lien": {
+      "n": 5,
+      "engagement_moyen": 3.4
+    },
+    "statut": {
+      "n": 2,
+      "engagement_moyen": 21.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

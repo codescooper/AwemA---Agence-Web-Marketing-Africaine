@@ -2,23 +2,24 @@
   "client": "afrocodeurs",
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:29:53+00:00",
+  "maj": "2026-06-23T05:17:46+00:00",
   "global": {
     "audience": 0,
-    "posts": 0,
-    "likes": 0,
-    "commentaires": 0,
+    "posts": null,
+    "likes": null,
+    "commentaires": null,
     "partages": null,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 0,
-      "posts": 0,
-      "likes": 0,
-      "commentaires": 0,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": 0
     },
@@ -27,6 +28,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -35,6 +37,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -43,11 +46,25 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
   },
   "top_fans": [],
   "top_posts": [],
-  "evolution_audience": []
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 0
+    }
+  ],
+  "reactions": null,
+  "portee_post": null,
+  "croissance": null,
+  "cadence": null,
+  "meilleur_creneau": null,
+  "types_contenu": null,
+  "a_repondre": null,
+  "top_commentateurs": []
 }

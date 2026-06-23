@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:23+00:00",
+  "maj": "2026-06-23T05:18:53+00:00",
   "global": {
     "audience": 524,
-    "posts": 25,
-    "likes": 33,
-    "commentaires": 8,
-    "partages": null,
+    "posts": 28,
+    "likes": 65,
+    "commentaires": 9,
+    "partages": 10,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 3
+    "vues": 3,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 524,
-      "posts": 25,
-      "likes": 33,
-      "commentaires": 8,
+      "posts": 28,
+      "likes": 65,
+      "commentaires": 9,
+      "partages": 10,
       "portee": null,
       "vues": 3
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,225 @@
   "top_fans": [],
   "top_posts": [
     {
+      "titre": "Accouplement",
+      "plateforme": "Facebook",
+      "date": "2019-02-18T10:46:23+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/1059610107572493",
+      "likes": 5,
+      "commentaires": 0,
+      "partages": 3,
+      "type": "photo",
+      "reactions": {
+        "like": 4,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "A ne pas manquer <3 <3 <3",
+      "plateforme": "Facebook",
+      "date": "2018-02-23T14:55:12+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/826941290839377",
+      "likes": 2,
+      "commentaires": 0,
+      "partages": 4,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
       "titre": "Les malinois sont disponible <3",
       "plateforme": "Facebook",
-      "likes": 4,
+      "date": "2018-02-22T13:40:18+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/826346484232191",
+      "likes": 5,
       "commentaires": 1,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 4,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "qu'attend tu pour venir chercher le tiens <3",
       "plateforme": "Facebook",
-      "likes": 3,
-      "commentaires": 2,
-      "partages": 0
-    },
-    {
-      "titre": "Accouplement",
-      "plateforme": "Facebook",
+      "date": "2018-02-05T04:51:04+0000",
+      "lien": "https://www.facebook.com/1625420022920898/videos/817700115096828",
       "likes": 4,
-      "commentaires": 0,
-      "partages": 3
+      "commentaires": 2,
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 3,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Ils cherchent une nouvelle famille , est ce la votre ??",
       "plateforme": "Facebook",
-      "likes": 2,
+      "date": "2018-02-22T13:30:09+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/826339367566236",
+      "likes": 3,
       "commentaires": 2,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 2,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Foncer profiter de l'occaz ;)",
       "plateforme": "Facebook",
-      "likes": 3,
+      "date": "2019-02-17T23:30:26+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/1059385300928307",
+      "likes": 4,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 3,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "",
+      "titre": "American Bull Terié <3 \nchez qui il ira instorer l'ordre ??",
       "plateforme": "Facebook",
-      "likes": 0,
-      "commentaires": 2,
-      "partages": 0
-    },
-    {
-      "titre": "Dog Allemang pure race cherche famille d'accueil ! \n#IvoirePetShop #ChienDeRace ",
-      "plateforme": "Facebook",
+      "date": "2018-02-22T13:53:58+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/826350790898427",
       "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Nous attendons vos Pets de chou pour en prendre soin ;)",
+      "titre": "Alors , qui sera le chanceux propriétaire de cet adorable caniche ?? 😍😍😍😍",
       "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 1,
-      "partages": 0
+      "date": "2018-02-05T03:39:35+0000",
+      "lien": "https://www.facebook.com/1625420022920898/posts/817667611766745",
+      "likes": 3,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 2,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "ivoire-petshop"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 524
+    }
+  ],
+  "client": "ivoire-petshop",
+  "reactions": {
+    "like": 38,
+    "love": 26,
+    "care": 0,
+    "haha": 1,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2024-08-11T01:44:51+0000",
+    "jours_depuis": 681,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Lundi",
+    "heure": "04h",
+    "par_jour": {
+      "Lundi": 4.6,
+      "Mardi": 2.7,
+      "Mercredi": 3.0,
+      "Jeudi": 2.9,
+      "Vendredi": 4.5,
+      "Samedi": 1.0,
+      "Dimanche": 1.5
+    },
+    "recommandation": "Lundi vers 04h"
+  },
+  "types_contenu": {
+    "statut": {
+      "n": 8,
+      "engagement_moyen": 1.4
+    },
+    "photo": {
+      "n": 14,
+      "engagement_moyen": 3.7
+    },
+    "album": {
+      "n": 3,
+      "engagement_moyen": 3.3
+    },
+    "vidéo": {
+      "n": 3,
+      "engagement_moyen": 3.7
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

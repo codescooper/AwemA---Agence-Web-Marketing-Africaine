@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:47+00:00",
+  "maj": "2026-06-23T05:19:49+00:00",
   "global": {
     "audience": 285,
-    "posts": 25,
-    "likes": 86,
-    "commentaires": 7,
-    "partages": null,
+    "posts": 30,
+    "likes": 156,
+    "commentaires": 19,
+    "partages": 21,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 285,
-      "posts": 25,
-      "likes": 86,
-      "commentaires": 7,
+      "posts": 30,
+      "likes": 156,
+      "commentaires": 19,
+      "partages": 21,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,225 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "Cette je dérobe à la règle , c'est Manon Wanders qui va traiter le sujet à ma pl",
+      "titre": "Code scoopons whatsApp avec deux fonctionnalités que j'ai trouvée pas mal :) qu'",
       "plateforme": "Facebook",
-      "likes": 14,
-      "commentaires": 2,
-      "partages": 0
-    },
-    {
-      "titre": "Envie de quotidiennement améliorer ton anglais ? rdv ce soir pour de très bonnes",
-      "plateforme": "Facebook",
-      "likes": 11,
-      "commentaires": 1,
-      "partages": 0
-    },
-    {
-      "titre": "[FILM] conseillé au geek voila pourquoi je vous en parle mes chers scooper !\nAhh",
-      "plateforme": "Facebook",
-      "likes": 9,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Nouvelle vidéos ce soir ( ou demain , selon la connexion :D ) , je vous fais déc",
-      "plateforme": "Facebook",
-      "likes": 9,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "------------------------------[ATTENTION]---------------------------\nLes utilisa",
-      "plateforme": "Facebook",
-      "likes": 5,
-      "commentaires": 2,
-      "partages": 7
+      "date": "2017-04-02T23:26:53+0000",
+      "lien": "https://www.facebook.com/1332431532364762/videos/959323804198600",
+      "likes": 13,
+      "commentaires": 5,
+      "partages": 8,
+      "type": "vidéo",
+      "reactions": {
+        "like": 11,
+        "love": 0,
+        "care": 0,
+        "haha": 1,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
-      "likes": 5,
-      "commentaires": 1,
-      "partages": 2
+      "date": "2017-04-07T19:09:57+0000",
+      "lien": "https://www.facebook.com/notes/code-scooper/quand-la-technologie-devient-de-lart-theme-propos%C3%A9-par-manou-grebo/959923484138632/",
+      "likes": 15,
+      "commentaires": 7,
+      "partages": 1,
+      "type": "lien",
+      "reactions": {
+        "like": 10,
+        "love": 4,
+        "care": 0,
+        "haha": 0,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Videos disponible ;) , abonne toi à la chaîne youtube , et laisse un pouce bleu ",
+      "titre": "Cette je dérobe à la règle , c'est Manon Wanders qui va traiter le sujet à ma pl",
       "plateforme": "Facebook",
+      "date": "2017-04-20T03:22:15+0000",
+      "lien": "https://www.facebook.com/933816756749305/posts/970828016381512/",
+      "likes": 15,
+      "commentaires": 2,
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 14,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "------------------------------[ATTENTION]---------------------------\nLes utilisa",
+      "plateforme": "Facebook",
+      "date": "2017-05-04T15:11:13+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=979483312182649&set=a.396091929332065&type=3",
       "likes": 6,
-      "commentaires": 0,
-      "partages": 0
+      "commentaires": 2,
+      "partages": 7,
+      "type": "photo",
+      "reactions": {
+        "like": 5,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "À 5 ans il apprenait à coder, à 9 ans il créait son appli pour iPhone et depuis ",
+      "titre": "c'est chaud :'-D",
       "plateforme": "Facebook",
-      "likes": 5,
+      "date": "2017-04-07T18:14:04+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=962652593865721&set=a.396091929332065&type=3",
+      "likes": 15,
       "commentaires": 0,
-      "partages": 1
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 14,
+        "love": 0,
+        "care": 0,
+        "haha": 1,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Envie de quotidiennement améliorer ton anglais ? rdv ce soir pour de très bonnes",
+      "plateforme": "Facebook",
+      "date": "2017-04-19T16:09:16+0000",
+      "lien": "https://www.facebook.com/1332431532364762/posts/970526719744975",
+      "likes": 11,
+      "commentaires": 1,
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 11,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "[FILM] conseillé au geek voila pourquoi je vous en parle mes chers scooper !\nAhh",
+      "plateforme": "Facebook",
+      "date": "2017-08-01T12:46:27+0000",
+      "lien": "https://www.facebook.com/1332431532364762/posts/1037800683017578",
+      "likes": 10,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 9,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Nouvelle vidéos ce soir ( ou demain , selon la connexion :D ) , je vous fais déc",
+      "plateforme": "Facebook",
+      "date": "2017-04-22T20:08:50+0000",
+      "lien": "https://www.facebook.com/1332431532364762/posts/972518832879097",
+      "likes": 9,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "lien",
+      "reactions": {
+        "like": 9,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "code-scooper"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 285
+    }
+  ],
+  "client": "code-scooper",
+  "reactions": {
+    "like": 136,
+    "love": 8,
+    "care": 0,
+    "haha": 2,
+    "wow": 9,
+    "sad": 1,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2020-03-29T01:06:14+0000",
+    "jours_depuis": 2277,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.2
+  },
+  "meilleur_creneau": {
+    "jour": "Vendredi",
+    "heure": "23h",
+    "par_jour": {
+      "Lundi": 6.5,
+      "Mardi": 3.2,
+      "Mercredi": 6.5,
+      "Jeudi": 7.0,
+      "Vendredi": 14.0,
+      "Samedi": 5.7,
+      "Dimanche": 5.2
+    },
+    "recommandation": "Vendredi vers 23h"
+  },
+  "types_contenu": {
+    "lien": {
+      "n": 15,
+      "engagement_moyen": 4.3
+    },
+    "vidéo": {
+      "n": 5,
+      "engagement_moyen": 10.0
+    },
+    "statut": {
+      "n": 6,
+      "engagement_moyen": 5.7
+    },
+    "photo": {
+      "n": 4,
+      "engagement_moyen": 12.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

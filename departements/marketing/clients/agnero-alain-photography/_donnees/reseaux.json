@@ -1,16 +1,16 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:31:02+00:00",
+  "maj": "2026-06-23T05:20:33+00:00",
   "global": {
     "audience": 274,
     "posts": 15,
     "likes": 267,
     "commentaires": 13,
-    "partages": null,
+    "partages": 2,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 3
+    "vues": 3,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
@@ -18,6 +18,7 @@
       "posts": 15,
       "likes": 267,
       "commentaires": 13,
+      "partages": 2,
       "portee": null,
       "vues": 3
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,217 @@
     {
       "titre": "Bill Brandt\n« Cela fait partie du travail du photographe de voir plus intensémen",
       "plateforme": "Facebook",
+      "date": "2014-11-03T09:14:05+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=630249823753093&set=a.630249780419764&type=3",
       "likes": 75,
       "commentaires": 5,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 75,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "« Ne perdez pas espoir, c'est souvent la dernière clé du trousseau qui ouvre la ",
       "plateforme": "Facebook",
+      "date": "2014-11-08T17:58:08+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=633298486781560&set=a.411422317753051&type=3",
       "likes": 41,
       "commentaires": 2,
-      "partages": 1
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 41,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Roland Barthes\n« Ce que la photographie reproduit à l'infini n'a lieu qu'une foi",
       "plateforme": "Facebook",
+      "date": "2014-11-03T09:08:17+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=630247747086634&set=a.630247697086639&type=3",
       "likes": 23,
       "commentaires": 2,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 23,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "bonne soirée et douce nuit a vous  jvs mouak ! \nbientot : \nAgnero Alain photogra",
       "plateforme": "Facebook",
+      "date": "2014-12-16T23:32:17+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=650871365024272&set=a.411422317753051&type=3",
       "likes": 19,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 19,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "<Quand on ne peut revenir en arrière, on ne doit que se préoccuper de la meilleu",
       "plateforme": "Facebook",
+      "date": "2014-12-08T00:27:15+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=646788535432555&set=a.411422317753051&type=3",
       "likes": 17,
       "commentaires": 2,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 17,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "<  Avoir peur, c'est une très bonne chose : ça veut dire que vous avez encore qu",
       "plateforme": "Facebook",
+      "date": "2014-11-09T15:34:38+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=633734256737983&set=a.630247697086639&type=3",
       "likes": 19,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 19,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Les hypocrites c'est comme mon répondeur, ça parlent toujours quand je ne suis p",
       "plateforme": "Facebook",
+      "date": "2014-11-09T16:08:15+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=633745500070192&set=a.411422317753051&type=3",
       "likes": 18,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 18,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "La photographie est une brève complicité entre la prévoyance et le hasard. – Joh",
       "plateforme": "Facebook",
+      "date": "2014-11-02T15:50:58+0000",
+      "lien": "https://www.facebook.com/1352645310297409/posts/5456682294425368?substory_index=5456682294425368",
       "likes": 16,
       "commentaires": 1,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 16,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "agnero-alain-photography"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 274
+    }
+  ],
+  "client": "agnero-alain-photography",
+  "reactions": {
+    "like": 267,
+    "love": 0,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2018-09-29T10:53:26+0000",
+    "jours_depuis": 2823,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Lundi",
+    "heure": "09h",
+    "par_jour": {
+      "Lundi": 41.3,
+      "Mardi": 19.0,
+      "Vendredi": 7.5,
+      "Samedi": 18.0,
+      "Dimanche": 13.8
+    },
+    "recommandation": "Lundi vers 09h"
+  },
+  "types_contenu": {
+    "photo": {
+      "n": 12,
+      "engagement_moyen": 21.7
+    },
+    "statut": {
+      "n": 2,
+      "engagement_moyen": 3.5
+    },
+    "album": {
+      "n": 1,
+      "engagement_moyen": 15.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

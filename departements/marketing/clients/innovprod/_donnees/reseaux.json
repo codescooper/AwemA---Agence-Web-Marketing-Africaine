@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:11+00:00",
+  "maj": "2026-06-23T05:18:25+00:00",
   "global": {
     "audience": 2098,
-    "posts": 25,
-    "likes": 133,
-    "commentaires": 3,
-    "partages": null,
+    "posts": 30,
+    "likes": 173,
+    "commentaires": 4,
+    "partages": 30,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 2098,
-      "posts": 25,
-      "likes": 133,
-      "commentaires": 3,
+      "posts": 30,
+      "likes": 173,
+      "commentaires": 4,
+      "partages": 30,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,222 @@
     {
       "titre": "Soyez passionne(e)s\nSoyez Audacieux(se)\nSoyez déterminé(e)\nSoyez vous!\nNous vous",
       "plateforme": "Facebook",
-      "likes": 21,
+      "date": "2021-09-20T09:15:13+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/873807500006901",
+      "likes": 27,
       "commentaires": 1,
-      "partages": 5
+      "partages": 5,
+      "type": "album",
+      "reactions": {
+        "like": 21,
+        "love": 6,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "~ Le Plus Difficile Est De Se Décider À Agir, Le Reste N’est Que De La Ténacité ",
       "plateforme": "Facebook",
-      "likes": 12,
+      "date": "2021-09-09T11:57:14+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/867230217331296",
+      "likes": 14,
       "commentaires": 0,
-      "partages": 1
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 12,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "A vos marques, prêts, souriez!\n\nService commercial: +225 0759856025\nEmail: innov",
       "plateforme": "Facebook",
-      "likes": 11,
+      "date": "2021-09-15T10:50:05+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/870862603634724",
+      "likes": 13,
       "commentaires": 0,
-      "partages": 1
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 11,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Les portes de l’avenir sont ouvertes à ceux qui savent les pousser. Passez une e",
       "plateforme": "Facebook",
-      "likes": 7,
+      "date": "2021-09-14T09:57:13+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/870257093695275",
+      "likes": 9,
       "commentaires": 1,
-      "partages": 4
+      "partages": 4,
+      "type": "photo",
+      "reactions": {
+        "like": 7,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "~Chaque nouveau niveau de vie exigera un autre VOUS •\n\n#Innovprod\n#Photographie\n",
+      "plateforme": "Facebook",
+      "date": "2021-07-28T09:01:41+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/841415706579414",
+      "likes": 10,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 8,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "@innovprodci \n\nMake everything magical…. \n\n❗️Riviera bonoumin non loin de la pha",
+      "plateforme": "Facebook",
+      "date": "2021-07-07T15:05:10+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/829224727798512",
+      "likes": 7,
+      "commentaires": 0,
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 7,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Couleur ou Blanc Noir?\n\nService Commercial: 0759856025\nEmail: innovprodvideo@gma",
       "plateforme": "Facebook",
+      "date": "2021-09-30T11:04:22+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/879811112739873",
       "likes": 6,
       "commentaires": 1,
-      "partages": 1
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 6,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Pinceau\nCostume \nAmbiance \nNous nous occupons de votre image avec soins.\n\nNous s",
       "plateforme": "Facebook",
+      "date": "2021-09-16T09:59:17+0000",
+      "lien": "https://www.facebook.com/1580948737375408/posts/871440143576970",
       "likes": 7,
       "commentaires": 0,
-      "partages": 1
-    },
-    {
-      "titre": "Shoot Artistique\nMuse: Nisa Kouame \nRéalisation: Innov Prod \n\nNous réalisons des",
-      "plateforme": "Facebook",
-      "likes": 6,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Si vous pouvez le rêver, vous pouvez le faire.\nPassez une excellente semaine.\n\n#",
-      "plateforme": "Facebook",
-      "likes": 6,
-      "commentaires": 0,
-      "partages": 1
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 7,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "innovprod"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 2098
+    }
+  ],
+  "client": "innovprod",
+  "reactions": {
+    "like": 155,
+    "love": 18,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2021-10-08T09:33:59+0000",
+    "jours_depuis": 1718,
+    "posts_30j": 0,
+    "posts_par_semaine": 2.3
+  },
+  "meilleur_creneau": {
+    "jour": "Lundi",
+    "heure": "11h",
+    "par_jour": {
+      "Lundi": 12.0,
+      "Mardi": 5.6,
+      "Mercredi": 8.0,
+      "Jeudi": 5.7,
+      "Vendredi": 5.0,
+      "Samedi": 2.0
+    },
+    "recommandation": "Lundi vers 11h"
+  },
+  "types_contenu": {
+    "album": {
+      "n": 17,
+      "engagement_moyen": 6.9
+    },
+    "photo": {
+      "n": 9,
+      "engagement_moyen": 9.1
+    },
+    "vidéo": {
+      "n": 2,
+      "engagement_moyen": 3.5
+    },
+    "lien": {
+      "n": 2,
+      "engagement_moyen": 0.5
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

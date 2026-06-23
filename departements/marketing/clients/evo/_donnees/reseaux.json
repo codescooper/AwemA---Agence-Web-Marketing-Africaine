@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:54+00:00",
+  "maj": "2026-06-23T05:20:13+00:00",
   "global": {
     "audience": 340,
     "posts": 16,
-    "likes": 238,
+    "likes": 250,
     "commentaires": 3,
-    "partages": null,
+    "partages": 33,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 340,
       "posts": 16,
-      "likes": 238,
+      "likes": 250,
       "commentaires": 3,
+      "partages": 33,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,227 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "Chemises Evo disponibles",
-      "plateforme": "Facebook",
-      "likes": 23,
-      "commentaires": 0,
-      "partages": 1
-    },
-    {
       "titre": "Choisissez un de nos modèles en ligne 💻, appelez nous (au 📱78317400 ou au 📞42776",
       "plateforme": "Facebook",
+      "date": "2016-08-13T10:50:58+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=632627273582669&set=a.438862884948895&type=3",
       "likes": 20,
       "commentaires": 1,
-      "partages": 12
+      "partages": 12,
+      "type": "photo",
+      "reactions": {
+        "like": 20,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
+      "date": "2016-08-11T14:44:58+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=631689683676428&set=a.438862884948895&type=3",
+      "likes": 21,
+      "commentaires": 0,
+      "partages": 5,
+      "type": "photo",
+      "reactions": {
+        "like": 20,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Chemises Evo disponibles",
+      "plateforme": "Facebook",
+      "date": "2016-08-11T14:02:17+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=631675160344547&set=a.438862884948895&type=3",
+      "likes": 24,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 23,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2016-08-11T23:39:41+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=631902163655180&set=a.438862884948895&type=3",
       "likes": 20,
       "commentaires": 1,
-      "partages": 2
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 20,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Choisissez le modèle qui vous convient, appelez nous #78317400 et faites vous li",
       "plateforme": "Facebook",
-      "likes": 21,
+      "date": "2016-08-11T14:25:59+0000",
+      "lien": "https://www.facebook.com/1440696724765501/posts/631682323677164",
+      "likes": 22,
       "commentaires": 0,
-      "partages": 1
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 20,
-      "commentaires": 0,
-      "partages": 5
-    },
-    {
-      "titre": "Chemise Evo disponible, commander dès maintenant sur notre page Facebook ou joig",
-      "plateforme": "Facebook",
-      "likes": 20,
-      "commentaires": 0,
-      "partages": 1
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 21,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Découvrez des chemises faites pour vous, commander et faites vous livrer partout",
       "plateforme": "Facebook",
-      "likes": 19,
+      "date": "2016-08-11T13:55:03+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=631672400344823&set=a.438862884948895&type=3",
+      "likes": 21,
       "commentaires": 1,
-      "partages": 1
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 19,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Découvrez les kimonos Evo à des prix abordables",
+      "titre": "Bientôt encore plus de choix, mais toujours la même qualité.",
       "plateforme": "Facebook",
+      "date": "2016-08-12T12:52:35+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=632200596958670&set=a.438862884948895&type=3",
       "likes": 18,
       "commentaires": 0,
-      "partages": 1
+      "partages": 4,
+      "type": "photo",
+      "reactions": {
+        "like": 17,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Chemise Evo disponible, commander dès maintenant sur notre page Facebook ou joig",
+      "plateforme": "Facebook",
+      "date": "2016-08-11T13:58:22+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=631673967011333&set=a.438862884948895&type=3",
+      "likes": 21,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 20,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "evo"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 340
+    }
+  ],
+  "client": "evo",
+  "reactions": {
+    "like": 238,
+    "love": 12,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2020-07-12T12:42:11+0000",
+    "jours_depuis": 2171,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Samedi",
+    "heure": "10h",
+    "par_jour": {
+      "Lundi": 15.0,
+      "Jeudi": 18.7,
+      "Vendredi": 22.0,
+      "Samedi": 25.0,
+      "Dimanche": 6.0
+    },
+    "recommandation": "Samedi vers 10h"
+  },
+  "types_contenu": {
+    "vidéo": {
+      "n": 1,
+      "engagement_moyen": 0.0
+    },
+    "lien": {
+      "n": 1,
+      "engagement_moyen": 0.0
+    },
+    "photo": {
+      "n": 12,
+      "engagement_moyen": 21.5
+    },
+    "album": {
+      "n": 1,
+      "engagement_moyen": 23.0
+    },
+    "statut": {
+      "n": 1,
+      "engagement_moyen": 5.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

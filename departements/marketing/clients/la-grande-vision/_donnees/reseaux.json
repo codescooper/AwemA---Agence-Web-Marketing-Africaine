@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:04+00:00",
+  "maj": "2026-06-23T05:18:10+00:00",
   "global": {
     "audience": 24,
-    "posts": 25,
-    "likes": 18,
+    "posts": 30,
+    "likes": 19,
     "commentaires": 0,
-    "partages": null,
+    "partages": 1,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 25
+    "vues": 25,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 24,
-      "posts": 25,
-      "likes": 18,
+      "posts": 30,
+      "likes": 19,
       "commentaires": 0,
+      "partages": 1,
       "portee": null,
       "vues": 25
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,221 @@
   "top_fans": [],
   "top_posts": [
     {
+      "titre": "Bienvenue en Juin !\nUn nouveau mois commence, une nouvelle opportunité de grandi",
+      "plateforme": "Facebook",
+      "date": "2026-06-01T11:11:09+0000",
+      "lien": "https://www.facebook.com/883918018090746/posts/865345886614626",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
       "titre": "Aujourd’hui, nous rendons hommage à toutes les mamans 🤱, ces femmes de vision 👓,",
       "plateforme": "Facebook",
+      "date": "2026-05-31T10:40:08+0000",
+      "lien": "https://www.facebook.com/reel/2062397078024333/",
       "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Lorsque nous utilisons longtemps les écrans, nous avons tendance à moins cligner",
       "plateforme": "Facebook",
+      "date": "2026-05-22T12:59:06+0000",
+      "lien": "https://www.facebook.com/reel/1524556899345112/",
       "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Beaucoup de personnes attendent que leur vision devienne vraiment gênante avant ",
       "plateforme": "Facebook",
+      "date": "2026-05-19T20:20:51+0000",
+      "lien": "https://www.facebook.com/reel/1652438569327649/",
       "likes": 2,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Bienvenue en Juin !\nUn nouveau mois commence, une nouvelle opportunité de grandi",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 1
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Vos lunettes vous accompagnent chaque jour.\nMais avec le temps, votre vision peu",
       "plateforme": "Facebook",
+      "date": "2026-05-29T17:53:56+0000",
+      "lien": "https://www.facebook.com/reel/2207878593364761/",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Bonne fête de la Tabaski à tous les musulmans de la Côte d'Ivoire et du monde\n#A",
       "plateforme": "Facebook",
+      "date": "2026-05-27T12:01:13+0000",
+      "lien": "https://www.facebook.com/reel/1304278014552260/",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Une bonne vision influence le confort au quotidien. Mais aussi la confiance, la ",
       "plateforme": "Facebook",
+      "date": "2026-05-25T10:23:55+0000",
+      "lien": "https://www.facebook.com/reel/1707528970276402/",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Que l’Esprit Saint remplisse vos cœurs de paix, de lumière et de sagesse. 🔥✨\nLa ",
       "plateforme": "Facebook",
+      "date": "2026-05-24T13:50:39+0000",
+      "lien": "https://www.facebook.com/reel/1460816758680629/",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "la-grande-vision"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 24
+    }
+  ],
+  "client": "la-grande-vision",
+  "reactions": {
+    "like": 19,
+    "love": 0,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2026-06-19T11:28:54+0000",
+    "jours_depuis": 3,
+    "posts_30j": 15,
+    "posts_par_semaine": 0.2
+  },
+  "meilleur_creneau": {
+    "jour": "Dimanche",
+    "heure": "12h",
+    "par_jour": {
+      "Lundi": 0.9,
+      "Mardi": 0.4,
+      "Mercredi": 0.6,
+      "Jeudi": 0.0,
+      "Vendredi": 1.0,
+      "Samedi": 0.0,
+      "Dimanche": 1.5
+    },
+    "recommandation": "Dimanche vers 12h"
+  },
+  "types_contenu": {
+    "vidéo": {
+      "n": 20,
+      "engagement_moyen": 0.7
+    },
+    "photo": {
+      "n": 9,
+      "engagement_moyen": 0.6
+    },
+    "album": {
+      "n": 1,
+      "engagement_moyen": 1.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

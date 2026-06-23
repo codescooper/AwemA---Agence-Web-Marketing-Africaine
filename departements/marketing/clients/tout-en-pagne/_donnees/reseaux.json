@@ -1,16 +1,16 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:59+00:00",
+  "maj": "2026-06-23T05:20:26+00:00",
   "global": {
     "audience": 2811,
     "posts": 3,
     "likes": 11,
     "commentaires": 4,
-    "partages": null,
+    "partages": 0,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 3
+    "vues": 3,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
@@ -18,6 +18,7 @@
       "posts": 3,
       "likes": 11,
       "commentaires": 4,
+      "partages": 0,
       "portee": null,
       "vues": 3
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,25 +55,111 @@
     {
       "titre": "la belle edwige rita diroha dans sa magnifique robe qui la drap avec justesse ju",
       "plateforme": "Facebook",
+      "date": "2018-07-18T07:09:07+0000",
+      "lien": "https://www.facebook.com/1331768025809180/posts/1821530471268093",
       "likes": 4,
       "commentaires": 4,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 4,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Habiller vos articles avec du pagne est désormais un jeu d'enfant avec les servi",
       "plateforme": "Facebook",
+      "date": "2015-08-20T20:54:06+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=902955026458980&set=a.381363204183005&type=3",
       "likes": 6,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 6,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Nous recherchons des artisans ayant un talent pour la personnalisation d'article",
       "plateforme": "Facebook",
+      "date": "2020-02-29T09:58:57+0000",
+      "lien": "https://www.facebook.com/1331768025809180/posts/2829784297109367",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "tout-en-pagne"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 2811
+    }
+  ],
+  "client": "tout-en-pagne",
+  "reactions": {
+    "like": 11,
+    "love": 0,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2020-02-29T09:58:57+0000",
+    "jours_depuis": 2305,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.0
+  },
+  "meilleur_creneau": {
+    "jour": "Mercredi",
+    "heure": "07h",
+    "par_jour": {
+      "Mercredi": 8.0,
+      "Jeudi": 6.0,
+      "Samedi": 1.0
+    },
+    "recommandation": "Mercredi vers 07h"
+  },
+  "types_contenu": {
+    "statut": {
+      "n": 1,
+      "engagement_moyen": 1.0
+    },
+    "photo": {
+      "n": 2,
+      "engagement_moyen": 7.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

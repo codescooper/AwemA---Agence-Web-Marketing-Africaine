@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:27+00:00",
+  "maj": "2026-06-23T05:19:04+00:00",
   "global": {
     "audience": 472,
-    "posts": 25,
-    "likes": 27,
-    "commentaires": 15,
-    "partages": null,
+    "posts": 30,
+    "likes": 50,
+    "commentaires": 18,
+    "partages": 7,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 472,
-      "posts": 25,
-      "likes": 27,
-      "commentaires": 15,
+      "posts": 30,
+      "likes": 50,
+      "commentaires": 18,
+      "partages": 7,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,227 @@
     {
       "titre": "Gratuit et exceptionnel. Laissez nous votre adresse mail en message et recevez l",
       "plateforme": "Facebook",
+      "date": "2018-07-21T15:30:36+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1939637559416736",
       "likes": 3,
       "commentaires": 10,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 3,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Posez-vous cette question : Sur votre salaire tous les mois combien gagnez-vous ",
+      "plateforme": "Facebook",
+      "date": "2018-07-19T06:45:59+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1939093039471188",
+      "likes": 6,
+      "commentaires": 3,
+      "partages": 3,
+      "type": "photo",
+      "reactions": {
+        "like": 6,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Laissez votre adresse mail en message et recevez le pdf gratuit résumant le livr",
       "plateforme": "Facebook",
+      "date": "2018-07-26T09:02:22+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1946555005391658",
       "likes": 2,
       "commentaires": 4,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Le Quadrant du CASHFLOW® révèle pourquoi certaines personnes travaillent moins q",
+      "plateforme": "Facebook",
+      "date": "2018-07-20T10:36:10+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1939633712750454",
+      "likes": 4,
+      "commentaires": 0,
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 4,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
+      "date": "2019-02-11T19:21:10+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/2254913471222475",
       "likes": 4,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 4,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Ce n’est pas parce que les choses sont difficiles que nous n’osons pas, c’est pa",
       "plateforme": "Facebook",
-      "likes": 2,
+      "date": "2018-07-27T18:30:17+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1946564598724032",
+      "likes": 3,
       "commentaires": 1,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 2,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Portrait de Napoléon hill\n\nNé en Virginie dans la plus grande pauvreté, Napoleon",
       "plateforme": "Facebook",
-      "likes": 3,
+      "date": "2018-07-23T07:00:30+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1945847455462413",
+      "likes": 4,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 3,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "Découvrez la puissance REFLECHISSEZ ET DEVENEZ RICHE Enseignée, pour la première",
+      "titre": "Une formation universitaire est importante dans les professions traditionnelles,",
       "plateforme": "Facebook",
+      "date": "2018-07-19T13:00:26+0000",
+      "lien": "https://www.facebook.com/1461219359385852/posts/1939729712740854",
       "likes": 2,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Le succès est une science qui dépend en grande partie de la qualité de nos pensé",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Se plaindre est une façon de reconnaître un problème sans essayer de le régler. ",
-      "plateforme": "Facebook",
-      "likes": 2,
-      "commentaires": 0,
-      "partages": 0
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "bibliotech-abidjanaise"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 472
+    }
+  ],
+  "client": "bibliotech-abidjanaise",
+  "reactions": {
+    "like": 42,
+    "love": 8,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2020-06-18T17:11:31+0000",
+    "jours_depuis": 2195,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.3
+  },
+  "meilleur_creneau": {
+    "jour": "Samedi",
+    "heure": "15h",
+    "par_jour": {
+      "Lundi": 2.2,
+      "Mardi": 0.9,
+      "Mercredi": 1.0,
+      "Jeudi": 3.5,
+      "Vendredi": 2.2,
+      "Samedi": 7.5,
+      "Dimanche": 2.0
+    },
+    "recommandation": "Samedi vers 15h"
+  },
+  "types_contenu": {
+    "vidéo": {
+      "n": 4,
+      "engagement_moyen": 0.8
+    },
+    "photo": {
+      "n": 10,
+      "engagement_moyen": 3.4
+    },
+    "statut": {
+      "n": 9,
+      "engagement_moyen": 2.7
+    },
+    "lien": {
+      "n": 2,
+      "engagement_moyen": 0.5
+    },
+    "album": {
+      "n": 5,
+      "engagement_moyen": 2.6
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

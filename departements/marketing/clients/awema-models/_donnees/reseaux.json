@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:20+00:00",
+  "maj": "2026-06-23T05:18:47+00:00",
   "global": {
     "audience": 3823,
     "posts": 21,
-    "likes": 30,
+    "likes": 33,
     "commentaires": 6,
-    "partages": null,
+    "partages": 5,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 12
+    "vues": 12,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 3823,
       "posts": 21,
-      "likes": 30,
+      "likes": 33,
       "commentaires": 6,
+      "partages": 5,
       "portee": null,
       "vues": 12
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,221 @@
     {
       "titre": "🌟 REJOINS LA RUCHE DES TALENTS ! 🌟\n\nTu rêves de devenir mannequin, acteur, hôtes",
       "plateforme": "Facebook",
+      "date": "2025-09-17T13:18:35+0000",
+      "lien": "https://www.facebook.com/100077023808761/posts/793595466551240/",
       "likes": 13,
       "commentaires": 5,
-      "partages": 0
+      "partages": 0,
+      "type": "lien",
+      "reactions": {
+        "like": 13,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Shooting Photo avec notre awema models Precious , le photographe JAY et Liking (",
       "plateforme": "Facebook",
-      "likes": 13,
+      "date": "2026-02-02T03:53:48+0000",
+      "lien": "https://www.facebook.com/reel/3219440408236079/",
+      "likes": 15,
       "commentaires": 0,
-      "partages": 1
-    },
-    {
-      "titre": "AWEMA Models | La cellule de la ruche AWEMA dédiée aux talents.\nMannequins, hôte",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 1,
-      "partages": 0
+      "partages": 1,
+      "type": "vidéo",
+      "reactions": {
+        "like": 13,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "🌟 RECRUTEMENT DE MODÈLES – 100% GRATUIT ! 🌟\n\nTu rêves de rejoindre le monde du m",
       "plateforme": "Facebook",
+      "date": "2025-09-29T19:57:19+0000",
+      "lien": "https://www.facebook.com/100077023808761/posts/803591562218297/",
       "likes": 1,
       "commentaires": 0,
-      "partages": 4
+      "partages": 4,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
-      "titre": "✨ AWEMA Models ouvre ses portes !\nTu rêves de défiler, de poser devant l’objecti",
+      "titre": "AWEMA Models | La cellule de la ruche AWEMA dédiée aux talents.\nMannequins, hôte",
       "plateforme": "Facebook",
+      "date": "2025-09-16T14:45:45+0000",
+      "lien": "https://www.facebook.com/100077023808761/posts/792839623293491/?substory_index=635407732971564",
       "likes": 1,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "#HPN #AWEMA",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 0
+      "commentaires": 1,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "juste wahou <3 !",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-02-10T17:50:56+0000",
+      "lien": "https://www.facebook.com/100077023808761/posts/908085028435616/",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "✨ AWEMA Models ouvre ses portes !\nTu rêves de défiler, de poser devant l’objecti",
+      "plateforme": "Facebook",
+      "date": "2025-09-27T03:37:21+0000",
+      "lien": "https://www.facebook.com/100077023808761/posts/801336462443807/",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "#HPN #AWEMA",
+      "plateforme": "Facebook",
+      "date": "2019-01-21T09:27:20+0000",
+      "lien": "https://www.facebook.com/awemamodels/videos/233552230903997/",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
+      "date": "2025-09-16T15:03:25+0000",
+      "lien": "https://www.facebook.com/100077023808761/posts/710649142026695/?substory_index=710649142026695",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "awema-models"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 3823
+    }
+  ],
+  "client": "awema-models",
+  "reactions": {
+    "like": 30,
+    "love": 3,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2026-02-10T17:50:56+0000",
+    "jours_depuis": 132,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Mercredi",
+    "heure": "13h",
+    "par_jour": {
+      "Lundi": 1.5,
+      "Mardi": 1.0,
+      "Mercredi": 18.0,
+      "Samedi": 1.0,
+      "Dimanche": 0.0
+    },
+    "recommandation": "Mercredi vers 13h"
+  },
+  "types_contenu": {
+    "album": {
+      "n": 2,
+      "engagement_moyen": 0.5
+    },
+    "vidéo": {
+      "n": 14,
+      "engagement_moyen": 1.2
+    },
+    "photo": {
+      "n": 4,
+      "engagement_moyen": 2.0
+    },
+    "lien": {
+      "n": 1,
+      "engagement_moyen": 18.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:31:04+00:00",
+  "maj": "2026-06-23T05:20:39+00:00",
   "global": {
     "audience": 212,
     "posts": 9,
-    "likes": 72,
+    "likes": 106,
     "commentaires": 27,
-    "partages": null,
+    "partages": 44,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 6
+    "vues": 6,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 212,
       "posts": 9,
-      "likes": 72,
+      "likes": 106,
       "commentaires": 27,
+      "partages": 44,
       "portee": null,
       "vues": 6
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,213 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "Une perle de wesley kam, j imagine trop mes parent comme ça !",
-      "plateforme": "Facebook",
-      "likes": 26,
-      "commentaires": 3,
-      "partages": 4
-    },
-    {
       "titre": "Vraiment  rad lala \n#yakoi",
       "plateforme": "Facebook",
-      "likes": 10,
+      "date": "2018-02-02T09:33:30+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/809976952542299",
+      "likes": 19,
       "commentaires": 15,
-      "partages": 14
+      "partages": 14,
+      "type": "vidéo",
+      "reactions": {
+        "like": 10,
+        "love": 0,
+        "care": 0,
+        "haha": 8,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Une perle de wesley kam, j imagine trop mes parent comme ça !",
+      "plateforme": "Facebook",
+      "date": "2018-02-08T05:32:00+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/811478265725501",
+      "likes": 35,
+      "commentaires": 3,
+      "partages": 4,
+      "type": "vidéo",
+      "reactions": {
+        "like": 26,
+        "love": 2,
+        "care": 0,
+        "haha": 7,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Un mot pour notre frère ?\n#YAKOI",
       "plateforme": "Facebook",
-      "likes": 15,
+      "date": "2018-02-05T04:53:40+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/811474465725881",
+      "likes": 21,
       "commentaires": 2,
-      "partages": 17
+      "partages": 17,
+      "type": "vidéo",
+      "reactions": {
+        "like": 15,
+        "love": 1,
+        "care": 0,
+        "haha": 4,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Incroyable ce que ce mec fait sur un escalator !\n-------------------------------",
       "plateforme": "Facebook",
-      "likes": 12,
+      "date": "2014-12-29T09:22:07+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/332109646995701",
+      "likes": 14,
       "commentaires": 1,
-      "partages": 3
+      "partages": 3,
+      "type": "vidéo",
+      "reactions": {
+        "like": 12,
+        "love": 0,
+        "care": 0,
+        "haha": 1,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Quand les éléphants gagnent un match\n-----------------------------------------\nL",
       "plateforme": "Facebook",
-      "likes": 5,
+      "date": "2014-12-29T18:40:28+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/332356970304302",
+      "likes": 6,
       "commentaires": 2,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 5,
+        "love": 0,
+        "care": 0,
+        "haha": 1,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Comprenez le cest pas facile heun",
       "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 2,
-      "partages": 2
-    },
-    {
-      "titre": "eh ils nous met un peut a l'amande quand même non ? \n#YAKOI",
-      "plateforme": "Facebook",
+      "date": "2018-02-11T05:37:00+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/811481902391804",
       "likes": 2,
-      "commentaires": 1,
-      "partages": 0
+      "commentaires": 2,
+      "partages": 2,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 1,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Ah nos sœur changez svp !",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2018-02-10T05:35:00+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/811480275725300",
+      "likes": 2,
       "commentaires": 1,
-      "partages": 3
+      "partages": 3,
+      "type": "vidéo",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 1,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "eh ils nous met un peut a l'amande quand même non ? \n#YAKOI",
+      "plateforme": "Facebook",
+      "date": "2018-02-06T05:25:00+0000",
+      "lien": "https://www.facebook.com/1317427177210555/videos/811475085725819",
+      "likes": 4,
+      "commentaires": 1,
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 2,
+        "love": 1,
+        "care": 0,
+        "haha": 1,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "yakoi"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 212
+    }
+  ],
+  "client": "yakoi",
+  "reactions": {
+    "like": 72,
+    "love": 4,
+    "care": 0,
+    "haha": 26,
+    "wow": 4,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2018-02-11T05:37:00+0000",
+    "jours_depuis": 3053,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Vendredi",
+    "heure": "04h",
+    "par_jour": {
+      "Lundi": 22.0,
+      "Mardi": 5.0,
+      "Mercredi": 4.0,
+      "Jeudi": 42.0,
+      "Vendredi": 48.0,
+      "Samedi": 6.0,
+      "Dimanche": 6.0
+    },
+    "recommandation": "Vendredi vers 04h"
+  },
+  "types_contenu": {
+    "vidéo": {
+      "n": 9,
+      "engagement_moyen": 19.7
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

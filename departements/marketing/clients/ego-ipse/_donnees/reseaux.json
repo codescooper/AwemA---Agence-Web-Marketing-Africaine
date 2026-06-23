@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:30+00:00",
+  "maj": "2026-06-23T05:19:11+00:00",
   "global": {
     "audience": 102,
     "posts": 15,
-    "likes": 15,
+    "likes": 18,
     "commentaires": 0,
-    "partages": null,
+    "partages": 17,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 102,
       "posts": 15,
-      "likes": 15,
+      "likes": 18,
       "commentaires": 0,
+      "partages": 17,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,219 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "",
+      "titre": "Animal collection deep",
       "plateforme": "Facebook",
-      "likes": 3,
+      "date": "2018-07-13T11:05:28+0000",
+      "lien": "https://www.facebook.com/1023481253700856/posts/197311130955640",
+      "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 5,
+      "type": "album",
+      "reactions": {
+        "like": 1,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
-      "likes": 2,
+      "date": "2018-07-03T15:45:59+0000",
+      "lien": "https://www.facebook.com/1023481253700856/posts/190371561649597",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 2
+      "partages": 5,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
+      "date": "2018-06-28T10:39:20+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=186569462029807&set=a.146965331352457&type=3",
       "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Vous n'aurais jamais été autant vous même, \nSOON .....   | 😌  🤗  👕 |\n#EgoIpse #E",
       "plateforme": "Facebook",
+      "date": "2018-05-26T14:46:51+0000",
+      "lien": "https://www.facebook.com/1023481253700856/posts/171458086874278",
       "likes": 2,
       "commentaires": 0,
-      "partages": 2
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2018-06-28T10:51:25+0000",
+      "lien": "https://www.facebook.com/1023481253700856/videos/186575225362564",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 2,
+      "type": "vidéo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2018-06-28T10:33:43+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=186566455363441&set=a.146965331352457&type=3",
+      "likes": 3,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 3,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2018-06-28T10:34:29+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=186566825363404&set=a.146965331352457&type=3",
+      "likes": 2,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 2,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Alors on vous à manqué ici ?",
       "plateforme": "Facebook",
+      "date": "2019-03-14T05:14:54+0000",
+      "lien": "https://www.facebook.com/1023481253700856/posts/302704423749643",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "Animal collection deep",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 5
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 2
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "ego-ipse"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 102
+    }
+  ],
+  "client": "ego-ipse",
+  "reactions": {
+    "like": 15,
+    "love": 3,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2019-03-14T05:14:54+0000",
+    "jours_depuis": 2658,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.4
+  },
+  "meilleur_creneau": {
+    "jour": "Vendredi",
+    "heure": "11h",
+    "par_jour": {
+      "Mardi": 2.7,
+      "Jeudi": 1.9,
+      "Vendredi": 7.0,
+      "Samedi": 2.5,
+      "Dimanche": 0.0
+    },
+    "recommandation": "Vendredi vers 11h"
+  },
+  "types_contenu": {
+    "photo": {
+      "n": 10,
+      "engagement_moyen": 1.8
+    },
+    "album": {
+      "n": 4,
+      "engagement_moyen": 3.5
+    },
+    "vidéo": {
+      "n": 1,
+      "engagement_moyen": 3.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

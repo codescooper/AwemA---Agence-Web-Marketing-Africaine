@@ -1,16 +1,16 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:33+00:00",
+  "maj": "2026-06-23T05:19:16+00:00",
   "global": {
     "audience": 2,
     "posts": 6,
     "likes": 1,
     "commentaires": 0,
-    "partages": null,
+    "partages": 0,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 0
+    "vues": 0,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
@@ -18,6 +18,7 @@
       "posts": 6,
       "likes": 1,
       "commentaires": 0,
+      "partages": 0,
       "portee": null,
       "vues": 0
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,46 +55,175 @@
     {
       "titre": "Juste à l'entrée  de Bingerville-cité Bnetd derrière l' hotel free-word.\nVilla  ",
       "plateforme": "Facebook",
+      "date": "2019-11-16T04:05:04+0000",
+      "lien": "https://www.facebook.com/1608780974582925/posts/551159912384684",
       "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "#Opportunité VENTE  EXCEPTIONNELLE !!!!\n\nANGRÉ PETRO-IVOIRE (CITÉ OSCAR) :\nSUPER",
       "plateforme": "Facebook",
+      "date": "2019-11-16T04:13:09+0000",
+      "lien": "https://www.facebook.com/1608780974582925/posts/551164115717597",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "《EN VENTE 》COCODY RIVIERA PALMERAIE \n\nDans la cité SIPIM 4 près de  l'école Sain",
       "plateforme": "Facebook",
+      "date": "2019-11-16T04:12:14+0000",
+      "lien": "https://www.facebook.com/1608780974582925/posts/551163679050974",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "HÔTEL EN VENTE\n\nHÔTEL DES LACS YAMOUSSOUKRO\n- 28 Chambres\n- 01 Salle de réunion\n",
       "plateforme": "Facebook",
+      "date": "2019-11-16T04:01:52+0000",
+      "lien": "https://www.facebook.com/1608780974582925/posts/551157752384900",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "statut",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "TRIPLEX  5 pièces                        📲78317400\nSTATUT : A VENDRE\nLIEU: RIVIE",
       "plateforme": "Facebook",
+      "date": "2019-11-12T00:14:18+0000",
+      "lien": "https://www.facebook.com/1608780974582925/posts/547717362728939",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
+      "date": "2019-07-04T14:16:12+0000",
+      "lien": "https://www.facebook.com/1608780974582925/posts/457721601728516",
       "likes": 0,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "lien",
+      "reactions": {
+        "like": 0,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "afriq-btp"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 2
+    }
+  ],
+  "client": "afriq-btp",
+  "reactions": {
+    "like": 1,
+    "love": 0,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2019-11-16T04:13:09+0000",
+    "jours_depuis": 2411,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.3
+  },
+  "meilleur_creneau": {
+    "jour": "Samedi",
+    "heure": "04h",
+    "par_jour": {
+      "Mardi": 0.0,
+      "Jeudi": 0.0,
+      "Samedi": 0.2
+    },
+    "recommandation": "Samedi vers 04h"
+  },
+  "types_contenu": {
+    "statut": {
+      "n": 4,
+      "engagement_moyen": 0.2
+    },
+    "album": {
+      "n": 1,
+      "engagement_moyen": 0.0
+    },
+    "lien": {
+      "n": 1,
+      "engagement_moyen": 0.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

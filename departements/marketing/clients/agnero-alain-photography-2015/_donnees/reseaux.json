@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:57+00:00",
+  "maj": "2026-06-23T05:20:20+00:00",
   "global": {
     "audience": 3096,
-    "posts": 25,
-    "likes": 236,
-    "commentaires": 9,
-    "partages": null,
+    "posts": 30,
+    "likes": 298,
+    "commentaires": 10,
+    "partages": 13,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 3
+    "vues": 3,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 3096,
-      "posts": 25,
-      "likes": 236,
-      "commentaires": 9,
+      "posts": 30,
+      "likes": 298,
+      "commentaires": 10,
+      "partages": 13,
       "portee": null,
       "vues": 3
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,60 +55,227 @@
     {
       "titre": "La poésie dévoile la vision de l'âme et la photographie l'âme de la vision.",
       "plateforme": "Facebook",
+      "date": "2016-06-25T10:24:01+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1151774861540318&set=a.214048036834271&type=3",
       "likes": 31,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 31,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Une photographie, c'est un arrêt du coeur d'une fraction de seconde.",
       "plateforme": "Facebook",
+      "date": "2016-06-30T10:31:01+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1151777501540054&set=a.214048036834271&type=3",
       "likes": 27,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "La photographie est la litterature de l'oeil.",
-      "plateforme": "Facebook",
-      "likes": 22,
-      "commentaires": 1,
-      "partages": 0
-    },
-    {
-      "titre": "Pour lui donner un peu d'esprit on photographie la vie.",
-      "plateforme": "Facebook",
-      "likes": 21,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "La photographie embellit la misére en l'habillant de lumière.",
-      "plateforme": "Facebook",
-      "likes": 18,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "La photographie est un instant qui ne se réfléchit pas, suspendue à une fraction",
-      "plateforme": "Facebook",
-      "likes": 18,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 14,
-      "commentaires": 1,
-      "partages": 2
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 27,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Les fantômes de la plage de bassam , \nAu téléphone portable ( infinix note 4 pro",
       "plateforme": "Facebook",
-      "likes": 9,
+      "date": "2018-12-16T17:01:06+0000",
+      "lien": "https://www.facebook.com/100046872296568/posts/2140721532645641/",
+      "likes": 18,
       "commentaires": 5,
-      "partages": 1
+      "partages": 1,
+      "type": "album",
+      "reactions": {
+        "like": 9,
+        "love": 3,
+        "care": 0,
+        "haha": 5,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "La photographie est la litterature de l'oeil.",
+      "plateforme": "Facebook",
+      "date": "2016-06-24T10:23:00+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1151774611540343&set=a.214048036834271&type=3",
+      "likes": 22,
+      "commentaires": 1,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 22,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Pour lui donner un peu d'esprit on photographie la vie.",
+      "plateforme": "Facebook",
+      "date": "2016-06-26T10:25:01+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1151775184873619&set=a.214048036834271&type=3",
+      "likes": 22,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 21,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "La photographie embellit la misére en l'habillant de lumière.",
+      "plateforme": "Facebook",
+      "date": "2016-06-27T10:26:00+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1151775574873580&set=a.214048036834271&type=3",
+      "likes": 19,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 18,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "",
+      "plateforme": "Facebook",
+      "date": "2016-10-04T13:25:23+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1235139769870493&set=a.214048036834271&type=3",
+      "likes": 15,
+      "commentaires": 1,
+      "partages": 2,
+      "type": "photo",
+      "reactions": {
+        "like": 14,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "La photographie est un instant qui ne se réfléchit pas, suspendue à une fraction",
+      "plateforme": "Facebook",
+      "date": "2016-06-23T10:23:01+0000",
+      "lien": "https://www.facebook.com/photo.php?fbid=1151774284873709&set=a.214048036834271&type=3",
+      "likes": 18,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 18,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "agnero-alain-photography-2015"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 3096
+    }
+  ],
+  "client": "agnero-alain-photography-2015",
+  "reactions": {
+    "like": 284,
+    "love": 7,
+    "care": 0,
+    "haha": 5,
+    "wow": 2,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2024-08-11T01:44:42+0000",
+    "jours_depuis": 681,
+    "posts_30j": 0,
+    "posts_par_semaine": 0.1
+  },
+  "meilleur_creneau": {
+    "jour": "Jeudi",
+    "heure": "17h",
+    "par_jour": {
+      "Lundi": 7.2,
+      "Mardi": 10.4,
+      "Mercredi": 7.5,
+      "Jeudi": 14.0,
+      "Vendredi": 14.0,
+      "Samedi": 12.3,
+      "Dimanche": 12.2
+    },
+    "recommandation": "Jeudi vers 17h"
+  },
+  "types_contenu": {
+    "statut": {
+      "n": 2,
+      "engagement_moyen": 1.0
+    },
+    "album": {
+      "n": 2,
+      "engagement_moyen": 12.5
+    },
+    "vidéo": {
+      "n": 2,
+      "engagement_moyen": 2.5
+    },
+    "photo": {
+      "n": 23,
+      "engagement_moyen": 12.3
+    },
+    "lien": {
+      "n": 1,
+      "engagement_moyen": 6.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

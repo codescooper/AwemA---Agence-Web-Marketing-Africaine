@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:29:58+00:00",
+  "maj": "2026-06-23T05:17:52+00:00",
   "global": {
     "audience": 15,
     "posts": 7,
-    "likes": 1,
+    "likes": 8,
     "commentaires": 0,
-    "partages": null,
+    "partages": 0,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 3
+    "vues": 3,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 15,
       "posts": 7,
-      "likes": 1,
+      "likes": 8,
       "commentaires": 0,
+      "partages": 0,
       "portee": null,
       "vues": 3
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -51,53 +55,196 @@
     {
       "titre": "YEBLE — Modèle KÔRÔ\nLa force du calme.\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte p",
       "plateforme": "Facebook",
-      "likes": 1,
+      "date": "2026-02-10T14:42:15+0000",
+      "lien": "https://www.facebook.com/122126455311242070/posts/122104402809242070",
+      "likes": 2,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 1,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Les sandales yeble pour l’elegance et la durabilité contactez nous au +225 07093",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-03-20T18:31:28+0000",
+      "lien": "https://www.facebook.com/reel/2003276983867232/",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "YEBLE — Modèle N’KÔ\nL’audace maîtrisée\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte p",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-02-10T13:32:56+0000",
+      "lien": "https://www.facebook.com/122126455311242070/posts/122104383435242070",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "YEBLE — Modèle ZÊZÊ\nL’élégance tissée\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte po",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-02-10T09:37:11+0000",
+      "lien": "https://www.facebook.com/122126455311242070/posts/122104327371242070",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "YEBLE — Modèle KÂN \nLa force du silence\n💰 Prix\n\n8 000 FCFA\n\n🚚 Livraison offerte ",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-02-08T02:52:38+0000",
+      "lien": "https://www.facebook.com/122126455311242070/posts/122103688833242070",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "BOBO — La chaussure du boss\n\nCe n’est pas une chaussure qui fait du bruit.\nC’est",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-02-05T23:25:42+0000",
+      "lien": "https://www.facebook.com/122126455311242070/posts/122102064765242070",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "album",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "",
       "plateforme": "Facebook",
-      "likes": 0,
+      "date": "2026-02-05T22:43:58+0000",
+      "lien": "https://www.facebook.com/122126455311242070/posts/122102044791242070?substory_index=1629455351405702",
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
+      "partages": 0,
+      "type": "photo",
+      "reactions": {
+        "like": 0,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "yeble-maison-de-maroquinerie"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 15
+    }
+  ],
+  "client": "yeble-maison-de-maroquinerie",
+  "reactions": {
+    "like": 1,
+    "love": 7,
+    "care": 0,
+    "haha": 0,
+    "wow": 0,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2026-03-20T18:31:28+0000",
+    "jours_depuis": 94,
+    "posts_30j": 0,
+    "posts_par_semaine": 1.2
+  },
+  "meilleur_creneau": {
+    "jour": "Mardi",
+    "heure": "14h",
+    "par_jour": {
+      "Mardi": 1.3,
+      "Jeudi": 1.0,
+      "Vendredi": 1.0,
+      "Dimanche": 1.0
+    },
+    "recommandation": "Mardi vers 14h"
+  },
+  "types_contenu": {
+    "vidéo": {
+      "n": 1,
+      "engagement_moyen": 1.0
+    },
+    "album": {
+      "n": 5,
+      "engagement_moyen": 1.2
+    },
+    "photo": {
+      "n": 1,
+      "engagement_moyen": 1.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }

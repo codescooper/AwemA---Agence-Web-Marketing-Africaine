@@ -1,23 +1,24 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T04:30:09+00:00",
+  "maj": "2026-06-23T05:18:17+00:00",
   "global": {
     "audience": 24642,
-    "posts": 25,
-    "likes": 751,
-    "commentaires": 32,
-    "partages": null,
+    "posts": 30,
+    "likes": 1422,
+    "commentaires": 36,
+    "partages": 512,
     "portee": null,
-    "engagement_taux": null,
-    "vues": 6165
+    "vues": 6165,
+    "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 24642,
-      "posts": 25,
-      "likes": 751,
-      "commentaires": 32,
+      "posts": 30,
+      "likes": 1422,
+      "commentaires": 36,
+      "partages": 512,
       "portee": null,
       "vues": 6165
     },
@@ -26,6 +27,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -34,6 +36,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     },
@@ -42,6 +45,7 @@
       "posts": null,
       "likes": null,
       "commentaires": null,
+      "partages": null,
       "portee": null,
       "vues": null
     }
@@ -49,62 +53,221 @@
   "top_fans": [],
   "top_posts": [
     {
+      "titre": "COLLECTION AMOUR pour les couples 🥰.      \n\nMacky sall 3 pieces pour couple \n🤗Ta",
+      "plateforme": "Facebook",
+      "date": "2026-05-20T11:27:56+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1297421112522871",
+      "likes": 442,
+      "commentaires": 3,
+      "partages": 83,
+      "type": "album",
+      "reactions": {
+        "like": 438,
+        "love": 4,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
       "titre": "Que peut-on dire quand les photos parlent d’elle-même ?😊￼ voici la meilleure Ten",
       "plateforme": "Facebook",
-      "likes": 176,
+      "date": "2026-06-17T16:09:49+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1321118850153097",
+      "likes": 189,
       "commentaires": 5,
-      "partages": 47
+      "partages": 47,
+      "type": "album",
+      "reactions": {
+        "like": 176,
+        "love": 5,
+        "care": 0,
+        "haha": 6,
+        "wow": 2,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Plus que 5 jours avant la TABASKI 🥳 🥳🥳🥳🥳\nTenue 3 pièces ( tissu et lin) 30 tenue",
+      "plateforme": "Facebook",
+      "date": "2026-05-22T01:51:08+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1298733099058339",
+      "likes": 81,
+      "commentaires": 1,
+      "partages": 58,
+      "type": "album",
+      "reactions": {
+        "like": 80,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Plus que quelques heures 😏🤗\n\nMacky sall 3 pièces en couple disponible \n\nPrix: 1.",
       "plateforme": "Facebook",
-      "likes": 104,
+      "date": "2026-05-26T17:03:35+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1302469125351403",
+      "likes": 105,
       "commentaires": 0,
-      "partages": 25
+      "partages": 26,
+      "type": "album",
+      "reactions": {
+        "like": 104,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Macky sall 3 pièces disponible actuellement\nDe la taille L à XL\n\nEn gros 6M500 à",
       "plateforme": "Facebook",
-      "likes": 95,
+      "date": "2026-06-02T21:07:42+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1308640144734301",
+      "likes": 97,
       "commentaires": 1,
-      "partages": 14
+      "partages": 13,
+      "type": "album",
+      "reactions": {
+        "like": 95,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
+    {
+      "titre": "Collection TABASKI 🤭🥰\nC’est le dernier arrivage ooh donc faites vite \nCar je ne ",
+      "plateforme": "Facebook",
+      "date": "2026-05-19T12:04:19+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1296583262606656",
+      "likes": 98,
+      "commentaires": 0,
+      "partages": 10,
+      "type": "album",
+      "reactions": {
+        "like": 98,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "Le couturier a raté ton basin?\nIl t’a donné faux rdv ? Yako \nViens prendre ton m",
       "plateforme": "Facebook",
-      "likes": 79,
+      "date": "2026-05-26T16:54:52+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1302462735352042",
+      "likes": 81,
       "commentaires": 0,
-      "partages": 22
-    },
-    {
-      "titre": "Sinon à la base skinny même c’est femme de milliardaire oubien 😌😏\nOù sont mes pe",
-      "plateforme": "Facebook",
-      "likes": 71,
-      "commentaires": 0,
-      "partages": 11
-    },
-    {
-      "titre": "À la demande générale 🥰😍👌￼ \nnous avons stocké nos Lingerie de Qualité.\nDisponibl",
-      "plateforme": "Facebook",
-      "likes": 58,
-      "commentaires": 2,
-      "partages": 23
+      "partages": 22,
+      "type": "album",
+      "reactions": {
+        "like": 79,
+        "love": 2,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     },
     {
       "titre": "ML KOUYATE  ramène mon argent ..\n\nIl a acheté un Article vers 17 heures et a ann",
       "plateforme": "Facebook",
-      "likes": 27,
+      "date": "2026-05-27T00:40:00+0000",
+      "lien": "https://www.facebook.com/1325646999700282/posts/1302719795326336",
+      "likes": 29,
       "commentaires": 23,
-      "partages": 50
-    },
-    {
-      "titre": "String  chap chap et lingerie fine disponible actuellement \n\nPrix: 3 string à 10",
-      "plateforme": "Facebook",
-      "likes": 33,
-      "commentaires": 0,
-      "partages": 12
+      "partages": 50,
+      "type": "album",
+      "reactions": {
+        "like": 27,
+        "love": 1,
+        "care": 0,
+        "haha": 0,
+        "wow": 1,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
     }
   ],
-  "evolution_audience": [],
-  "client": "merveille-boutik"
+  "evolution_audience": [
+    {
+      "date": "2026-06-23",
+      "valeur": 24642
+    }
+  ],
+  "client": "merveille-boutik",
+  "reactions": {
+    "like": 1390,
+    "love": 22,
+    "care": 0,
+    "haha": 7,
+    "wow": 3,
+    "sad": 0,
+    "angry": 0
+  },
+  "portee_post": null,
+  "croissance": null,
+  "cadence": {
+    "dernier_post": "2026-06-22T20:48:00+0000",
+    "jours_depuis": 0,
+    "posts_30j": 26,
+    "posts_par_semaine": 5.8
+  },
+  "meilleur_creneau": {
+    "jour": "Mercredi",
+    "heure": "11h",
+    "par_jour": {
+      "Lundi": 23.4,
+      "Mardi": 89.8,
+      "Mercredi": 290.3,
+      "Jeudi": 35.8,
+      "Vendredi": 53.3,
+      "Samedi": 9.0,
+      "Dimanche": 3.5
+    },
+    "recommandation": "Mercredi vers 11h"
+  },
+  "types_contenu": {
+    "album": {
+      "n": 25,
+      "engagement_moyen": 78.2
+    },
+    "photo": {
+      "n": 4,
+      "engagement_moyen": 3.2
+    },
+    "vidéo": {
+      "n": 1,
+      "engagement_moyen": 3.0
+    }
+  },
+  "a_repondre": {
+    "total": 0,
+    "exemples": []
+  },
+  "top_commentateurs": []
 }
