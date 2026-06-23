@@ -1,0 +1,22 @@
+{
+  "id": "cabinet-optique-la-grande-vision",
+  "nom": "Cabinet Optique La Grande Vision",
+  "secteur": "",
+  "lieu": "",
+  "departement": "marketing",
+  "statut": "actif",
+  "initiales": "CO",
+  "reseaux": {
+    "facebook": "https://facebook.com/106652335814884",
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": "",
+    "whatsapp": ""
+  },
+  "chemins": {
+    "campagne": "_donnees/campagne.json",
+    "reseaux": "_donnees/reseaux.json",
+    "revue": "../../../../outils/revue-visuels/index.html?client=cabinet-optique-la-grande-vision"
+  },
+  "fb_page_id": "106652335814884"
+}

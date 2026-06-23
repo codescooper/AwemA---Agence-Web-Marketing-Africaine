@@ -1,11 +1,11 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T02:47:06+00:00",
+  "maj": "2026-06-23T03:17:56+00:00",
   "global": {
-    "audience": 24641,
+    "audience": 24642,
     "posts": 25,
-    "likes": 750,
+    "likes": 751,
     "commentaires": 32,
     "partages": null,
     "portee": null,
@@ -13,9 +13,9 @@
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 24641,
+      "abonnes": 24642,
       "posts": 25,
-      "likes": 750,
+      "likes": 751,
       "commentaires": 32,
       "portee": null
     },
@@ -55,14 +55,14 @@
       "plateforme": "Facebook",
       "likes": 104,
       "commentaires": 0,
-      "partages": 26
+      "partages": 25
     },
     {
       "titre": "Macky sall 3 pièces disponible actuellement\nDe la taille L à XL\n\nEn gros 6M500 à",
       "plateforme": "Facebook",
       "likes": 95,
       "commentaires": 1,
-      "partages": 14
+      "partages": 13
     },
     {
       "titre": "Le couturier a raté ton basin?\nIl t’a donné faux rdv ? Yako \nViens prendre ton m",
@@ -97,7 +97,7 @@
       "plateforme": "Facebook",
       "likes": 33,
       "commentaires": 0,
-      "partages": 12
+      "partages": 11
     }
   ],
   "evolution_audience": [],

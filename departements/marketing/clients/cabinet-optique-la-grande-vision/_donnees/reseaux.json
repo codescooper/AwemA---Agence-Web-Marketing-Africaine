@@ -1,22 +1,22 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T03:18:28+00:00",
+  "maj": "2026-06-23T03:17:54+00:00",
   "global": {
-    "audience": 3096,
+    "audience": 24,
     "posts": 25,
-    "likes": 236,
-    "commentaires": 9,
+    "likes": 18,
+    "commentaires": 0,
     "partages": null,
     "portee": null,
     "engagement_taux": null
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 3096,
+      "abonnes": 24,
       "posts": 25,
-      "likes": 236,
-      "commentaires": 9,
+      "likes": 18,
+      "commentaires": 0,
       "portee": null
     },
     "instagram": {
@@ -44,62 +44,62 @@
   "top_fans": [],
   "top_posts": [
     {
-      "titre": "La poésie dévoile la vision de l'âme et la photographie l'âme de la vision.",
+      "titre": "Aujourd’hui, nous rendons hommage à toutes les mamans 🤱, ces femmes de vision 👓,",
       "plateforme": "Facebook",
-      "likes": 31,
+      "likes": 2,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "Une photographie, c'est un arrêt du coeur d'une fraction de seconde.",
+      "titre": "Lorsque nous utilisons longtemps les écrans, nous avons tendance à moins cligner",
       "plateforme": "Facebook",
-      "likes": 27,
+      "likes": 2,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "La photographie est la litterature de l'oeil.",
+      "titre": "Beaucoup de personnes attendent que leur vision devienne vraiment gênante avant ",
       "plateforme": "Facebook",
-      "likes": 22,
-      "commentaires": 1,
-      "partages": 0
-    },
-    {
-      "titre": "Pour lui donner un peu d'esprit on photographie la vie.",
-      "plateforme": "Facebook",
-      "likes": 21,
+      "likes": 2,
       "commentaires": 0,
       "partages": 0
     },
     {
-      "titre": "La photographie embellit la misére en l'habillant de lumière.",
+      "titre": "Bienvenue en Juin !\nUn nouveau mois commence, une nouvelle opportunité de grandi",
       "plateforme": "Facebook",
-      "likes": 18,
+      "likes": 1,
       "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "La photographie est un instant qui ne se réfléchit pas, suspendue à une fraction",
-      "plateforme": "Facebook",
-      "likes": 18,
-      "commentaires": 0,
-      "partages": 0
-    },
-    {
-      "titre": "",
-      "plateforme": "Facebook",
-      "likes": 14,
-      "commentaires": 1,
-      "partages": 2
-    },
-    {
-      "titre": "Les fantômes de la plage de bassam , \nAu téléphone portable ( infinix note 4 pro",
-      "plateforme": "Facebook",
-      "likes": 9,
-      "commentaires": 5,
       "partages": 1
+    },
+    {
+      "titre": "Vos lunettes vous accompagnent chaque jour.\nMais avec le temps, votre vision peu",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Bonne fête de la Tabaski à tous les musulmans de la Côte d'Ivoire et du monde\n#A",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Une bonne vision influence le confort au quotidien. Mais aussi la confiance, la ",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
+    },
+    {
+      "titre": "Que l’Esprit Saint remplisse vos cœurs de paix, de lumière et de sagesse. 🔥✨\nLa ",
+      "plateforme": "Facebook",
+      "likes": 1,
+      "commentaires": 0,
+      "partages": 0
     }
   ],
   "evolution_audience": [],
-  "client": "agnero-alain-photography-2015"
+  "client": "cabinet-optique-la-grande-vision"
 }
