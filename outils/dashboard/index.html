@@ -421,16 +421,31 @@ function cMachine(){
     <div class="auto">${STEPS.map(([l,s])=>`<div class="arow"><span class="dot ${s}"></span>${l}<span class="s">${s==='ok'?'actif':'à brancher'}</span></div>`).join('')}</div>`;
 }
 
+/* ---------- Actions community management (à répondre + cadence) ---------- */
+function cActionsCom(){
+  const r=RES||{}, ar=r.a_repondre||{total:0,exemples:[]}, cad=r.cadence;
+  const alerte=cad&&cad.jours_depuis>7;
+  return `<h3>${ic('chat')} Actions du jour
+      <span class="pill" style="background:${ar.total?'#FF7D9C22':'#34E5C422'};color:${ar.total?'#FF7D9C':'#34E5C4'};margin-left:auto">${ar.total} à répondre</span></h3>
+    <div class="sub">Community management — ${ACTIVE?ACTIVE.nom:''}</div>
+    ${alerte?`<div style="margin-top:10px;color:#FF7D9C;font-size:12.5px">⚠️ Aucune publication depuis ${cad.jours_depuis} j — pense à publier.</div>`:''}
+    ${ar.total?`<div class="list" style="margin-top:10px">${ar.exemples.slice(0,4).map(c=>`<div class="li"><b style="flex:0 0 auto">${c.auteur||'—'}</b><span class="t" style="opacity:.85;flex:1" title="${(c.message||'').replace(/"/g,'&quot;')}">${c.message||''}</span>${c.lien?`<a class="pill" href="${c.lien}" target="_blank" rel="noopener">répondre ↗</a>`:''}</div>`).join('')}</div>`
+      :`<div style="margin-top:12px;color:var(--muted);font-size:12.5px">🎉 Rien en attente côté commentaires.</div>`}
+    <div style="margin-top:12px"><button class="mini gold" onclick="go('reseaux')">Présence digitale →</button></div>`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
   cKpisReal();
+  if(RES&&RES.connecte)add(cActionsCom(), A.total?'col6':'col12');
   if(!A.total){add(`<h3>${ic('layers')} Pas encore de plan de contenu</h3>
     <div class="sub">${ACTIVE?ACTIVE.nom:''}</div>
     <div style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6">Générez le plan éditorial du client (générateur) ou consultez sa présence digitale.</div>
     <div style="margin-top:14px"><button class="btn" onclick="go('reseaux')">Présence digitale →</button></div>`,'col12');return;}
+  if(RES&&RES.connecte)add(cUpcoming(6),'col6');
   add(cPilDonut(),'col4'); add(cPlatBars(),'col4'); add(cProduction(),'col4');
   add(cPlanning(),'col8'); add(cBareme(),'col4');
-  add(cFunnelProcess(),'col5'); add(cUpcoming(6),'col4'); add(cMachine(),'col3');
+  add(cFunnelProcess(),'col5'); if(!(RES&&RES.connecte))add(cUpcoming(6),'col4'); add(cMachine(),'col3');
 }
 function viewCalendrier(){
   add(cPlanning(),'col8'); add(cProduction(),'col4');
@@ -500,29 +515,58 @@ function viewAuto(){
       <div class="arow"><span class="dot ok"></span>Zapier<span class="s">zaps + webhook</span></div>
     </div>`,'col12');
 }
+function nf(v){return v==null?'—':(+v).toLocaleString('fr-FR');}
+function netAudience(c){const pr=(c.reseaux&&c.reseaux.par_reseau)||{};const o={};
+  ['facebook','instagram','tiktok','linkedin'].forEach(n=>{if(pr[n]&&pr[n].abonnes!=null)o[n]=pr[n].abonnes;});return o;}
+function profilLinks(c){const p=(c&&c.profils)||{};const it=Object.entries(p).filter(([k,v])=>v&&/^https?:/.test(v));
+  return it.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${it.map(([k,v])=>`<a class="pill" href="${v}" target="_blank" rel="noopener" style="text-decoration:none;text-transform:capitalize">${k} ↗</a>`).join('')}</div>`:'';}
+function gotoClient(id){setClient(id);go('reseaux');}
+
 function viewClients(){
-  CLIENTS.forEach(c=>{
-    const n=(c.campagne&&c.campagne.total)||0;
-    const conn=c.reseaux&&c.reseaux.connecte;
-    const act=ACTIVE&&c.id===ACTIVE.id;
-    add(`<h3>${ic('users')} ${c.nom}${act?' <span class="chip up" style="margin-left:auto">actif</span>':''}</h3>
-      <div class="sub">${(c.secteur||'')} · ${(c.lieu||'')}</div>
-      <div style="margin-top:12px;font-size:12.5px">
-        <div class="kvr"><b>Contenus</b><span>${n}</span></div>
-        <div class="kvr"><b>Réseaux</b><span>${conn?'<span class="chip up">connectés</span>':'<span class="tag">à connecter</span>'}</span></div>
-        <div class="kvr"><b>Statut</b><span>${c.statut||'—'}</span></div>
+  /* --- Bandeau résumé agence (tous clients) --- */
+  const tot=CLIENTS.length, conn=CLIENTS.filter(c=>c.reseaux&&c.reseaux.connecte).length;
+  const sum=(f)=>CLIENTS.reduce((s,c)=>s+(f(c)||0),0);
+  const audTot=sum(c=>c.reseaux&&c.reseaux.global&&c.reseaux.global.audience);
+  const repTot=sum(c=>c.reseaux&&c.reseaux.a_repondre&&c.reseaux.a_repondre.total);
+  const contTot=sum(c=>c.campagne&&c.campagne.total);
+  [['users','#4BA3FF','Clients',tot,''],['bubble','#34E5C4','Connectés',conn,' / '+tot],
+   ['eye','#FFC861','Audience agence',audTot,''],['chat','#FF7D9C','À répondre',repTot,''],
+   ['layers','#7C5CFF','Contenus',contTot,'']].forEach(([icn,c,lab,val,sub])=>{
+    add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div></div>
+      <div class="val" data-to="${val}">0</div><div class="lab">${lab}${sub?' <span style="color:var(--muted)">'+sub+'</span>':''}</div>`,'col3 kpi');
+  });
+  /* --- Une carte par client : présence digitale réelle + liens directs --- */
+  const sorted=[...CLIENTS].sort((a,b)=>
+    ((b.reseaux&&b.reseaux.global&&b.reseaux.global.audience)||0)-((a.reseaux&&a.reseaux.global&&a.reseaux.global.audience)||0));
+  sorted.forEach(c=>{
+    const r=c.reseaux||{}, g=r.global||{}, act=ACTIVE&&c.id===ACTIVE.id;
+    const rep=(r.a_repondre&&r.a_repondre.total)||0, cad=r.cadence;
+    const nets=netAudience(c);
+    const netChips=Object.entries(nets).map(([n,v])=>`<span class="pill" style="text-transform:capitalize">${n} · ${nf(v)}</span>`).join('')
+      ||'<span class="tag">réseaux à connecter</span>';
+    add(`<h3>${c.nom}${act?'<span class="chip up" style="margin-left:auto">actif</span>':''}</h3>
+      <div class="sub">${c.secteur||'—'}${c.lieu?' · '+c.lieu:''}</div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="kpibox"><div class="val2">${nf(g.audience)}</div><div class="lab">audience</div></div>
+        <div class="kpibox"><div class="val2">${g.engagement_taux!=null?g.engagement_taux+'%':'—'}</div><div class="lab">engagement</div></div>
+        <div class="kpibox"><div class="val2" style="color:${rep?'#FF7D9C':'inherit'}">${rep}</div><div class="lab">à répondre</div></div>
+        <div class="kpibox"><div class="val2">${(c.campagne&&c.campagne.total)||0}</div><div class="lab">contenus</div></div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:14px">
-        <button class="mini gold" data-sel="${c.id}">Sélectionner</button>
-        <a class="mini" href="${revueURL(c.id)}" target="_blank" style="text-decoration:none">Visualiseur ↗</a>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">${netChips}</div>
+      ${cad?`<div style="margin-top:8px;font-size:11.5px;color:var(--muted)">Dernier post : <b style="color:${cad.jours_depuis>7?'#FF7D9C':'var(--tx)'}">${cad.jours_depuis==null?'—':'il y a '+cad.jours_depuis+' j'}</b> · ${cad.posts_par_semaine||0}/sem</div>`:''}
+      ${profilLinks(c)}
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="mini gold" data-go-client="${c.id}">Présence digitale →</button>
+        <a class="mini" href="${revueURL(c.id)}" target="_blank" rel="noopener" style="text-decoration:none">Visualiseur ↗</a>
       </div>`,'col4');
   });
-  add(`<h3>${ic('plus')} Ajouter un client</h3><div class="sub">Nouveau dossier client</div>
+  add(`<h3>${ic('plus')} Ajouter un client</h3><div class="sub">Automatique via les réseaux</div>
     <div style="margin-top:12px;font-size:12px;color:var(--muted);line-height:1.65">
-      Créez <code>departements/&lt;dept&gt;/clients/&lt;id&gt;/_donnees/client.json</code>,
-      puis <code>python3 outils/_data/build.py</code>.<br>Voir <code>outils/_data/README.md</code>.
+      Un token Meta → un client par Page (<code>connect-reseaux.py --meta-all</code>), ou un compte
+      TikTok via <code>--tiktok-all</code>. Voir <code>docs/05</code> &amp; <code>docs/07</code>.
     </div>`,'col4');
-  $$('#grid [data-sel]').forEach(b=>b.onclick=()=>{setClient(b.dataset.sel);toast('Client : '+(ACTIVE?ACTIVE.nom:''));});
+  $$('#grid [data-go-client]').forEach(b=>b.onclick=()=>gotoClient(b.dataset.goClient));
+  $$('.kpi .val[data-to]').forEach(el=>countup(el,+el.dataset.to,''));
 }
 function bars(rows,fmt){const mx=Math.max(...rows.map(r=>r[1]),1);
   return `<div class="bars" style="margin-top:12px">${rows.map(([l,v],i)=>`<div class="bar"><span style="text-transform:capitalize">${l}</span><div class="tr"><div class="fl" style="width:${Math.max(v/mx*100,2)}%;background:${PC[i%5]}"></div></div><span class="n">${fmt?fmt(v):v}</span></div>`).join('')}</div>`;}
@@ -632,7 +676,7 @@ function viewReglages(){
 /* ---------- Routeur de vues ---------- */
 const SECTIONS={overview:["Vue d'ensemble",viewOverview],calendrier:["Calendrier éditorial",viewCalendrier],
   contenus:["Contenus",viewContenus],reseaux:["Présence digitale",viewReseaux],scoring:["Scoring A→E",viewScoring],
-  tunnel:["Tunnel WhatsApp",viewTunnel],auto:["Automatisation",viewAuto],clients:["Clients",viewClients],
+  tunnel:["Tunnel WhatsApp",viewTunnel],auto:["Automatisation",viewAuto],clients:["Clients & présence digitale",viewClients],
   reglages:["Réglages",viewReglages]};
 let CURRENT='overview';
 function skeleton(){
