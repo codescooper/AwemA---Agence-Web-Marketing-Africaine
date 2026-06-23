@@ -561,7 +561,18 @@ def _page_info(page_id, ptok):
 
 def via_meta_all():
     """Un client par Page gérée. Crée les dossiers manquants, met à jour reseaux.json."""
-    pages = _pages()
+    try:
+        pages = _pages()
+    except RuntimeError as e:
+        msg = str(e)
+        if "code=190" in msg or "access token" in msg.lower():
+            sys.exit(
+                "❌ Token Meta invalide ou EXPIRÉ.\n"
+                "   → Régénère un token **longue durée** (~60 j) : Explorateur API Graph → ⓘ →\n"
+                "     « Open in Access Token Tool » → « Extend Access Token », puis mets-le dans\n"
+                "     le Secret GitHub META_TOKEN. (Le token de l'Explorateur dure ~1-2 h.)\n"
+                f"   Détail Graph : {msg}")
+        raise
     n = 0
     for pg in pages:
         page_id = pg.get("id")
