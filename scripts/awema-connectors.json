@@ -1,0 +1,37 @@
+{
+  "_doc": "Connecteurs AWEMA. Chaque plateforme déclare ses identifiants requis (keys) et ses commandes. Le store .awema/credentials.json (gitignoré) garde la dernière valeur courante + un historique. Pour ajouter une plateforme : ajoute une entrée ici (mots de passe / clés API / OAuth...).",
+  "platforms": {
+    "meta": {
+      "label": "Meta (Facebook / Instagram)",
+      "keys": [
+        {"name": "META_TOKEN", "secret": true, "github": "secret",
+         "prompt": "Token utilisateur Meta longue durée (~60 j) avec pages_show_list, pages_read_engagement, pages_read_user_content, read_insights"}
+      ],
+      "commands": {
+        "connect": "python3 scripts/connect-reseaux.py --meta-all && python3 outils/_data/build.py",
+        "sync_workflow": "sync-reseaux.yml"
+      },
+      "rotate": "Régénère un token longue durée (Graph API Explorer → Access Token Tool → Extend), puis : awema rotate meta META_TOKEN=<nouveau>. Mets aussi à jour le Secret GitHub META_TOKEN.",
+      "doc": "docs/05-connecter-reseaux.md"
+    },
+    "tiktok": {
+      "label": "TikTok",
+      "keys": [
+        {"name": "TIKTOK_CLIENT_KEY", "secret": false, "github": "secret",
+         "prompt": "Client key de l'app TikTok (developers.tiktok.com)"},
+        {"name": "TIKTOK_CLIENT_SECRET", "secret": true, "github": "secret",
+         "prompt": "Client secret de l'app TikTok"},
+        {"name": "GH_PAT", "secret": true, "github": "secret", "optional": true,
+         "prompt": "PAT GitHub fin (permission Variables: Read and write) — pour la MAJ auto des refresh tokens"},
+        {"name": "TIKTOK_TOKENS", "secret": true, "github": "variable", "managed": true,
+         "prompt": "Refresh tokens par client {slug: rft...} — généré par l'assistant, ne pas saisir à la main"}
+      ],
+      "commands": {
+        "onboard": "python3 scripts/tiktok-onboard.py",
+        "sync_workflow": "sync-tiktok.yml"
+      },
+      "rotate": "Les refresh tokens TikTok tournent à chaque run ; l'assistant + le workflow (avec GH_PAT) les resauvegardent. Pour (ré)autoriser un compte : awema connect tiktok.",
+      "doc": "docs/07-connecter-tiktok.md"
+    }
+  }
+}

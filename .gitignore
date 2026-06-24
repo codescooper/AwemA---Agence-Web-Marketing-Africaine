@@ -17,3 +17,6 @@ departements/marketing/clients/la-grande-vision/_visuels-recus/*.jpg
 
 # Refresh tokens TikTok (jamais dans le dépôt)
 tiktok_tokens.out
+
+# Identifiants locaux de l'opérateur awema (JAMAIS dans le dépôt)
+.awema/
