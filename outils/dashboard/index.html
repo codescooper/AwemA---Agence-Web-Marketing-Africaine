@@ -629,6 +629,17 @@ function viewReseaux(){
     ${tc&&Object.keys(tc).length?bars(Object.entries(tc).sort((a,b)=>b[1].engagement_moyen-a[1].engagement_moyen).map(([t,v])=>[`${t} (${v.n})`,v.engagement_moyen]),v=>v)
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'—':'À connecter.'}</div>`}`,'col6');
 
+  /* ---- Facebook (réseau principal — carte de marque dédiée) ---- */
+  const fbP=PLAT.facebook||{}; const fb=(m&&m.par_reseau&&m.par_reseau.facebook)||null;
+  const nfb=v=>(v==null?'—':(+v).toLocaleString('fr-FR'));
+  if(fb&&fb.abonnes!=null){add(`<h3 style="border-left:3px solid ${fbP.c};padding-left:9px;margin-left:-3px">${pbadge('facebook')} Facebook${prof.facebook&&/^https?:/.test(prof.facebook)?` · <a href="${prof.facebook}" target="_blank" style="color:${fbP.c}">Page ↗</a>`:''}</h3><div class="sub">Page Facebook connectée${m&&m.maj?' · maj '+m.maj.slice(0,10):''}</div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="kpibox"><div class="val2">${nfb(fb.abonnes)}</div><div class="lab">abonnés</div></div>
+      <div class="kpibox"><div class="val2">${nfb(fb.posts)}</div><div class="lab">posts (récents)</div></div>
+      <div class="kpibox"><div class="val2">${nfb(fb.likes)}</div><div class="lab">réactions</div></div>
+      <div class="kpibox"><div class="val2">${nfb(fb.commentaires)}</div><div class="lab">commentaires</div></div>
+    </div>`,'col6');}
+
   /* ---- TikTok (si compte connecté) ---- */
   const tk=(m&&m.tiktok)||null; const nf=v=>(v==null?'—':(+v).toLocaleString('fr-FR'));
   if(tk){const P=PLAT.tiktok||{};add(`<h3 style="border-left:3px solid ${P.c};padding-left:9px;margin-left:-3px">${pbadge('tiktok')} TikTok${tk.display_name?` · ${tk.display_name}`:''}</h3><div class="sub">Compte TikTok connecté${tk.maj?' · maj '+tk.maj.slice(0,10):''}</div>

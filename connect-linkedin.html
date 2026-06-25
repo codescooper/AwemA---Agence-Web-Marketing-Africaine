@@ -65,12 +65,17 @@
     <h2><span class="num">3</span> Vérifier la Page &amp; demander les produits</h2>
     <ul>
       <li>Onglet <b>Settings</b> → <b>Verify</b> : génère le lien, ouvre-le en tant qu'admin de la Page pour vérifier l'app.</li>
-      <li>Onglet <b>Products</b> → ajoute <b>« Sign In with LinkedIn using OpenID Connect »</b> et
-        <b>« Community Management API »</b> (analytics de Page).</li>
+      <li>Onglet <b>Products</b> → clique <b>« Request access »</b> sur :
+        <ul>
+          <li><b>Sign In with LinkedIn using OpenID Connect</b> <i>(Standard Tier)</i> — accordé <b>immédiatement</b> (le login OAuth).</li>
+          <li><b>Community Management API</b> <i>(Development Tier)</i> — les stats de Page (abonnés, impressions, engagement).</li>
+        </ul>
+      </li>
     </ul>
-    <div class="warn">⚠️ La <b>Community Management API</b> peut demander une validation par LinkedIn (quelques
-      jours). En attendant, on enregistre l'URL de la Page + un nombre d'abonnés saisi à la main, puis on
-      bascule sur les données live dès l'accès accordé.</div>
+    <div class="note">✅ Le <b>Development Tier</b> de la Community Management API te donne accès <b>tout de suite</b>
+      à <b>tes propres Pages</b> (celles dont tu es admin + app vérifiée) — <b>pas besoin d'attendre</b> une
+      revue pour un usage AWEMA auto-hébergé. La validation complète ne sert que pour gérer des Pages tierces à grande échelle.</div>
+    <div class="note">Ignore les autres produits (Advertising, Lead Sync, Conversions, Ad Library…) — inutiles ici.</div>
   </div>
 
   <div class="step">
