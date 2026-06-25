@@ -191,8 +191,23 @@ def main():
     print("  (OAuth impose une seule action manuelle : se connecter au compte")
     print("   + cliquer « Authorize ». Le reste est automatique.)")
     print("=" * 64)
-    ck = os.environ.get("TIKTOK_CLIENT_KEY") or ask("Client key TikTok")
-    cs = os.environ.get("TIKTOK_CLIENT_SECRET") or ask("Client secret TikTok")
+    ck = (os.environ.get("TIKTOK_CLIENT_KEY") or ask("Client key TikTok")).strip()
+    cs = (os.environ.get("TIKTOK_CLIENT_SECRET") or ask("Client secret TikTok")).strip()
+    # Diagnostic SANS exposer le secret : longueurs + préfixe de clé (publique).
+    print(f"\n🔎 Diagnostic identifiants :")
+    print(f"   client_key    : {len(ck)} car.  ‹{ck[:4]}…{ck[-2:]}›" if ck else "   client_key    : VIDE ❌")
+    diag = []
+    if not cs:
+        diag.append("VIDE ❌")
+    else:
+        if cs == "ton-secret":
+            diag.append("c'est le PLACEHOLDER « ton-secret » ❌")
+        if cs != cs.strip():
+            diag.append("espaces autour ⚠️")
+        if len(cs) >= 50:
+            diag.append("anormalement long (doublé ?) ⚠️")
+    print(f"   client_secret : {len(cs)} car.  " + (" · ".join(diag) if diag else "format OK ✓"))
+    print("   (Un secret d'app TikTok fait ~32-40 caractères. S'il vaut 10 = placeholder.)\n")
     repo = os.environ.get("GITHUB_REPOSITORY", REPO_DEFAUT)
     pat = os.environ.get("GH_PAT")
 
