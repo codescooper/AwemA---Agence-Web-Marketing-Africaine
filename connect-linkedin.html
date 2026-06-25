@@ -89,24 +89,34 @@
   </div>
 
   <div class="step">
-    <h2><span class="num">5</span> Autoriser (OAuth) &amp; obtenir le jeton</h2>
-    <p>Une fois les produits actifs, tu autorises l'app pour la Page : l'opérateur <code>/awema</code>
-      construit l'URL d'autorisation, échange le code contre un <b>access token</b> et le range en sécurité.</p>
+    <h2><span class="num">5</span> Générer l'<b>access token</b> (≠ Client Secret !)</h2>
+    <div class="warn">⚠️ Point clé : le <b>Client Secret</b> n'est <b>pas</b> le jeton qui lit les stats. Il sert à
+      <i>fabriquer</i> un <b>access token</b> OAuth (un jeton <code>Bearer</code>). C'est cet access token
+      qu'il faut — on l'obtient une fois en autorisant la Page dans le navigateur.</div>
+    <p>L'assistant local fait la danse OAuth tout seul : il ouvre le navigateur, tu cliques « Autoriser »,
+      il récupère l'access token et le range en sécurité.</p>
+    <div class="note" style="border-color:var(--li)">Dans un terminal, à la racine du projet :
+      <br><code>python3 scripts/linkedin-onboard.py</code>  (capture auto)
+      <br>ou <code>python3 scripts/linkedin-onboard.py --paste</code>  (repli sans serveur local, via oauth.html)</div>
     <ul>
-      <li>Scopes typiques : <code>r_organization_social</code>, <code>rw_organization_admin</code> (analytics de Page).</li>
-      <li>Tu cliques « Autoriser » dans ton navigateur — l'opérateur fait le reste.</li>
+      <li>Scopes : <code>r_organization_social</code>, <code>rw_organization_admin</code> (analytics de Page).</li>
+      <li>Le Client Secret est demandé en <b>saisie masquée</b> (jamais affiché, jamais commité).</li>
+      <li>Équivalent opérateur : <code>/awema connecte linkedin</code>.</li>
     </ul>
   </div>
 
   <div class="step">
-    <h2><span class="num">6</span> Me transmettre</h2>
+    <h2><span class="num">6</span> Mettre l'access token dans GitHub &amp; synchroniser</h2>
     <ul>
-      <li>L'<b>URL de la Page</b> entreprise (tu peux me la donner directement).</li>
-      <li>Le <b>Client ID</b> (public) et place le <b>Client Secret</b> dans le Secret GitHub <code>LINKEDIN_CLIENT_SECRET</code>.</li>
+      <li>L'assistant affiche l'<b>access token</b> à la fin → colle-le dans le Secret GitHub
+        <code>LINKEDIN_TOKEN</code> (c'est CE secret que le workflow utilise).</li>
+      <li>Donne-moi l'<b>URL de la Page</b> entreprise (tu peux me la dire directement) — déjà fait pour
+        <code>awema-sm-watcher</code> ✓.</li>
     </ul>
-    <p>Je branche alors le connecteur LinkedIn : abonnés, impressions et engagement de la Page, <b>fusionnés</b>
-      dans la fiche de l'entité — à sa charte bleue — à côté de Facebook, TikTok et YouTube.</p>
-    <a class="btn" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/settings/secrets/actions" target="_blank" rel="noopener">Ajouter le Secret LINKEDIN_CLIENT_SECRET ↗</a>
+    <p>Ensuite : <code>awema connect linkedin</code> (ou le workflow « Sync présence digitale ») remplit
+      abonnés, impressions et engagement de la Page, <b>fusionnés</b> dans la fiche — à sa charte bleue —
+      à côté de Facebook, TikTok et YouTube.</p>
+    <a class="btn" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/settings/secrets/actions" target="_blank" rel="noopener">Ajouter le Secret LINKEDIN_TOKEN ↗</a>
   </div>
 </div>
 <script src="outils/_data/config.js" onerror=""></script>
