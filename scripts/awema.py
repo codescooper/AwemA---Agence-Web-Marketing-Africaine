@@ -95,7 +95,10 @@ def cmd_list():
         cur = current(store, p)
         req = [k["name"] for k in info["keys"] if not k.get("optional") and not k.get("managed")]
         have = sum(1 for k in req if known_value(store, p, k))
-        etat = (f"maj {cur.get('_set_at', '')[:10]}" if cur.get("_set_at") else "vide")
+        if info.get("statut"):
+            etat = "🔜 " + info["statut"]
+        else:
+            etat = (f"maj {cur.get('_set_at', '')[:10]}" if cur.get("_set_at") else "vide")
         print(f"• {p:11} {info['label']:30} identifiants {have}/{len(req)} · {etat}")
 
 
