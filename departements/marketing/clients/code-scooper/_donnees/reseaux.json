@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "youtube-data-api",
-  "maj": "2026-06-25T06:05:04+00:00",
+  "maj": "2026-06-25T07:16:18+00:00",
   "global": {
     "audience": 7311,
     "posts": 201,
@@ -325,7 +325,7 @@
         "likes": 35,
         "commentaires": 0,
         "partages": 0,
-        "vues": 1073,
+        "vues": 1078,
         "type": "vidéo"
       },
       {
@@ -406,6 +406,6 @@
         "type": "vidéo"
       }
     ],
-    "maj": "2026-06-25T06:05:04+00:00"
+    "maj": "2026-06-25T07:16:18+00:00"
   }
 }

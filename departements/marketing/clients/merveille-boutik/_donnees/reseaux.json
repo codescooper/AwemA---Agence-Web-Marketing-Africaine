@@ -1,26 +1,26 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T06:04:06+00:00",
+  "maj": "2026-06-25T07:15:11+00:00",
   "global": {
-    "audience": 24654,
+    "audience": 24655,
     "posts": 30,
     "likes": 1556,
     "commentaires": 39,
-    "partages": 541,
+    "partages": 544,
     "portee": null,
-    "vues": 6150,
+    "vues": 6355,
     "engagement_taux": 0.3
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 24654,
+      "abonnes": 24655,
       "posts": 30,
       "likes": 1556,
       "commentaires": 39,
-      "partages": 541,
+      "partages": 544,
       "portee": null,
-      "vues": 6150
+      "vues": 6355
     },
     "instagram": {
       "abonnes": null,
@@ -229,7 +229,7 @@
     },
     {
       "date": "2026-06-25",
-      "valeur": 24654
+      "valeur": 24655
     }
   ],
   "client": "merveille-boutik",
@@ -255,8 +255,8 @@
       "Lundi": 27.2,
       "Mardi": 94.0,
       "Mercredi": 316.7,
-      "Jeudi": 38.6,
-      "Vendredi": 52.3,
+      "Jeudi": 38.8,
+      "Vendredi": 53.0,
       "Samedi": 8.3,
       "Dimanche": 14.5
     },
@@ -265,11 +265,11 @@
   "types_contenu": {
     "album": {
       "n": 25,
-      "engagement_moyen": 85.0
+      "engagement_moyen": 85.1
     },
     "photo": {
       "n": 4,
-      "engagement_moyen": 1.8
+      "engagement_moyen": 2.2
     },
     "vidéo": {
       "n": 1,
