@@ -50,6 +50,15 @@ jobs:
           fi
           python3 scripts/connect-reseaux.py --youtube-all
 
+      - name: Synchroniser les Pages LinkedIn (Community Management API)
+        env:
+          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
+        run: |
+          if [ -z "$LINKEDIN_TOKEN" ]; then
+            echo "ℹ️ Pas de LINKEDIN_TOKEN → étape LinkedIn ignorée."; exit 0
+          fi
+          python3 scripts/connect-reseaux.py --linkedin-all
+
       - name: Régénérer le registre agence
         run: python3 outils/_data/build.py
 

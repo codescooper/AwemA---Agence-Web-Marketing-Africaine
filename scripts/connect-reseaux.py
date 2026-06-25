@@ -22,6 +22,10 @@ Remplit le contrat outils/_data (reseaux.json) à partir des réseaux sociaux. V
      # Onboarding (échange d'un code OAuth contre un refresh_token) :
      python3 connect-reseaux.py --tiktok-auth <code> <redirect_uri>
 
+  5) LINKEDIN — Pages entreprise (Community Management API) — voir docs/10-connecter-linkedin.md
+     export LINKEDIN_TOKEN=...        # access token OAuth (r_organization_social / rw_organization_admin)
+     python3 connect-reseaux.py --linkedin-all
+
 Les réseaux fusionnent : Facebook (--meta-all) et TikTok (--tiktok-all) coexistent dans le
 même reseaux.json sans s'écraser.
 
@@ -258,6 +262,8 @@ def _ecrire(client_dir, data):
         base["tiktok"] = data["tiktok"]
     if "youtube" in owned and data.get("youtube") is not None:
         base["youtube"] = data["youtube"]
+    if "linkedin" in owned and data.get("linkedin") is not None:
+        base["linkedin"] = data["linkedin"]
 
     base["source"] = data.get("source") or base.get("source")
     base["client"] = os.path.basename(client_dir.rstrip("/"))
@@ -900,6 +906,166 @@ def via_youtube_all():
     print(f"✅ {n} chaîne(s) YouTube synchronisée(s). Régénère le registre : python3 outils/_data/build.py")
 
 
+# --------------------------------------------------------------------------- #
+# LINKEDIN — Pages entreprise (Community Management API)
+# --------------------------------------------------------------------------- #
+LI_API = "https://api.linkedin.com/rest"
+LI_VERSION = os.environ.get("LINKEDIN_VERSION", "202401")
+
+
+def _li_token():
+    return (os.environ.get("LINKEDIN_TOKEN")
+            or os.environ.get("LINKEDIN_ACCESS_TOKEN")
+            or os.environ.get("LINKEDIN_TOKENS"))
+
+
+def _li(path, token, params=None):
+    """GET REST LinkedIn avec les en-têtes requis ; remonte le vrai message d'erreur."""
+    url = f"{LI_API}/{path}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params, safe=":(),%")
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"Bearer {token}",
+        "LinkedIn-Version": LI_VERSION,
+        "X-Restli-Protocol-Version": "2.0.0",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")
+        except Exception:
+            pass
+        msg = body
+        try:
+            j = json.loads(body)
+            msg = j.get("message") or j.get("error_description") or body
+        except Exception:
+            pass
+        raise RuntimeError(f"HTTP {e.code} — {msg}") from None
+
+
+def _li_vanity(url_or_slug):
+    """Extrait le vanity name (slug) d'une URL LinkedIn /company/<slug> (ou renvoie tel quel)."""
+    if not url_or_slug:
+        return None
+    m = re.search(r"/company/([^/?#]+)", url_or_slug)
+    slug = (m.group(1) if m else url_or_slug).strip().strip("/")
+    return slug or None
+
+
+def _linkedin_org_id(token, slug):
+    """Résout l'ID numérique de l'organisation à partir de son vanity name."""
+    res = _li("organizations", token, {"q": "vanityName", "vanityName": slug})
+    els = res.get("elements") or []
+    if not els:
+        return None
+    return els[0].get("id")
+
+
+def _linkedin_data(token, slug, org_id):
+    """Stats d'une Page entreprise : abonnés (networkSizes) + impressions/engagement
+    (organizationalEntityShareStatistics). Renvoie un dict façon _vide() + objet linkedin."""
+    if not org_id:
+        org_id = _linkedin_org_id(token, slug)
+    if not org_id:
+        return None
+    urn = f"urn:li:organization:{org_id}"
+    data = _vide(); data["source"] = "linkedin-rest-api"
+    lk = data["par_reseau"]["linkedin"]
+
+    # Abonnés
+    try:
+        ns = _li(f"networkSizes/{urllib.parse.quote(urn, safe='')}", token,
+                 {"edgeType": "COMPANY_FOLLOWED_BY_MEMBER"})
+        lk["abonnes"] = ns.get("firstDegreeSize")
+    except Exception as e:
+        print(f"  ⚠️ LinkedIn abonnés: {e}")
+
+    # Statistiques de partage (impressions, clics, likes, commentaires, partages, engagement)
+    impressions = engagement = None
+    try:
+        ss = _li("organizationalEntityShareStatistics", token,
+                 {"q": "organizationalEntity", "organizationalEntity": urn})
+        els = ss.get("elements") or []
+        tot = (els[0].get("totalShareStatistics") if els else {}) or {}
+        impressions = tot.get("impressionCount")
+        lk["likes"] = tot.get("likeCount")
+        lk["commentaires"] = tot.get("commentCount")
+        lk["partages"] = tot.get("shareCount")
+        lk["vues"] = impressions                      # impressions ≈ vues
+        engagement = tot.get("engagement")
+    except Exception as e:
+        print(f"  ⚠️ LinkedIn statistiques: {e}")
+
+    # Titre de la Page (best effort)
+    titre = None
+    try:
+        info = _li(f"organizations/{org_id}", token, {"projection": "(id,localizedName,vanityName)"})
+        titre = info.get("localizedName")
+    except Exception:
+        pass
+
+    if engagement is not None:
+        eng_pct = round(engagement * 100, 1)
+    elif impressions:
+        inter = (lk.get("likes") or 0) + (lk.get("commentaires") or 0) + (lk.get("partages") or 0)
+        eng_pct = round(inter / impressions * 100, 1) if impressions else None
+    else:
+        eng_pct = None
+
+    data["linkedin"] = {
+        "abonnes": lk["abonnes"], "impressions": impressions,
+        "posts": lk.get("posts"), "engagement_taux": eng_pct,
+        "titre": titre or slug, "vanity": slug,
+        "maj": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    data["_org_id"] = org_id
+    return data
+
+
+def via_linkedin_all():
+    """Synchronise toutes les Pages LinkedIn déclarées : un client.json avec un lien
+    reseaux.linkedin (/company/<slug>), un champ linkedin_vanity, ou linkedin_org_id.
+    Fusionne dans reseaux.json (à côté de FB/TikTok/YouTube)."""
+    token = _li_token()
+    if not token:
+        sys.exit("❌ LINKEDIN_TOKEN requis (access token OAuth, scopes r_organization_social / rw_organization_admin).")
+    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    n = 0
+    for cj in glob.glob(motif):
+        try:
+            c = json.load(open(cj, encoding="utf-8"))
+        except Exception:
+            continue
+        org_id = c.get("linkedin_org_id")
+        slug = c.get("linkedin_vanity") or _li_vanity((c.get("reseaux") or {}).get("linkedin"))
+        if not (org_id or slug):
+            continue
+        client_dir = os.path.dirname(os.path.dirname(cj))
+        try:
+            data = _linkedin_data(token, slug, org_id)
+        except Exception as e:
+            print(f"  ⚠️ LinkedIn {c.get('id')}: {e}")
+            continue
+        if not data:
+            print(f"  ⚠️ LinkedIn {c.get('id')}: organisation introuvable ({slug or org_id}).")
+            continue
+        oid = data.pop("_org_id", None)
+        if oid and not org_id:                            # mémorise l'ID résolu
+            c["linkedin_org_id"] = oid
+            if slug and not c.get("linkedin_vanity"):
+                c["linkedin_vanity"] = slug
+            json.dump(c, open(cj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        _ecrire(client_dir, data)
+        lk = data["par_reseau"]["linkedin"]
+        n += 1
+        print(f"  ✓ LinkedIn {c.get('id')} ({lk['abonnes']} abonnés, "
+              f"{(data['linkedin'] or {}).get('impressions')} impressions)")
+    print(f"✅ {n} Page(s) LinkedIn synchronisée(s). Régénère le registre : python3 outils/_data/build.py")
+
+
 def main():
     a = sys.argv[1:]
     if a and a[0] == "--meta-all":
@@ -908,6 +1074,8 @@ def main():
         via_tiktok_all()
     elif a and a[0] == "--youtube-all":
         via_youtube_all()
+    elif a and a[0] == "--linkedin-all":
+        via_linkedin_all()
     elif len(a) >= 2 and a[0] == "--tiktok-auth":
         via_tiktok_auth(a[1], a[2] if len(a) >= 3 else None)
     elif len(a) >= 2 and a[0] == "--meta":
