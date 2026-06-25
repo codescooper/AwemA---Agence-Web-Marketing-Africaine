@@ -83,7 +83,7 @@ def _vide():
                                       "partages", "portee", "vues", "engagement_taux"]},
         "par_reseau": {r: {k: None for k in ["abonnes", "posts", "likes", "commentaires",
                                              "partages", "portee", "vues"]}
-                       for r in ["facebook", "instagram", "tiktok", "linkedin"]},
+                       for r in ["facebook", "instagram", "tiktok", "linkedin", "youtube"]},
         "reactions": None,            # {like,love,care,haha,wow,sad,angry} (Facebook, posts récents)
         "cadence": None,              # {dernier_post, jours_depuis, posts_30j, posts_par_semaine}
         "meilleur_creneau": None,     # {jour, heure, par_jour, recommandation}
@@ -214,9 +214,9 @@ def _consolider(data):
     data["maj"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-RESEAUX = ["facebook", "instagram", "tiktok", "linkedin"]
+RESEAUX = ["facebook", "instagram", "tiktok", "linkedin", "youtube"]
 PLATEFORME = {"facebook": "Facebook", "instagram": "Instagram",
-              "tiktok": "TikTok", "linkedin": "LinkedIn"}
+              "tiktok": "TikTok", "linkedin": "LinkedIn", "youtube": "YouTube"}
 # Sections dérivées spécifiques à Facebook (issues des posts FB) — préservées si FB n'a pas tourné.
 SECTIONS_FB = ["reactions", "cadence", "meilleur_creneau", "types_contenu",
                "a_repondre", "top_commentateurs", "top_fans"]
@@ -256,6 +256,8 @@ def _ecrire(client_dir, data):
             base[k] = data.get(k)
     if "tiktok" in owned and data.get("tiktok") is not None:
         base["tiktok"] = data["tiktok"]
+    if "youtube" in owned and data.get("youtube") is not None:
+        base["youtube"] = data["youtube"]
 
     base["source"] = data.get("source") or base.get("source")
     base["client"] = os.path.basename(client_dir.rstrip("/"))
@@ -796,12 +798,116 @@ def via_tiktok_all():
     print(f"✅ {n} compte(s) TikTok synchronisé(s). Régénère le registre : python3 outils/_data/build.py")
 
 
+# --------------------------------------------------------------------------- #
+# YOUTUBE — Data API v3 (stats publiques de chaîne, clé API, SANS OAuth)
+# --------------------------------------------------------------------------- #
+YT_API = "https://www.googleapis.com/youtube/v3"
+
+
+def _yt(path, params):
+    return _get(f"{YT_API}/{path}?{urllib.parse.urlencode(params)}")
+
+
+def _youtube_data(key, handle, chid):
+    """Stats publiques d'une chaîne (abonnés, vues, vidéos) + top vidéos récentes."""
+    params = {"part": "snippet,statistics,contentDetails", "key": key}
+    if chid:
+        params["id"] = chid
+    else:
+        params["forHandle"] = (handle or "").lstrip("@")
+    items = _yt("channels", params).get("items", [])
+    if not items:
+        return None
+    ch = items[0]
+    st = ch.get("statistics", {}) or {}
+    def _i(x):
+        try:
+            return int(x)
+        except Exception:
+            return None
+    data = _vide(); data["source"] = "youtube-data-api"
+    yt = data["par_reseau"]["youtube"]
+    yt["abonnes"] = _i(st.get("subscriberCount"))
+    yt["posts"] = _i(st.get("videoCount"))
+    yt["vues"] = _i(st.get("viewCount"))                 # vues totales de la chaîne
+    uploads = ((ch.get("contentDetails", {}) or {}).get("relatedPlaylists", {}) or {}).get("uploads")
+    vids = []
+    if uploads:
+        try:
+            pit = _yt("playlistItems", {"part": "contentDetails", "playlistId": uploads,
+                                        "maxResults": 15, "key": key}).get("items", [])
+            ids = [i["contentDetails"]["videoId"] for i in pit
+                   if (i.get("contentDetails") or {}).get("videoId")]
+            if ids:
+                vd = _yt("videos", {"part": "snippet,statistics", "id": ",".join(ids),
+                                    "key": key}).get("items", [])
+                for v in vd:
+                    s = v.get("statistics", {}) or {}; sn = v.get("snippet", {}) or {}
+                    vids.append({
+                        "titre": (sn.get("title") or "")[:80], "plateforme": "YouTube",
+                        "date": sn.get("publishedAt"), "lien": f"https://youtu.be/{v.get('id')}",
+                        "likes": _i(s.get("likeCount")) or 0,
+                        "commentaires": _i(s.get("commentCount")) or 0,
+                        "partages": 0, "vues": _i(s.get("viewCount")) or 0, "type": "vidéo"})
+        except Exception as e:
+            print(f"  ⚠️ YouTube vidéos: {e}")
+    yt["likes"] = sum(v["likes"] for v in vids) or None
+    yt["commentaires"] = sum(v["commentaires"] for v in vids) or None
+    data["top_posts"] = vids
+    data["youtube"] = {
+        "abonnes": yt["abonnes"], "video_count": yt["posts"], "vues_totales": yt["vues"],
+        "titre": (ch.get("snippet", {}) or {}).get("title"),
+        "top_videos": sorted(vids, key=lambda x: x["vues"], reverse=True)[:8],
+        "maj": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    data["_channel_id"] = ch.get("id")
+    return data
+
+
+def via_youtube_all():
+    """Synchronise toutes les chaînes YouTube déclarées : un client.json avec yt_handle
+    (ex. « @codescooper ») ou yt_channel_id. Fusionne dans reseaux.json (à côté de FB/TikTok)."""
+    key = os.environ.get("YOUTUBE_API_KEY")
+    if not key:
+        sys.exit("❌ YOUTUBE_API_KEY requis (Secret/clé API Google).")
+    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    n = 0
+    for cj in glob.glob(motif):
+        try:
+            c = json.load(open(cj, encoding="utf-8"))
+        except Exception:
+            continue
+        handle, chid = c.get("yt_handle"), c.get("yt_channel_id")
+        if not (handle or chid):
+            continue
+        client_dir = os.path.dirname(os.path.dirname(cj))
+        try:
+            data = _youtube_data(key, handle, chid)
+        except Exception as e:
+            print(f"  ⚠️ YouTube {c.get('id')}: {e}")
+            continue
+        if not data:
+            print(f"  ⚠️ YouTube {c.get('id')}: chaîne introuvable ({handle or chid}).")
+            continue
+        cid = data.pop("_channel_id", None)
+        if cid and not chid:                              # mémorise l'ID résolu pour la prochaine fois
+            c["yt_channel_id"] = cid
+            json.dump(c, open(cj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        _ecrire(client_dir, data)
+        yt = data["par_reseau"]["youtube"]
+        n += 1
+        print(f"  ✓ YouTube {c.get('id')} ({yt['abonnes']} abonnés, {yt['posts']} vidéos, "
+              f"{yt['vues']} vues)")
+    print(f"✅ {n} chaîne(s) YouTube synchronisée(s). Régénère le registre : python3 outils/_data/build.py")
+
+
 def main():
     a = sys.argv[1:]
     if a and a[0] == "--meta-all":
         via_meta_all()
     elif a and a[0] == "--tiktok-all":
         via_tiktok_all()
+    elif a and a[0] == "--youtube-all":
+        via_youtube_all()
     elif len(a) >= 2 and a[0] == "--tiktok-auth":
         via_tiktok_auth(a[1], a[2] if len(a) >= 3 else None)
     elif len(a) >= 2 and a[0] == "--meta":

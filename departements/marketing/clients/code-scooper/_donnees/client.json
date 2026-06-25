@@ -11,12 +11,14 @@
     "instagram": "",
     "tiktok": "",
     "linkedin": "",
-    "whatsapp": ""
+    "whatsapp": "",
+    "youtube": "https://www.youtube.com/@codescooper"
   },
   "chemins": {
     "campagne": "_donnees/campagne.json",
     "reseaux": "_donnees/reseaux.json",
     "revue": "../../../../outils/revue-visuels/index.html?client=code-scooper"
   },
-  "fb_page_id": "933816756749305"
+  "fb_page_id": "933816756749305",
+  "yt_handle": "@codescooper"
 }

@@ -41,6 +41,15 @@ jobs:
           fi
           python3 scripts/connect-reseaux.py --meta-all
 
+      - name: Synchroniser les chaînes YouTube (Data API v3)
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          if [ -z "$YOUTUBE_API_KEY" ]; then
+            echo "ℹ️ Pas de YOUTUBE_API_KEY → étape YouTube ignorée."; exit 0
+          fi
+          python3 scripts/connect-reseaux.py --youtube-all
+
       - name: Régénérer le registre agence
         run: python3 outils/_data/build.py
 

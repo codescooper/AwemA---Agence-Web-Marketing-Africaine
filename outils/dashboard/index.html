@@ -517,7 +517,7 @@ function viewAuto(){
 }
 function nf(v){return v==null?'—':(+v).toLocaleString('fr-FR');}
 function netAudience(c){const pr=(c.reseaux&&c.reseaux.par_reseau)||{};const o={};
-  ['facebook','instagram','tiktok','linkedin'].forEach(n=>{if(pr[n]&&pr[n].abonnes!=null)o[n]=pr[n].abonnes;});return o;}
+  ['facebook','instagram','tiktok','youtube','linkedin'].forEach(n=>{if(pr[n]&&pr[n].abonnes!=null)o[n]=pr[n].abonnes;});return o;}
 function profilLinks(c){const p=(c&&c.profils)||{};const it=Object.entries(p).filter(([k,v])=>v&&/^https?:/.test(v));
   return it.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${it.map(([k,v])=>`<a class="pill" href="${v}" target="_blank" rel="noopener" style="text-decoration:none;text-transform:capitalize">${k} ↗</a>`).join('')}</div>`:'';}
 function gotoClient(id){setClient(id);go('reseaux');}
@@ -631,6 +631,16 @@ function viewReseaux(){
       <div class="kpibox"><div class="val2">${nf(tk.vues_recentes)}</div><div class="lab">vues (récentes)</div></div>
     </div>
     ${tk.top_videos&&tk.top_videos.length?`<div class="list" style="margin-top:10px">${tk.top_videos.slice(0,5).map(v=>`<div class="li"><span class="t" title="${(v.titre||'').replace(/"/g,'&quot;')}">${v.titre||'—'}</span><span class="pill">👁 ${nf(v.vues)}</span><span class="pill">👍 ${v.likes}</span>${v.lien?`<a href="${v.lien}" target="_blank" class="pill">voir ↗</a>`:''}</div>`).join('')}</div>`:''}`,'col6');}
+
+  /* ---- YouTube (si chaîne connectée) ---- */
+  const yt=(m&&m.youtube)||null;
+  if(yt){add(`<h3>${ic('chart')} YouTube${yt.titre?` · ${yt.titre}`:''}</h3><div class="sub">Chaîne connectée${yt.maj?' · maj '+yt.maj.slice(0,10):''}</div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="kpibox"><div class="val2">${nf(yt.abonnes)}</div><div class="lab">abonnés</div></div>
+      <div class="kpibox"><div class="val2">${nf(yt.video_count)}</div><div class="lab">vidéos</div></div>
+      <div class="kpibox" style="grid-column:span 2"><div class="val2">${nf(yt.vues_totales)}</div><div class="lab">vues totales de la chaîne</div></div>
+    </div>
+    ${yt.top_videos&&yt.top_videos.length?`<div class="list" style="margin-top:10px">${yt.top_videos.slice(0,5).map(v=>`<div class="li"><span class="t" title="${(v.titre||'').replace(/"/g,'&quot;')}">${v.titre||'—'}</span><span class="pill">👁 ${nf(v.vues)}</span><span class="pill">👍 ${v.likes}</span>${v.lien?`<a href="${v.lien}" target="_blank" class="pill">voir ↗</a>`:''}</div>`).join('')}</div>`:''}`,'col6');}
 
   /* ---- Abonnés les plus actifs (vrais « top fans ») ---- */
   const fans=(m&&m.top_commentateurs)||(m&&m.top_fans)||[];

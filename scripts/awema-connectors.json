@@ -35,12 +35,12 @@
     },
     "youtube": {
       "label": "YouTube",
-      "statut": "à venir",
       "keys": [
         {"name": "YOUTUBE_API_KEY", "secret": true, "github": "secret",
          "prompt": "Clé API Google (console.cloud.google.com → YouTube Data API v3 activée → Créer une clé API)"}
       ],
-      "commands": {"sync_workflow": "sync-reseaux.yml"},
+      "commands": {"connect": "python3 scripts/connect-reseaux.py --youtube-all && python3 outils/_data/build.py",
+                   "sync_workflow": "sync-reseaux.yml"},
       "rotate": "Régénère la clé dans Google Cloud Console (APIs & Services → Identifiants), puis : awema rotate youtube YOUTUBE_API_KEY=<nouvelle>.",
       "note": "Stats publiques de chaîne (abonnés, vues, nb vidéos) via clé API — SANS OAuth. L'ID de chaîne (yt_channel_id) se met dans le client.json de chaque entité.",
       "doc": "docs/AWEMA-OS.md"
