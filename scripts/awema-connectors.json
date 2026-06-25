@@ -47,19 +47,19 @@
     },
     "linkedin": {
       "label": "LinkedIn",
-      "statut": "à venir",
+      "statut": "guide",
       "keys": [
         {"name": "LINKEDIN_CLIENT_ID", "secret": false, "github": "secret",
-         "prompt": "Client ID de l'app LinkedIn (developer.linkedin.com)"},
+         "prompt": "Client ID de l'app LinkedIn (developer.linkedin.com → ton app → Auth)"},
         {"name": "LINKEDIN_CLIENT_SECRET", "secret": true, "github": "secret",
-         "prompt": "Client secret de l'app LinkedIn"},
-        {"name": "LINKEDIN_TOKENS", "secret": true, "github": "variable", "managed": true,
-         "prompt": "Tokens OAuth par page LinkedIn — généré par l'onboarding (à implémenter)"}
+         "prompt": "Client secret de l'app LinkedIn (onglet Auth)"},
+        {"name": "LINKEDIN_TOKENS", "secret": true, "github": "variable", "managed": true, "optional": true,
+         "prompt": "Access tokens OAuth par Page LinkedIn — généré par l'onboarding (ne pas saisir à la main)"}
       ],
       "commands": {"sync_workflow": "sync-reseaux.yml"},
-      "rotate": "OAuth LinkedIn (refresh) — à brancher.",
-      "note": "Complexe : nécessite une app LinkedIn + Marketing Developer Platform + être admin de la page (scopes r_organization_social / rw_organization_admin), souvent App Review.",
-      "doc": "docs/AWEMA-OS.md"
+      "rotate": "Régénère le token OAuth (refresh) une fois les produits LinkedIn validés, puis : awema rotate linkedin LINKEDIN_CLIENT_SECRET=<nouveau>. Mets à jour le Secret GitHub.",
+      "note": "Guide pas à pas : connect-linkedin.html. Nécessite une app LinkedIn + Page entreprise (admin) + produits « Sign In OIDC » et « Community Management API » (scopes r_organization_social / rw_organization_admin), souvent App Review. En attendant l'accès live, on enregistre l'URL de Page + abonnés saisis.",
+      "doc": "docs/10-connecter-linkedin.md"
     }
   }
 }

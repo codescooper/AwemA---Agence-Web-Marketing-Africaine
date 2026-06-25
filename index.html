@@ -3,163 +3,353 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AWEMA — Système d'exploitation de l'agence</title>
-<meta name="description" content="AWEMA · Agence Web Marketing Africaine — centre de pilotage : dashboard multi-clients, présence digitale, revue des visuels.">
+<title>AWEMA — Le système d'exploitation de votre présence en ligne</title>
+<meta name="description" content="AWEMA · Agence Web Marketing Africaine — pilotez la présence en ligne et l'activité de marché de vos clients : présence digitale réelle, community management, plan éditorial, multi-réseaux. Auto-hébergé, pilotable par IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
-    --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.12)}
+  :root{
+    --nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
+    --tx:#eaf0fb;--muted:#9db0d6;--muted2:#6c7ea5;
+    --card:rgba(255,255,255,.045);--bord:rgba(255,255,255,.11);--bord2:rgba(255,255,255,.2);
+    --grad:linear-gradient(120deg,var(--ciel),var(--violet));
+  }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.6;
-    background:radial-gradient(1200px 700px at 50% -15%,#16294f,#0A1F44 60%,#07162f);min-height:100vh}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-  header{padding:64px 0 30px;text-align:center}
-  .logo{width:64px;height:64px;border-radius:18px;margin:0 auto 22px;display:grid;place-items:center;
-    font-family:Montserrat,sans-serif;font-weight:800;font-size:30px;color:#fff;
-    background:linear-gradient(135deg,var(--ciel),var(--violet));box-shadow:0 16px 40px rgba(75,163,255,.35)}
-  h1{font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(28px,5vw,44px);letter-spacing:-.02em}
-  h1 .g{background:linear-gradient(120deg,var(--gold),#f2d479);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .tag{color:var(--muted);margin-top:12px;font-size:clamp(14px,2.4vw,17px)}
-  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-  .chip{font-size:12px;color:var(--muted);border:1px solid var(--bord);border-radius:20px;padding:6px 13px;background:var(--card)}
-  .chip b{color:var(--tx)}
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin:40px 0 18px}
-  a.card{grid-column:span 6;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--bord);
-    border-radius:20px;padding:26px;backdrop-filter:blur(10px);transition:transform .18s,border-color .18s,box-shadow .18s;display:block}
-  a.card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.28);box-shadow:0 22px 50px rgba(0,0,0,.4)}
-  a.card.sm{grid-column:span 4}
-  .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;margin-bottom:16px}
-  .card h2{font-family:Montserrat,sans-serif;font-size:19px;font-weight:800}
-  .card p{color:var(--muted);font-size:13.5px;margin-top:7px}
-  .card .go{margin-top:16px;color:var(--ciel);font-size:13px;font-weight:600}
-  .feat{grid-column:span 12;background:linear-gradient(120deg,rgba(75,163,255,.14),rgba(124,92,255,.12));border-color:rgba(75,163,255,.3)}
-  .feat .row{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
-  .feat .row>div:first-child{flex:1;min-width:240px}
-  .mini{display:flex;gap:18px;flex-wrap:wrap}
-  .mini b{font-family:Montserrat,sans-serif;font-size:22px}
-  .mini span{display:block;color:var(--muted);font-size:11.5px}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:34px 0 54px;border-top:1px solid var(--bord);margin-top:30px}
-  footer a{color:var(--muted)}
-  @media(max-width:760px){a.card,a.card.sm{grid-column:span 12}}
+  html{scroll-behavior:smooth}
+  body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.6;background:#06122b;overflow-x:hidden}
+  h1,h2,h3,.disp{font-family:Montserrat,sans-serif;letter-spacing:-.02em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  .g{background:linear-gradient(120deg,var(--gold),#f4d889);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .gc{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* animated mesh background */
+  .mesh{position:fixed;inset:0;z-index:-2;background:#06122b;overflow:hidden}
+  .mesh i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:float 18s ease-in-out infinite}
+  .mesh i:nth-child(1){width:540px;height:540px;background:#1f4fa8;top:-160px;left:-120px}
+  .mesh i:nth-child(2){width:480px;height:480px;background:#6a3fd6;top:10%;right:-140px;animation-delay:-4s}
+  .mesh i:nth-child(3){width:420px;height:420px;background:#1c6e63;bottom:-160px;left:25%;animation-delay:-9s}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.08)}66%{transform:translate(-30px,25px) scale(.96)}}
+  .grid-ov{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:54px 54px;mask:radial-gradient(900px 600px at 50% 0%,#000,transparent 75%);-webkit-mask:radial-gradient(900px 600px at 50% 0%,#000,transparent 75%)}
+
+  /* nav */
+  nav.top{position:sticky;top:0;z-index:50;backdrop-filter:saturate(150%) blur(14px);background:rgba(6,18,43,.6);border-bottom:1px solid var(--bord)}
+  nav.top .in{display:flex;align-items:center;gap:14px;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-family:Montserrat}
+  .brand .lg{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;font-size:16px;background:var(--grad);box-shadow:0 8px 22px -6px rgba(124,92,255,.6)}
+  nav.top .links{display:flex;gap:6px;margin-left:18px}
+  nav.top .links a{padding:8px 13px;border-radius:10px;font-size:13.5px;color:var(--muted);transition:.16s}
+  nav.top .links a:hover{color:var(--tx);background:rgba(255,255,255,.05)}
+  nav.top .sp{flex:1}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;font:inherit;font-weight:600;font-size:13.5px;padding:10px 17px;cursor:pointer;transition:.18s;white-space:nowrap}
+  .btn.p{background:var(--grad);color:#fff;box-shadow:0 12px 26px -10px rgba(124,92,255,.6)}
+  .btn.p:hover{transform:translateY(-2px);box-shadow:0 18px 34px -10px rgba(124,92,255,.75)}
+  .btn.gh{background:transparent;border:1px solid var(--bord2);color:var(--tx)}
+  .btn.gh:hover{border-color:#fff;background:rgba(255,255,255,.05)}
+  .btn.lg{padding:13px 22px;font-size:15px;border-radius:14px}
+
+  /* hero */
+  .hero{padding:74px 0 40px;text-align:center;position:relative}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mint);border:1px solid color-mix(in srgb,var(--mint) 40%,transparent);background:color-mix(in srgb,var(--mint) 10%,transparent);padding:6px 14px;border-radius:30px;font-weight:600}
+  .badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 var(--mint);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--mint) 70%,transparent)}70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .hero h1{font-size:clamp(34px,6.2vw,62px);font-weight:900;line-height:1.04;margin-top:22px}
+  .hero .lead{color:var(--muted);font-size:clamp(15px,2.3vw,19px);max-width:680px;margin:20px auto 0}
+  .hero .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+  .hero .micro{margin-top:16px;font-size:12.5px;color:var(--muted2)}
+
+  /* platform orbit strip */
+  .plats{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:42px}
+  .plat{display:inline-flex;align-items:center;gap:9px;padding:9px 15px 9px 9px;border-radius:40px;background:var(--card);border:1px solid var(--bord);font-size:13.5px;font-weight:600;transition:.2s;opacity:0;transform:translateY(10px)}
+  .plat.in{opacity:1;transform:none}
+  .plat:hover{transform:translateY(-3px);border-color:var(--pc)}
+  .plat .pi{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff;font-family:Montserrat}
+
+  /* sections */
+  section{padding:64px 0;position:relative}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ciel)}
+  .h2{font-size:clamp(26px,4vw,40px);font-weight:800;margin-top:10px}
+  .sub{color:var(--muted);margin-top:12px;max-width:640px;font-size:15.5px}
+  .center{text-align:center}.center .sub{margin-left:auto;margin-right:auto}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(26px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+
+  /* features bento */
+  .feats{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:38px}
+  .feat{grid-column:span 2;background:var(--card);border:1px solid var(--bord);border-radius:20px;padding:24px;backdrop-filter:blur(8px);transition:.22s;position:relative;overflow:hidden}
+  .feat:hover{transform:translateY(-4px);border-color:var(--bord2);box-shadow:0 26px 50px -20px rgba(0,0,0,.6)}
+  .feat.big{grid-column:span 3}
+  .feat .fi{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;margin-bottom:15px}
+  .feat h3{font-size:18px;font-weight:800}
+  .feat p{color:var(--muted);font-size:13.8px;margin-top:8px}
+  .feat .spark{position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;opacity:.13;filter:blur(8px)}
+
+  /* platform showcase (brand charts) */
+  .pshow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}
+  .pcard{border-radius:20px;padding:22px;position:relative;overflow:hidden;border:1px solid var(--bord);background:var(--card);transition:.22s}
+  .pcard:hover{transform:translateY(-4px)}
+  .pcard .hd{display:flex;align-items:center;gap:11px}
+  .pcard .pi{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;font-family:Montserrat}
+  .pcard b{font-size:16px;font-family:Montserrat}
+  .pcard .st{font-size:11.5px;color:var(--muted)}
+  .pcard .bar{height:7px;border-radius:10px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
+  .pcard .bar i{display:block;height:100%;border-radius:10px;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .pcard .met{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:14px}
+  .pcard .met b{font-size:13px;color:var(--tx)}
+  .pcard .glow{position:absolute;inset:0;opacity:.10;z-index:-1}
+  .pcard .tagp{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:7px}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px;counter-reset:s}
+  .step{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:22px}
+  .step .n{width:34px;height:34px;border-radius:10px;background:var(--grad);display:grid;place-items:center;font-weight:800;font-family:Montserrat;color:#fff;counter-increment:s}
+  .step .n::before{content:counter(s)}
+  .step h3{font-size:15.5px;margin-top:14px}
+  .step p{color:var(--muted);font-size:13px;margin-top:6px}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:6px}
+  .stat{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:26px;text-align:center}
+  .stat b{font-family:Montserrat;font-weight:900;font-size:clamp(28px,4vw,40px);display:block;line-height:1}
+  .stat span{color:var(--muted);font-size:13px;margin-top:8px;display:block}
+
+  /* beta */
+  .beta{background:linear-gradient(120deg,rgba(75,163,255,.14),rgba(124,92,255,.12));border:1px solid rgba(75,163,255,.3);border-radius:26px;padding:44px;display:flex;gap:30px;align-items:center;flex-wrap:wrap}
+  .beta .l{flex:1;min-width:280px}
+  .beta h2{font-size:clamp(24px,3.4vw,34px);font-weight:800}
+  .beta ul{list-style:none;margin-top:16px;display:grid;gap:9px}
+  .beta li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--tx)}
+  .beta li .ck{color:var(--mint);font-weight:800}
+  .beta .r{display:flex;flex-direction:column;gap:11px;min-width:220px}
+
+  footer{border-top:1px solid var(--bord);padding:40px 0;color:var(--muted);font-size:13px;margin-top:30px}
+  footer .row{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  footer a{color:var(--muted)}footer a:hover{color:var(--tx)}
+
+  @media(max-width:900px){.feats,.pshow,.steps,.stats{grid-template-columns:1fr 1fr}.feat,.feat.big{grid-column:span 1}
+    nav.top .links{display:none}}
+  @media(max-width:560px){.feats,.pshow,.steps,.stats{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="logo" data-ag="initiales">A</div>
-    <h1><span data-ag="nom">AWEMA</span> <span class="g">·</span> <span data-ag="tagline">Centre de pilotage</span></h1>
-    <p class="tag">Le système d'exploitation de l'<b data-ag="nom_complet">Agence Web Marketing Africaine</b> — stratégie,
-      production et présence digitale, pilotables par des humains <i>et</i> des agents IA.</p>
-    <div class="chips">
-      <span class="chip">🟢 <b>Marketing</b> actif</span>
-      <span class="chip"><b>Facebook</b> + <b>TikTok</b> connectés</span>
-      <span class="chip">Données <b>réelles</b>, zéro fiction</span>
+<div class="mesh"><i></i><i></i><i></i></div>
+<div class="grid-ov"></div>
+
+<nav class="top">
+  <div class="wrap in">
+    <a class="brand" href="index.html"><span class="lg" data-ag="initiales">A</span><span data-ag="nom">AWEMA</span></a>
+    <div class="links">
+      <a href="#feats">Fonctionnalités</a>
+      <a href="#plats">Plateformes</a>
+      <a href="#how">Comment ça marche</a>
+      <a href="#beta">Beta</a>
     </div>
-  </header>
+    <div class="sp"></div>
+    <a class="btn gh" href="onboarding.html">Rejoindre la beta</a>
+    <a class="btn p" href="outils/dashboard/index.html">Ouvrir le dashboard →</a>
+  </div>
+</nav>
 
-  <main class="grid">
-    <!-- Outil phare : Dashboard -->
-    <a class="card feat" href="outils/dashboard/index.html">
-      <div class="row">
-        <div>
-          <div class="ic" style="background:rgba(75,163,255,.2)">🎛️</div>
-          <h2>Dashboard — Command Center</h2>
-          <p>Pilotage multi-clients : présence digitale (audience, engagement, commentaires à
-            répondre, meilleurs posts, cadence, meilleur créneau), plan éditorial, scoring et tunnel.</p>
-          <div class="go">Ouvrir le dashboard →</div>
-        </div>
-        <div class="mini">
-          <div><b>26</b><span>clients</span></div>
-          <div><b>FB + TikTok</b><span>réseaux</span></div>
-          <div><b>180</b><span>contenus (La Grande Vision)</span></div>
-        </div>
+<header class="hero">
+  <div class="wrap">
+    <span class="badge"><span class="pulse"></span> Beta ouverte · accès aux premiers testeurs</span>
+    <h1>Le système d'exploitation de la<br><span class="gc">présence en ligne</span> de vos clients</h1>
+    <p class="lead"><b data-ag="nom">AWEMA</b> agrège <b>tous</b> les réseaux d'une entité au même endroit —
+      audience réelle, community management, plan éditorial, meilleurs posts — et se pilote à la main
+      <i>ou</i> en langage naturel par un agent IA. <b>Données réelles, zéro fiction.</b></p>
+    <div class="cta">
+      <a class="btn p lg" href="onboarding.html">🚀 Devenir beta testeur</a>
+      <a class="btn gh lg" href="outils/dashboard/index.html">Explorer le dashboard</a>
+    </div>
+    <p class="micro" id="heroStat">Chargement des chiffres réels…</p>
+
+    <div class="plats" id="platStrip"></div>
+  </div>
+</header>
+
+<section id="feats">
+  <div class="wrap">
+    <div class="rv"><div class="eyebrow">Un cockpit, toute la présence</div>
+      <div class="h2">Tout ce qu'il faut pour <span class="g">piloter</span> une marque</div></div>
+    <div class="feats">
+      <div class="feat big rv"><div class="spark" style="background:var(--ciel)"></div>
+        <div class="fi" style="background:rgba(75,163,255,.18)">📊</div>
+        <h3>Présence digitale 360°</h3>
+        <p>Audience, réactions détaillées, top fans, cadence, meilleur créneau, meilleurs posts —
+          agrégés sur Facebook, Instagram, TikTok, YouTube et LinkedIn. Chaque réseau garde sa charte.</p></div>
+      <div class="feat big rv"><div class="spark" style="background:var(--mint)"></div>
+        <div class="fi" style="background:rgba(52,229,196,.18)">💬</div>
+        <h3>Community management</h3>
+        <p>Les commentaires à répondre remontent en inbox, classés par client. Top commentateurs,
+          types de contenu qui marchent, et liens directs pour répondre.</p></div>
+      <div class="feat rv"><div class="fi" style="background:rgba(124,92,255,.18)">🗓️</div>
+        <h3>Plan éditorial</h3>
+        <p>Calendrier, prompts pro par plateforme et descriptions prêtes à copier.</p></div>
+      <div class="feat rv"><div class="fi" style="background:rgba(212,175,55,.18)">🤖</div>
+        <h3>Opérateur IA <code>/awema</code></h3>
+        <p>« Connecte TikTok », « fais tourner le token » — il ne demande que l'inconnu et agit.</p></div>
+      <div class="feat rv"><div class="fi" style="background:rgba(255,125,156,.18)">⚡</div>
+        <h3>100% automatisable</h3>
+        <p>GitHub Actions rafraîchit les données et commit tout seul. Tu pilotes, ça tourne.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="plats">
+  <div class="wrap">
+    <div class="rv"><div class="eyebrow">Multi-réseaux</div>
+      <div class="h2">Chaque plateforme, <span class="g">à ses couleurs</span></div>
+      <p class="sub">Le contenu servi reflète la charte de chaque réseau : on met en évidence l'identité de
+        Facebook, TikTok, YouTube, LinkedIn… pour lire d'un coup d'œil d'où vient quoi.</p></div>
+    <div class="pshow" id="pshow"></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap center">
+    <div class="rv"><div class="eyebrow">Onboarding en 4 étapes</div>
+      <div class="h2">Prêt en quelques minutes</div>
+      <p class="sub">Même sans aucune compétence technique. Un parcours guidé t'accompagne du début à la fin.</p></div>
+    <div class="steps" style="text-align:left">
+      <div class="step rv"><div class="n"></div><h3>Personnalise</h3><p>Mets l'outil à ta marque (nom, logo, charte) via <b>setup</b>.</p></div>
+      <div class="step rv"><div class="n"></div><h3>Ajoute un client</h3><p>Un formulaire crée sa fiche. Aucun code à écrire.</p></div>
+      <div class="step rv"><div class="n"></div><h3>Connecte ses réseaux</h3><p>Guides pas à pas, boutons « copier », l'IA fait le reste.</p></div>
+      <div class="step rv"><div class="n"></div><h3>Pilote</h3><p>Le dashboard affiche les vraies données. Tu décides, tu publies.</p></div>
+    </div>
+    <div class="rv" style="margin-top:30px"><a class="btn p lg" href="onboarding.html">Commencer l'onboarding →</a></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="rv center"><div class="eyebrow">En production, aujourd'hui</div>
+      <div class="h2">Des chiffres <span class="g">réels</span>, pas une démo</div></div>
+    <div class="stats" id="stats" style="margin-top:34px"></div>
+  </div>
+</section>
+
+<section id="beta">
+  <div class="wrap">
+    <div class="beta rv">
+      <div class="l">
+        <div class="eyebrow">Programme beta</div>
+        <h2 style="margin-top:10px">Rejoignez les premiers <span class="g">testeurs</span></h2>
+        <p class="sub" style="margin-top:12px">On ouvre l'accès à un cercle restreint d'agences et de créateurs.
+          Vous façonnez l'outil, on vous accompagne en direct.</p>
+        <ul>
+          <li><span class="ck">✓</span> Votre instance auto-hébergée, à votre marque</li>
+          <li><span class="ck">✓</span> Connexion de tous vos réseaux (FB, IG, TikTok, YouTube, LinkedIn)</li>
+          <li><span class="ck">✓</span> Onboarding guidé + support direct</li>
+          <li><span class="ck">✓</span> Vos retours priorisés dans la roadmap</li>
+        </ul>
       </div>
-    </a>
+      <div class="r">
+        <a class="btn p lg" href="onboarding.html">🚀 Démarrer maintenant</a>
+        <a class="btn gh lg" id="mailBtn" href="mailto:codescooper@gmail.com?subject=Beta%20AWEMA">✉️ Nous contacter</a>
+        <a class="btn gh lg" href="setup.html">🏷️ Forker &amp; personnaliser</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Revue des visuels -->
-    <a class="card" href="outils/revue-visuels/index.html">
-      <div class="ic" style="background:rgba(212,175,55,.2)">🖼️</div>
-      <h2>Revue des Visuels</h2>
-      <p>Parcours le plan de contenu de <b>chaque client</b>, prompts pro par plateforme,
-        descriptions prêtes à copier, génération d'image en 1 clic et validation.</p>
-      <div class="go">Ouvrir le visualiseur →</div>
-    </a>
-
-    <!-- Présence digitale -->
-    <a class="card" href="outils/dashboard/index.html">
-      <div class="ic" style="background:rgba(52,229,196,.2)">📊</div>
-      <h2>Présence digitale</h2>
-      <p>Rapports réseaux réels par client : abonnés, réactions détaillées, top fans (commentateurs),
-        évolution d'audience — Facebook &amp; TikTok agrégés.</p>
-      <div class="go">Voir la présence digitale →</div>
-    </a>
-
-    <!-- Onboarding : nouveau client -->
-    <a class="card" href="nouveau-client.html">
-      <div class="ic" style="background:rgba(52,229,196,.18)">➕</div>
-      <h2>Nouveau client</h2>
-      <p>Onboarding simple : un formulaire crée la fiche du client, puis tu connectes ses réseaux en
-        cliquant. Aucun code à écrire.</p>
-      <div class="go">Ajouter un client →</div>
-    </a>
-
-    <!-- Connecter TikTok (guide pas à pas) -->
-    <a class="card" href="connect-tiktok.html">
-      <div class="ic" style="background:rgba(255,255,255,.12)">🔗</div>
-      <h2>Connecter TikTok</h2>
-      <p>Guide pas à pas (PAT, app, assistant) pour brancher les comptes TikTok de tes clients —
-        avec liens directs et boutons « copier ». L'assistant automatise tout sauf le clic « Authorize ».</p>
-      <div class="go">Suivre le guide →</div>
-    </a>
-
-    <!-- Connecter YouTube (guide pas à pas) -->
-    <a class="card" href="connect-youtube.html">
-      <div class="ic" style="background:rgba(255,75,75,.16)">▶️</div>
-      <h2>Connecter YouTube</h2>
-      <p>Guide pas à pas pour obtenir une clé API (stats publiques de chaîne : abonnés, vues, vidéos) —
-        sans OAuth. Une clé pour toutes les chaînes.</p>
-      <div class="go">Suivre le guide →</div>
-    </a>
-
-    <!-- Personnaliser mon agence (auto-hébergement) -->
-    <a class="card" href="setup.html">
-      <div class="ic" style="background:rgba(124,92,255,.2)">🏷️</div>
-      <h2>Personnaliser mon agence</h2>
-      <p>Auto-hébergement : forke le projet et adapte le nom, le logo, la charte et les liens à
-        <b>ta</b> marque. Un formulaire génère ta config — toute l'app suit.</p>
-      <div class="go">Configurer &amp; héberger →</div>
-    </a>
-
-    <!-- Documentation -->
-    <a class="card" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/tree/main/docs" target="_blank" rel="noopener">
-      <div class="ic" style="background:rgba(124,92,255,.2)">📚</div>
-      <h2>Documentation</h2>
-      <p>Onboarding, conventions, charte, connecter Meta &amp; TikTok.</p>
-      <div class="go">Lire les guides ↗</div>
-    </a>
-
-    <!-- Charte -->
-    <a class="card sm" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/blob/main/docs/04-charte-graphique.md" target="_blank" rel="noopener">
-      <div class="ic" style="background:rgba(255,125,156,.2)">🎨</div>
-      <h2>Charte graphique</h2>
-      <p>Bleu Nuit · Bleu Ciel · Gold — Montserrat &amp; Poppins.</p>
-      <div class="go">Voir la charte ↗</div>
-    </a>
-
-    <!-- Légal -->
-    <a class="card sm" href="legal/terms.html">
-      <div class="ic" style="background:rgba(157,176,214,.2)">⚖️</div>
-      <h2>Mentions légales</h2>
-      <p>Conditions d'utilisation &amp; politique de confidentialité.</p>
-      <div class="go">Conditions · <a href="legal/privacy.html" style="color:var(--ciel)">Confidentialité</a> →</div>
-    </a>
-  </main>
-
-  <footer>
-    © 2026 <b data-ag="nom">AWEMA</b> — <span data-ag="nom_complet">Agence Web Marketing Africaine</span> ·
+<footer>
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="lg" data-ag="initiales">A</span><span data-ag="nom">AWEMA</span></a>
+    <span style="color:var(--muted2)">© 2026 · <span data-ag="nom_complet">Agence Web Marketing Africaine</span></span>
+    <div style="flex:1"></div>
+    <a href="onboarding.html">Beta</a>
+    <a href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/tree/main/docs" target="_blank" rel="noopener">Docs</a>
+    <a href="legal/terms.html">Conditions</a>
+    <a href="legal/privacy.html">Confidentialité</a>
     <a href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine" target="_blank" rel="noopener">Code source ↗</a>
-  </footer>
-</div>
+  </div>
+</footer>
+
+<script src="outils/_data/platforms.js" onerror=""></script>
+<script src="outils/_data/agence.js" onerror=""></script>
 <script src="outils/_data/config.js" onerror=""></script>
 <script src="outils/_data/apply.js"></script>
+<script>
+(function(){
+  var P = window.AWEMA_PLATFORMS || {};
+  var ORDER = ['facebook','instagram','tiktok','youtube','linkedin','whatsapp'];
+
+  /* ---- bandeau de plateformes (nav hero) ---- */
+  var strip = document.getElementById('platStrip');
+  ORDER.forEach(function(k,i){
+    var p = P[k]; if(!p) return;
+    var el = document.createElement('span');
+    el.className = 'plat'; el.style.setProperty('--pc', p.c);
+    el.innerHTML = '<span class="pi" style="background:'+p.grad+'">'+p.glyph+'</span>'+p.nom;
+    strip.appendChild(el);
+    setTimeout(function(){ el.classList.add('in'); }, 120 + i*80);
+  });
+
+  /* ---- chiffres réels depuis le registre ---- */
+  var reg = window.AWEMA_REGISTRY || {clients:[]};
+  var clients = reg.clients || [];
+  var totContenus = 0, connectes = 0, audience = 0, netSet = {};
+  clients.forEach(function(c){
+    totContenus += (c.campagne && c.campagne.total) || 0;
+    var r = c.reseaux;
+    if(r && r.connecte){ connectes++;
+      if(r.global && r.global.audience) audience += r.global.audience;
+      var pr = (r.par_reseau)||{};
+      Object.keys(pr).forEach(function(n){ if(pr[n] && pr[n].abonnes!=null) netSet[n]=1; });
+    }
+  });
+  var nbReseaux = Object.keys(netSet).length || 5;
+  document.getElementById('heroStat').innerHTML =
+    '<b>'+clients.length+'</b> entités gérées · <b>'+connectes+'</b> avec réseaux connectés · données réelles, zéro fiction';
+
+  /* ---- compteur animé ---- */
+  function countUp(el, to, suf){
+    var d=1100, s=null; suf=suf||'';
+    function step(t){ if(!s)s=t; var p=Math.min((t-s)/d,1);
+      el.textContent=Math.round(to*(1-Math.pow(1-p,3))).toLocaleString('fr-FR')+suf;
+      if(p<1)requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  var STATS=[['clients',clients.length,'entités gérées'],['connectes',connectes,'réseaux connectés'],
+    ['audience',audience,'abonnés agrégés'],['contenus',totContenus,'contenus planifiés']];
+  var statsEl=document.getElementById('stats');
+  STATS.forEach(function(s){ var d=document.createElement('div'); d.className='stat';
+    d.innerHTML='<b data-to="'+s[1]+'">0</b><span>'+s[2]+'</span>'; statsEl.appendChild(d); });
+
+  /* ---- vitrine plateformes (cartes de marque, métriques réelles si dispo) ---- */
+  function netTotal(net){ var ab=0,n=0; clients.forEach(function(c){ var pr=c.reseaux&&c.reseaux.par_reseau;
+    if(pr&&pr[net]&&pr[net].abonnes!=null){ ab+=pr[net].abonnes; n++; } }); return {ab:ab,n:n}; }
+  var STATUT={facebook:'Connecté',instagram:'Bientôt',tiktok:'Connecté',youtube:'Connecté',linkedin:'Nouveau',whatsapp:'Tunnel'};
+  var maxAb=1; ['facebook','tiktok','youtube','linkedin'].forEach(function(k){ maxAb=Math.max(maxAb,netTotal(k).ab); });
+  var show=document.getElementById('pshow');
+  ['facebook','tiktok','youtube','linkedin','instagram','whatsapp'].forEach(function(k){
+    var p=P[k]; if(!p) return; var t=netTotal(k);
+    var card=document.createElement('div'); card.className='pcard'; card.style.borderColor=p.c+'55';
+    var tagBg = (STATUT[k]==='Connecté')?'#34E5C422':(STATUT[k]==='Nouveau'?p.c+'30':'rgba(255,255,255,.07)');
+    var tagFg = (STATUT[k]==='Connecté')?'#34E5C4':(STATUT[k]==='Nouveau'?p.c:'var(--muted)');
+    card.innerHTML =
+      '<div class="glow" style="background:'+p.grad+'"></div>'+
+      '<span class="tagp" style="background:'+tagBg+';color:'+tagFg+'">'+STATUT[k]+'</span>'+
+      '<div class="hd"><span class="pi" style="background:'+p.grad+'">'+p.glyph+'</span>'+
+        '<div><b>'+p.nom+'</b><div class="st">'+(t.n? t.n+' compte(s) suivi(s)':'Prêt à connecter')+'</div></div></div>'+
+      '<div class="bar"><i data-w="'+Math.round(Math.min(t.ab/maxAb*100,100))+'" style="background:'+p.grad+'"></i></div>'+
+      '<div class="met"><span>Audience suivie</span><b>'+(t.ab?t.ab.toLocaleString('fr-FR'):'—')+'</b></div>';
+    show.appendChild(card);
+  });
+
+  /* ---- reveal au scroll + déclenche compteurs/barres ---- */
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-to]').forEach(function(el){ countUp(el,+el.dataset.to); });
+    e.target.querySelectorAll('.bar i[data-w]').forEach(function(el){ el.style.width=el.dataset.w+'%'; });
+    io.unobserve(e.target);
+  }); },{threshold:.18});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+  // les stats et pshow ne sont pas .rv → observe leurs conteneurs
+  io.observe(statsEl); io.observe(show);
+})();
+</script>
 </body>
 </html>

@@ -262,12 +262,17 @@ a{color:inherit;text-decoration:none}
 </div>
 <div class="toast" id="toast"></div>
 
+<script src="../_data/platforms.js" onerror=""></script>
 <script src="../_data/agence.js" onerror="window.__noReg=1"></script>
 <script src="../_data/config.js" onerror=""></script>
 <script src="../_data/apply.js"></script>
 <script src="data.js" onerror="window.__noData=1"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const PLAT=window.AWEMA_PLATFORMS||{};
+function pbadge(net,extra){const p=PLAT[net]||{c:'#4BA3FF',grad:'var(--grad)',glyph:'•',nom:net};
+  return `<span class="pi" style="width:24px;height:24px;border-radius:8px;display:inline-grid;place-items:center;
+    color:#fff;font-weight:800;font-size:11px;font-family:'Plus Jakarta Sans';background:${p.grad}${extra||''}">${p.glyph}</span>`;}
 function ic(n){const p={
   grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
   cal:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/>',
@@ -544,7 +549,8 @@ function viewClients(){
     const r=c.reseaux||{}, g=r.global||{}, act=ACTIVE&&c.id===ACTIVE.id;
     const rep=(r.a_repondre&&r.a_repondre.total)||0, cad=r.cadence;
     const nets=netAudience(c);
-    const netChips=Object.entries(nets).map(([n,v])=>`<span class="pill" style="text-transform:capitalize">${n} · ${nf(v)}</span>`).join('')
+    const netChips=Object.entries(nets).map(([n,v])=>{const p=PLAT[n]||{c:'#9AA7C2',nom:n};
+      return `<span class="pill" style="display:inline-flex;align-items:center;gap:6px;border-color:${p.c}55;color:var(--tx)">${pbadge(n)} ${p.nom} · ${nf(v)}</span>`;}).join('')
       ||'<span class="tag">réseaux à connecter</span>';
     add(`<h3>${c.nom}${act?'<span class="chip up" style="margin-left:auto">actif</span>':''}</h3>
       <div class="sub">${c.secteur||'—'}${c.lieu?' · '+c.lieu:''}</div>
@@ -625,7 +631,7 @@ function viewReseaux(){
 
   /* ---- TikTok (si compte connecté) ---- */
   const tk=(m&&m.tiktok)||null; const nf=v=>(v==null?'—':(+v).toLocaleString('fr-FR'));
-  if(tk){add(`<h3>${ic('bolt')} TikTok${tk.display_name?` · ${tk.display_name}`:''}</h3><div class="sub">Compte TikTok connecté${tk.maj?' · maj '+tk.maj.slice(0,10):''}</div>
+  if(tk){const P=PLAT.tiktok||{};add(`<h3 style="border-left:3px solid ${P.c};padding-left:9px;margin-left:-3px">${pbadge('tiktok')} TikTok${tk.display_name?` · ${tk.display_name}`:''}</h3><div class="sub">Compte TikTok connecté${tk.maj?' · maj '+tk.maj.slice(0,10):''}</div>
     <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div class="kpibox"><div class="val2">${nf(tk.abonnes)}</div><div class="lab">abonnés</div></div>
       <div class="kpibox"><div class="val2">${nf(tk.video_count)}</div><div class="lab">vidéos</div></div>
@@ -636,13 +642,28 @@ function viewReseaux(){
 
   /* ---- YouTube (si chaîne connectée) ---- */
   const yt=(m&&m.youtube)||null;
-  if(yt){add(`<h3>${ic('chart')} YouTube${yt.titre?` · ${yt.titre}`:''}</h3><div class="sub">Chaîne connectée${yt.maj?' · maj '+yt.maj.slice(0,10):''}</div>
+  if(yt){const P=PLAT.youtube||{};add(`<h3 style="border-left:3px solid ${P.c};padding-left:9px;margin-left:-3px">${pbadge('youtube')} YouTube${yt.titre?` · ${yt.titre}`:''}</h3><div class="sub">Chaîne connectée${yt.maj?' · maj '+yt.maj.slice(0,10):''}</div>
     <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div class="kpibox"><div class="val2">${nf(yt.abonnes)}</div><div class="lab">abonnés</div></div>
       <div class="kpibox"><div class="val2">${nf(yt.video_count)}</div><div class="lab">vidéos</div></div>
       <div class="kpibox" style="grid-column:span 2"><div class="val2">${nf(yt.vues_totales)}</div><div class="lab">vues totales de la chaîne</div></div>
     </div>
     ${yt.top_videos&&yt.top_videos.length?`<div class="list" style="margin-top:10px">${yt.top_videos.slice(0,5).map(v=>`<div class="li"><span class="t" title="${(v.titre||'').replace(/"/g,'&quot;')}">${v.titre||'—'}</span><span class="pill">👁 ${nf(v.vues)}</span><span class="pill">👍 ${v.likes}</span>${v.lien?`<a href="${v.lien}" target="_blank" class="pill">voir ↗</a>`:''}</div>`).join('')}</div>`:''}`,'col6');}
+
+  /* ---- LinkedIn (si Page connectée — sinon invite à connecter) ---- */
+  const lkP=PLAT.linkedin||{}; const lk=(m&&m.linkedin)||null;
+  if(lk){add(`<h3 style="border-left:3px solid ${lkP.c};padding-left:9px;margin-left:-3px">${pbadge('linkedin')} LinkedIn${lk.titre?` · ${lk.titre}`:''}</h3><div class="sub">Page connectée${lk.maj?' · maj '+lk.maj.slice(0,10):''}</div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="kpibox"><div class="val2">${nf(lk.abonnes)}</div><div class="lab">abonnés</div></div>
+      <div class="kpibox"><div class="val2">${nf(lk.impressions)}</div><div class="lab">impressions</div></div>
+      <div class="kpibox"><div class="val2">${nf(lk.posts)}</div><div class="lab">posts</div></div>
+      <div class="kpibox"><div class="val2">${lk.engagement_taux!=null?lk.engagement_taux+'%':'—'}</div><div class="lab">engagement</div></div>
+    </div>`,'col6');}
+  else if((prof.linkedin)||true){add(`<h3 style="border-left:3px solid ${lkP.c};padding-left:9px;margin-left:-3px">${pbadge('linkedin')} LinkedIn <span class="tag" style="color:${lkP.c};border-color:${lkP.c}55">nouveau</span></h3>
+    <div class="sub">Statistiques de Page entreprise (abonnés, impressions, engagement)</div>
+    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">${prof.linkedin?`Page renseignée — ${/^https?:/.test(prof.linkedin)?`<a href="${prof.linkedin}" target="_blank">voir la Page ↗</a>`:prof.linkedin}.`:'Aucune Page LinkedIn renseignée.'}
+      Branche les données live en suivant le guide.</div>
+    <a class="mini gold" href="../../connect-linkedin.html" target="_blank" rel="noopener" style="display:inline-block;margin-top:12px;text-decoration:none">Connecter LinkedIn →</a>`,'col6');}
 
   /* ---- Abonnés les plus actifs (vrais « top fans ») ---- */
   const fans=(m&&m.top_commentateurs)||(m&&m.top_fans)||[];
@@ -662,11 +683,19 @@ function viewReseaux(){
   if(ev.length>1){const map={};ev.forEach((p,i)=>map[i+1]=p.valeur);add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">${ev.length} relevés · du ${ev[0].date} à ${ev[ev.length-1].date}</div>${area(map)}`,'col12');}
   else if(connected){add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">La courbe se construit à chaque sync</div><div style="margin-top:14px;color:var(--muted);font-size:12.5px">1 relevé pour l'instant — un point est ajouté à chaque synchronisation.</div>`,'col12');}
 
-  /* ---- Profils + source ---- */
-  add(`<h3>${ic('bubble')} Profils & source</h3>
+  /* ---- Présence par réseau (reflète l'état réel de connexion, pas seulement les liens saisis) ---- */
+  const PRES=(m&&m.par_reseau)||{}, OBJ={tiktok:m&&m.tiktok,youtube:m&&m.youtube,linkedin:m&&m.linkedin};
+  add(`<h3>${ic('bubble')} Présence par réseau</h3>
     <div class="sub">${connected?('Connecté · '+(m.source||'')+(m.maj?' · maj '+m.maj.slice(0,10):'')):'Non connecté — aucune donnée inventée'}</div>
-    <div style="margin-top:12px;font-size:12.5px">${['facebook','instagram','tiktok','linkedin','whatsapp'].map(r=>
-      `<div class="kvr"><b style="text-transform:capitalize">${r}</b><span>${prof[r]?(/^https?:/.test(prof[r])?`<a href="${prof[r]}" target="_blank">lien ↗</a>`:prof[r]):'<span class="tag">à renseigner</span>'}</span></div>`).join('')}</div>`,'col12');
+    <div style="margin-top:12px;font-size:12.5px">${['facebook','instagram','tiktok','youtube','linkedin','whatsapp'].map(r=>{
+      const p=PLAT[r]||{nom:r,c:'#9AA7C2'};
+      const ab=(PRES[r]&&PRES[r].abonnes!=null)?PRES[r].abonnes:((OBJ[r]&&OBJ[r].abonnes!=null)?OBJ[r].abonnes:null);
+      const url=prof[r]; let right;
+      if(ab!=null) right=`<span class="pill" style="background:${p.c}1f;color:${p.c};border-color:${p.c}66">● connecté · ${nf(ab)} abonnés</span>`+((url&&/^https?:/.test(url))?` <a href="${url}" target="_blank" style="color:${p.c}">↗</a>`:'');
+      else if(url) right=/^https?:/.test(url)?`<a href="${url}" target="_blank" style="color:${p.c}">lien ↗</a>`:url;
+      else if(r==='linkedin') right=`<a href="../../connect-linkedin.html" target="_blank" class="pill" style="border-color:${p.c}66;color:${p.c}">connecter →</a>`;
+      else right='<span class="tag">à renseigner</span>';
+      return `<div class="kvr"><b style="display:flex;align-items:center;gap:8px;font-weight:600">${pbadge(r)} ${p.nom}</b><span>${right}</span></div>`;}).join('')}</div>`,'col12');
 
   $$('.kpi .val[data-to]').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
 }
