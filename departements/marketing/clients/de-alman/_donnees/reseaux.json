@@ -35,6 +35,15 @@
       "partages": null,
       "portee": null,
       "vues": null
+    },
+    "youtube": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
     }
   },
   "top_posts": [
@@ -223,7 +232,7 @@
         "type": "vidéo"
       }
     ],
-    "maj": "2026-06-25T04:15:59+00:00"
+    "maj": "2026-06-25T07:14:11+00:00"
   },
   "source": "tiktok-display-api",
   "client": "de-alman",
@@ -238,7 +247,7 @@
     "engagement_taux": null
   },
   "connecte": true,
-  "maj": "2026-06-25T04:15:59+00:00",
+  "maj": "2026-06-25T07:14:11+00:00",
   "evolution_audience": [
     {
       "date": "2026-06-25",
