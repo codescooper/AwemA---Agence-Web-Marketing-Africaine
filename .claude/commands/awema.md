@@ -22,6 +22,15 @@ $ARGUMENTS
 4. **Agis, puis confirme.** N'expose pas un plan interminable : exécute les étapes déterministes,
    pose les questions seulement quand c'est nécessaire, et résume ce qui a été fait (masqué).
 
+## Onboarding d'un client (ajouter une entité à gérer)
+Si la demande est « nouveau client », « ajoute le client X », « onboarde … » :
+1. Détermine le **nom** (obligatoire). Demande-le si absent. Secteur/lieu/handles = optionnels.
+2. Crée la fiche : `python3 scripts/awema.py client new <slug|auto> nom="..." secteur="..." lieu="..." \
+   fb_page_id="..." yt_handle="@..." tiktok="<url>" instagram="<url>"` (ne passe que ce que tu sais ;
+   `slug=auto` génère le slug depuis le nom). Ça crée `client.json` + régénère le registre.
+3. Propose ensuite de **connecter ses réseaux** (flux ci-dessous), un par un, en ne demandant que l'inconnu.
+Le **wizard visuel** équivalent est `nouveau-client.html` (formulaire → fiche + checklist).
+
 ## Procédure
 1. **Comprends la demande.** Identifie la plateforme et l'opération :
    - statut/liste → `python3 scripts/awema.py list`

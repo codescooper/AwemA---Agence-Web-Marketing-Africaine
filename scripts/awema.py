@@ -44,6 +44,81 @@ def manifest():
     return json.load(open(MANIFEST, encoding="utf-8")).get("platforms", {})
 
 
+# --------- Création / gestion de clients (onboarding assisté) ---------
+import re
+import unicodedata
+
+CLIENTS_DIR = os.path.join(RACINE, "departements", "marketing", "clients")
+CLIENT_CHAMPS = ["nom", "secteur", "lieu", "statut", "fb_page_id", "ig_user_id",
+                 "yt_handle", "yt_channel_id", "slogan"]
+CLIENT_LIENS = ["facebook", "instagram", "tiktok", "linkedin", "whatsapp", "youtube"]
+
+
+def _slugify(s):
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower() or "client"
+
+
+def _initiales(nom):
+    parts = [p for p in re.split(r"\s+", nom or "") if p]
+    if not parts:
+        return "AW"
+    return ((parts[0][:1] + parts[1][:1]) if len(parts) >= 2 else parts[0][:2]).upper()
+
+
+def cmd_client_new(slug, pairs):
+    vals = {}
+    for kv in pairs:
+        if "=" in kv:
+            k, v = kv.split("=", 1)
+            vals[k] = v
+    nom = vals.get("nom", slug)
+    if not slug or slug in ("-", "auto"):
+        slug = _slugify(nom)
+    donnees = os.path.join(CLIENTS_DIR, slug, "_donnees")
+    os.makedirs(donnees, exist_ok=True)
+    cj = os.path.join(donnees, "client.json")
+    if os.path.exists(cj):
+        d = json.load(open(cj, encoding="utf-8"))
+    else:
+        d = {"id": slug, "nom": nom, "secteur": "", "lieu": "", "departement": "marketing",
+             "statut": "actif", "initiales": _initiales(nom),
+             "reseaux": {k: "" for k in CLIENT_LIENS},
+             "chemins": {"campagne": "_donnees/campagne.json", "reseaux": "_donnees/reseaux.json",
+                         "revue": f"../../../../outils/revue-visuels/index.html?client={slug}"}}
+    for k in CLIENT_CHAMPS:
+        if vals.get(k):
+            d[k] = vals[k]
+    d.setdefault("reseaux", {})
+    for k in CLIENT_LIENS:
+        if vals.get(k):
+            d["reseaux"][k] = vals[k]
+    if vals.get("nom"):
+        d["initiales"] = _initiales(vals["nom"])
+    json.dump(d, open(cj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    print(f"✅ Client « {d['nom']} » (slug: {slug}) créé/mis à jour → {os.path.relpath(cj, RACINE)}")
+    subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
+    print("\nProchaines étapes : connecte ses réseaux —")
+    print("  • Facebook/Instagram : awema connect meta   (ou docs/05)")
+    print("  • TikTok  : awema connect tiktok            (guide connect-tiktok.html)")
+    print("  • YouTube : ajoute yt_handle + awema connect youtube  (guide connect-youtube.html)")
+
+
+def cmd_client_list():
+    motif = os.path.join(CLIENTS_DIR, "*", "_donnees", "client.json")
+    import glob as _g
+    rows = []
+    for cj in sorted(_g.glob(motif)):
+        try:
+            d = json.load(open(cj, encoding="utf-8"))
+        except Exception:
+            continue
+        rows.append((d.get("id", "?"), d.get("nom", "?"), d.get("secteur", ""), d.get("lieu", "")))
+    print(f"{len(rows)} client(s) :")
+    for i, (sid, nom, sec, lieu) in enumerate(rows, 1):
+        print(f"  {i:2}. {sid:28} {nom}" + (f" — {sec}" if sec else "") + (f" · {lieu}" if lieu else ""))
+
+
 def load():
     try:
         return json.load(open(STORE, encoding="utf-8"))
@@ -251,6 +326,10 @@ def main():
             cmd_history(a[1], "--reveal" in a)
         elif c == "connect" and len(a) >= 2:
             cmd_connect(a[1])
+        elif c == "client" and len(a) >= 3 and a[1] == "new":
+            cmd_client_new(a[2], a[3:])
+        elif c == "client" and len(a) >= 2 and a[1] == "list":
+            cmd_client_list()
         else:
             print(__doc__)
             sys.exit(1)
