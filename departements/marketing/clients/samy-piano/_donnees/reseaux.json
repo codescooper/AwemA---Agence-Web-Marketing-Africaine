@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T05:19:55+00:00",
+  "maj": "2026-06-25T05:15:20+00:00",
   "global": {
     "audience": 288,
     "posts": 1,
@@ -48,6 +48,15 @@
       "partages": null,
       "portee": null,
       "vues": null
+    },
+    "youtube": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
     }
   },
   "top_fans": [],
@@ -77,6 +86,10 @@
     {
       "date": "2026-06-23",
       "valeur": 288
+    },
+    {
+      "date": "2026-06-25",
+      "valeur": 288
     }
   ],
   "client": "samy-piano",
@@ -91,7 +104,7 @@
   },
   "cadence": {
     "dernier_post": "2021-06-03T18:06:21+0000",
-    "jours_depuis": 1845,
+    "jours_depuis": 1847,
     "posts_30j": 0,
     "posts_par_semaine": 0.0
   },

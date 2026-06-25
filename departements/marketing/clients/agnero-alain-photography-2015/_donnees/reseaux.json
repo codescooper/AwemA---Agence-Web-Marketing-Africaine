@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T05:20:20+00:00",
+  "maj": "2026-06-25T05:15:42+00:00",
   "global": {
     "audience": 3096,
     "posts": 30,
@@ -9,7 +9,7 @@
     "commentaires": 10,
     "partages": 13,
     "portee": null,
-    "vues": 3,
+    "vues": 0,
     "engagement_taux": 0.3
   },
   "par_reseau": {
@@ -20,7 +20,7 @@
       "commentaires": 10,
       "partages": 13,
       "portee": null,
-      "vues": 3
+      "vues": 0
     },
     "instagram": {
       "abonnes": null,
@@ -41,6 +41,15 @@
       "vues": null
     },
     "linkedin": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
+    },
+    "youtube": {
       "abonnes": null,
       "posts": null,
       "likes": null,
@@ -96,7 +105,7 @@
       "titre": "Les fantômes de la plage de bassam , \nAu téléphone portable ( infinix note 4 pro",
       "plateforme": "Facebook",
       "date": "2018-12-16T17:01:06+0000",
-      "lien": "https://www.facebook.com/100046872296568/posts/2140721532645641/",
+      "lien": "https://www.facebook.com/1688430806062646/posts/2140721532645641",
       "likes": 18,
       "commentaires": 5,
       "partages": 1,
@@ -217,6 +226,10 @@
     {
       "date": "2026-06-23",
       "valeur": 3096
+    },
+    {
+      "date": "2026-06-25",
+      "valeur": 3096
     }
   ],
   "client": "agnero-alain-photography-2015",
@@ -231,7 +244,7 @@
   },
   "cadence": {
     "dernier_post": "2024-08-11T01:44:42+0000",
-    "jours_depuis": 681,
+    "jours_depuis": 683,
     "posts_30j": 0,
     "posts_par_semaine": 0.0
   },

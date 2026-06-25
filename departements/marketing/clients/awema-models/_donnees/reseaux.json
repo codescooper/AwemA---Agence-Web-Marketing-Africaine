@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T05:18:47+00:00",
+  "maj": "2026-06-25T05:14:36+00:00",
   "global": {
     "audience": 3823,
     "posts": 21,
@@ -9,7 +9,7 @@
     "commentaires": 6,
     "partages": 5,
     "portee": null,
-    "vues": 12,
+    "vues": 3,
     "engagement_taux": 0.1
   },
   "par_reseau": {
@@ -20,7 +20,7 @@
       "commentaires": 6,
       "partages": 5,
       "portee": null,
-      "vues": 12
+      "vues": 3
     },
     "instagram": {
       "abonnes": null,
@@ -48,6 +48,15 @@
       "partages": null,
       "portee": null,
       "vues": null
+    },
+    "youtube": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
     }
   },
   "top_fans": [],
@@ -56,7 +65,7 @@
       "titre": "🌟 REJOINS LA RUCHE DES TALENTS ! 🌟\n\nTu rêves de devenir mannequin, acteur, hôtes",
       "plateforme": "Facebook",
       "date": "2025-09-17T13:18:35+0000",
-      "lien": "https://www.facebook.com/100077023808761/posts/793595466551240/",
+      "lien": "https://www.facebook.com/1017032927540825/posts/793595466551240",
       "likes": 13,
       "commentaires": 5,
       "partages": 0,
@@ -96,7 +105,7 @@
       "titre": "🌟 RECRUTEMENT DE MODÈLES – 100% GRATUIT ! 🌟\n\nTu rêves de rejoindre le monde du m",
       "plateforme": "Facebook",
       "date": "2025-09-29T19:57:19+0000",
-      "lien": "https://www.facebook.com/100077023808761/posts/803591562218297/",
+      "lien": "https://www.facebook.com/1017032927540825/posts/803591562218297",
       "likes": 1,
       "commentaires": 0,
       "partages": 4,
@@ -116,7 +125,7 @@
       "titre": "AWEMA Models | La cellule de la ruche AWEMA dédiée aux talents.\nMannequins, hôte",
       "plateforme": "Facebook",
       "date": "2025-09-16T14:45:45+0000",
-      "lien": "https://www.facebook.com/100077023808761/posts/792839623293491/?substory_index=635407732971564",
+      "lien": "https://www.facebook.com/1017032927540825/posts/792839623293491?substory_index=635407732971564",
       "likes": 1,
       "commentaires": 1,
       "partages": 0,
@@ -136,7 +145,7 @@
       "titre": "juste wahou <3 !",
       "plateforme": "Facebook",
       "date": "2026-02-10T17:50:56+0000",
-      "lien": "https://www.facebook.com/100077023808761/posts/908085028435616/",
+      "lien": "https://www.facebook.com/1017032927540825/posts/908085028435616",
       "likes": 1,
       "commentaires": 0,
       "partages": 0,
@@ -156,7 +165,7 @@
       "titre": "✨ AWEMA Models ouvre ses portes !\nTu rêves de défiler, de poser devant l’objecti",
       "plateforme": "Facebook",
       "date": "2025-09-27T03:37:21+0000",
-      "lien": "https://www.facebook.com/100077023808761/posts/801336462443807/",
+      "lien": "https://www.facebook.com/1017032927540825/posts/801336462443807",
       "likes": 1,
       "commentaires": 0,
       "partages": 0,
@@ -176,7 +185,7 @@
       "titre": "#HPN #AWEMA",
       "plateforme": "Facebook",
       "date": "2019-01-21T09:27:20+0000",
-      "lien": "https://www.facebook.com/awemamodels/videos/233552230903997/",
+      "lien": "https://www.facebook.com/1017032927540825/videos/233552230903997",
       "likes": 1,
       "commentaires": 0,
       "partages": 0,
@@ -196,7 +205,7 @@
       "titre": "",
       "plateforme": "Facebook",
       "date": "2025-09-16T15:03:25+0000",
-      "lien": "https://www.facebook.com/100077023808761/posts/710649142026695/?substory_index=710649142026695",
+      "lien": "https://www.facebook.com/1017032927540825/posts/710649142026695?substory_index=710649142026695",
       "likes": 0,
       "commentaires": 0,
       "partages": 0,
@@ -217,6 +226,10 @@
     {
       "date": "2026-06-23",
       "valeur": 3823
+    },
+    {
+      "date": "2026-06-25",
+      "valeur": 3823
     }
   ],
   "client": "awema-models",
@@ -231,7 +244,7 @@
   },
   "cadence": {
     "dernier_post": "2026-02-10T17:50:56+0000",
-    "jours_depuis": 132,
+    "jours_depuis": 134,
     "posts_30j": 0,
     "posts_par_semaine": 0.0
   },

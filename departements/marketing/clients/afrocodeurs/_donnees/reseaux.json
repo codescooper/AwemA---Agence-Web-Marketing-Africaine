@@ -2,7 +2,7 @@
   "client": "afrocodeurs",
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T05:17:46+00:00",
+  "maj": "2026-06-25T05:14:04+00:00",
   "global": {
     "audience": 0,
     "posts": null,
@@ -49,6 +49,15 @@
       "partages": null,
       "portee": null,
       "vues": null
+    },
+    "youtube": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
     }
   },
   "top_fans": [],
@@ -56,6 +65,10 @@
   "evolution_audience": [
     {
       "date": "2026-06-23",
+      "valeur": 0
+    },
+    {
+      "date": "2026-06-25",
       "valeur": 0
     }
   ],

@@ -1,20 +1,20 @@
 {
   "connecte": true,
-  "source": "tiktok-display-api",
-  "maj": "2026-06-25T04:17:19+00:00",
+  "source": "youtube-data-api",
+  "maj": "2026-06-25T05:15:53+00:00",
   "global": {
-    "audience": 7277,
-    "posts": 188,
-    "likes": 2992,
-    "commentaires": 427,
+    "audience": 7311,
+    "posts": 201,
+    "likes": 3113,
+    "commentaires": 435,
     "partages": 159,
     "portee": null,
-    "vues": 45749,
+    "vues": 49800,
     "engagement_taux": 2.3
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 285,
+      "abonnes": 287,
       "posts": 30,
       "likes": 156,
       "commentaires": 19,
@@ -48,6 +48,15 @@
       "partages": null,
       "portee": null,
       "vues": null
+    },
+    "youtube": {
+      "abonnes": 32,
+      "posts": 13,
+      "likes": 121,
+      "commentaires": 8,
+      "partages": null,
+      "portee": null,
+      "vues": 4051
     }
   },
   "top_fans": [],
@@ -148,7 +157,7 @@
     },
     {
       "date": "2026-06-25",
-      "valeur": 7277
+      "valeur": 7311
     }
   ],
   "client": "code-scooper",
@@ -163,7 +172,7 @@
   },
   "cadence": {
     "dernier_post": "2020-03-29T01:06:14+0000",
-    "jours_depuis": 2277,
+    "jours_depuis": 2279,
     "posts_30j": 0,
     "posts_par_semaine": 0.0
   },
@@ -301,5 +310,102 @@
       }
     ],
     "maj": "2026-06-25T04:16:02+00:00"
+  },
+  "youtube": {
+    "abonnes": 32,
+    "video_count": 13,
+    "vues_totales": 4051,
+    "titre": "Code Scooper",
+    "top_videos": [
+      {
+        "titre": "Masterclass pour maitriser l'IA et faire tes creations",
+        "plateforme": "YouTube",
+        "date": "2026-02-19T22:13:45Z",
+        "lien": "https://youtu.be/IVYKr-R1j4c",
+        "likes": 35,
+        "commentaires": 0,
+        "partages": 0,
+        "vues": 1073,
+        "type": "vidéo"
+      },
+      {
+        "titre": "21 février 2026",
+        "plateforme": "YouTube",
+        "date": "2026-02-21T04:21:24Z",
+        "lien": "https://youtu.be/LDptbqjOEuI",
+        "likes": 14,
+        "commentaires": 0,
+        "partages": 0,
+        "vues": 1000,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Publicité Attieké de dabou",
+        "plateforme": "YouTube",
+        "date": "2026-03-11T13:07:46Z",
+        "lien": "https://youtu.be/_tfdAMGXR5o",
+        "likes": 39,
+        "commentaires": 0,
+        "partages": 0,
+        "vues": 934,
+        "type": "vidéo"
+      },
+      {
+        "titre": "[TUTORIEL MOBILE] TRELLO - COMMENT ORGANISER VOS PROJETS EN EQUIPE",
+        "plateforme": "YouTube",
+        "date": "2017-04-22T21:34:29Z",
+        "lien": "https://youtu.be/Gz2RQFRKuM8",
+        "likes": 15,
+        "commentaires": 1,
+        "partages": 0,
+        "vues": 459,
+        "type": "vidéo"
+      },
+      {
+        "titre": "[TUTORIEL MOBILE] FOREST - COMMENT RESTER CONCENTRE SUR LE TRAVAIL",
+        "plateforme": "YouTube",
+        "date": "2017-10-07T16:29:38Z",
+        "lien": "https://youtu.be/zqrx6nKkoEE",
+        "likes": 12,
+        "commentaires": 5,
+        "partages": 0,
+        "vues": 203,
+        "type": "vidéo"
+      },
+      {
+        "titre": "[TUTORIEL] Travailler avec son équipe même a distance et organiser les projets a",
+        "plateforme": "YouTube",
+        "date": "2020-01-09T12:34:57Z",
+        "lien": "https://youtu.be/z4eqVRxumfg",
+        "likes": 4,
+        "commentaires": 2,
+        "partages": 0,
+        "vues": 167,
+        "type": "vidéo"
+      },
+      {
+        "titre": "21 février 2026",
+        "plateforme": "YouTube",
+        "date": "2026-02-21T04:22:03Z",
+        "lien": "https://youtu.be/_8UilfxcTfU",
+        "likes": 0,
+        "commentaires": 0,
+        "partages": 0,
+        "vues": 90,
+        "type": "vidéo"
+      },
+      {
+        "titre": "21 février 2026",
+        "plateforme": "YouTube",
+        "date": "2026-02-21T04:23:46Z",
+        "lien": "https://youtu.be/VSptwNvZ0Qs",
+        "likes": 0,
+        "commentaires": 0,
+        "partages": 0,
+        "vues": 67,
+        "type": "vidéo"
+      }
+    ],
+    "maj": "2026-06-25T05:15:53+00:00"
   }
 }

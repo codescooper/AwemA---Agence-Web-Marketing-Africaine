@@ -1,26 +1,26 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-23T05:20:05+00:00",
+  "maj": "2026-06-25T05:15:26+00:00",
   "global": {
     "audience": 588,
     "posts": 29,
-    "likes": 42,
+    "likes": 43,
     "commentaires": 4,
     "partages": 8,
     "portee": null,
-    "vues": 7,
+    "vues": 8,
     "engagement_taux": 0.3
   },
   "par_reseau": {
     "facebook": {
       "abonnes": 588,
       "posts": 29,
-      "likes": 42,
+      "likes": 43,
       "commentaires": 4,
       "partages": 8,
       "portee": null,
-      "vues": 7
+      "vues": 8
     },
     "instagram": {
       "abonnes": null,
@@ -48,6 +48,15 @@
       "partages": null,
       "portee": null,
       "vues": null
+    },
+    "youtube": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
     }
   },
   "top_fans": [
@@ -62,13 +71,13 @@
       "plateforme": "Facebook",
       "date": "2026-02-17T00:59:14+0000",
       "lien": "https://www.facebook.com/reel/1916141202326831/",
-      "likes": 13,
+      "likes": 14,
       "commentaires": 1,
       "partages": 0,
       "type": "vidéo",
       "reactions": {
         "like": 13,
-        "love": 0,
+        "love": 1,
         "care": 0,
         "haha": 0,
         "wow": 0,
@@ -81,7 +90,7 @@
       "titre": "🚀 MASTERCLASS 100 % PRATIQUE – INTELLIGENCE ARTIFICIELLE 🤖✨\n\nTu veux créer des c",
       "plateforme": "Facebook",
       "date": "2026-02-16T21:49:51+0000",
-      "lien": "https://www.facebook.com/100063939399977/posts/1401245452016755/",
+      "lien": "https://www.facebook.com/1514646877343278/posts/1401245452016755",
       "likes": 12,
       "commentaires": 1,
       "partages": 0,
@@ -101,7 +110,7 @@
       "titre": "Merci surtout à vous pour votre attention , à bientôt pour un nouveau repas de c",
       "plateforme": "Facebook",
       "date": "2026-02-25T03:27:34+0000",
-      "lien": "https://www.facebook.com/100063939399977/posts/1408623917945575/",
+      "lien": "https://www.facebook.com/1514646877343278/posts/1408623917945575",
       "likes": 8,
       "commentaires": 2,
       "partages": 2,
@@ -141,7 +150,7 @@
       "titre": "🐝 LA RUCHE RECRUTE – POUR UN PARTENAIRE\n📌 Poste : Chargé(e) des Systèmes d’Infor",
       "plateforme": "Facebook",
       "date": "2026-02-26T13:02:37+0000",
-      "lien": "https://www.facebook.com/100063939399977/posts/1410027124471921/",
+      "lien": "https://www.facebook.com/1514646877343278/posts/1410027124471921",
       "likes": 0,
       "commentaires": 0,
       "partages": 2,
@@ -181,7 +190,7 @@
       "titre": "🚀 ASILIDERM PARIS est née !\nNous sommes heureux de vous annoncer le lancement im",
       "plateforme": "Facebook",
       "date": "2025-11-17T19:31:34+0000",
-      "lien": "https://www.facebook.com/100063939399977/posts/1325746949566606/",
+      "lien": "https://www.facebook.com/1514646877343278/posts/1325746949566606",
       "likes": 2,
       "commentaires": 0,
       "partages": 0,
@@ -222,12 +231,16 @@
     {
       "date": "2026-06-23",
       "valeur": 588
+    },
+    {
+      "date": "2026-06-25",
+      "valeur": 588
     }
   ],
   "client": "awema",
   "reactions": {
     "like": 37,
-    "love": 5,
+    "love": 6,
     "care": 0,
     "haha": 0,
     "wow": 0,
@@ -236,7 +249,7 @@
   },
   "cadence": {
     "dernier_post": "2026-03-24T19:33:18+0000",
-    "jours_depuis": 90,
+    "jours_depuis": 92,
     "posts_30j": 0,
     "posts_par_semaine": 0.0
   },
@@ -245,7 +258,7 @@
     "heure": "00h",
     "par_jour": {
       "Lundi": 5.0,
-      "Mardi": 7.0,
+      "Mardi": 7.5,
       "Mercredi": 1.4,
       "Jeudi": 0.8,
       "Vendredi": 0.0,
@@ -256,7 +269,7 @@
   "types_contenu": {
     "vidéo": {
       "n": 9,
-      "engagement_moyen": 2.2
+      "engagement_moyen": 2.3
     },
     "lien": {
       "n": 5,
