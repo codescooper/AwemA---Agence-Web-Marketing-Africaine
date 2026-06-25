@@ -1,0 +1,21 @@
+{
+  "id": "<slug-du-client>",
+  "nom": "De Alman",
+  "secteur": "",
+  "lieu": "",
+  "departement": "marketing",
+  "statut": "actif",
+  "initiales": "DA",
+  "reseaux": {
+    "facebook": "",
+    "instagram": "",
+    "tiktok": "https://www.tiktok.com/",
+    "linkedin": "",
+    "whatsapp": ""
+  },
+  "chemins": {
+    "campagne": "_donnees/campagne.json",
+    "reseaux": "_donnees/reseaux.json",
+    "revue": "../../../../outils/revue-visuels/index.html?client=<slug-du-client>"
+  }
+}

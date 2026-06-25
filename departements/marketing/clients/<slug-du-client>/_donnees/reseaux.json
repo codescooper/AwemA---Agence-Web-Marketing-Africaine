@@ -1,0 +1,248 @@
+{
+  "par_reseau": {
+    "facebook": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
+    },
+    "instagram": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
+    },
+    "tiktok": {
+      "abonnes": 703,
+      "posts": 67,
+      "likes": 1689,
+      "commentaires": 29,
+      "partages": 11,
+      "portee": null,
+      "vues": 12806
+    },
+    "linkedin": {
+      "abonnes": null,
+      "posts": null,
+      "likes": null,
+      "commentaires": null,
+      "partages": null,
+      "portee": null,
+      "vues": null
+    }
+  },
+  "top_posts": [
+    {
+      "titre": "",
+      "plateforme": "TikTok",
+      "date": "2025-01-18T06:00:07+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7461131267535555846?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 1428,
+      "commentaires": 10,
+      "partages": 0,
+      "vues": 7138,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Challenge pour kes passionné de cinema montre nous de quoi tu es capable et fais",
+      "plateforme": "TikTok",
+      "date": "2026-04-04T13:04:24+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7624889182221077780?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 42,
+      "commentaires": 0,
+      "partages": 5,
+      "vues": 523,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Merci pour ce debut d’annee merveilleux seigneur je garde les yeux rivés sur toi",
+      "plateforme": "TikTok",
+      "date": "2026-04-04T14:17:46+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7624908094190980373?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 31,
+      "commentaires": 8,
+      "partages": 0,
+      "vues": 317,
+      "type": "vidéo"
+    },
+    {
+      "titre": "#cejour-là",
+      "plateforme": "TikTok",
+      "date": "2024-12-29T11:39:53+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7453797127924337926?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 29,
+      "commentaires": 3,
+      "partages": 1,
+      "vues": 645,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Tu connais l’artiste ? ",
+      "plateforme": "TikTok",
+      "date": "2026-04-21T19:04:16+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7631290344637795605?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 29,
+      "commentaires": 1,
+      "partages": 0,
+      "vues": 322,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Animation after effect intro emission #3431 #intro #aftereffect #africa #motiong",
+      "plateforme": "TikTok",
+      "date": "2026-06-23T06:09:13+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7654468996879666453?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 27,
+      "commentaires": 1,
+      "partages": 0,
+      "vues": 472,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Tout me monde dit cest son rêve de faire le cinéma, ce jour la on verra qui va f",
+      "plateforme": "TikTok",
+      "date": "2024-04-07T14:47:07+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7355136749003148549?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 20,
+      "commentaires": 1,
+      "partages": 1,
+      "vues": 384,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Je donne vie a un de mes vieux texte grace a l’ia. Laisse moi un message si tu v",
+      "plateforme": "TikTok",
+      "date": "2024-11-27T03:03:24+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7441789311336451383?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 13,
+      "commentaires": 1,
+      "partages": 0,
+      "vues": 256,
+      "type": "vidéo"
+    }
+  ],
+  "tiktok": {
+    "abonnes": 703,
+    "video_count": 67,
+    "likes_total": 3821,
+    "vues_recentes": 12806,
+    "display_name": "De Alman",
+    "top_videos": [
+      {
+        "titre": "",
+        "plateforme": "TikTok",
+        "date": "2025-01-18T06:00:07+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7461131267535555846?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 1428,
+        "commentaires": 10,
+        "partages": 0,
+        "vues": 7138,
+        "type": "vidéo"
+      },
+      {
+        "titre": "#adb #bad #adb60th ",
+        "plateforme": "TikTok",
+        "date": "2024-09-16T23:20:45+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7415384883620547845?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 11,
+        "commentaires": 1,
+        "partages": 0,
+        "vues": 650,
+        "type": "vidéo"
+      },
+      {
+        "titre": "#cejour-là",
+        "plateforme": "TikTok",
+        "date": "2024-12-29T11:39:53+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7453797127924337926?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 29,
+        "commentaires": 3,
+        "partages": 1,
+        "vues": 645,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Challenge pour kes passionné de cinema montre nous de quoi tu es capable et fais",
+        "plateforme": "TikTok",
+        "date": "2026-04-04T13:04:24+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7624889182221077780?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 42,
+        "commentaires": 0,
+        "partages": 5,
+        "vues": 523,
+        "type": "vidéo"
+      },
+      {
+        "titre": "#adinkra #coeur #logo #logotype #graphicdesign #designer #vote #critique",
+        "plateforme": "TikTok",
+        "date": "2024-12-02T22:39:30+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7443947811772648760?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 6,
+        "commentaires": 1,
+        "partages": 0,
+        "vues": 523,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Animation after effect intro emission #3431 #intro #aftereffect #africa #motiong",
+        "plateforme": "TikTok",
+        "date": "2026-06-23T06:09:13+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7654468996879666453?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 27,
+        "commentaires": 1,
+        "partages": 0,
+        "vues": 472,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Tout me monde dit cest son rêve de faire le cinéma, ce jour la on verra qui va f",
+        "plateforme": "TikTok",
+        "date": "2024-04-07T14:47:07+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7355136749003148549?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 20,
+        "commentaires": 1,
+        "partages": 1,
+        "vues": 384,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Ajm BTP, entreprise dynamique et en pleine expansion dans le secteur du bâtiment",
+        "plateforme": "TikTok",
+        "date": "2025-01-04T13:48:40+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7456056845032033542?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 3,
+        "commentaires": 0,
+        "partages": 2,
+        "vues": 347,
+        "type": "vidéo"
+      }
+    ],
+    "maj": "2026-06-25T04:04:29+00:00"
+  },
+  "source": "tiktok-display-api",
+  "client": "<slug-du-client>",
+  "global": {
+    "audience": 703,
+    "posts": 67,
+    "likes": 1689,
+    "commentaires": 29,
+    "partages": 11,
+    "portee": null,
+    "vues": 12806,
+    "engagement_taux": null
+  },
+  "connecte": true,
+  "maj": "2026-06-25T04:04:29+00:00",
+  "evolution_audience": [
+    {
+      "date": "2026-06-25",
+      "valeur": 703
+    }
+  ]
+}
