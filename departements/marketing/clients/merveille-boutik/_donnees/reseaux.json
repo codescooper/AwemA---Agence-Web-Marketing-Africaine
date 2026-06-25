@@ -1,13 +1,13 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T05:14:21+00:00",
+  "maj": "2026-06-25T06:04:06+00:00",
   "global": {
     "audience": 24654,
     "posts": 30,
     "likes": 1556,
     "commentaires": 39,
-    "partages": 545,
+    "partages": 541,
     "portee": null,
     "vues": 6150,
     "engagement_taux": 0.3
@@ -18,7 +18,7 @@
       "posts": 30,
       "likes": 1556,
       "commentaires": 39,
-      "partages": 545,
+      "partages": 541,
       "portee": null,
       "vues": 6150
     },
@@ -252,24 +252,24 @@
     "jour": "Mercredi",
     "heure": "11h",
     "par_jour": {
-      "Lundi": 27.5,
+      "Lundi": 27.2,
       "Mardi": 94.0,
       "Mercredi": 316.7,
-      "Jeudi": 38.8,
+      "Jeudi": 38.6,
       "Vendredi": 52.3,
       "Samedi": 8.3,
-      "Dimanche": 15.0
+      "Dimanche": 14.5
     },
     "recommandation": "Mercredi vers 11h"
   },
   "types_contenu": {
     "album": {
       "n": 25,
-      "engagement_moyen": 85.1
+      "engagement_moyen": 85.0
     },
     "photo": {
       "n": 4,
-      "engagement_moyen": 2.2
+      "engagement_moyen": 1.8
     },
     "vidéo": {
       "n": 1,

@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T05:14:48+00:00",
+  "maj": "2026-06-25T06:04:25+00:00",
   "global": {
     "audience": 102,
     "posts": 15,
@@ -244,7 +244,7 @@
   },
   "cadence": {
     "dernier_post": "2019-03-14T05:14:54+0000",
-    "jours_depuis": 2659,
+    "jours_depuis": 2660,
     "posts_30j": 0,
     "posts_par_semaine": 0.0
   },
