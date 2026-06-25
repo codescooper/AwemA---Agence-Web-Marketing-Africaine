@@ -756,6 +756,16 @@ def via_tiktok_auth(code_ou_url, redirect_uri=None):
     print(f"   (open_id={d.get('open_id')}, expires_in={d.get('expires_in')}s)")
 
 
+def _alias_slug(reseau, slug):
+    """Redirige un slug de compte vers la fiche client canonique (config/aliases.json)."""
+    try:
+        with open(os.path.join(RACINE, "config", "aliases.json"), encoding="utf-8") as f:
+            amap = json.load(f)
+        return (amap.get(reseau) or {}).get(slug, slug)
+    except Exception:
+        return slug
+
+
 def via_tiktok_all():
     """Pour chaque compte TikTok autorisé (TIKTOK_TOKENS = {slug: refresh_token}), rafraîchit
     le token, récupère profil + vidéos, et fusionne dans reseaux.json. Écrit les refresh
@@ -787,11 +797,12 @@ def via_tiktok_all():
         except Exception as e:
             print(f"  ⚠️ {slug} : récupération données échouée ({e}).")
             continue
-        client_dir = _client_par_slug(slug)
+        canon = _alias_slug("tiktok", slug)              # rattache à la fiche canonique si alias
+        client_dir = _client_par_slug(canon)
         if not client_dir:
-            client_dir = os.path.join(RACINE, "departements", "marketing", "clients", slug)
+            client_dir = os.path.join(RACINE, "departements", "marketing", "clients", canon)
             os.makedirs(os.path.join(client_dir, "_donnees"), exist_ok=True)
-        _assurer_client_tiktok(client_dir, slug, user)   # client.json → visible au dashboard
+        _assurer_client_tiktok(client_dir, canon, user)  # client.json → visible au dashboard
         _ecrire(client_dir, _tiktok_data(user, videos))
         n += 1
         print(f"  ✓ TikTok {slug} ({user.get('follower_count', '—')} abonnés, "
