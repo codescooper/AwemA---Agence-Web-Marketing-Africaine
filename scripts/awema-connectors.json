@@ -47,18 +47,21 @@
     },
     "linkedin": {
       "label": "LinkedIn",
-      "statut": "guide",
+      "statut": "operationnel",
       "keys": [
-        {"name": "LINKEDIN_CLIENT_ID", "secret": false, "github": "secret",
-         "prompt": "Client ID de l'app LinkedIn (developer.linkedin.com → ton app → Auth)"},
-        {"name": "LINKEDIN_CLIENT_SECRET", "secret": true, "github": "secret",
-         "prompt": "Client secret de l'app LinkedIn (onglet Auth)"},
-        {"name": "LINKEDIN_TOKENS", "secret": true, "github": "variable", "managed": true, "optional": true,
-         "prompt": "Access tokens OAuth par Page LinkedIn — généré par l'onboarding (ne pas saisir à la main)"}
+        {"name": "LINKEDIN_TOKEN", "secret": true, "github": "secret",
+         "prompt": "Access token OAuth LinkedIn (scopes r_organization_social / rw_organization_admin) — sert à lire les stats de Page"},
+        {"name": "LINKEDIN_CLIENT_ID", "secret": false, "github": "secret", "optional": true,
+         "prompt": "Client ID de l'app LinkedIn (developer.linkedin.com → ton app → Auth) — pour (ré)autoriser"},
+        {"name": "LINKEDIN_CLIENT_SECRET", "secret": true, "github": "secret", "optional": true,
+         "prompt": "Client secret de l'app LinkedIn (onglet Auth) — pour (ré)autoriser"}
       ],
-      "commands": {"sync_workflow": "sync-reseaux.yml"},
-      "rotate": "Régénère le token OAuth (refresh) une fois les produits LinkedIn validés, puis : awema rotate linkedin LINKEDIN_CLIENT_SECRET=<nouveau>. Mets à jour le Secret GitHub.",
-      "note": "Guide pas à pas : connect-linkedin.html. Nécessite une app LinkedIn + Page entreprise (admin) + produits « Sign In OIDC » et « Community Management API » (scopes r_organization_social / rw_organization_admin), souvent App Review. En attendant l'accès live, on enregistre l'URL de Page + abonnés saisis.",
+      "commands": {
+        "connect": "python3 scripts/connect-reseaux.py --linkedin-all && python3 outils/_data/build.py",
+        "sync_workflow": "sync-reseaux.yml"
+      },
+      "rotate": "Les access tokens LinkedIn expirent (~60 j). Régénère-en un (OAuth) puis : awema rotate linkedin LINKEDIN_TOKEN=<nouveau>. Mets aussi à jour le Secret GitHub LINKEDIN_TOKEN.",
+      "note": "Guide pas à pas : connect-linkedin.html. Connecteur --linkedin-all : résout l'org par vanity name (/company/<slug>), lit abonnés + impressions/engagement (Community Management API). Pré-requis : Page entreprise (admin), app vérifiée, produit Community Management API (Development Tier = immédiat pour ses propres Pages).",
       "doc": "docs/10-connecter-linkedin.md"
     }
   }
