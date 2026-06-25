@@ -52,7 +52,8 @@ jobs:
 
       - name: Synchroniser les Pages LinkedIn (Community Management API)
         env:
-          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
+          # Tolérant : Secret OU Variable, et nom alternatif LINKEDIN_ACCESS_TOKEN
+          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN || vars.LINKEDIN_TOKEN || secrets.LINKEDIN_ACCESS_TOKEN || vars.LINKEDIN_ACCESS_TOKEN }}
         run: |
           if [ -z "$LINKEDIN_TOKEN" ]; then
             echo "ℹ️ Pas de LINKEDIN_TOKEN → étape LinkedIn ignorée."; exit 0
