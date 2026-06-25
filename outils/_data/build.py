@@ -56,6 +56,15 @@ def main():
         f.write("window.AWEMA_REGISTRY = ")
         json.dump(registre, f, ensure_ascii=False)
         f.write(";\n")
+
+    # Config de l'agence (personnalisation auto-hébergée) → config.js pour tous les outils
+    cfg = lire(os.path.join(RACINE, "config", "agence.json")) or {}
+    cfg.pop("_doc", None)
+    with open(os.path.join(ICI, "config.js"), "w", encoding="utf-8") as f:
+        f.write("// Généré par build.py depuis config/agence.json — édite le JSON, pas ce fichier.\n")
+        f.write("window.AWEMA_CONFIG = ")
+        json.dump(cfg, f, ensure_ascii=False)
+        f.write(";\n")
     noms = ", ".join(c.get("nom", c.get("id", "?")) for c in clients) or "(aucun)"
     print(f"✅ agence.js — {len(clients)} client(s) : {noms}")
     for c in clients:

@@ -45,9 +45,9 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="logo">A</div>
-    <h1>AWEMA <span class="g">·</span> Centre de pilotage</h1>
-    <p class="tag">Le système d'exploitation de l'<b>Agence Web Marketing Africaine</b> — stratégie,
+    <div class="logo" data-ag="initiales">A</div>
+    <h1><span data-ag="nom">AWEMA</span> <span class="g">·</span> <span data-ag="tagline">Centre de pilotage</span></h1>
+    <p class="tag">Le système d'exploitation de l'<b data-ag="nom_complet">Agence Web Marketing Africaine</b> — stratégie,
       production et présence digitale, pilotables par des humains <i>et</i> des agents IA.</p>
     <div class="chips">
       <span class="chip">🟢 <b>Marketing</b> actif</span>
@@ -120,6 +120,15 @@
       <div class="go">Suivre le guide →</div>
     </a>
 
+    <!-- Personnaliser mon agence (auto-hébergement) -->
+    <a class="card" href="setup.html">
+      <div class="ic" style="background:rgba(124,92,255,.2)">🏷️</div>
+      <h2>Personnaliser mon agence</h2>
+      <p>Auto-hébergement : forke le projet et adapte le nom, le logo, la charte et les liens à
+        <b>ta</b> marque. Un formulaire génère ta config — toute l'app suit.</p>
+      <div class="go">Configurer &amp; héberger →</div>
+    </a>
+
     <!-- Documentation -->
     <a class="card" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/tree/main/docs" target="_blank" rel="noopener">
       <div class="ic" style="background:rgba(124,92,255,.2)">📚</div>
@@ -146,9 +155,11 @@
   </main>
 
   <footer>
-    © 2026 <b>AWEMA</b> — Agence Web Marketing Africaine ·
+    © 2026 <b data-ag="nom">AWEMA</b> — <span data-ag="nom_complet">Agence Web Marketing Africaine</span> ·
     <a href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine" target="_blank" rel="noopener">Code source ↗</a>
   </footer>
 </div>
+<script src="outils/_data/config.js" onerror=""></script>
+<script src="outils/_data/apply.js"></script>
 </body>
 </html>

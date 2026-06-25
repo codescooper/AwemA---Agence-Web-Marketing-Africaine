@@ -124,3 +124,7 @@ présence en ligne ET de l'activité de marché d'une entité** :
 - **2026-06-23** — **Opérateur `/awema`** (langage naturel, mémoire d'identifiants + historique).
 - **2026-06-25** — TikTok finalisé : **GH_PAT** (rotation auto) ; **code-scooper** FB+TikTok (7 277) ;
   **de-alman** (703) ; client.json auto pour clients TikTok. **Nouvelle vision : présence + marché, multi-plateformes.**
+- **2026-06-25** — **Auto-hébergement & personnalisation** : `config/agence.json` (point unique) →
+  `build.py` génère `config.js` → `apply.js` adapte toutes les pages (nom, logo, charte, liens du fork).
+  Commande **`awema setup`** + wizard **`setup.html`** + guide **docs/09-auto-hébergement**.
+  *Chaque agence forke et personnalise son instance — pas de SaaS central.*

@@ -211,8 +211,8 @@ a{color:inherit;text-decoration:none}
   <!-- Sidebar -->
   <aside class="side" id="side">
     <div class="brand">
-      <div class="logo">A</div>
-      <div><b>AWEMA</b><span>Command Center</span></div>
+      <div class="logo" data-ag="initiales">A</div>
+      <div><b data-ag="nom">AWEMA</b><span>Command Center</span></div>
     </div>
     <nav class="nav" id="nav">
       <div class="lbl">Pilotage</div>
@@ -263,6 +263,8 @@ a{color:inherit;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <script src="../_data/agence.js" onerror="window.__noReg=1"></script>
+<script src="../_data/config.js" onerror=""></script>
+<script src="../_data/apply.js"></script>
 <script src="data.js" onerror="window.__noData=1"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -730,7 +732,7 @@ function boot(){
   if(!CLIENTS.length&&window.CAMPAGNE){CLIENTS=[{id:'la-grande-vision',nom:window.CAMPAGNE.client||'Client',
     lieu:window.CAMPAGNE.lieu||'',secteur:'',statut:'actif',profils:{},reseaux:null,
     campagne:{total:window.CAMPAGNE.total,contenus:window.CAMPAGNE.contenus}}];}
-  $("#who").innerHTML='AWEMA<small>Directeur Marketing</small>';
+  $("#who").innerHTML=((window.AWEMA_CONFIG&&window.AWEMA_CONFIG.nom)||'AWEMA')+'<small>Directeur Marketing</small>';
   const sel=$("#clientSel");
   sel.innerHTML=CLIENTS.length?CLIENTS.map(c=>`<option value="${c.id}">${c.nom}</option>`).join(''):'<option>— aucun client —</option>';
   let saved=null;try{saved=localStorage.getItem('awema-client');}catch(e){}

@@ -22,6 +22,9 @@ Commandes :
   awema connect <plat>               lance la connexion (avec les identifiants stockés)
   awema rotate  <plat> KEY=VAL       incrémente un identifiant (garde l'ancien en historique)
   awema history <plat> [--reveal]    historique des identifiants (masqué par défaut)
+  awema setup [KEY=VAL ...]          personnalise l'agence (auto-hébergement) → config/agence.json
+  awema client new <slug|auto> ...   crée la fiche d'un client
+  awema client list                  liste les clients gérés
 """
 import json
 import os
@@ -102,6 +105,50 @@ def cmd_client_new(slug, pairs):
     print("  • Facebook/Instagram : awema connect meta   (ou docs/05)")
     print("  • TikTok  : awema connect tiktok            (guide connect-tiktok.html)")
     print("  • YouTube : ajoute yt_handle + awema connect youtube  (guide connect-youtube.html)")
+
+
+CONFIG_PATH = os.path.join(RACINE, "config", "agence.json")
+CONFIG_CHAMPS = ("nom", "nom_complet", "tagline", "slogan", "initiales", "langue", "contact")
+CHARTE_KEYS = ("nuit", "ciel", "gold", "violet", "mint", "pink")
+
+
+def cmd_setup(pairs):
+    """Personnalise l'agence (auto-hébergement) : écrit config/agence.json puis régénère config.js.
+
+    Clés : nom, nom_complet, tagline, slogan, initiales, langue, contact,
+           github.owner, github.repo, charte.<nuit|ciel|gold|violet|mint|pink>.
+    Sans argument : affiche la config courante.
+    """
+    cfg = json.load(open(CONFIG_PATH, encoding="utf-8")) if os.path.exists(CONFIG_PATH) else {}
+    if not pairs:
+        view = {k: v for k, v in cfg.items() if k != "_doc"}
+        print("Configuration de l'agence (config/agence.json) :")
+        print(json.dumps(view, ensure_ascii=False, indent=2))
+        print("\nÉditer : awema setup nom=\"Mon Agence\" github.owner=monpseudo charte.ciel=#1DA1F2")
+        return
+    for kv in pairs:
+        if "=" not in kv:
+            continue
+        k, v = kv.split("=", 1)
+        if k in ("github.owner", "github.repo"):
+            cfg.setdefault("github", {})[k.split(".", 1)[1]] = v
+        elif k.startswith("charte."):
+            ck = k.split(".", 1)[1]
+            if ck not in CHARTE_KEYS:
+                raise ValueError(f"couleur inconnue « {ck} » (attendu : {', '.join(CHARTE_KEYS)})")
+            cfg.setdefault("charte", {})[ck] = v
+        elif k in CONFIG_CHAMPS:
+            cfg[k] = v
+        else:
+            raise ValueError(f"clé inconnue « {k} » (voir : awema setup)")
+    if cfg.get("nom") and not cfg.get("initiales"):
+        cfg["initiales"] = _initiales(cfg["nom"])
+    os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
+    json.dump(cfg, open(CONFIG_PATH, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    print(f"✅ Config mise à jour → {os.path.relpath(CONFIG_PATH, RACINE)}")
+    subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
+    print("\nTout l'outil (accueil, dashboard, guides) s'adapte automatiquement.")
+    print("Pousse tes changements puis active GitHub Pages (depuis la racine) sur ton fork.")
 
 
 def cmd_client_list():
@@ -330,6 +377,8 @@ def main():
             cmd_client_new(a[2], a[3:])
         elif c == "client" and len(a) >= 2 and a[1] == "list":
             cmd_client_list()
+        elif c == "setup":
+            cmd_setup([x for x in a[1:] if "=" in x])
         else:
             print(__doc__)
             sys.exit(1)
