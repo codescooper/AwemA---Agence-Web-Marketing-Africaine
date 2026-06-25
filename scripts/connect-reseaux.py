@@ -691,6 +691,28 @@ def _client_par_slug(slug):
     return d if os.path.isdir(os.path.join(d, "_donnees")) else None
 
 
+def _assurer_client_tiktok(client_dir, slug, user):
+    """Crée un client.json minimal pour un client TikTok seul (sinon invisible au dashboard).
+    Préserve un client.json existant (ne touche qu'au lien TikTok manquant)."""
+    cj = os.path.join(client_dir, "_donnees", "client.json")
+    nom = (user or {}).get("display_name") or slug
+    if os.path.exists(cj):
+        d = json.load(open(cj, encoding="utf-8"))
+        d.setdefault("reseaux", {})
+        if not d["reseaux"].get("tiktok"):
+            d["reseaux"]["tiktok"] = "https://www.tiktok.com/"
+    else:
+        d = {
+            "id": slug, "nom": nom, "secteur": "", "lieu": "",
+            "departement": "marketing", "statut": "actif", "initiales": initiales(nom),
+            "reseaux": {"facebook": "", "instagram": "", "tiktok": "https://www.tiktok.com/",
+                        "linkedin": "", "whatsapp": ""},
+            "chemins": {"campagne": "_donnees/campagne.json", "reseaux": "_donnees/reseaux.json",
+                        "revue": f"../../../../outils/revue-visuels/index.html?client={slug}"},
+        }
+    json.dump(d, open(cj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
+
 def via_tiktok_auth(code_ou_url, redirect_uri=None):
     """Onboarding : échange un CODE d'autorisation OAuth contre un refresh_token (à coller
     dans la Variable TIKTOK_TOKENS). Accepte soit le code brut, soit l'URL de redirection
@@ -761,6 +783,7 @@ def via_tiktok_all():
         if not client_dir:
             client_dir = os.path.join(RACINE, "departements", "marketing", "clients", slug)
             os.makedirs(os.path.join(client_dir, "_donnees"), exist_ok=True)
+        _assurer_client_tiktok(client_dir, slug, user)   # client.json → visible au dashboard
         _ecrire(client_dir, _tiktok_data(user, videos))
         n += 1
         print(f"  ✓ TikTok {slug} ({user.get('follower_count', '—')} abonnés, "
