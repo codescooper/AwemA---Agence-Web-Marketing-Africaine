@@ -22,15 +22,16 @@
 ## Horizon 1 — NOW : substrat IA & garde-fous (avant tout agent)
 > Objectif : poser les fondations IA **sans rien casser**. Tout est **additif**.
 
-1. 🔜 **Garde-fous anti-régression** — petit harnais de tests stdlib (`unittest`) sur le **merge /
-   consolidation** réseaux et la **validation de schéma** des sorties d'agents. *Meilleur ROI : sécurise
-   tout le reste.*
+1. ✅ **Garde-fous anti-régression** — harnais `tests/` stdlib (`python3 -m unittest discover -s tests`) :
+   merge multi-réseaux, consolidation, schémas d'agents. CI : `.github/workflows/tests.yml`.
 2. 🔜 **Dégradation gracieuse** — étiqueter dans l'UI toute métrique indisponible/dépréciée (badge
-   « source indisponible ») au lieu d'un `null` muet.
-3. 🔜 **Client IA Claude** — `scripts/awema_ai.py` (API Messages Anthropic, modèle configurable,
-   **skip gracieux sans clé**). Secret `ANTHROPIC_API_KEY`.
-4. 🔜 **Contrat d'agent** — `scripts/agents.json` (manifeste : entrées, schéma de sortie, déclencheur)
-   + convention `_agents/<agent>.json` par client + **renderer** « feed d'agents » dans le cockpit.
+   « source indisponible ») au lieu d'un `null` muet. *(reste à faire)*
+3. ✅ **Client IA Claude** — `scripts/awema_ai.py` (API Messages Anthropic, modèle configurable,
+   **skip gracieux sans clé**). Secret `ANTHROPIC_API_KEY` (géré par l'opérateur : `awema set claude …`).
+4. ✅ **Contrat d'agent** — `scripts/agents.json` + `scripts/run-agent.py` + convention
+   `_agents/<agent>.json` (intégrée au registre par `build.py`) + **carte « Assistants IA »** au cockpit.
+
+> **M0 livré** (cf. [[PLAN-EXECUTION-BETA]]). Prochain : M1 (Mémoire) puis M2 (Analyste).
 
 ---
 

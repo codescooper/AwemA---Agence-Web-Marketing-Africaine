@@ -1,0 +1,20 @@
+name: Tests (anti-régression)
+
+# Garde-fou : exécute le harnais stdlib (fusion réseaux, consolidation, schémas d'agents).
+# Aucune dépendance, aucun secret requis — les briques IA s'auto-désactivent sans clé.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Lancer les tests
+        run: python3 -m unittest discover -s tests -v

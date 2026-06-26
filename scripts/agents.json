@@ -1,0 +1,14 @@
+{
+  "_doc": "Manifeste des agents IA AWEMA (cf. docs/PRD-AWEMA.md §4, docs/PLAN-EXECUTION-BETA.md). Chaque agent = un job déterministe : entrées (fichiers du client) → appel Claude → sortie JSON additive dans _donnees/_agents/<agent>.json. Ajouter un agent = ajouter une entrée ici. M0 fournit le socle ; M2–M4 affinent les prompts.",
+  "agents": {
+    "analyste": {
+      "role": "Explique les résultats : pourquoi, que faire, que reproduire.",
+      "entrees": ["reseaux", "memoire"],
+      "modele": "claude-opus-4-8",
+      "item_requis": ["type", "titre", "explication"],
+      "declencheur": "manuel",
+      "systeme": "Tu es l'Analyste d'AWEMA, expert marketing digital. Tu analyses des données RÉELLES de présence sociale. Tu n'inventes jamais de chiffre : chaque affirmation s'appuie sur une métrique fournie. Tu écris en français clair, concret, actionnable.",
+      "instruction": "À partir des données de présence (et de la mémoire de marque si fournie), produis des items : des 'insight' (un constat sourcé : pourquoi un résultat) et des 'reco' (une action concrète à faire). Chaque item : {type:'insight'|'reco', titre, explication, preuve:{metrique,valeur,variation?}, action?}. Vise 3 à 6 items utiles, priorisés."
+    }
+  }
+}

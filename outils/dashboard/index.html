@@ -441,9 +441,26 @@ function cActionsCom(){
     <div style="margin-top:12px"><button class="mini gold" onclick="go('reseaux')">Présence digitale →</button></div>`;
 }
 
+/* ---------- Assistants IA (sorties des agents, additives) ---------- */
+function loadAgent(client,nom){return ((client&&client.agents)||{})[nom]||null;}
+function cAgents(){
+  const ag=(ACTIVE&&ACTIVE.agents)||null, names=ag?Object.keys(ag):[];
+  return `<h3>${ic('bolt')} Assistants IA <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF55">${names.length}</span></h3>
+    <div class="sub">Les agents travaillent en tâche de fond et proposent des actions</div>
+    ${names.length?`<div class="list" style="margin-top:10px">${names.map(n=>{const a=ag[n]||{};
+      return `<div class="li"><b style="text-transform:capitalize;flex:0 0 auto">${n}</b>
+        <span class="t" style="opacity:.8">${(a.items&&a.items[0]&&(a.items[0].titre||a.items[0].explication))||'—'}</span>
+        <span class="pill">${(a.items||[]).length} item(s)</span>
+        <span class="pill">${(a.genere_le||'').slice(0,10)||'—'}</span></div>`;}).join('')}</div>`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Aucun assistant généré pour l'instant.<br>
+        Lance <code>python3 scripts/run-agent.py analyste --all</code> (nécessite une clé IA <code>ANTHROPIC_API_KEY</code>),
+        puis régénère le registre. <span style="color:var(--muted2)">— socle M0, panneaux riches à venir (M2–M5).</span></div>`}`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
   cKpisReal();
+  add(cAgents(), 'col6');
   if(RES&&RES.connecte)add(cActionsCom(), A.total?'col6':'col12');
   if(!A.total){add(`<h3>${ic('layers')} Pas encore de plan de contenu</h3>
     <div class="sub">${ACTIVE?ACTIVE.nom:''}</div>

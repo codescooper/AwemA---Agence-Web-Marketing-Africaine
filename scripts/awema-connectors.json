@@ -63,6 +63,18 @@
       "rotate": "Les access tokens LinkedIn expirent (~60 j). Régénère-en un (OAuth) puis : awema rotate linkedin LINKEDIN_TOKEN=<nouveau>. Mets aussi à jour le Secret GitHub LINKEDIN_TOKEN.",
       "note": "Guide pas à pas : connect-linkedin.html. Connecteur --linkedin-all : résout l'org par vanity name (/company/<slug>), lit abonnés + impressions/engagement (Community Management API). Pré-requis : Page entreprise (admin), app vérifiée, produit Community Management API (Development Tier = immédiat pour ses propres Pages).",
       "doc": "docs/10-connecter-linkedin.md"
+    },
+    "claude": {
+      "label": "Claude (IA — agents AWEMA)",
+      "statut": "operationnel",
+      "keys": [
+        {"name": "ANTHROPIC_API_KEY", "secret": true, "github": "secret",
+         "prompt": "Clé API Anthropic (console.anthropic.com) — alimente les agents IA (Analyste, Stratège, Créatif…)"}
+      ],
+      "commands": {"sync_workflow": "agents.yml"},
+      "rotate": "Régénère une clé sur console.anthropic.com, puis : awema rotate claude ANTHROPIC_API_KEY=<nouvelle>. Mets à jour le Secret GitHub ANTHROPIC_API_KEY.",
+      "note": "Brique IA : scripts/awema_ai.py (client stdlib, skip gracieux sans clé) + scripts/run-agent.py + manifeste scripts/agents.json. Sans clé, les agents sont simplement désactivés.",
+      "doc": "docs/PRD-AWEMA.md"
     }
   }
 }

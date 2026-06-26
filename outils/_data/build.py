@@ -39,6 +39,12 @@ def main():
         reseaux = lire(os.path.join(donnees, "reseaux.json"))
         client_dir = os.path.dirname(donnees)         # .../<client>
         rel = os.path.relpath(client_dir, RACINE).replace(os.sep, "/")
+        # Sorties des agents IA (additives) : _donnees/_agents/<agent>.json
+        agents = {}
+        for aj in sorted(glob.glob(os.path.join(donnees, "_agents", "*.json"))):
+            a = lire(aj)
+            if a:
+                agents[os.path.splitext(os.path.basename(aj))[0]] = a
         clients.append({
             **client,
             "_dir": rel,
@@ -46,6 +52,7 @@ def main():
             "campagne": {"total": (campagne or {}).get("total", 0),
                          "contenus": (campagne or {}).get("contenus", [])} if campagne else None,
             "reseaux": reseaux,                             # métriques (depuis reseaux.json) ou null
+            "agents": agents or None,                       # sorties IA (depuis _agents/) ou null
         })
 
     registre = {"genere": datetime.now(timezone.utc).isoformat(timespec="seconds"),
