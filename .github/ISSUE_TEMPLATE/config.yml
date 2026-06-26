@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Guide d'onboarding (pas à pas)
+    url: https://codescooper.github.io/AwemA---Agence-Web-Marketing-Africaine/onboarding.html
+    about: Démarre ici si tu n'as pas encore configuré ton instance.
+  - name: 📜 Programme Beta — conditions & prérequis
+    url: https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/blob/main/docs/11-programme-beta.md
+    about: Ce que comprend l'accès à vie, et ce qu'on attend en retour.
+  - name: ✉️ Pas à l'aise avec GitHub ?
+    url: mailto:codescooper@gmail.com?subject=Retour%20Beta%20AWEMA
+    about: Envoie ton retour par e-mail, on le transforme en issue.

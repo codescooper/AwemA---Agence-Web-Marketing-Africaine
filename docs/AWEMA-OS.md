@@ -34,7 +34,7 @@ présence en ligne ET de l'activité de marché d'une entité** :
 ### Socle & organisation
 - Monorepo « système d'exploitation de l'agence » : `departements/`, `outils/`, `docs/`, `scripts/`.
 - Conventions + charte ([[docs/04-charte-graphique]]) : Bleu Nuit #0A1F44 · Bleu Ciel #4BA3FF · Gold #D4AF37 · Montserrat/Poppins.
-- 26 clients réels dans le registre (`outils/_data/agence.js`, régénéré par `build.py`).
+- 27 clients réels dans le registre (`outils/_data/agence.js`, régénéré par `build.py`).
 
 ### Mission 1 — La Grande Vision (marketing complet)
 - 180 contenus / 90 j, scripts vidéo, prompts (Canva/Midjourney/GPT) par plateforme,
@@ -71,26 +71,59 @@ présence en ligne ET de l'activité de marché d'une entité** :
   boutons « copier » et liens directs. Pages légales (`legal/`) + page OAuth (`oauth.html`).
 - `.nojekyll` (sert `_data`/`_design`). À servir **depuis la racine**.
 
+### Avancées récentes (juin 2026)
+- **Vraie landing produit** (`index.html`) animée : hero, bandeau plateformes **à leurs couleurs**,
+  features, « comment ça marche », **chiffres réels** (compteurs animés depuis le registre), section beta.
+- **Onboarding beta guidé** (`onboarding.html`) : parcours 4 étapes, anneau de progression, sauvegarde locale.
+- **Auto-hébergement / personnalisation** : `config/agence.json` → `build.py` → `config.js` → `apply.js`
+  (nom, logo, charte, liens du fork s'adaptent partout) ; commande `awema setup` + wizard `setup.html`
+  + guide [[docs/09-auto-hebergement]]. *Chaque agence forke et personnalise son instance — pas de SaaS central.*
+- **Charte par plateforme** (`outils/_data/platforms.js`) : chaque réseau garde **ses** couleurs/glyphes,
+  mis en évidence sur la landing et le dashboard (cartes FB/TikTok/YouTube/LinkedIn, « Présence par réseau »
+  qui reflète l'état **réel** de connexion, plus seulement les liens saisis).
+- **YouTube** ✅ connecteur `--youtube-all` (clé API + `yt_handle`/`yt_channel_id`).
+- **LinkedIn** : connecteur `--linkedin-all` (org via vanity name → abonnés/impressions/engagement) +
+  assistant OAuth `linkedin-onboard.py` + guide [[docs/10-connecter-linkedin]] **prêts** ; live **bloqué**
+  par l'exigence d'**email pro** de la Community Management API.
+- **Fusion & alias** : `config/aliases.json` rattache un compte (clé de token) à une fiche canonique
+  (ex. TikTok « code-scooper-afrocodeur » → `code-scooper`, audience consolidée **7 318**).
+- **Opérateur** : `awema setup`, `awema client new`, `awema connect linkedin` (token requis : `LINKEDIN_TOKEN`).
+- **Auto-description** portable du projet pour analyse externe : [[docs/AUTO-DESCRIPTION]].
+
+---
+
+## 🚀 Programme Beta — 20 Community Managers (juin 2026)
+
+> **Déclencheur** : une vidéo TikTok a généré un fort intérêt de community managers.
+> **Décision** : ouvrir l'outil **gratuitement à 20 CM**, **accès à vie**, en échange de leurs **retours**.
+
+- **20 places uniques**, nominatives, **à vie** ; **remplaçables** en cas de non-respect des conditions.
+- Chacun reçoit **sa propre instance** (fork de la **copie d'accueil** du repo, prête à l'emploi).
+- **Canal de retours** : GitHub Issues (gabarits dédiés : retour beta / bug / idée).
+- Détails, **conditions** et **prérequis** : [[docs/11-programme-beta]].
+- Suivi des places : `config/beta-seats.json`. Copie d'accueil : `scripts/preparer-copie-beta.py`.
+- **But** : faire vivre le projet *par* et *pour* les CM — leurs retours priorisent la roadmap.
+
 ---
 
 ## 🔌 Plateformes — état
 
 | Plateforme | État | Méthode | Notes |
 |---|---|---|---|
-| Facebook | ✅ | Graph API (token) | 1 token → toutes les Pages |
+| Facebook | ✅ | Graph API (token) | 1 token → toutes les Pages (≈26 clients) |
 | Instagram | ⏳ | Graph API (IG Pro relié) | aucun compte IG Pro relié pour l'instant |
 | TikTok | ✅ | Display API v2 (OAuth/compte) | refresh tokens rotatifs + GH_PAT |
-| **YouTube** | 🔜 prochain | **YouTube Data API v3 (clé API)** | **simple** : stats publiques de chaîne sans OAuth |
-| **LinkedIn** | 🔜 | OAuth + Marketing Developer Platform | **complexe** : app review, admin de la page |
+| YouTube | ✅ | YouTube Data API v3 (clé API) | stats publiques de chaîne, sans OAuth |
+| LinkedIn | 🟡 connecteur prêt | Community Management API (OAuth org) | **bloqué** : verif. exige un **email pro** (pas gmail) ; assistant `linkedin-onboard.py` prêt |
 | X / Threads | 💡 idée | API payante / scraping limité | à évaluer |
 
 ---
 
 ## 🗺️ Roadmap (prochaines étapes)
 
-- [ ] **YouTube** (priorité — facile) : connecteur `--youtube-all` (clé API + `yt_channel_id` par client).
-      Récupère abonnés, vues totales, nb vidéos, + top vidéos (statistiques publiques).
-- [ ] **LinkedIn** : app LinkedIn + OAuth org + récup. abonnés/impressions (plus lourd).
+- [x] **YouTube** : connecteur `--youtube-all` (clé API + `yt_channel_id`) — abonnés, vues, vidéos, top vidéos. ✅
+- [~] **LinkedIn** : connecteur + assistant OAuth **prêts** ; reste à **débloquer l'email pro** (Community Management API).
+- [ ] **Programme beta 20 CM** : finaliser la **copie d'accueil**, le **canal de retours** et le **suivi des places** (en cours).
 - [ ] **Instagram** : relier des comptes IG Pro aux Pages FB → métriques IG réelles.
 - [ ] **Activité de marché** : veille concurrents (mêmes connecteurs sur des comptes publics
       concurrents), parts de voix, tendances → onglet « Marché » au dashboard.
@@ -128,3 +161,10 @@ présence en ligne ET de l'activité de marché d'une entité** :
   `build.py` génère `config.js` → `apply.js` adapte toutes les pages (nom, logo, charte, liens du fork).
   Commande **`awema setup`** + wizard **`setup.html`** + guide **docs/09-auto-hébergement**.
   *Chaque agence forke et personnalise son instance — pas de SaaS central.*
+- **2026-06-26** — **Landing produit** + **onboarding beta** ; **charte par plateforme** (platforms.js) ;
+  carte **Facebook** dédiée + panneau « Présence par réseau » (état réel) ; **YouTube** (@codescooper) ;
+  **connecteur + assistant LinkedIn** (live bloqué : email pro) ; **fusion** TikTok code-scooper (7 318) + alias ;
+  **auto-description** du projet ([[docs/AUTO-DESCRIPTION]]).
+- **2026-06-26** — **🚀 Décision : Programme Beta 20 CM** (suite à une vidéo TikTok). Accès **gratuit à vie**,
+  20 places uniques remplaçables, contre **retours**. Mise en place : conditions + prérequis ([[docs/11-programme-beta]]),
+  **copie d'accueil** du repo, **canal de retours** (GitHub Issues), suivi des places (`config/beta-seats.json`).
