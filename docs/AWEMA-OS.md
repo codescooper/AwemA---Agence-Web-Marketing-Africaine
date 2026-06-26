@@ -10,22 +10,25 @@ statut: actif
 > **Note maîtresse** (Obsidian-friendly). Ouvre le dépôt comme un coffre Obsidian, ou copie
 > cette note dans ton coffre. Source de vérité du projet : ce qui est fait, où on va.
 
-## 🎯 Vision (objectif à partir de maintenant)
+## 🎯 Vision (à partir de juin 2026)
 
-Faire d'AWEMA OS un **cockpit polyvalent et pratique** pour la **gestion complète de la
-présence en ligne ET de l'activité de marché d'une entité** :
+> **AWEMA = le système d'exploitation d'une agence digitale assistée par IA.**
+> Le community management n'est que le **premier module**. Doc de référence : [[PRD-AWEMA]].
 
-1. **Présence en ligne 360°** — agréger *toutes* les plateformes d'une entité au même endroit :
-   Facebook ✅, Instagram ⏳, TikTok ✅, **YouTube** (à venir), **LinkedIn** (à venir), X/Threads…
-   → audience, engagement, contenus, commentaires à répondre, meilleurs posts, cadence, créneaux.
-2. **Activité de marché** — au-delà de l'entité : veille concurrentielle, tendances du secteur,
-   parts de voix, benchmark — pour *décider*, pas seulement *constater*.
-3. **Pilotable en langage naturel** — via l'opérateur `/awema` : « connecte YouTube de
-   code-scooper », « compare-moi à la concurrence »… il ne demande que l'inconnu et agit.
-4. **Multi-entités** — chaque client = une entité gérée de bout en bout (présence + marché + contenu).
+Le **différenciateur** n'est plus « agréger plusieurs réseaux » mais **« faire travailler une équipe
+d'agents IA spécialisés »** (Analyste, Stratège, Créatif, Veille, Modérateur, Chef de projet).
+**L'IA ne répond pas — elle travaille** : elle observe, analyse, **propose**, prépare. Le dashboard
+devient un **centre de commandement proactif** (« AWEMA propose » au lieu de « on consulte »).
 
-> Principe constant : **données réelles, zéro fiction** ; **secrets jamais dans le dépôt** ;
-> **automatisable** (GitHub Actions) ; **réutilisable** par humains et agents IA.
+**Architecture fondatrice (ADR-001)** : *agents = jobs Python (stdlib + 1 appel Claude) déclenchés
+par Actions/`/awema`* → **sorties JSON additives** (`_agents/*.json`) → **cockpit statique** qui les
+rend. Un seul nouveau secret (`ANTHROPIC_API_KEY`), aucun serveur, **zéro régression** sur les données.
+Chaque client construit une **Mémoire Marketing** (`memoire.json`) qui nourrit les agents. Module
+**Intelligence Marketing** (présence *et* marché) en post-bêta.
+
+> Invariants (ADN) : **données réelles, zéro fiction** · auto-hébergé, **zéro SaaS** · Git = vérité ·
+> HTML/CSS/JS vanilla · Python **stdlib** · **secrets jamais dans le dépôt** · fork simple · config ·
+> **opérateur IA en langage naturel**. Roadmap : [[ROADMAP]] · Exécution : [[PLAN-EXECUTION-BETA]].
 
 ---
 
@@ -92,10 +95,12 @@ présence en ligne ET de l'activité de marché d'une entité** :
 
 ---
 
-## 🚀 Programme Beta — 20 Community Managers (juin 2026)
+## 🚀 Programme Beta — 20 pilotes (agences / CM) (juin 2026)
 
-> **Déclencheur** : une vidéo TikTok a généré un fort intérêt de community managers.
-> **Décision** : ouvrir l'outil **gratuitement à 20 CM**, **accès à vie**, en échange de leurs **retours**.
+> **Déclencheur** : une vidéo TikTok a généré un fort intérêt. **Décision** : ouvrir l'outil
+> **gratuitement à 20 pilotes** (agences digitales / community managers soigneusement sélectionnés),
+> **accès à vie**, en échange de leurs **retours**. La bêta doit **impressionner** par le cockpit + l'IA
+> (cf. [[PRD-AWEMA]] §10), pas par la quantité.
 
 - **20 places uniques**, nominatives, **à vie** ; **remplaçables** en cas de non-respect des conditions.
 - Chacun reçoit **sa propre instance** (fork de la **copie d'accueil** du repo, prête à l'emploi).
@@ -119,16 +124,17 @@ présence en ligne ET de l'activité de marché d'une entité** :
 
 ---
 
-## 🗺️ Roadmap (prochaines étapes)
+## 🗺️ Roadmap
 
-- [x] **YouTube** : connecteur `--youtube-all` (clé API + `yt_channel_id`) — abonnés, vues, vidéos, top vidéos. ✅
-- [~] **LinkedIn** : connecteur + assistant OAuth **prêts** ; reste à **débloquer l'email pro** (Community Management API).
-- [ ] **Programme beta 20 CM** : finaliser la **copie d'accueil**, le **canal de retours** et le **suivi des places** (en cours).
-- [ ] **Instagram** : relier des comptes IG Pro aux Pages FB → métriques IG réelles.
-- [ ] **Activité de marché** : veille concurrents (mêmes connecteurs sur des comptes publics
-      concurrents), parts de voix, tendances → onglet « Marché » au dashboard.
-- [ ] **Opérateur** : `/awema` pousse lui-même Secrets/Variables GitHub (fin du copier-coller).
-- [ ] **Alertes** : notifier (mail/WhatsApp) quand un commentaire attend, cadence en retard, pic d'audience.
+> **Source unique** : [[ROADMAP]] (réorganisée NOW / BÊTA / POST-BÊTA). Exécution module par module
+> sans régression : [[PLAN-EXECUTION-BETA]]. Résumé du cap bêta ci-dessous.
+
+- **NOW (substrat IA)** : tests anti-régression · dégradation gracieuse · client Claude `awema_ai.py` ·
+  contrat d'agent + `_agents/*.json` + renderer cockpit.
+- **BÊTA (le wow)** : Mémoire Marketing → agents **Analyste / Stratège / Créatif** → **Proactivité**
+  (« 3 actions du jour ») → onboarding wow < 30 min. *Peu de features, ultra-finies.*
+- **POST-BÊTA** : Intelligence Marketing + Veille, Modérateur, Chef de projet, Instagram, LinkedIn live,
+  collaboration, couche analytique/séries temporelles.
 
 ---
 
@@ -165,6 +171,11 @@ présence en ligne ET de l'activité de marché d'une entité** :
   carte **Facebook** dédiée + panneau « Présence par réseau » (état réel) ; **YouTube** (@codescooper) ;
   **connecteur + assistant LinkedIn** (live bloqué : email pro) ; **fusion** TikTok code-scooper (7 318) + alias ;
   **auto-description** du projet ([[docs/AUTO-DESCRIPTION]]).
-- **2026-06-26** — **🚀 Décision : Programme Beta 20 CM** (suite à une vidéo TikTok). Accès **gratuit à vie**,
+- **2026-06-26** — **🚀 Décision : Programme Beta 20 pilotes** (suite à une vidéo TikTok). Accès **gratuit à vie**,
   20 places uniques remplaçables, contre **retours**. Mise en place : conditions + prérequis ([[docs/11-programme-beta]]),
   **copie d'accueil** du repo, **canal de retours** (GitHub Issues), suivi des places (`config/beta-seats.json`).
+- **2026-06-26** — **🧭 Repositionnement majeur : « OS d'agence digitale assistée par IA »** (Lead Product
+  Engineer). Vision fusionnée → **équipe d'agents IA** (ADR-001 : agents = jobs Python + Claude → JSON
+  additif → cockpit). Création des docs de référence **[[PRD-AWEMA]]**, **[[ROADMAP]]** (source unique),
+  **[[PLAN-EXECUTION-BETA]]** (M0→M6, zéro régression). Cap bêta : Mémoire + Analyste/Stratège/Créatif +
+  Proactivité, *qualité > quantité*.
