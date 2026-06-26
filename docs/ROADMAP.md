@@ -52,8 +52,13 @@
 5. ✅ **Proactivité** — agrégateur `actions-du-jour` (alertes **déterministes sans clé IA** + propositions
    des agents) → `_agents/actions-du-jour.json` → **hero « N choses à faire aujourd'hui »** en tête du
    Command Center (items actionnables). Workflow `agents.yml` (quotidien). *(M5 livré)*
-6. ⭐ **Onboarding → wow < 30 min** — données de démo « effet wow » + parcours pilote poli + alignement
-   de la copie d'accueil.
+6. ✅ **Onboarding → wow < 30 min** — client de **démo riche** « Éclat Beauté » (cockpit + 4 agents +
+   feed proactif, étiqueté exemple, isolé des vraies données) dans la copie d'accueil ; étape « Voir la
+   démo IA » dans `onboarding.html` ; dashboard `?client=` ; `preparer-copie-beta.py` aligné. *(M6 livré)*
+
+> 🎉 **Cœur bêta COMPLET (M0–M6).** Reste avant ouverture : masquer les vues inachevées (Calendrier,
+> Scoring, Tunnel, Automatisation) en « bientôt » ; fournir `ANTHROPIC_API_KEY` pour activer les agents
+> sur données réelles ; créer le dépôt « copie d'accueil » (Template repository).
 
 **Périmètre bêta volontairement réduit** : on **masque** (« bientôt ») les vues inachevées (Calendrier,
 Scoring, Tunnel, Automatisation) plutôt que de montrer de l'inachevé.

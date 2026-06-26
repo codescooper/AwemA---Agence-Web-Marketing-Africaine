@@ -917,7 +917,8 @@ function boot(){
   const sel=$("#clientSel");
   sel.innerHTML=CLIENTS.length?CLIENTS.map(c=>`<option value="${c.id}">${c.nom}</option>`).join(''):'<option>— aucun client —</option>';
   let saved=null;try{saved=localStorage.getItem('awema-client');}catch(e){}
-  const init=CLIENTS.find(c=>c.id===saved)||CLIENTS[0];
+  const qp=new URLSearchParams(location.search).get('client');
+  const init=CLIENTS.find(c=>c.id===qp)||CLIENTS.find(c=>c.id===saved)||CLIENTS[0];
   skeleton();
   if(!init){$("#psub").textContent='Aucun client';
     setTimeout(()=>{$("#grid").innerHTML='';add(`<h3>${ic('users')} Aucun client</h3><div class="sub">Registre vide</div>

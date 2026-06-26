@@ -59,15 +59,20 @@ def main():
     print(f"→ Copie du projet vers {cible} (sans .git, .awema, données réelles)…")
     shutil.copytree(RACINE, cible, ignore=IGNORE)
 
-    # 1) Purge des clients réels → un seul client de démo neutre
+    # 1) Purge des clients réels → un seul client de DÉMO riche (effet « wow » immédiat,
+    #    clairement étiqueté exemple, isolé des vraies données — cf. M6)
     clients_dir = os.path.join(cible, "departements", "marketing", "clients")
     if os.path.isdir(clients_dir):
         for d in os.listdir(clients_dir):
             shutil.rmtree(os.path.join(clients_dir, d), ignore_errors=True)
     demo = os.path.join(clients_dir, "demo-client", "_donnees")
-    os.makedirs(demo, exist_ok=True)
-    json.dump(DEMO_CLIENT, open(os.path.join(demo, "client.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=2)
+    demo_src = os.path.join(cible, "scripts", "_demo")
+    if os.path.isdir(demo_src):
+        shutil.copytree(demo_src, demo)            # client.json + memoire + reseaux + _agents/*
+    else:                                          # repli minimal si _demo absent
+        os.makedirs(demo, exist_ok=True)
+        json.dump(DEMO_CLIENT, open(os.path.join(demo, "client.json"), "w", encoding="utf-8"),
+                  ensure_ascii=False, indent=2)
 
     # 2) Config d'agence neutre
     json.dump(CONFIG_TEMPLATE, open(os.path.join(cible, "config", "agence.json"), "w",
