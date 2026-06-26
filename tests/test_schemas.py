@@ -46,6 +46,19 @@ class TestEnveloppeAgent(unittest.TestCase):
         self.assertTrue(ok, err)
         self.assertEqual(env["cadence_recommandee"], "4/sem")
 
+    def test_creatif_item_requis(self):
+        env = awema_ai.enveloppe(
+            "creatif",
+            [{"hook": "Arrête de scroller", "format": "Short", "reseau": "TikTok",
+              "script": "...", "prompt_image": "..."}],
+            "claude-sonnet-4-6", {"client": "demo"})
+        ok, err = awema_ai.valider_enveloppe(env, ["hook", "format", "reseau"])
+        self.assertTrue(ok, err)
+        # hook manquant → invalide
+        env2 = awema_ai.enveloppe("creatif", [{"format": "Post", "reseau": "Facebook"}], "m", {})
+        ok2, _ = awema_ai.valider_enveloppe(env2, ["hook", "format", "reseau"])
+        self.assertFalse(ok2)
+
     def test_extraction_json_robuste(self):
         self.assertEqual(awema_ai._extraire_json('Voici: {"a":1} merci'), {"a": 1})
         self.assertEqual(awema_ai._extraire_json('```json\n{"b":2}\n```'), {"b": 2})

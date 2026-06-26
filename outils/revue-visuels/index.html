@@ -488,11 +488,23 @@ function buildClientSelector(curId){
   if(curId)sel.value=curId;
   sel.onchange=()=>{const u=new URL(location);u.searchParams.set('client',sel.value);location.href=u.toString();};
 }
+function creatifBloc(c){
+  const cr=(c.agents&&c.agents.creatif)||null;
+  if(!cr||!(cr.items||[]).length){
+    return '<div style="margin:14px 14px 0;padding:14px;border:1px dashed rgba(124,92,255,.45);border-radius:12px;color:#9db0d6;font-size:12.5px;line-height:1.7">✨ <b style="color:#cdbcff">Idées IA</b> — génère 3 publications prêtes pour <b>'+(c.nom||'ce client')+'</b> :<br><code style="background:rgba(0,0,0,.3);padding:2px 6px;border-radius:6px">python3 scripts/run-agent.py creatif '+c.id+'</code> (clé IA + mémoire), puis régénère le registre.</div>';
+  }
+  return '<div style="margin:14px 14px 0"><div style="font-size:11px;color:#9db0d6;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✨ Idées du Créatif IA · proposition à relire</div>'+
+    cr.items.map(function(i){return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;margin-bottom:8px">'+
+      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="flex:1;min-width:150px">'+(i.hook||'')+'</b><span style="font-size:11px;color:#9db0d6">'+(i.reseau||'')+' · '+(i.format||'')+'</span></div>'+
+      (i.script?'<div style="color:#9db0d6;font-size:12.5px;margin-top:6px;white-space:pre-wrap">'+i.script+'</div>':'')+
+      (i.prompt_image?'<div style="color:#8aa;font-size:11.5px;margin-top:6px">🎨 '+i.prompt_image+'</div>':'')+
+    '</div>';}).join('')+'</div>';
+}
 function showEmpty(c){
   $("#drop").classList.add("hidden");
   $("#clientSub").textContent=(c.nom||"")+(c.lieu?" · "+c.lieu:"")+" · 0 contenu";
   const pg=$("#progress"); if(pg)pg.textContent="0 / 0 traités";
-  $("#list").innerHTML='<div style="padding:22px;color:#8aa;font-size:13px;line-height:1.65">Aucun contenu pour <b>'+(c.nom||'ce client')+'</b>.<br>Génère son plan éditorial puis régénère le registre — ou choisis un autre client en haut.</div>';
+  $("#list").innerHTML='<div style="padding:18px 14px 4px;color:#8aa;font-size:13px;line-height:1.65">Aucun contenu planifié pour <b>'+(c.nom||'ce client')+'</b>.</div>'+creatifBloc(c);
   const set=(id,t)=>{const e=$(id);if(e)e.textContent=t;};
   set("#vPil","—"); set("#vTtl","Pas encore de visuels");
   set("#vReco","Ce client n'a pas encore de plan de contenu. Sélectionne un autre client dans le menu en haut, ou génère son calendrier éditorial.");

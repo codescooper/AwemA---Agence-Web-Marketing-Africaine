@@ -525,12 +525,39 @@ function cStratege(){
     <div style="margin-top:14px"><button class="mini gold" onclick="toast('Pour pousser ce plan : python3 scripts/awema.py … (validation humaine requise)')">Pousser vers le plan →</button></div>`;
 }
 
+/* ---------- Agent Créatif (M4) : idées prêtes à publier ---------- */
+function escAttr(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cpd(el){const t=el.dataset.t||'';navigator.clipboard.writeText(t).then(()=>toast('Copié ✓')).catch(()=>toast('Sélectionne puis copie'));}
+function cCreatif(){
+  const c=loadAgent(ACTIVE,'creatif');
+  const head=`<h3>${ic('layers')} Idées prêtes à publier <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  if(!c||!(c.items||[]).length){return head+`<div class="sub">Le Créatif propose des publications calées sur ta marque et tes perfs</div>
+    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.7">Pas encore d'idées.
+    Génère-les : <code>python3 scripts/run-agent.py creatif ${ACTIVE?ACTIVE.id:'<client>'}</code> (clé IA + mémoire renseignée recommandée).</div>`;}
+  const idea=i=>{const col=(PLAT[(i.reseau||'').toLowerCase()]||{}).c||'#7C5CFF';
+    const plein=`${i.hook||''}\n\n${i.script||''}`;
+    return `<div class="li" style="flex-direction:column;align-items:flex-start;gap:7px;padding:13px 8px">
+      <div style="display:flex;gap:8px;width:100%;align-items:center;flex-wrap:wrap">
+        <b style="flex:1;min-width:160px">${i.hook||''}</b>
+        <span class="pill" style="border-color:${col}66;color:${col}">${i.reseau||''}</span>
+        <span class="pill">${i.format||''}</span></div>
+      ${i.script?`<div style="color:var(--muted);font-size:12.6px;white-space:pre-wrap">${i.script}</div>`:''}
+      ${i.prompt_image?`<div style="width:100%;background:var(--elev);border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:11.6px;color:var(--muted)"><b style="color:var(--tx)">🎨 Prompt image</b> · ${i.prompt_image}
+        <button class="mini" data-t="${escAttr(i.prompt_image)}" onclick="cpd(this)" style="margin-left:6px">Copier le prompt</button></div>`:''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        ${(i.variantes||[]).length?`<span class="pill">${i.variantes.length} variante(s)</span>`:''}
+        <button class="mini gold" data-t="${escAttr(plein)}" onclick="cpd(this)">Copier l'idée</button></div></div>`;};
+  return head+`<div class="sub">Créatif IA${c.genere_le?' · '+c.genere_le.slice(0,10):''} — relis et adapte avant de publier</div>
+    <div class="list" style="margin-top:10px">${(c.items||[]).map(idea).join('')}</div>
+    <div style="margin-top:12px"><button class="mini gold" onclick="toast('Valider une idée → l\\'ajouter au plan via l\\'opérateur (validation humaine)')">Valider vers le plan →</button></div>`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
   cKpisReal();
   add(cMemoire(), 'col6'); add(cAgents(), 'col6');
   if(RES&&RES.connecte)add(cActionsCom(), A.total?'col6':'col12');
-  add(cStratege(), 'col12');
+  add(cStratege(), 'col6'); add(cCreatif(), 'col6');
   if(!A.total){add(`<h3>${ic('layers')} Pas encore de plan de contenu</h3>
     <div class="sub">${ACTIVE?ACTIVE.nom:''}</div>
     <div style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6">Générez le plan éditorial du client (générateur) ou consultez sa présence digitale.</div>

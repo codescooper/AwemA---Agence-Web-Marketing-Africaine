@@ -46,8 +46,9 @@
 3. ✅ **Agent Stratège** — cadence + meilleures heures + objectifs + plan éditorial hebdo →
    `_agents/stratege.json` → panneau **« Plan recommandé »** (cockpit). *(M3 livré — contrat d'agent
    généralisé : sorties structurées au-delà d'`items`)*
-4. ⭐ **Agent Créatif** — idées, hooks, scripts, prompts image (Claude) → `creatif.json` + action
-   « **Générer ?** » dans le visualiseur.
+4. ✅ **Agent Créatif** — idées, hooks, scripts, prompts image (texte, sans OpenAI) → `_agents/creatif.json`
+   → panneau **« Idées prêtes à publier »** (copier l'idée / le prompt) au cockpit + bloc dans le visualiseur.
+   *(M4 livré)*
 5. ⭐ **Proactivité** — agrégateur → `actions-du-jour.json` rendu en **tête du Command Center** ;
    workflow planifié `agents.yml`.
 6. ⭐ **Onboarding → wow < 30 min** — données de démo « effet wow » + parcours pilote poli + alignement

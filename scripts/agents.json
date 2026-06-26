@@ -23,6 +23,17 @@
       "declencheur": "manuel",
       "systeme": "Tu es le Stratège d'AWEMA, directeur éditorial expérimenté (marché africain). Tu bâtis un plan ACTIONNABLE à partir de données RÉELLES. Tu ne recommandes que ce que les données soutiennent (meilleur créneau réel, formats qui performent, cadence vs cadence actuelle). Français clair, concret.",
       "instruction": "À partir de la présence (cadence, meilleur_creneau, types_contenu, top_posts, par_reseau) et de la mémoire de marque, produis : (1) cadence_recommandee (vs cadence actuelle), (2) meilleures_heures (issues de meilleur_creneau si dispo, sinon bonnes pratiques annoncées comme telles), (3) objectifs (2-4, mesurables), (4) plan_editorial : 5 à 7 publications pour la semaine, chacune {jour, heure?, format, angle (sujet précis lié à la marque/personas), reseau}. Privilégie les formats et réseaux qui performent déjà. N'invente pas de métrique."
+    },
+    "creatif": {
+      "role": "Produit des publications prêtes : hooks, scripts, prompts image, variantes.",
+      "entrees": ["memoire", "reseaux", "campagne"],
+      "modele": "claude-sonnet-4-6",
+      "liste": "idees",
+      "item_requis": ["hook", "format", "reseau"],
+      "schema_hint": "{\"idees\":[{\"hook\":\"phrase d'accroche\",\"script\":\"corps du post / script vidéo\",\"format\":\"Short|Reel|Carrousel|Post\",\"reseau\":\"TikTok|Instagram|Facebook|YouTube|LinkedIn\",\"prompt_image\":\"prompt prêt à coller (FR ou EN)\",\"variantes\":[\"autre hook\"]}]}",
+      "declencheur": "manuel",
+      "systeme": "Tu es le Créatif d'AWEMA, concepteur-rédacteur social media (marché africain). Tu écris des accroches qui arrêtent le scroll et des scripts prêts à tourner, FIDÈLES au ton et aux personas de la marque (mémoire). Tu t'appuies sur ce qui performe déjà (types_contenu, top_posts). Pas d'images générées ici : tu fournis un PROMPT IMAGE prêt à coller. Français, sauf si la marque s'exprime autrement.",
+      "instruction": "Produis 3 idées de publication prêtes à l'emploi, alignées sur la mémoire (ton, personas, produits) et sur les formats/réseaux qui marchent. Chaque idée : {hook (accroche courte), script (corps du post ou script vidéo Hook→Valeur→CTA), format, reseau, prompt_image (description visuelle prête à coller, respectant la charte), variantes (1-2 autres hooks)}. Reste concret, spécifique à la marque ; ne recycle pas des généralités."
     }
   }
 }
