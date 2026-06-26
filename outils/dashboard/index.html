@@ -908,7 +908,18 @@ function cmdGo(i){const r=cmdList[i];if(!r)return;closeCmd();
   else{go('contenus');setTimeout(()=>{const s=$("#cSearch");if(s){s.value=r.titre;s.dispatchEvent(new Event('input'));}},300);}}
 
 /* ---------- init ---------- */
+function licenceBanner(){
+  const L=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.licence)||{};
+  if(L.statut==='active') return;
+  const m=$("#main"); if(!m||document.getElementById('licBan')) return;
+  const b=document.createElement('div'); b.id='licBan';
+  b.style.cssText='margin:0 0 12px;padding:11px 15px;border-radius:12px;border:1px solid var(--border2);background:linear-gradient(120deg,rgba(255,200,97,.14),rgba(255,125,156,.10));font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap';
+  b.innerHTML='<span style="font-size:16px">🗝️</span><b>Instance non activée'+(L.statut==='revoquee'?' · licence révoquée':'')+'</b>'+
+    '<span style="color:var(--muted)">— pour brancher officiellement les API de tes clients, active ton accès auprès d\'AWEMA.</span>';
+  m.insertBefore(b, m.firstChild);
+}
 function boot(){
+  licenceBanner();
   CLIENTS=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
   if(!CLIENTS.length&&window.CAMPAGNE){CLIENTS=[{id:'la-grande-vision',nom:window.CAMPAGNE.client||'Client',
     lieu:window.CAMPAGNE.lieu||'',secteur:'',statut:'actif',profils:{},reseaux:null,

@@ -57,7 +57,9 @@ def main():
             "agents": agents or None,                       # sorties IA (depuis _agents/) ou null
         })
 
+    lic = lire(os.path.join(RACINE, "config", "licence.json")) or {}
     registre = {"genere": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "licence": {"statut": lic.get("statut", "non-active"), "agence": lic.get("agence", "")},
                 "clients": clients}
     out = os.path.join(ICI, "agence.js")
     with open(out, "w", encoding="utf-8") as f:

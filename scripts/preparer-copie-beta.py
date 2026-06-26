@@ -78,6 +78,16 @@ def main():
     json.dump(CONFIG_TEMPLATE, open(os.path.join(cible, "config", "agence.json"), "w",
               encoding="utf-8"), ensure_ascii=False, indent=2)
 
+    # 2a) Licence remise à NON-ACTIVE : le pilote doit l'activer auprès d'AWEMA
+    lic_path = os.path.join(cible, "config", "licence.json")
+    if os.path.exists(lic_path):
+        try:
+            lic = json.load(open(lic_path, encoding="utf-8"))
+            lic.update({"agence": "", "cle": "", "statut": "non-active"})
+            json.dump(lic, open(lic_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
     # 2b) Neutralise le README du département (retire la liste des clients réels)
     rdm = os.path.join(cible, "departements", "marketing", "README.md")
     if os.path.exists(rdm):

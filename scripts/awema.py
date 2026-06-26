@@ -23,6 +23,7 @@ Commandes :
   awema rotate  <plat> KEY=VAL       incrémente un identifiant (garde l'ancien en historique)
   awema history <plat> [--reveal]    historique des identifiants (masqué par défaut)
   awema setup [KEY=VAL ...]          personnalise l'agence (auto-hébergement) → config/agence.json
+  awema licence <delivrer|set|verifier|revoquer> …   activation/contrôle (voir docs/ACCES-AGENCE.md)
   awema client new <slug|auto> ...   crée la fiche d'un client
   awema client memoire <slug> ...    édite la Mémoire Marketing (ton, personas, produits, faq…)
   awema client list                  liste les clients gérés
@@ -109,6 +110,7 @@ def cmd_client_new(slug, pairs):
 
 
 CONFIG_PATH = os.path.join(RACINE, "config", "agence.json")
+LICENCE_PATH = os.path.join(RACINE, "config", "licence.json")
 CONFIG_CHAMPS = ("nom", "nom_complet", "tagline", "slogan", "initiales", "langue", "contact")
 CHARTE_KEYS = ("nuit", "ciel", "gold", "violet", "mint", "pink")
 
@@ -226,6 +228,57 @@ def cmd_client_memoire(slug, pairs):
     print(f"✅ Mémoire « {slug} » mise à jour → {os.path.relpath(mj, RACINE)}")
     subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
     print("La mémoire nourrit les agents IA (Analyste, Stratège, Créatif).")
+
+
+def _licence_lire():
+    try:
+        return json.load(open(LICENCE_PATH, encoding="utf-8"))
+    except Exception:
+        return {"agence": "", "cle": "", "statut": "non-active", "delivre_par": "AWEMA"}
+
+
+def _licence_valide(cle):
+    return bool(re.match(r"^AWEMA-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$", cle or ""))
+
+
+def cmd_licence(args):
+    """Gère la licence d'activation (outil de contrôle — cf. docs/ACCES-AGENCE.md).
+    delivrer "<agence>" : génère une clé à transmettre · set <cle> : active l'instance ·
+    verifier : état · revoquer : désactive. Rappel : le vrai verrou est l'accès API (modèle B)."""
+    import hashlib
+    sub = args[0] if args else "verifier"
+    lic = _licence_lire()
+    if sub == "delivrer":
+        agence = args[1] if len(args) > 1 else ""
+        if not agence:
+            sys.exit('Usage : awema licence delivrer "Nom de l\'agence"')
+        h = hashlib.sha256((agence + os.urandom(8).hex()).encode()).hexdigest().upper()
+        cle = "AWEMA-" + h[0:4] + "-" + h[4:8] + "-" + h[8:12]
+        print(f"🔑 Licence pour « {agence} » :\n   {cle}")
+        print("→ Transmets-la à l'agence (elle l'active : awema licence set " + cle + ").")
+        print("→ Note-la dans config/beta-seats.json. Révocable : awema licence revoquer.")
+        print("→ Rappel : délivre AUSSI l'accès API (modèle B) — c'est le verrou réel.")
+        return
+    if sub == "set":
+        cle = args[1] if len(args) > 1 else ""
+        agence = next((a.split("=", 1)[1] for a in args[2:] if a.startswith("agence=")), lic.get("agence", ""))
+        if not _licence_valide(cle):
+            sys.exit("❌ clé invalide (format AWEMA-XXXX-XXXX-XXXX). Demande-la à l'éditeur AWEMA.")
+        lic.update({"cle": cle, "agence": agence, "statut": "active"})
+        json.dump(lic, open(LICENCE_PATH, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        print(f"✅ Instance activée pour « {agence or '—'} ».")
+        subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
+        return
+    if sub == "revoquer":
+        lic.update({"cle": "", "statut": "revoquee"})
+        json.dump(lic, open(LICENCE_PATH, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        print("⛔ Licence révoquée. Rappel : révoque AUSSI l'accès API (le verrou réel).")
+        subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
+        return
+    ok = lic.get("statut") == "active" and _licence_valide(lic.get("cle"))
+    print(f"Licence : {'✅ active' if ok else '❌ ' + str(lic.get('statut'))} · agence: {lic.get('agence') or '—'}")
+    if not ok:
+        print("Activer : awema licence set <cle-fournie-par-AWEMA>")
 
 
 def cmd_client_list():
@@ -458,6 +511,8 @@ def main():
             cmd_client_list()
         elif c == "setup":
             cmd_setup([x for x in a[1:] if "=" in x])
+        elif c == "licence":
+            cmd_licence(a[1:])
         else:
             print(__doc__)
             sys.exit(1)
