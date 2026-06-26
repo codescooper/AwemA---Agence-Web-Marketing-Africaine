@@ -37,6 +37,7 @@ def main():
         client = lire(cj) or {}
         campagne = lire(os.path.join(donnees, "campagne.json"))
         reseaux = lire(os.path.join(donnees, "reseaux.json"))
+        memoire = lire(os.path.join(donnees, "memoire.json"))   # Mémoire Marketing (M1)
         client_dir = os.path.dirname(donnees)         # .../<client>
         rel = os.path.relpath(client_dir, RACINE).replace(os.sep, "/")
         # Sorties des agents IA (additives) : _donnees/_agents/<agent>.json
@@ -52,6 +53,7 @@ def main():
             "campagne": {"total": (campagne or {}).get("total", 0),
                          "contenus": (campagne or {}).get("contenus", [])} if campagne else None,
             "reseaux": reseaux,                             # métriques (depuis reseaux.json) ou null
+            "memoire": memoire,                             # Mémoire Marketing (depuis memoire.json) ou null
             "agents": agents or None,                       # sorties IA (depuis _agents/) ou null
         })
 

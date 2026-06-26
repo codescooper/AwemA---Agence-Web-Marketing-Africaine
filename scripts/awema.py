@@ -24,6 +24,7 @@ Commandes :
   awema history <plat> [--reveal]    historique des identifiants (masqué par défaut)
   awema setup [KEY=VAL ...]          personnalise l'agence (auto-hébergement) → config/agence.json
   awema client new <slug|auto> ...   crée la fiche d'un client
+  awema client memoire <slug> ...    édite la Mémoire Marketing (ton, personas, produits, faq…)
   awema client list                  liste les clients gérés
 """
 import json
@@ -149,6 +150,82 @@ def cmd_setup(pairs):
     subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
     print("\nTout l'outil (accueil, dashboard, guides) s'adapte automatiquement.")
     print("Pousse tes changements puis active GitHub Pages (depuis la racine) sur ton fork.")
+
+
+def memoire_vide():
+    """Schéma de la Mémoire Marketing d'un client (cf. docs/PRD-AWEMA.md §6)."""
+    return {
+        "identite": {"mission": "", "proposition_valeur": "", "cible": "", "secteur": ""},
+        "ton": "", "charte": {"couleurs": [], "polices": [], "mots_cles": []},
+        "personas": [], "produits": [], "faq": [], "campagnes": [],
+        "performances_synthese": "", "references_visuelles": [],
+    }
+
+
+_MEM_SCALAIRES = {"ton": ("ton",), "mission": ("identite", "mission"),
+                  "cible": ("identite", "cible"), "secteur": ("identite", "secteur"),
+                  "proposition": ("identite", "proposition_valeur"),
+                  "perf": ("performances_synthese",)}
+
+
+def appliquer_memoire(mem, pairs):
+    """Applique des paires à la mémoire. Fonction PURE (testable). Renvoie la mémoire modifiée.
+    Scalaire : ton=… mission=… cible=… secteur=… proposition=… perf=…
+    Listes (append) : faq+="Q::R"  persona+="Nom::besoin::objection"  produit+="Nom::desc::prix"
+                      mot_cle+="…"  couleur+="…"  police+="…\""""
+    def parts(v, n):
+        p = [x.strip() for x in v.split("::")]
+        return (p + [""] * n)[:n]
+    for kv in pairs:
+        if "+=" in kv:
+            k, v = kv.split("+=", 1)
+            if k == "faq":
+                q, r = parts(v, 2); mem["faq"].append({"q": q, "r": r})
+            elif k == "persona":
+                n, b, o = parts(v, 3); mem["personas"].append({"nom": n, "besoin": b, "objection": o})
+            elif k == "produit":
+                n, d, p = parts(v, 3); mem["produits"].append({"nom": n, "description": d, "prix": p})
+            elif k == "mot_cle":
+                mem["charte"]["mots_cles"].append(v.strip())
+            elif k == "couleur":
+                mem["charte"]["couleurs"].append(v.strip())
+            elif k == "police":
+                mem["charte"]["polices"].append(v.strip())
+            else:
+                raise ValueError(f"liste inconnue « {k}+= » (faq/persona/produit/mot_cle/couleur/police)")
+        elif "=" in kv:
+            k, v = kv.split("=", 1)
+            if k not in _MEM_SCALAIRES:
+                raise ValueError(f"clé inconnue « {k} » (voir : awema client memoire <slug>)")
+            tgt, path = mem, _MEM_SCALAIRES[k]
+            for p in path[:-1]:
+                tgt = tgt.setdefault(p, {})
+            tgt[path[-1]] = v
+        else:
+            raise ValueError(f"format attendu KEY=VALUE ou KEY+=VALUE (reçu : {kv})")
+    return mem
+
+
+def cmd_client_memoire(slug, pairs):
+    donnees = os.path.join(CLIENTS_DIR, slug, "_donnees")
+    if not os.path.isdir(donnees):
+        sys.exit(f"❌ client introuvable : {slug} (crée-le d'abord : awema client new …)")
+    mj = os.path.join(donnees, "memoire.json")
+    try:
+        mem = json.load(open(mj, encoding="utf-8"))
+    except Exception:
+        mem = memoire_vide()
+    if not pairs:
+        print(f"Mémoire de « {slug} » ({os.path.relpath(mj, RACINE)}) :")
+        print(json.dumps(mem, ensure_ascii=False, indent=2))
+        print("\nÉditer : awema client memoire " + slug +
+              " ton=\"…\" mission=\"…\" faq+=\"Question::Réponse\" persona+=\"Nom::besoin\"")
+        return
+    mem = appliquer_memoire(mem, pairs)
+    json.dump(mem, open(mj, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    print(f"✅ Mémoire « {slug} » mise à jour → {os.path.relpath(mj, RACINE)}")
+    subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
+    print("La mémoire nourrit les agents IA (Analyste, Stratège, Créatif).")
 
 
 def cmd_client_list():
@@ -375,6 +452,8 @@ def main():
             cmd_connect(a[1])
         elif c == "client" and len(a) >= 3 and a[1] == "new":
             cmd_client_new(a[2], a[3:])
+        elif c == "client" and len(a) >= 3 and a[1] == "memoire":
+            cmd_client_memoire(a[2], a[3:])
         elif c == "client" and len(a) >= 2 and a[1] == "list":
             cmd_client_list()
         elif c == "setup":

@@ -38,7 +38,8 @@
 ## Horizon 2 — BÊTA : le « wow » (peu de features, ultra-finies)
 > 5–6 livrables qui font dire « je gagne des heures ». Chaque agent est **additif** et **sourcé**.
 
-1. ⭐ **Mémoire Marketing** (`memoire.json`) + seed à l'onboarding → carburant des agents.
+1. ✅ **Mémoire Marketing** (`memoire.json`) + éditeur `memoire.html` + `awema client memoire` +
+   exposition au registre + carte cockpit. *(M1 livré)*
 2. ⭐ **Agent Analyste** — *pourquoi / que faire / que reproduire* sur la présence réelle → `analyste.json`
    → panneau « Pourquoi & Que faire » dans le cockpit.
 3. ⭐ **Agent Stratège** — planning éditorial + cadence + meilleures heures + objectifs → `stratege.json`.

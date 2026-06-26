@@ -457,10 +457,30 @@ function cAgents(){
         puis régénère le registre. <span style="color:var(--muted2)">— socle M0, panneaux riches à venir (M2–M5).</span></div>`}`;
 }
 
+/* ---------- Mémoire Marketing (M1) — carburant des agents ---------- */
+function cMemoire(){
+  const m=(ACTIVE&&ACTIVE.memoire)||null, id=(m&&m.identite)||{};
+  const champs=[id.mission,id.cible,id.proposition_valeur,m&&m.ton];
+  const remplis=champs.filter(Boolean).length+((m&&(m.personas||[]).length)?1:0)+((m&&(m.produits||[]).length)?1:0)+((m&&(m.faq||[]).length)?1:0);
+  const pct=Math.round(remplis/7*100);
+  const url='../../memoire.html?client='+(ACTIVE?ACTIVE.id:'');
+  return `<h3>${ic('layers')} Mémoire Marketing <span class="pill" style="background:#34E5C422;color:#34E5C4;border-color:#34E5C455">${pct}%</span></h3>
+    <div class="sub">L'ADN de marque qui nourrit les agents IA</div>
+    ${m&&remplis?`<div style="margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.7">
+      ${id.mission?`<div><b style="color:var(--tx)">Mission</b> · ${id.mission}</div>`:''}
+      ${m.ton?`<div><b style="color:var(--tx)">Ton</b> · ${m.ton}</div>`:''}
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <span class="pill">${(m.personas||[]).length} personas</span>
+        <span class="pill">${(m.produits||[]).length} produits</span>
+        <span class="pill">${(m.faq||[]).length} FAQ</span></div></div>`
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Pas encore de mémoire. Renseigne identité, ton, personas, produits, FAQ — les agents en ont besoin.</div>`}
+    <div style="margin-top:14px"><a class="mini gold" href="${url}" target="_blank" rel="noopener" style="text-decoration:none">Éditer la mémoire ↗</a></div>`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
   cKpisReal();
-  add(cAgents(), 'col6');
+  add(cMemoire(), 'col6'); add(cAgents(), 'col6');
   if(RES&&RES.connecte)add(cActionsCom(), A.total?'col6':'col12');
   if(!A.total){add(`<h3>${ic('layers')} Pas encore de plan de contenu</h3>
     <div class="sub">${ACTIVE?ACTIVE.nom:''}</div>
