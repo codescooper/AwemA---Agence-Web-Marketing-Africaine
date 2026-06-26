@@ -35,9 +35,10 @@ C'est le point qui réconcilie « équipe d'agents IA » avec l'ADN. **ADR-001 :
   back-end : éphémère, sans serveur permanent.
 - **Entrées** : la **mémoire** du client (`memoire.json`), la **présence réelle** (`reseaux.json`),
   le plan (`campagne.json`), et plus tard le **marché** (`marche.json`).
-- **LLM** : API **Claude (Anthropic)**, modèles les plus récents (opus pour le raisonnement lourd,
-  sonnet/haiku pour le volume), via une clé **`ANTHROPIC_API_KEY` en GitHub Secret** / `.awema` local.
-  Runner = Internet. **Skip gracieux si la clé manque** (comme les autres connecteurs).
+- **LLM** : **agnostique** — n'importe quel fournisseur **compatible OpenAI** (Groq, Gemini, OpenRouter,
+  Cerebras, Mistral, GitHub Models, Ollama local…) **ou Anthropic** (Claude). Registre + options
+  **gratuites** : `config/ia-providers.json` (cf. [[12-connecter-ia]]). Clé en **GitHub Secret** / `.awema`
+  local. Runner = Internet. **Skip gracieux si aucune clé** (comme les autres connecteurs). Zéro verrou fournisseur.
 - **Sorties** : des **artefacts JSON déterministes**, versionnés, écrits dans `_agents/` par client
   (`_agents/analyste.json`, `_agents/creatif.json`, …). Auditable, diff-able, réversible.
 - **Cockpit (statique)** : lit ces artefacts et les **rend proactivement** (feed « Actions du jour »,

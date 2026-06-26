@@ -64,17 +64,23 @@
       "note": "Guide pas à pas : connect-linkedin.html. Connecteur --linkedin-all : résout l'org par vanity name (/company/<slug>), lit abonnés + impressions/engagement (Community Management API). Pré-requis : Page entreprise (admin), app vérifiée, produit Community Management API (Development Tier = immédiat pour ses propres Pages).",
       "doc": "docs/10-connecter-linkedin.md"
     },
-    "claude": {
-      "label": "Claude (IA — agents AWEMA)",
+    "ia": {
+      "label": "IA (agents AWEMA — fournisseur au choix)",
       "statut": "operationnel",
       "keys": [
-        {"name": "ANTHROPIC_API_KEY", "secret": true, "github": "secret",
-         "prompt": "Clé API Anthropic (console.anthropic.com) — alimente les agents IA (Analyste, Stratège, Créatif…)"}
+        {"name": "AWEMA_AI_PROVIDER", "secret": false, "github": "variable", "optional": true,
+         "prompt": "Fournisseur d'IA à utiliser : groq, gemini, openrouter, cerebras, mistral, github, ollama, anthropic, openai (sinon auto-détection)"},
+        {"name": "GROQ_API_KEY", "secret": true, "github": "secret", "optional": true, "prompt": "Clé Groq (GRATUIT — console.groq.com/keys)"},
+        {"name": "GEMINI_API_KEY", "secret": true, "github": "secret", "optional": true, "prompt": "Clé Google Gemini (GRATUIT — aistudio.google.com/apikey)"},
+        {"name": "OPENROUTER_API_KEY", "secret": true, "github": "secret", "optional": true, "prompt": "Clé OpenRouter (modèles :free — openrouter.ai/keys)"},
+        {"name": "MISTRAL_API_KEY", "secret": true, "github": "secret", "optional": true, "prompt": "Clé Mistral (palier gratuit — console.mistral.ai)"},
+        {"name": "ANTHROPIC_API_KEY", "secret": true, "github": "secret", "optional": true, "prompt": "Clé Anthropic/Claude (crédits d'essai — console.anthropic.com)"},
+        {"name": "OPENAI_API_KEY", "secret": true, "github": "secret", "optional": true, "prompt": "Clé OpenAI (payant)"}
       ],
       "commands": {"sync_workflow": "agents.yml"},
-      "rotate": "Régénère une clé sur console.anthropic.com, puis : awema rotate claude ANTHROPIC_API_KEY=<nouvelle>. Mets à jour le Secret GitHub ANTHROPIC_API_KEY.",
-      "note": "Brique IA : scripts/awema_ai.py (client stdlib, skip gracieux sans clé) + scripts/run-agent.py + manifeste scripts/agents.json. Sans clé, les agents sont simplement désactivés.",
-      "doc": "docs/PRD-AWEMA.md"
+      "rotate": "Régénère la clé chez le fournisseur, puis : awema rotate ia <CLE>=<nouvelle>. Mets à jour le Secret GitHub correspondant.",
+      "note": "Système AGNOSTIQUE : tout fournisseur compatible OpenAI ou Anthropic. Registre + options GRATUITES : config/ia-providers.json (python3 scripts/awema_ai.py --providers). Brique : scripts/awema_ai.py + run-agent.py + agents.json. Sans clé → agents désactivés (skip gracieux).",
+      "doc": "docs/12-connecter-ia.md"
     }
   }
 }

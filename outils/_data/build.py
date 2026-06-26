@@ -74,6 +74,15 @@ def main():
         f.write("window.AWEMA_CONFIG = ")
         json.dump(cfg, f, ensure_ascii=False)
         f.write(";\n")
+
+    # Registre des fournisseurs d'IA → ia-providers.js (pour le guide connect-ia.html)
+    ia = lire(os.path.join(RACINE, "config", "ia-providers.json")) or {}
+    ia.pop("_doc", None)
+    with open(os.path.join(ICI, "ia-providers.js"), "w", encoding="utf-8") as f:
+        f.write("// Généré par build.py depuis config/ia-providers.json — édite le JSON, pas ce fichier.\n")
+        f.write("window.AWEMA_IA_PROVIDERS = ")
+        json.dump(ia, f, ensure_ascii=False)
+        f.write(";\n")
     noms = ", ".join(c.get("nom", c.get("id", "?")) for c in clients) or "(aucun)"
     print(f"✅ agence.js — {len(clients)} client(s) : {noms}")
     for c in clients:

@@ -22,17 +22,25 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Faire travailler les agents IA (skip si pas de clé)
+      - name: Faire travailler les agents IA (fournisseur au choix ; skip si aucune clé)
         env:
+          # Système agnostique : passe les clés disponibles, awema_ai choisit (ou s'auto-désactive).
+          AWEMA_AI_PROVIDER: ${{ vars.AWEMA_AI_PROVIDER }}
+          AWEMA_AI_MODEL: ${{ vars.AWEMA_AI_MODEL }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "ℹ️ Pas de ANTHROPIC_API_KEY → agents IA ignorés (actions-du-jour reste actif)."
-          else
-            for a in analyste stratege creatif; do
-              echo "▶ $a"; python3 scripts/run-agent.py "$a" --all || true
-            done
-          fi
+          python3 scripts/awema_ai.py --check
+          for a in analyste stratege creatif; do
+            echo "▶ $a"; python3 scripts/run-agent.py "$a" --all || true
+          done
 
       - name: Agréger « les actions du jour » (sans clé requise)
         run: python3 scripts/run-agent.py actions-du-jour --all || true

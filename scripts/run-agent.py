@@ -81,7 +81,7 @@ def _executer(nom, defn, client, donnees):
     else:
         items, extra = [], {}
     env = awema_ai.enveloppe(
-        nom, items if isinstance(items, list) else [], defn.get("modele") or awema_ai.DEFAULT_MODEL,
+        nom, items if isinstance(items, list) else [], awema_ai.modele_actif(defn.get("modele")),
         {"client": client.get("id"), "fichiers": fichiers, "genere_par": "run-agent.py"})
     env.update(extra)                                        # champs structurés en plus d'items
     ok, err = awema_ai.valider_enveloppe(env, defn.get("item_requis"))
