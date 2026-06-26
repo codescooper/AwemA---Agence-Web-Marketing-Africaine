@@ -747,7 +747,7 @@ function viewReseaux(){
         <div class="kpibox"><div class="val2" style="color:${cad.jours_depuis>7?'#FF7D9C':'#34E5C4'}">${cad.jours_depuis==null?'—':cad.jours_depuis+' j'}</div><div class="lab">depuis le dernier post</div></div>
         <div class="kpibox"><div class="val2">${cad.posts_par_semaine}</div><div class="lab">posts / semaine</div></div>
         <div class="kpibox"><div class="val2">${cad.posts_30j}</div><div class="lab">posts (30 j)</div></div>
-        <div class="kpibox"><div class="val2" style="font-size:14px">${tempsRel(cad.dernier_post)}</div><div class="lab">dernière publication</div></div>
+        <div class="kpibox"><div class="val2" style="font-size:14px">${tempsRel(cad.dernier_post)}</div><div class="lab">dernière publication${cad.dernier_reseau?' · '+cad.dernier_reseau:''}</div></div>
       </div>`:`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Pas assez de posts récents.':'À connecter.'}</div>`}`,'col6');
 
   /* ---- Réactions détaillées ---- */

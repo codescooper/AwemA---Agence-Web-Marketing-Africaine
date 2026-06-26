@@ -244,9 +244,11 @@
   },
   "cadence": {
     "dernier_post": "2018-09-29T10:53:26+0000",
-    "jours_depuis": 2825,
+    "jours_depuis": 2827,
     "posts_30j": 0,
-    "posts_par_semaine": 0.0
+    "posts_par_semaine": 0.0,
+    "dernier_reseau": "Facebook",
+    "multi_reseaux": true
   },
   "meilleur_creneau": {
     "jour": "Lundi",

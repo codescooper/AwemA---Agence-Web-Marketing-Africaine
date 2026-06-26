@@ -104,9 +104,11 @@
   },
   "cadence": {
     "dernier_post": "2021-06-03T18:06:21+0000",
-    "jours_depuis": 1847,
+    "jours_depuis": 1849,
     "posts_30j": 0,
-    "posts_par_semaine": 0.0
+    "posts_par_semaine": 0.0,
+    "dernier_reseau": "Facebook",
+    "multi_reseaux": true
   },
   "meilleur_creneau": {
     "jour": "Jeudi",

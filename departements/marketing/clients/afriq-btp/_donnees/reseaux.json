@@ -204,9 +204,11 @@
   },
   "cadence": {
     "dernier_post": "2019-11-16T04:13:09+0000",
-    "jours_depuis": 2413,
+    "jours_depuis": 2414,
     "posts_30j": 0,
-    "posts_par_semaine": 0.0
+    "posts_par_semaine": 0.0,
+    "dernier_reseau": "Facebook",
+    "multi_reseaux": true
   },
   "meilleur_creneau": {
     "jour": "Samedi",

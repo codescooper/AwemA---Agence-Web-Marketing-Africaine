@@ -171,10 +171,12 @@
     "angry": 0
   },
   "cadence": {
-    "dernier_post": "2020-03-29T01:06:14+0000",
-    "jours_depuis": 2279,
+    "dernier_post": "2026-06-23T18:25:16+00:00",
+    "jours_depuis": 3,
     "posts_30j": 0,
-    "posts_par_semaine": 0.0
+    "posts_par_semaine": 0.0,
+    "dernier_reseau": "TikTok",
+    "multi_reseaux": true
   },
   "meilleur_creneau": {
     "jour": "Vendredi",

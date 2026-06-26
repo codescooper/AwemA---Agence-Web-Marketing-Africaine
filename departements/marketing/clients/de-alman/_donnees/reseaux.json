@@ -253,5 +253,11 @@
       "date": "2026-06-25",
       "valeur": 703
     }
-  ]
+  ],
+  "cadence": {
+    "dernier_post": "2026-06-23T06:09:13+00:00",
+    "jours_depuis": 3,
+    "dernier_reseau": "TikTok",
+    "multi_reseaux": true
+  }
 }

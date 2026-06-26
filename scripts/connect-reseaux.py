@@ -273,6 +273,7 @@ def _ecrire(client_dir, data):
         base.pop(k, None)
 
     _consolider(base)                                # reconsolide sur les réseaux fusionnés
+    _cadence_multi(base)                             # « dernier post » TOUS réseaux (pas seulement FB)
 
     audience = base["global"].get("audience")
     if audience is not None:
@@ -467,6 +468,35 @@ def _cadence(data, posts):
     data["cadence"] = {
         "dernier_post": dates[0], "jours_depuis": jours_depuis, "posts_30j": p30,
         "posts_par_semaine": round(p30 / 4.345, 1)}
+
+
+def _cadence_multi(base):
+    """Consolide « dernier post » sur TOUS les réseaux (Facebook ⊕ TikTok ⊕ YouTube ⊕ LinkedIn).
+    Corrige le cas où la cadence ne reflétait que Facebook : on prend le post le plus récent,
+    quel que soit le réseau, et on note de quel réseau il vient."""
+    candidats = []
+    cad = base.get("cadence") or {}
+    if cad.get("dernier_post"):
+        candidats.append((cad["dernier_post"], "Facebook"))
+    for net, label in (("tiktok", "TikTok"), ("youtube", "YouTube"), ("linkedin", "LinkedIn")):
+        obj = base.get(net) or {}
+        if obj.get("dernier_post"):
+            candidats.append((obj["dernier_post"], label))
+    for p in base.get("top_posts") or []:               # filet : tout post daté
+        if p.get("date"):
+            candidats.append((p["date"], p.get("plateforme") or "?"))
+    parsed = [(_parse_dt(d), d, lab) for d, lab in candidats]
+    parsed = [x for x in parsed if x[0]]
+    if not parsed:
+        return
+    parsed.sort(key=lambda x: x[0], reverse=True)
+    dt, raw, lab = parsed[0]
+    cad = dict(cad)
+    cad["dernier_post"] = raw
+    cad["jours_depuis"] = (datetime.now(timezone.utc) - dt).days
+    cad["dernier_reseau"] = lab
+    cad["multi_reseaux"] = True
+    base["cadence"] = cad
 
 
 def _creneau(data, posts):
@@ -678,10 +708,12 @@ def _tiktok_data(user, videos):
             "commentaires": v.get("comment_count", 0), "partages": v.get("share_count", 0),
             "vues": v.get("view_count", 0), "type": "vidéo"})
     data["top_posts"] = top
+    dpost = max((p["date"] for p in top if p.get("date")), default=None)  # dernier post réel TikTok
     data["tiktok"] = {
         "abonnes": user.get("follower_count"), "video_count": user.get("video_count"),
         "likes_total": user.get("likes_count"),
         "vues_recentes": tk["vues"], "display_name": user.get("display_name"),
+        "dernier_post": dpost,
         "top_videos": sorted(top, key=lambda p: p["vues"], reverse=True)[:8],
         "maj": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     return data
@@ -871,9 +903,10 @@ def _youtube_data(key, handle, chid):
     yt["likes"] = sum(v["likes"] for v in vids) or None
     yt["commentaires"] = sum(v["commentaires"] for v in vids) or None
     data["top_posts"] = vids
+    ydpost = max((v["date"] for v in vids if v.get("date")), default=None)  # dernière vidéo réelle
     data["youtube"] = {
         "abonnes": yt["abonnes"], "video_count": yt["posts"], "vues_totales": yt["vues"],
-        "titre": (ch.get("snippet", {}) or {}).get("title"),
+        "titre": (ch.get("snippet", {}) or {}).get("title"), "dernier_post": ydpost,
         "top_videos": sorted(vids, key=lambda x: x["vues"], reverse=True)[:8],
         "maj": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     data["_channel_id"] = ch.get("id")
