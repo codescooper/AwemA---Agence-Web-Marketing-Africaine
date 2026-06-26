@@ -503,11 +503,34 @@ function cAnalyste(connected){
     </div>`;
 }
 
+/* ---------- Agent Stratège (M3) : Plan recommandé ---------- */
+function cStratege(){
+  const s=loadAgent(ACTIVE,'stratege');
+  const head=`<h3>${ic('cal')} Plan recommandé <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  if(!s){return head+`<div class="sub">Le Stratège transforme tes perfs en plan d'action</div>
+    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.7">Pas encore de plan.
+    Génère-le : <code>python3 scripts/run-agent.py stratege ${ACTIVE?ACTIVE.id:'<client>'}</code> (clé IA requise).</div>`;}
+  const plan=(s.items||[]), heures=(s.meilleures_heures||[]), obj=(s.objectifs||[]);
+  return head+`<div class="sub">Stratège IA${s.genere_le?' · '+s.genere_le.slice(0,10):''} — à valider avant d'agir</div>
+    <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+      ${s.cadence_recommandee?`<span class="pill" style="background:#34E5C422;color:#34E5C4">🎯 ${s.cadence_recommandee}</span>`:''}
+      ${heures.map(h=>`<span class="pill">🕐 ${h}</span>`).join('')}</div>
+    ${obj.length?`<div style="margin-top:12px"><div class="lab">Objectifs</div><div class="list">${obj.map(o=>`<div class="li"><span style="color:var(--mint)">◎</span><span class="t">${typeof o==='string'?o:(o.titre||o.objectif||'')}</span></div>`).join('')}</div></div>`:''}
+    ${plan.length?`<div style="margin-top:12px"><div class="lab">Semaine proposée (${plan.length})</div>
+      <div class="list">${plan.map(p=>{const col=(PLAT[(p.reseau||'').toLowerCase()]||{}).c||'#7C5CFF';
+        return `<div class="li"><span class="pill" style="width:74px;justify-content:center">${p.jour||''}${p.heure?' '+p.heure:''}</span>
+          <span class="pill" style="border-color:${col}66;color:${col}">${p.reseau||''}</span>
+          <span class="pill">${p.format||''}</span>
+          <span class="t" title="${(p.angle||'').replace(/"/g,'&quot;')}">${p.angle||''}</span></div>`;}).join('')}</div></div>`:''}
+    <div style="margin-top:14px"><button class="mini gold" onclick="toast('Pour pousser ce plan : python3 scripts/awema.py … (validation humaine requise)')">Pousser vers le plan →</button></div>`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
   cKpisReal();
   add(cMemoire(), 'col6'); add(cAgents(), 'col6');
   if(RES&&RES.connecte)add(cActionsCom(), A.total?'col6':'col12');
+  add(cStratege(), 'col12');
   if(!A.total){add(`<h3>${ic('layers')} Pas encore de plan de contenu</h3>
     <div class="sub">${ACTIVE?ACTIVE.nom:''}</div>
     <div style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6">Générez le plan éditorial du client (générateur) ou consultez sa présence digitale.</div>

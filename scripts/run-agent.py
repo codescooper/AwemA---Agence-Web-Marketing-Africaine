@@ -63,8 +63,7 @@ def _executer(nom, defn, client, donnees):
     prompt = (f"{defn.get('instruction','')}\n\n"
               f"Client : {client.get('nom')} ({client.get('secteur','')}).\n"
               f"Données disponibles (JSON) :\n{json.dumps(ctx, ensure_ascii=False)[:12000]}")
-    schema_hint = ('{"items":[{"type":"...","titre":"...","explication":"...",'
-                   '"preuve":{"metrique":"...","valeur":0},"action":"..."}]}')
+    schema_hint = defn.get("schema_hint") or '{"items":[{"titre":"...","explication":"..."}]}'
     try:
         rep = awema_ai.chat(prompt, system=defn.get("systeme"),
                             schema_hint=schema_hint, model=defn.get("modele"))
@@ -72,10 +71,19 @@ def _executer(nom, defn, client, donnees):
         return None, f"appel IA échoué : {e}"
     if rep is None:
         return None, "skip (pas de clé IA)"
-    items = rep.get("items", []) if isinstance(rep, dict) else (rep if isinstance(rep, list) else [])
+    liste = defn.get("liste", "items")                       # clé de la liste principale
+    if isinstance(rep, list):
+        items = rep
+        extra = {}
+    elif isinstance(rep, dict):
+        items = rep.get(liste, rep.get("items", []))
+        extra = {k: rep[k] for k in defn.get("champs_sortie", []) if k in rep}
+    else:
+        items, extra = [], {}
     env = awema_ai.enveloppe(
-        nom, items, defn.get("modele") or awema_ai.DEFAULT_MODEL,
+        nom, items if isinstance(items, list) else [], defn.get("modele") or awema_ai.DEFAULT_MODEL,
         {"client": client.get("id"), "fichiers": fichiers, "genere_par": "run-agent.py"})
+    env.update(extra)                                        # champs structurés en plus d'items
     ok, err = awema_ai.valider_enveloppe(env, defn.get("item_requis"))
     if not ok:
         return None, "sortie invalide : " + " ; ".join(err[:3])

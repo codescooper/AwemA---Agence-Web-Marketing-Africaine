@@ -43,7 +43,9 @@
 2. ✅ **Agent Analyste** — *pourquoi / que faire* sur la présence réelle → `_agents/analyste.json` →
    panneau **« Pourquoi & Que faire »** (constats sourcés + actions, preuve chiffrée, label « proposition IA »)
    dans la vue Présence digitale. *(M2 livré — sortie live dès `ANTHROPIC_API_KEY` fournie)*
-3. ⭐ **Agent Stratège** — planning éditorial + cadence + meilleures heures + objectifs → `stratege.json`.
+3. ✅ **Agent Stratège** — cadence + meilleures heures + objectifs + plan éditorial hebdo →
+   `_agents/stratege.json` → panneau **« Plan recommandé »** (cockpit). *(M3 livré — contrat d'agent
+   généralisé : sorties structurées au-delà d'`items`)*
 4. ⭐ **Agent Créatif** — idées, hooks, scripts, prompts image (Claude) → `creatif.json` + action
    « **Générer ?** » dans le visualiseur.
 5. ⭐ **Proactivité** — agrégateur → `actions-du-jour.json` rendu en **tête du Command Center** ;

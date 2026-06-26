@@ -34,6 +34,18 @@ class TestEnveloppeAgent(unittest.TestCase):
         else:
             self.skipTest("clé IA présente dans cet environnement")
 
+    def test_enveloppe_champs_extra_struct(self):
+        # Stratège : items (plan) + champs structurés en plus (cadence, heures, objectifs)
+        env = awema_ai.enveloppe(
+            "stratege",
+            [{"jour": "Lundi", "format": "Short", "angle": "x", "reseau": "TikTok"}],
+            "claude-opus-4-8", {"client": "demo"})
+        env["cadence_recommandee"] = "4/sem"
+        env["meilleures_heures"] = ["Mardi 19h"]
+        ok, err = awema_ai.valider_enveloppe(env, ["jour", "format", "angle", "reseau"])
+        self.assertTrue(ok, err)
+        self.assertEqual(env["cadence_recommandee"], "4/sem")
+
     def test_extraction_json_robuste(self):
         self.assertEqual(awema_ai._extraire_json('Voici: {"a":1} merci'), {"a": 1})
         self.assertEqual(awema_ai._extraire_json('```json\n{"b":2}\n```'), {"b": 2})
