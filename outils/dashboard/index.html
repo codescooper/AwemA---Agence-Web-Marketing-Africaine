@@ -477,6 +477,32 @@ function cMemoire(){
     <div style="margin-top:14px"><a class="mini gold" href="${url}" target="_blank" rel="noopener" style="text-decoration:none">Éditer la mémoire ↗</a></div>`;
 }
 
+/* ---------- Agent Analyste (M2) : Pourquoi & Que faire ---------- */
+function cPreuve(p){ if(!p||p.metrique==null) return '';
+  const v=(p.valeur!=null?(typeof p.valeur==='number'?(+p.valeur).toLocaleString('fr-FR'):p.valeur):'');
+  return `<span class="pill" style="background:rgba(75,163,255,.12);color:var(--blue);border-color:rgba(75,163,255,.4)">📊 ${p.metrique}: ${v}${p.variation?` (${p.variation})`:''}</span>`;}
+function cAnalyste(connected){
+  const a=loadAgent(ACTIVE,'analyste');
+  const head=`<h3>${ic('bolt')} Pourquoi & Que faire <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  if(!a||!(a.items||[]).length){
+    return head+`<div class="sub">L'Analyste explique tes résultats et te dit quoi faire</div>
+      <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.7">${connected?'Pas encore d\'analyse.':'Connecte d\'abord les réseaux.'}
+      Génère-la : <code>python3 scripts/run-agent.py analyste ${ACTIVE?ACTIVE.id:'<client>'}</code>
+      (clé <code>ANTHROPIC_API_KEY</code> requise), puis régénère le registre.</div>`;
+  }
+  const ins=(a.items||[]).filter(i=>i.type==='insight'), rec=(a.items||[]).filter(i=>i.type==='reco');
+  const card=(i,reco)=>`<div class="li" style="flex-direction:column;align-items:flex-start;gap:5px;padding:12px 6px">
+    <div style="display:flex;gap:8px;width:100%;align-items:center">
+      <span style="font-size:15px">${reco?'✅':'💡'}</span><b style="flex:1">${i.titre||''}</b></div>
+    <div style="color:var(--muted);font-size:12.8px">${i.explication||''}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px">${cPreuve(i.preuve)}${reco&&i.action?`<span class="pill" style="background:var(--mint);color:#06231d">→ ${i.action}</span>`:''}</div></div>`;
+  return head+`<div class="sub">Analyse IA sourcée${a.genere_le?' · '+a.genere_le.slice(0,10):''}${a.modele?' · '+a.modele:''} — vérifie avant d'agir</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px">
+      <div><div class="lab" style="margin-bottom:4px">💡 Pourquoi (constats)</div><div class="list">${ins.map(i=>card(i,false)).join('')||'<div class="sub">—</div>'}</div></div>
+      <div><div class="lab" style="margin-bottom:4px">✅ Que faire (actions)</div><div class="list">${rec.map(i=>card(i,true)).join('')||'<div class="sub">—</div>'}</div></div>
+    </div>`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
   cKpisReal();
@@ -626,6 +652,9 @@ function viewReseaux(){
   kpis.forEach(([lab,v,icn,c,suf])=>{const isNull=(v==null);
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
       <div class="val" ${isNull?'':`data-to="${v}" data-suf="${suf||''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
+
+  /* ---- ANALYSTE IA : « Pourquoi & Que faire » (M2) ---- */
+  add(cAnalyste(connected), 'col12');
 
   /* ---- INBOX : commentaires à répondre (cœur du community management) ---- */
   const ar=(m&&m.a_repondre)||null;
