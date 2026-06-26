@@ -1,0 +1,35 @@
+{
+  "agent": "actions-du-jour",
+  "genere_le": "2026-06-26T18:28:42+00:00",
+  "modele": "agrégation (sans IA)",
+  "provenance": {
+    "client": "agnero-alain-photography",
+    "genere_par": "run-agent.py"
+  },
+  "items": [
+    {
+      "priorite": 1,
+      "type": "alerte",
+      "titre": "Aucune publication récente détectée",
+      "detail": "Relance la production de contenu.",
+      "source": "cadence",
+      "action": {
+        "label": "Voir la présence",
+        "kind": "view",
+        "target": "reseaux"
+      }
+    },
+    {
+      "priorite": 3,
+      "type": "opportunite",
+      "titre": "Ton format gagnant : photo",
+      "detail": "Engagement moyen 21.7 — reproduis-le.",
+      "source": "types_contenu",
+      "action": {
+        "label": "Idées créatives",
+        "kind": "view",
+        "target": "overview"
+      }
+    }
+  ]
+}

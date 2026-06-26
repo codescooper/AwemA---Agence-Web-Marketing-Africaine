@@ -90,6 +90,73 @@ def _executer(nom, defn, client, donnees):
     return env, None
 
 
+def aggreger_actions(reseaux, agents):
+    """Agrège les « actions du jour » : alertes DÉTERMINISTES (sans IA) depuis reseaux.json
+    + meilleures propositions des agents si déjà générées. Fonction PURE (testable).
+    Chaque item : {priorite(1-3), type, titre, detail, source, action:{label, kind, target}}."""
+    items, r = [], (reseaux or {})
+    cad = r.get("cadence") or {}
+    jd = cad.get("jours_depuis")
+    if jd is not None and jd > 7:
+        if jd > 90:        # dégradation gracieuse : au-delà de 90 j, la donnée est peu fiable
+            titre, detail = "Aucune publication récente détectée", "Relance la production de contenu."
+        else:
+            titre, detail = f"Cadence en retard — {jd} j sans publier", "La régularité nourrit l'algorithme. Publie aujourd'hui."
+        items.append({"priorite": 1, "type": "alerte", "titre": titre, "detail": detail,
+                      "source": "cadence", "action": {"label": "Voir la présence", "kind": "view", "target": "reseaux"}})
+    ar = r.get("a_repondre") or {}
+    if ar.get("total"):
+        items.append({"priorite": 1, "type": "inbox", "titre": f"{ar['total']} commentaire(s) à répondre",
+                      "detail": "Réponds vite pour entretenir la communauté.",
+                      "source": "a_repondre", "action": {"label": "Répondre", "kind": "view", "target": "reseaux"}})
+    ev = r.get("evolution_audience") or []
+    if (len(ev) >= 2 and isinstance(ev[-1].get("valeur"), (int, float))
+            and isinstance(ev[-2].get("valeur"), (int, float)) and ev[-1]["valeur"] < ev[-2]["valeur"]):
+        items.append({"priorite": 2, "type": "alerte", "titre": "Audience en baisse",
+                      "detail": f"{ev[-2]['valeur']} → {ev[-1]['valeur']} abonnés.",
+                      "source": "evolution_audience", "action": {"label": "Analyser", "kind": "view", "target": "reseaux"}})
+    tc = r.get("types_contenu") or {}
+    if tc:
+        best = max(tc.items(), key=lambda kv: (kv[1] or {}).get("engagement_moyen", 0))
+        if best[1] and best[1].get("engagement_moyen"):
+            items.append({"priorite": 3, "type": "opportunite", "titre": f"Ton format gagnant : {best[0]}",
+                          "detail": f"Engagement moyen {best[1]['engagement_moyen']} — reproduis-le.",
+                          "source": "types_contenu", "action": {"label": "Idées créatives", "kind": "view", "target": "overview"}})
+    ag = agents or {}
+    recos = [i for i in ((ag.get("analyste") or {}).get("items") or []) if i.get("type") == "reco"]
+    if recos:
+        it = recos[0]
+        items.append({"priorite": 2, "type": "reco", "titre": it.get("titre", ""),
+                      "detail": it.get("action") or it.get("explication", ""),
+                      "source": "analyste", "action": {"label": "Voir l'analyse", "kind": "view", "target": "reseaux"}})
+    plan = (ag.get("stratege") or {}).get("items") or []
+    if plan:
+        p = plan[0]
+        items.append({"priorite": 2, "type": "plan", "titre": f"Publie : {p.get('angle', '')}",
+                      "detail": f"{p.get('reseau', '')} · {p.get('format', '')}" + (f" · {p.get('jour')}" if p.get("jour") else ""),
+                      "source": "stratege", "action": {"label": "Voir le plan", "kind": "view", "target": "overview"}})
+    idees = (ag.get("creatif") or {}).get("items") or []
+    if idees:
+        it = idees[0]
+        items.append({"priorite": 3, "type": "creatif", "titre": f"Idée prête : {it.get('hook', '')}",
+                      "detail": f"{it.get('reseau', '')} · {it.get('format', '')}",
+                      "source": "creatif", "action": {"label": "Voir les idées", "kind": "view", "target": "overview"}})
+    items.sort(key=lambda x: x.get("priorite", 9))
+    return items[:6]
+
+
+def _actions_du_jour(client, donnees):
+    reseaux = _lire(os.path.join(donnees, "reseaux.json"))
+    ag = {}
+    for n in ("analyste", "stratege", "creatif"):
+        d = _lire(os.path.join(donnees, "_agents", n + ".json"))
+        if d:
+            ag[n] = d
+    items = aggreger_actions(reseaux, ag)
+    return awema_ai.enveloppe("actions-du-jour", items, "agrégation (sans IA)",
+                              {"client": client.get("id"), "genere_par": "run-agent.py"})
+
+
 def _ecrire(donnees, nom, env):
     d = os.path.join(donnees, "_agents")
     os.makedirs(d, exist_ok=True)
@@ -103,11 +170,31 @@ def main():
     if not a or a[0] == "--list":
         print("Agents disponibles :")
         for k, v in agents.items():
-            print(f"  • {k:12} {v.get('role','')}")
+            print(f"  • {k:14} {v.get('role','')}")
+        print(f"  • {'actions-du-jour':14} Agrège alertes + propositions → « 3 choses à faire » (SANS clé IA requise)")
         print("\nClé IA :", "✅ présente" if awema_ai.disponible()
-              else "❌ absente → skip gracieux (aucune écriture)")
+              else "❌ absente → agents IA en skip gracieux ; actions-du-jour fonctionne quand même")
         return
     nom = a[0]
+    # Agrégateur proactif : déterministe, ne nécessite PAS de clé IA
+    if nom == "actions-du-jour":
+        cibles = _clients()
+        if "--all" not in a:
+            slug = a[1] if len(a) > 1 else None
+            cibles = [(c, d) for c, d in cibles if c.get("id") == slug]
+            if not cibles:
+                sys.exit(f"❌ client introuvable : {slug}")
+        n = 0
+        for client, donnees in cibles:
+            env = _actions_du_jour(client, donnees)
+            if env["items"]:                                  # n'écrit que s'il y a des actions
+                _ecrire(donnees, "actions-du-jour", env)
+                n += 1
+                print(f"  ✓ actions-du-jour · {client.get('id')} — {len(env['items'])} action(s)")
+            else:
+                print(f"  · actions-du-jour · {client.get('id')} — rien à signaler")
+        print(f"✅ actions-du-jour : {n} client(s) avec des actions. Régénère : python3 outils/_data/build.py")
+        return
     if nom not in agents:
         sys.exit(f"❌ agent inconnu : {nom} (voir --list)")
     if not awema_ai.disponible():

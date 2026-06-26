@@ -49,8 +49,9 @@
 4. ✅ **Agent Créatif** — idées, hooks, scripts, prompts image (texte, sans OpenAI) → `_agents/creatif.json`
    → panneau **« Idées prêtes à publier »** (copier l'idée / le prompt) au cockpit + bloc dans le visualiseur.
    *(M4 livré)*
-5. ⭐ **Proactivité** — agrégateur → `actions-du-jour.json` rendu en **tête du Command Center** ;
-   workflow planifié `agents.yml`.
+5. ✅ **Proactivité** — agrégateur `actions-du-jour` (alertes **déterministes sans clé IA** + propositions
+   des agents) → `_agents/actions-du-jour.json` → **hero « N choses à faire aujourd'hui »** en tête du
+   Command Center (items actionnables). Workflow `agents.yml` (quotidien). *(M5 livré)*
 6. ⭐ **Onboarding → wow < 30 min** — données de démo « effet wow » + parcours pilote poli + alignement
    de la copie d'accueil.
 

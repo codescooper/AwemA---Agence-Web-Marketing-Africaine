@@ -552,8 +552,33 @@ function cCreatif(){
     <div style="margin-top:12px"><button class="mini gold" onclick="toast('Valider une idée → l\\'ajouter au plan via l\\'opérateur (validation humaine)')">Valider vers le plan →</button></div>`;
 }
 
+/* ---------- Proactivité (M5) : « 3 choses à faire aujourd'hui » ---------- */
+const ADJ_ICON={alerte:'⚠️',inbox:'💬',opportunite:'📈',reco:'✅',plan:'🗓️',creatif:'✨'};
+const ADJ_COL={1:'#FF7D9C',2:'#FFC861',3:'#34E5C4'};
+function adjAction(ac){ if(!ac) return '';
+  const js = ac.kind==='view' ? `go('${ac.target}')` : `window.open('${ac.target}','_blank')`;
+  return `<button class="cta" style="padding:8px 13px;font-size:12.5px;white-space:nowrap" onclick="${js}">${ac.label} →</button>`;}
+function cActionsDuJour(){
+  const a=loadAgent(ACTIVE,'actions-du-jour'), items=(a&&a.items)||[];
+  if(!items.length){
+    return `<h3>${ic('bolt')} Actions du jour <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
+      <div class="sub">AWEMA te proposera quoi faire en priorité, chaque jour</div>
+      <div style="margin-top:12px;color:var(--muted);font-size:12.5px;line-height:1.7">Génère-les (alertes <b>sans clé IA</b>, + propositions des agents si générées) :
+      <code>python3 scripts/run-agent.py actions-du-jour --all</code>, puis régénère le registre.</div>`;
+  }
+  return `<h3>${ic('bolt')} ${Math.min(items.length,3)} choses à faire aujourd'hui <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
+    <div class="sub">AWEMA te propose — priorisé &amp; sourcé${a.genere_le?' · '+a.genere_le.slice(0,10):''}</div>
+    <div style="display:grid;gap:8px;margin-top:12px">
+      ${items.map(it=>`<div style="display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:12px;background:var(--elev);border:1px solid var(--border);border-left:3px solid ${ADJ_COL[it.priorite]||'#7C5CFF'}">
+        <span style="font-size:18px;flex:0 0 auto">${ADJ_ICON[it.type]||'•'}</span>
+        <div style="flex:1;min-width:0"><b style="font-size:13.5px">${it.titre||''}</b><div style="font-size:12px;color:var(--muted)">${it.detail||''}</div></div>
+        ${adjAction(it.action)}</div>`).join('')}
+    </div>`;
+}
+
 /* ---------- Vues ---------- */
 function viewOverview(){
+  add(cActionsDuJour(), 'col12');
   cKpisReal();
   add(cMemoire(), 'col6'); add(cAgents(), 'col6');
   if(RES&&RES.connecte)add(cActionsCom(), A.total?'col6':'col12');

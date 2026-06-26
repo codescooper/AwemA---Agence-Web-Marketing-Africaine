@@ -1,0 +1,54 @@
+name: Agents IA (proactivité)
+
+# Fait travailler l'équipe d'agents IA puis agrège « les actions du jour ».
+# - Les agents (Analyste, Stratège, Créatif) tournent si ANTHROPIC_API_KEY est présent (sinon skip).
+# - actions-du-jour s'exécute TOUJOURS (alertes déterministes, sans clé IA requise).
+# Indépendant de sync-reseaux / sync-tiktok. Commite les _agents/*.json + régénère le registre.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 6 * * *"   # chaque jour 06:30 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  agents:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Faire travailler les agents IA (skip si pas de clé)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ℹ️ Pas de ANTHROPIC_API_KEY → agents IA ignorés (actions-du-jour reste actif)."
+          else
+            for a in analyste stratege creatif; do
+              echo "▶ $a"; python3 scripts/run-agent.py "$a" --all || true
+            done
+          fi
+
+      - name: Agréger « les actions du jour » (sans clé requise)
+        run: python3 scripts/run-agent.py actions-du-jour --all || true
+
+      - name: Régénérer le registre agence
+        run: python3 outils/_data/build.py
+
+      - name: Commit si changements
+        run: |
+          git config user.name "awema-bot"
+          git config user.email "bot@awema.local"
+          if git diff --quiet; then
+            echo "ℹ️ Aucune nouvelle proposition."; exit 0
+          fi
+          git add -A
+          git commit -m "chore(agents): propositions IA + actions du jour ($(date -u +%F))"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "✅ Propositions des agents mises à jour."
