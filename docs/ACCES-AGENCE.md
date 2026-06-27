@@ -47,8 +47,9 @@ Pour un **verrou incontournable**, choisis **B**. Tu restes le « robinet » d'a
 2. **Réserve une place** dans `config/beta-seats.json` (statut → `invite`, nom/handle/contact).
 3. **Envoie l'email de bienvenue** (modèle : [[email-bienvenue]]) : lien du dépôt **copie d'accueil**
    (Template repository), `onboarding.html`, conditions ([[11-programme-beta]]), guide API ([[14-acces-api-agence]]).
-4. **Délivre une licence** : `python3 scripts/awema.py licence delivrer "<Nom Agence>"` → te donne une
-   **clé** à transmettre. (Tu peux la coller dans la fiche de la place.)
+4. **Délivre une licence** (enregistrée comme preuve) :
+   `python3 scripts/awema.py licence delivrer "<Nom Agence>" contact=<email>` → clé à transmettre +
+   inscription au **registre** (`awema licence registre` pour la liste). Détails ci-dessous.
 5. **Donne l'accès API (le cadenas)** — modèle B :
    - Ajoute leur(s) Page(s) client(s) à **ton** App Meta (System User token *scopé* à ces Pages), ou
    - Ajoute-les comme **testeurs/utilisateurs** de tes Apps TikTok/LinkedIn le temps de la bêta.
@@ -77,11 +78,44 @@ Pour un **verrou incontournable**, choisis **B**. Tu restes le « robinet » d'a
 
 ---
 
-## 🧩 Licence — comment ça marche (et ses limites)
-- `config/licence.json` porte `{agence, cle, statut}`. Le dashboard affiche **« non activée »** tant
-  qu'aucune clé valide n'est posée, avec « contactez AWEMA pour activer ».
-- C'est un **frein + une base légale** (les conditions l'exigent), **pas** une serrure incontournable
-  (code éditable). Le **vrai** verrou reste l'**accès API** (modèle B).
-- Tu délivres la clé par agence et tu la révoques sur manquement.
+## 🧩 Délivrer une licence — et la PROUVER (ta base juridique)
 
-> En résumé : **tu gardes la main par l'API (incontournable) ; la licence est l'outil de gestion.**
+> Tu n'as pas besoin d'un verrou technique incontournable : tu as besoin de **prouver à qui tu as
+> délivré une licence, et à qui non**. C'est exactement ce que fait le **registre de délivrance**.
+
+**1. Délivrer** (génère une clé unique + l'enregistre comme preuve, horodatée) :
+```
+python3 scripts/awema.py licence delivrer "Baoulé Digital" contact=awa@baoule.ci
+```
+→ te donne la clé (ex. `AWEMA-7124-3CE6-48BC`) à transmettre à l'agence, et l'inscrit dans le
+**registre privé** `.awema/licences-registre.json` (gitignoré — **à sauvegarder**, c'est ta preuve).
+
+**2. L'agence active** son instance avec la clé que tu lui envoies :
+```
+python3 scripts/awema.py licence set AWEMA-7124-3CE6-48BC
+```
+(Sans clé valide, son dashboard affiche **« Instance non activée — contacte AWEMA ».»**)
+
+**3. Prouver / vérifier à tout moment** :
+```
+python3 scripts/awema.py licence registre              # qui a reçu une licence, quand, statut
+python3 scripts/awema.py licence verifier-cle <cle>    # « Délivrée à X le … » ou « pas dans ton registre »
+```
+→ Le registre est **ta preuve** : pour chaque licence, `agence · contact · date · clé · hash · statut`.
+Tu peux démontrer **qui** est légitime (présent au registre) et **qui ne l'est pas** (absent).
+
+**4. Révoquer** (sur manquement) :
+```
+python3 scripts/awema.py licence revoquer-cle <cle>    # marque « revoquee » dans le registre (preuve)
+```
+… **et** révoque l'accès API (modèle B) — c'est le seul effet *techniquement* incontournable.
+
+### Limites & vérité
+- La vérification *dans* l'instance (`set`/bannière) est **éditable** (code open-source) → c'est un
+  **frein + une base légale**, pas une serrure. Tes **conditions** (docs/11) l'exigent ; ton **registre**
+  le prouve.
+- Le **verrou réel** reste l'**accès API** (tu es le robinet, modèle B).
+- Le registre vit en local (`.awema/`, privé) : **sauvegarde-le** (clé USB chiffrée / dépôt privé / coffre).
+
+> En résumé : **API = verrou incontournable ; registre de licences = ta preuve juridique ; conditions =
+> ton cadre.** Les trois ensemble = tu gardes la main, et tu peux le prouver.

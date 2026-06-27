@@ -23,7 +23,10 @@ Commandes :
   awema rotate  <plat> KEY=VAL       incrémente un identifiant (garde l'ancien en historique)
   awema history <plat> [--reveal]    historique des identifiants (masqué par défaut)
   awema setup [KEY=VAL ...]          personnalise l'agence (auto-hébergement) → config/agence.json
-  awema licence <delivrer|set|verifier|revoquer> …   activation/contrôle (voir docs/ACCES-AGENCE.md)
+  awema licence delivrer "<agence>" [contact=…]      délivre une clé + l'enregistre (PREUVE)
+  awema licence registre                             liste les licences délivrées (preuve : à qui/quand)
+  awema licence verifier-cle <cle>                   prouve si TU as délivré cette clé (et à qui)
+  awema licence revoquer-cle <cle> | set <cle> | verifier   gestion (voir docs/ACCES-AGENCE.md)
   awema client new <slug|auto> ...   crée la fiche d'un client
   awema client memoire <slug> ...    édite la Mémoire Marketing (ton, personas, produits, faq…)
   awema client list                  liste les clients gérés
@@ -111,6 +114,7 @@ def cmd_client_new(slug, pairs):
 
 CONFIG_PATH = os.path.join(RACINE, "config", "agence.json")
 LICENCE_PATH = os.path.join(RACINE, "config", "licence.json")
+LEDGER = os.path.join(STORE_DIR, "licences-registre.json")   # registre PRIVÉ de délivrance (preuve)
 CONFIG_CHAMPS = ("nom", "nom_complet", "tagline", "slogan", "initiales", "langue", "contact")
 CHARTE_KEYS = ("nuit", "ciel", "gold", "violet", "mint", "pink")
 
@@ -241,24 +245,101 @@ def _licence_valide(cle):
     return bool(re.match(r"^AWEMA-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$", cle or ""))
 
 
+def _ledger_load():
+    try:
+        return json.load(open(LEDGER, encoding="utf-8"))
+    except Exception:
+        return {"delivre_par": "AWEMA", "licences": []}
+
+
+def _ledger_save(led):
+    os.makedirs(STORE_DIR, exist_ok=True)
+    gi = os.path.join(STORE_DIR, ".gitignore")
+    if not os.path.exists(gi):
+        open(gi, "w").write("*\n")
+    with open(LEDGER, "w", encoding="utf-8") as f:
+        json.dump(led, f, ensure_ascii=False, indent=2)
+    try:
+        os.chmod(LEDGER, 0o600)
+    except Exception:
+        pass
+
+
+def licence_ajouter(ledger, agence, contact, cle, quand):
+    """Ajoute une licence au registre de preuve. Fonction PURE (testable)."""
+    import hashlib
+    n = len(ledger.get("licences", [])) + 1
+    e = {"n": n, "agence": agence, "contact": contact, "cle": cle,
+         "cle_hash": hashlib.sha256(cle.encode()).hexdigest(),
+         "delivre_le": quand, "statut": "delivree"}
+    ledger.setdefault("licences", []).append(e)
+    return e
+
+
 def cmd_licence(args):
-    """Gère la licence d'activation (outil de contrôle — cf. docs/ACCES-AGENCE.md).
-    delivrer "<agence>" : génère une clé à transmettre · set <cle> : active l'instance ·
-    verifier : état · revoquer : désactive. Rappel : le vrai verrou est l'accès API (modèle B)."""
+    """Licence d'activation + REGISTRE de délivrance (preuve) — cf. docs/ACCES-AGENCE.md.
+    Côté éditeur : delivrer "<agence>" [contact=…] · registre · verifier-cle <cle> · revoquer-cle <cle>.
+    Côté instance : set <cle> · verifier · revoquer. Le registre (.awema, privé) prouve à qui tu as
+    délivré (ou non) une licence — ta base juridique. Le vrai verrou technique reste l'accès API (modèle B)."""
     import hashlib
     sub = args[0] if args else "verifier"
-    lic = _licence_lire()
+    # ---------- Côté ÉDITEUR : délivrance & preuve ----------
     if sub == "delivrer":
-        agence = args[1] if len(args) > 1 else ""
+        agence = args[1] if len(args) > 1 and "=" not in args[1] else ""
         if not agence:
-            sys.exit('Usage : awema licence delivrer "Nom de l\'agence"')
+            sys.exit('Usage : awema licence delivrer "Nom de l\'agence" [contact=email]')
+        contact = next((a.split("=", 1)[1] for a in args[2:] if a.startswith("contact=")), "")
         h = hashlib.sha256((agence + os.urandom(8).hex()).encode()).hexdigest().upper()
         cle = "AWEMA-" + h[0:4] + "-" + h[4:8] + "-" + h[8:12]
-        print(f"🔑 Licence pour « {agence} » :\n   {cle}")
-        print("→ Transmets-la à l'agence (elle l'active : awema licence set " + cle + ").")
-        print("→ Note-la dans config/beta-seats.json. Révocable : awema licence revoquer.")
+        led = _ledger_load()
+        e = licence_ajouter(led, agence, contact, cle, _now())
+        _ledger_save(led)
+        print(f"🔑 Licence n°{e['n']} pour « {agence} » :\n   {cle}")
+        print(f"📒 Enregistrée comme PREUVE → {os.path.relpath(LEDGER, RACINE)} (privé, gitignoré, à sauvegarder).")
+        print("→ Transmets la clé à l'agence (elle l'active : awema licence set " + cle + ").")
+        print("→ Note la place dans config/beta-seats.json. Révoquer : awema licence revoquer-cle " + cle)
         print("→ Rappel : délivre AUSSI l'accès API (modèle B) — c'est le verrou réel.")
         return
+    if sub == "registre":
+        led = _ledger_load()
+        ls = led.get("licences", [])
+        if not ls:
+            print("Aucune licence délivrée pour l'instant.")
+            return
+        print(f"📒 Registre de délivrance — {len(ls)} licence(s) · PREUVE ({os.path.relpath(LEDGER, RACINE)}) :")
+        for e in ls:
+            ligne = f"  n°{e['n']:2}  {e['statut']:9}  {e.get('delivre_le', '')[:10]}  {e['agence']}"
+            if e.get("contact"):
+                ligne += f" · {e['contact']}"
+            print(ligne + f"  [{e['cle']}]")
+        return
+    if sub == "verifier-cle":
+        cle = args[1] if len(args) > 1 else ""
+        m = [e for e in _ledger_load().get("licences", []) if cle and (e.get("cle") == cle or e.get("cle_hash") == cle)]
+        if m:
+            e = m[0]
+            print(f"✅ Délivrée à « {e['agence']} »" + (f" ({e['contact']})" if e.get("contact") else "")
+                  + f" le {e.get('delivre_le', '')[:10]} — statut {e['statut']}.")
+        else:
+            print("❌ Cette clé n'est PAS dans ton registre (non délivrée par toi).")
+        return
+    if sub == "revoquer-cle":
+        cle = args[1] if len(args) > 1 else ""
+        led = _ledger_load()
+        chg = False
+        for e in led.get("licences", []):
+            if e.get("cle") == cle:
+                e["statut"] = "revoquee"
+                e["revoque_le"] = _now()
+                chg = True
+        if chg:
+            _ledger_save(led)
+            print("⛔ Licence marquée révoquée dans le registre. Révoque AUSSI l'accès API (verrou réel).")
+        else:
+            print("Clé introuvable dans le registre.")
+        return
+    # ---------- Côté INSTANCE : activation locale ----------
+    lic = _licence_lire()
     if sub == "set":
         cle = args[1] if len(args) > 1 else ""
         agence = next((a.split("=", 1)[1] for a in args[2:] if a.startswith("agence=")), lic.get("agence", ""))
