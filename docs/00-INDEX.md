@@ -22,7 +22,7 @@ maj: 2026-06-26
 - [[11-programme-beta]] — programme bêta : conditions, prérequis, 20 places
 - `config/beta-seats.json` — suivi des 20 places · `config/licence.json` — activation
 - **Registres privés (preuve, `.awema/`)** : licences délivrées · demandes d'accès API
-- Formulaires : `rejoindre.html` (candidature) · `demande-acces.html` (accès API managé)
+- Formulaires : `rejoindre.html` (candidature) · `demande-acces.html` (accès API managé) · `liste-attente.html` (lancement)
 
 ### Commandes admin clés
 ```
@@ -34,6 +34,10 @@ python3 scripts/awema.py licence verifier-cle <cle>                # prouve la d
 # Accès API managé (qui passe par TES API — validé par agence ; défaut = agence autonome)
 python3 scripts/awema.py acces lister                              # demandes + statut
 python3 scripts/awema.py acces accepter <id> | refuser <id>        # tu décides
+
+# Liste d'attente du lancement (sur abonnement) — PRIVÉE, hors git (.awema/)
+python3 scripts/awema.py attente ajouter "Nom" contact=email      # enregistre un·e intéressé·e
+python3 scripts/awema.py attente lister | compter                 # qui attend · combien
 
 # Copie d'accueil pour les pilotes (sans tes données)
 python3 scripts/preparer-copie-beta.py ../awema-beta
