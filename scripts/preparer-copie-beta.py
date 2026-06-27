@@ -78,6 +78,12 @@ def main():
     json.dump(CONFIG_TEMPLATE, open(os.path.join(cible, "config", "agence.json"), "w",
               encoding="utf-8"), ensure_ascii=False, indent=2)
 
+    # 2-0) Retire les fichiers de données mono-client générés (fuite potentielle de vraies données)
+    for f in ("outils/dashboard/data.js", "outils/revue-visuels/data.js"):
+        fp = os.path.join(cible, f)
+        if os.path.exists(fp):
+            os.remove(fp)
+
     # 2a) Licence remise à NON-ACTIVE : le pilote doit l'activer auprès d'AWEMA
     lic_path = os.path.join(cible, "config", "licence.json")
     if os.path.exists(lic_path):
