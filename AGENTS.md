@@ -1,71 +1,89 @@
 # AGENTS.md — Onboarding express pour agents (IA & humains)
 
-> Ce fichier est lu en priorité par tout agent IA. Il donne le contexte minimal pour être
-> opérationnel en moins de 5 minutes. **Lis-le entièrement avant d'agir.**
+> Lu en priorité par tout agent IA. Contexte minimal pour être opérationnel en < 5 min.
+> **Lis-le entièrement avant d'agir.** La référence stable, c'est [`docs/FOUNDATION/`](docs/FOUNDATION/README.md).
 
 ---
 
-## 1. Qui es-tu ici ?
+## 1. Où es-tu ?
 
-Tu es un agent du **système d'exploitation de l'AWEMA** (Agence Web Marketing Africaine).
-Tu interviens sur des **missions clients** au sein d'un **département**. Ton travail doit
-être **réutilisable par le prochain agent** : documenté, rangé, conforme aux conventions.
+Tu opères dans **AWEMA OS** — le système d'exploitation open source d'une **agence digitale assistée par
+IA**. Architecture : un **Kernel** de concepts universels **sans logique métier** + des **modules**
+métier. **Un seul module est officiel : Marketing.** Tu interviens dans un module, sur des missions
+clients. Ton travail doit être **réutilisable par le prochain agent** : rangé, documenté, conforme.
 
-## 2. Règles d'or (à respecter toujours)
+> ⚠️ « Agent » a deux sens ici : **toi** (l'agent qui opère le dépôt) et les **agents IA du produit**
+> (Analyste, Stratège, Créatif…) qui produisent des propositions. Leur contrat :
+> [`docs/FOUNDATION/05-AGENT_MODEL.md`](docs/FOUNDATION/05-AGENT_MODEL.md).
 
-1. **Range avant de produire.** Trouve le bon dossier (département → client → sous-dossier
-   numéroté). Ne crée jamais un fichier « en vrac » à la racine.
+## 2. Règles d'or (toujours)
+
+1. **Range avant de produire.** Le bon dossier (module → client → sous-dossier numéroté). Jamais de
+   fichier « en vrac » à la racine.
 2. **Documente ce que tu produis.** Chaque dossier a un `README.md`. Mets-le à jour.
-3. **Respecte la charte graphique** du client : `docs/04-charte-graphique.md`. Couleurs,
-   polices et ton sont **obligatoires** dans tous les visuels, prompts et templates.
-4. **Sépare méthode et livrable.** Une méthode réutilisable va dans `methodologie/` ou
-   `templates/`. Un livrable spécifique va dans `clients/<client>/`.
-5. **Industrialise le volume.** Quand un livrable contient beaucoup d'éléments répétitifs
-   (180 contenus, 60 scripts…), écris un **générateur** (`_generateur/`) plutôt que de
-   tout copier-coller à la main. Le générateur EST le livrable de fond.
-6. **Definition of Done.** Voir `docs/03-conventions.md`. Pas de brouillon : du
-   directement exploitable.
+3. **Additif d'abord. Plugin avant Kernel.** Étends en **ajoutant** (connecteur, agent, artefact JSON) ;
+   ne mute jamais la donnée réelle existante. Touche au Kernel seulement si un concept universel manque,
+   et **via un ADR**.
+4. **Données réelles, zéro fiction.** N'invente aucune métrique. Toute donnée affichée est **traçable**.
+5. **Propose, ne décide pas.** Les sorties d'agents sont des **propositions** sourcées ; l'**humain
+   décide**. Une action engageante exige une validation explicite.
+6. **Aucun secret dans le dépôt.** Secrets en GitHub Secrets/Variables ou `.awema/` (gitignoré).
+7. **Respecte la charte** (`docs/04-charte-graphique.md`) et sépare **méthode** (`methodologie/`,
+   `templates/`) et **livrable** (`clients/<client>/`).
+8. **Industrialise le volume** (générateur déterministe `_generateur/` au-delà de ~20 éléments).
+9. **Definition of Done** avant de livrer (`docs/03-conventions.md` +
+   `docs/FOUNDATION/03-DESIGN_PRINCIPLES.md`). Pas de brouillon.
 
-## 3. Carte mentale du dépôt
+## 3. Avant toute décision structurante
+
+Applique le **test de recevabilité** ([Constitution](docs/FOUNDATION/00-CONSTITUTION.md)) : utile
+aujourd'hui ? cohérent avec la vision ? ajoute de la complexité ? peut attendre ? Si une fonctionnalité
+**peut attendre, ne l'implémente pas.** Toute décision structurante → **ADR**
+([`docs/FOUNDATION/08-ARCHITECTURE_DECISIONS.md`](docs/FOUNDATION/08-ARCHITECTURE_DECISIONS.md)).
+
+## 4. Carte mentale du dépôt
 
 ```
-docs/                  → règles transverses (agence, onboarding, conventions, charte)
-departements/<dept>/   → README + methodologie/ + templates/ + clients/
-  clients/<client>/    → mission rangée en sous-dossiers numérotés 00..10
+docs/FOUNDATION/       → socle stable (Kernel, principes, plugins, agents, données, gouvernance, ADR)
+docs/                  → produit (PRD, ROADMAP, PLAN) + guides (conventions, charte, connexions, sécurité)
+departements/<module>/ → un MODULE : README + methodologie/ + templates/ + clients/<client>/
+outils/                → cockpit, revue-visuels, _data/build.py (registre)
+scripts/               → awema.py (opérateur), awema_ai.py, run-agent.py, connect-reseaux.py + manifestes
+config/ · tests/ · .github/workflows/
 ```
 
-## 4. Pour démarrer une mission marketing (checklist)
+## 5. Opérateur `/awema` (langage naturel)
 
-- [ ] Lire `departements/marketing/README.md` (rôle & méthode du département)
-- [ ] Lire le **brief client** : `clients/<client>/00-brief/`
-- [ ] Lire la **charte** : `docs/04-charte-graphique.md`
-- [ ] Suivre la **Méthode Universelle de Production Éditoriale** :
-      `departements/marketing/methodologie/methode-universelle-production-editoriale.md`
-- [ ] Produire dans les sous-dossiers numérotés, mettre à jour les `README.md`
+Connecte/maintient les plateformes ; **ne demande que l'inconnu**. Ex. : `/awema connecte tiktok`,
+`/awema fais tourner le token meta`, `/awema statut des connexions`. Moteur : `scripts/awema.py`
+(mémoire des identifiants dans `.awema/credentials.json`, gitignoré). Détail : `docs/08-agent-awema.md`.
+
+## 6. Démarrer une tâche dans le module Marketing (checklist)
+
+- [ ] Lire `departements/marketing/README.md` (rôle & méthode)
+- [ ] Lire le **brief client** : `clients/<client>/00-brief/` · la **charte** : `docs/04-charte-graphique.md`
+- [ ] Suivre la **Méthode Universelle de Production Éditoriale**
+      (`departements/marketing/methodologie/methode-universelle-production-editoriale.md`)
+- [ ] Produire dans les sous-dossiers numérotés ; mettre à jour les `README.md`
 - [ ] Vérifier la *Definition of Done* avant de livrer
 
-## 5. Comment régénérer les livrables volumineux
+## 7. Régénérer & vérifier
 
 ```bash
-cd departements/marketing/clients/la-grande-vision/_generateur
-python3 generer.py        # (re)génère calendrier, contenus, scripts, prompts
+python3 outils/_data/build.py              # régénère le registre après toute édition de données/config
+python3 -m unittest discover -s tests      # harnais anti-régression (doit rester vert)
 ```
 
-## 6. Outils & intégrations disponibles (selon session)
+## 8. Outils & intégrations (selon session)
 
-- **Google Drive / Docs / Sheets / Slides** (MCP) → pour publier les exports en ligne.
-- **Canva** (MCP) → pour générer les visuels à partir des prompts Canva fournis.
-- **Gmail / Google Calendar** (MCP) → séquences CRM, prises de rendez-vous.
-- **PostHog** (MCP) → mesure et scoring des contenus.
-- **GitHub** (MCP) → versionner et livrer.
+Google Drive/Docs/Sheets/Slides · Canva · Gmail/Calendar · PostHog · GitHub (MCP). Si un outil n'est pas
+connecté, produis le livrable **en fichier dans le dépôt** (source de vérité) ; la publication est secondaire.
 
-> Si un outil n'est pas connecté, produis le livrable **en fichier dans le dépôt** (source
-> de vérité) ; la publication en ligne est une étape secondaire.
+## 9. Fin de session (obligatoire)
 
-## 7. Convention de langue
-
-Travail en **français**. Le code et les noms de fichiers sont en `kebab-case` sans accents.
+Laisse le projet **cohérent** : doc à jour · `ROADMAP.md` · ADR · `PROJECT_SELF_DESCRIPTION.md` si besoin.
+Rapport : fait / reste à faire / risques / dette / décisions / prochaines étapes.
 
 ---
 
-_Bon courage. Range, documente, industrialise._
+_Range, documente, industrialise. Propose — l'humain décide._

@@ -1,28 +1,35 @@
-# AWEMA — Agence Web Marketing Africaine
+# AWEMA OS
 
-> Système d'exploitation (OS) d'une agence web & marketing panafricaine, conçu pour être
-> piloté de façon **holistique** par des humains **et** des agents IA.
+> Le **système d'exploitation open source d'une agence digitale assistée par IA**.
+> Auto-hébergé, sans SaaS, piloté **holistiquement par des humains et des agents IA**.
 
-Ce dépôt n'est pas un simple dossier de fichiers : c'est le **cerveau opérationnel** de
-l'agence. Chaque département y range ses méthodes, ses templates et ses livrables clients
-de façon **standardisée**, **documentée** et **réutilisable** par n'importe quel agent
-(humain ou IA) qui rejoint une mission.
+Ce dépôt n'est pas un simple dossier de fichiers : c'est le **cerveau opérationnel** d'une agence.
+Il réunit la présence en ligne **réelle** des clients et fait **travailler une équipe d'agents IA
+spécialisés** qui observent, analysent, **proposent** et préparent. **L'IA ne répond pas : elle
+travaille.** Les humains décident.
 
 ---
 
 ## 🎯 Principe directeur
 
-> **Tout ce qui est produit doit pouvoir être repris, compris et ré-exécuté par un autre
-> agent sans contexte préalable.**
+> **Tout ce qui est produit doit pouvoir être repris, compris et ré-exécuté par un autre agent (humain
+> ou IA) sans contexte préalable.**
 
-C'est pourquoi :
+D'où : un `README.md` par dossier · méthodes séparées des livrables · volumes générés par script ·
+charte et conventions centralisées et **obligatoires** · **données réelles, zéro fiction**.
 
-- chaque dossier contient un `README.md` qui explique son rôle ;
-- les méthodes sont séparées des livrables (méthode = réutilisable, livrable = spécifique
-  à un client) ;
-- les données volumineuses (calendriers, contenus) sont **générées par script** pour
-  rester cohérentes et régénérables ;
-- la charte graphique et les conventions sont centralisées et **obligatoires**.
+---
+
+## 🏛️ Le modèle : un Kernel, des modules
+
+AWEMA repose sur un **Kernel** de concepts universels (Mission, Workflow, Knowledge, Memory, Context,
+Agent, Event, Automation, Plugin, Security, API) qui **ne contient aucune logique métier**. Le métier
+vit dans des **modules**. Aujourd'hui, **un seul module est officiel : Marketing.** Les autres domaines
+(Finance, RH, Commercial…) sont **rendus possibles par l'architecture**, mais **ne sont pas développés**.
+
+👉 La référence stable du projet est le corpus **[`docs/FOUNDATION/`](docs/FOUNDATION/README.md)**
+(Constitution, Kernel, principes de conception, modèle de plugins, modèle d'agents, modèle de données,
+gouvernance, ADR). **Il prime en cas de conflit.**
 
 ---
 
@@ -30,30 +37,29 @@ C'est pourquoi :
 
 ```
 .
-├── README.md                  ← vous êtes ici (porte d'entrée)
-├── AGENTS.md                  ← onboarding express pour agents IA / humains
-├── docs/                      ← documentation transverse de l'agence
-│   ├── 01-agence.md           ← vision, organisation, départements
-│   ├── 02-onboarding.md       ← comment démarrer une mission en 10 min
-│   ├── 03-conventions.md      ← nommage, structure, qualité, definition of done
-│   └── 04-charte-graphique.md ← charte commune + chartes clients
+├── README.md · AGENTS.md            ← portes d'entrée (humains & agents IA)
+├── docs/                            ← documentation
+│   ├── FOUNDATION/                  ← 🏛️ socle de référence STABLE (Kernel, principes, ADR)
+│   ├── PRD-AWEMA.md                 ← référence produit (North Star)
+│   ├── ROADMAP.md                   ← feuille de route (SOURCE UNIQUE)
+│   ├── PLAN-EXECUTION-BETA.md       ← plan module par module (M0→M6)
+│   └── 01-… 14-…                    ← guides (conventions, charte, connecter réseaux/IA, sécurité…)
 │
-├── departements/              ← un dossier par département de l'agence
-│   └── marketing/             ← Département Marketing & Contenu
-│       ├── README.md
-│       ├── methodologie/      ← méthodes réutilisables (ex : production éditoriale)
-│       ├── templates/         ← gabarits vierges réutilisables
-│       └── clients/           ← un dossier par client
-│           └── la-grande-vision/   ← MISSION 1 (cabinet d'optique, Yopougon)
+├── departements/                    ← un dossier par MODULE (cf. ADR-005 : « module » = département)
+│   └── marketing/                   ← 🟢 LE module officiel : méthodologie/ + templates/ + clients/
 │
-├── outils/                    ← outils d'agence réutilisables (transverses)
-│   └── revue-visuels/         ← app de revue/annotation des visuels (→ prompts)
+├── outils/                          ← outils web transverses (100 % statiques)
+│   ├── _data/build.py               ← agrège les données → registre (config.js / agence.js)
+│   ├── dashboard/                   ← cockpit (Command Center)
+│   └── revue-visuels/               ← revue/annotation des visuels
 │
-└── scripts/                   ← utilitaires transverses (export PDF, etc.)
+├── scripts/                         ← cœur Python (stdlib) : awema.py (opérateur), awema_ai.py,
+│                                       run-agent.py, connect-reseaux.py + manifestes (agents/connecteurs)
+├── config/                          ← agence.json (personnalisation), ia-providers, licence, beta-seats
+├── tests/                           ← harnais anti-régression (unittest stdlib)
+├── .github/workflows/               ← automatisations (sync réseaux, agents IA, tests)
+└── index.html · onboarding · setup · connect-*.html …   ← pages produit (servies par GitHub Pages)
 ```
-
-> 📌 Les départements à venir (Web/Dev, Design, Growth/Ads, Data, RH, Finance…) suivront
-> exactement la même structure. Voir [`docs/01-agence.md`](docs/01-agence.md).
 
 ---
 
@@ -61,35 +67,39 @@ C'est pourquoi :
 
 | Vous êtes… | Lisez en priorité |
 |---|---|
-| Un **agent IA** assigné à une mission | [`AGENTS.md`](AGENTS.md) puis le `README.md` du département |
-| Un **nouveau collaborateur** | [`docs/02-onboarding.md`](docs/02-onboarding.md) |
-| Au **département Marketing** | [`departements/marketing/README.md`](departements/marketing/README.md) |
-| Sur la **mission La Grande Vision** | [`departements/marketing/clients/la-grande-vision/README.md`](departements/marketing/clients/la-grande-vision/README.md) |
-| À la recherche d'un **outil** (revue de visuels…) | [`outils/README.md`](outils/README.md) |
+| **Chief Architect / contributeur** | [`docs/FOUNDATION/`](docs/FOUNDATION/README.md) puis [`docs/PRD-AWEMA.md`](docs/PRD-AWEMA.md) |
+| Un **agent IA** assigné à une tâche | [`AGENTS.md`](AGENTS.md) puis le module concerné |
+| Une **agence qui veut auto-héberger** | [`docs/09-auto-hebergement.md`](docs/09-auto-hebergement.md) + `setup.html` |
+| Au **module Marketing** | [`departements/marketing/README.md`](departements/marketing/README.md) |
+| À la recherche d'un **outil** (cockpit, revue de visuels) | [`outils/README.md`](outils/README.md) |
 
 ---
 
-## 🏥 Mission en cours — La Grande Vision
+## 🟢 Le module Marketing (seul module officiel)
 
-**Client :** La Grande Vision — Cabinet d'optique
-**Lieu :** Yopougon, Abidjan, Côte d'Ivoire
-**Département pilote :** Marketing & Contenu
-**Livrable :** Système marketing complet, automatisé et industrialisable (90 jours, 180 contenus, tunnel WhatsApp, CRM, automatisation).
+Tout l'effort se concentre ici. Le module vise la meilleure solution possible pour : **community
+management · calendrier éditorial · analyse · reporting · production · validation · assets ·
+connecteurs · Mémoire Marketing · agents IA · automatisation**.
 
-➡️ Tout est dans [`departements/marketing/clients/la-grande-vision/`](departements/marketing/clients/la-grande-vision/).
+**Agents IA livrés** : Analyste (*pourquoi / quoi faire*) · Stratège (*plan*) · Créatif (*publications
+prêtes*) · Proactivité (*« 3 choses à faire aujourd'hui »*, déterministe, sans clé IA).
+Contrat d'agent : [`docs/FOUNDATION/05-AGENT_MODEL.md`](docs/FOUNDATION/05-AGENT_MODEL.md).
+
+**Exemple de client** : *La Grande Vision* (cabinet d'optique, Yopougon, Abidjan) — mission complète
+(90 jours, 180 contenus, tunnel WhatsApp, CRM, automatisation), illustrant le pipeline éditorial du
+module → [`departements/marketing/clients/la-grande-vision/`](departements/marketing/clients/la-grande-vision/).
 
 ---
 
 ## 🧭 Conventions essentielles (résumé)
 
-1. **Français** comme langue de travail.
-2. **Markdown** pour la documentation, **CSV** pour les données tabulaires, **Python** pour
-   la génération.
-3. Un dossier = un `README.md`.
-4. La **charte graphique** (`docs/04-charte-graphique.md`) est **non négociable**.
-5. Rien n'est « fini » tant que ce n'est pas conforme à la *Definition of Done*
-   (`docs/03-conventions.md`).
+1. **Français** comme langue de travail. Noms de fichiers en `kebab-case` sans accents.
+2. **Markdown** (doc) · **CSV** (tabulaire) · **Python stdlib** (génération). Front : HTML/CSS/JS vanilla.
+3. Un dossier = un `README.md`. La **charte graphique** est **non négociable**.
+4. **Additif d'abord, plugin avant Kernel, données réelles, secrets jamais dans le dépôt.**
+5. Rien n'est « fini » sans la *Definition of Done* ([`docs/03-conventions.md`](docs/03-conventions.md)
+   et [`docs/FOUNDATION/03-DESIGN_PRINCIPLES.md`](docs/FOUNDATION/03-DESIGN_PRINCIPLES.md)).
 
 ---
 
-_AWEMA OS — v1.0 · Première mission livrée par le Département Marketing._
+_AWEMA OS — open source · auto-hébergé · données réelles · l'IA travaille, l'humain décide._

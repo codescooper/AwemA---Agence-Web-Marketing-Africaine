@@ -493,10 +493,11 @@ Programme bêta (candidature + places + email), Liste d'attente (lancement), Lic
 # 11. Documentation (inventaire + résumés)
 
 **Racine**
-- `README.md` — porte d'entrée, couche « OS d'agence » historique, structure, démarrage rapide, mission
-  La Grande Vision, conventions essentielles.
-- `AGENTS.md` — onboarding express agents IA/humains : règles d'or (range, documente, charte,
-  méthode≠livrable, industrialise, DoD), carte mentale, checklist mission, outils MCP selon session.
+- `README.md` — porte d'entrée, **alignée OS assisté par IA** (2026-06-27) : modèle Kernel/Module,
+  Marketing seul module officiel, renvoi vers `FOUNDATION/`, structure, démarrage rapide, conventions.
+- `AGENTS.md` — onboarding express agents IA/humains, **aligné Kernel/Module** : règles d'or (additif,
+  plugin>kernel, données réelles, propose-ne-décide-pas, secrets hors dépôt), test de recevabilité,
+  carte mentale, opérateur `/awema`, checklist mission, fin de session obligatoire.
 
 **docs/FOUNDATION/** (corpus de référence stable — prime en cas de conflit ; ajouté le 2026-06-27)
 - `README.md` — index du corpus + hiérarchie documentaire.
@@ -625,12 +626,11 @@ les deux discours coexistent dans le dépôt (voir §14).
 
 # 14. Faiblesses
 
-1. **Double identité en cours de résolution** : la couche « OS d'agence marketing » (`README.md`,
-   `AGENTS.md`, `departements/`, pipeline éditorial) et la couche « OS d'agence assistée par IA » (PRD,
-   agents, landing) coexistent. **Cadrage posé le 2026-06-27** par `docs/FOUNDATION/` : le Marketing
-   devient explicitement **le seul module officiel** (ADR-003) au-dessus d'un **Kernel** sans métier
-   (ADR-002) ; reste à **aligner `README.md`/`AGENTS.md`** sur ce modèle (ils présentent encore « La
-   Grande Vision » comme le cœur).
+1. **Double identité — résolue au niveau documentaire (2026-06-27)** : le récit est désormais unifié
+   par `docs/FOUNDATION/` (Marketing = **seul module officiel**, ADR-003, au-dessus d'un **Kernel** sans
+   métier, ADR-002) ; **`README.md` et `AGENTS.md` ont été réécrits** sur ce modèle. *Reste un écart
+   purement physique* : le terme « Module » vit dans `departements/<module>/` (renommage différé,
+   réversible — ADR-005).
 2. **Discours bêta contradictoire** : « 20 places gratuites à vie » (docs/11, `beta-seats.json`) vs
    « 10 places complètes + lancement sur abonnement » (landing/liste d'attente récentes).
 3. **Promesse « + activité de marché »** dans le slogan (`config/agence.json`) alors que le module
