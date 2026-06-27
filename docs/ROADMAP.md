@@ -1,7 +1,9 @@
 # ROADMAP — AWEMA (source unique)
 
 > Source **unique** de la feuille de route. `AWEMA-OS.md` pointe ici. Vision : [[PRD-AWEMA]].
-> Exécution détaillée : [[PLAN-EXECUTION-BETA]]. Principe : **qualité > quantité**, **zéro régression**.
+> Exécution détaillée : [[PLAN-EXECUTION-BETA]]. Socle de référence : [[FOUNDATION/README]]
+> (Constitution, Kernel, ADR — priment en cas de conflit). Principe : **qualité > quantité**,
+> **zéro régression**.
 
 ## Légende
 ✅ fait · 🟡 prêt mais non activé · 🔜 en cours / prochain · 🧊 repoussé après la bêta · 💡 idée
@@ -9,6 +11,8 @@
 ---
 
 ## Horizon 0 — Acquis (ne pas régresser)
+- ✅ **Fondations** : corpus `docs/FOUNDATION/` (Constitution, Kernel/Module, principes, plugins,
+  agents, données, gouvernance, ADR-001→005) — vocabulaire et frontières d'architecture posés.
 - ✅ Socle monorepo, conventions, charte, auto-hébergement (config → build → apply).
 - ✅ Présence digitale réelle : **Meta** (1 token → toutes les Pages), **TikTok** (OAuth + rotation),
   **YouTube** (clé API). Fusion multi-réseaux + alias.

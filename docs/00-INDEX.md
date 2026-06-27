@@ -9,6 +9,10 @@ maj: 2026-06-26
 > **Point d'entrée unique.** Ouvre ce dossier comme **coffre Obsidian** (Open folder as vault),
 > puis ouvre cette note. Tout part d'ici.
 
+## 🏛️ Fondations (référence stable — priment en cas de conflit)
+- [[FOUNDATION/README]] — corpus FOUNDATION : Constitution, Kernel, principes, plugins, agents, données, gouvernance, ADR
+- Loi suprême : [[FOUNDATION/00-CONSTITUTION]] · Concepts universels : [[FOUNDATION/02-KERNEL]] · Décisions : [[FOUNDATION/08-ARCHITECTURE_DECISIONS]]
+
 ## 🎯 Vision & pilotage
 - [[AWEMA-OS]] — note maîtresse (vision, état, journal)
 - [[PRD-AWEMA]] — référence produit (OS d'agence assistée par IA, architecture des agents)

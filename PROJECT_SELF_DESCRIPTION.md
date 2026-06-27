@@ -498,6 +498,27 @@ Programme bêta (candidature + places + email), Liste d'attente (lancement), Lic
 - `AGENTS.md` — onboarding express agents IA/humains : règles d'or (range, documente, charte,
   méthode≠livrable, industrialise, DoD), carte mentale, checklist mission, outils MCP selon session.
 
+**docs/FOUNDATION/** (corpus de référence stable — prime en cas de conflit ; ajouté le 2026-06-27)
+- `README.md` — index du corpus + hiérarchie documentaire.
+- `00-CONSTITUTION.md` — loi suprême : priorités (Qualité→…→Fonctionnalités), 9 principes fondateurs,
+  règle absolue (« pas de feature parce qu'intéressante »), test de recevabilité.
+- `01-VISION-2030.md` — OS open source durable ; horizons H0→H3 ; Marketing d'abord exemplaire.
+- `02-KERNEL.md` — 11 concepts universels (Mission, Workflow, Knowledge, Memory, Context, Agent, Event,
+  Automation, Plugin, Security, API) mappés au dépôt ; **le Kernel ignore le métier** ; dépendance à
+  sens unique (module → Kernel).
+- `03-DESIGN_PRINCIPLES.md` — ADN technique + règles (additif, plugin>kernel, skip/dégradation gracieuse,
+  traçabilité, humain décideur) + DoD + anti-patterns.
+- `04-PLUGIN_MODEL.md` — 3 familles de plugins (connecteur, agent, fournisseur IA) ; contrat commun ;
+  modifier le Kernel = rare + ADR.
+- `05-AGENT_MODEL.md` — contrat d'agent en 7 attributs (mission→DoD) ; enveloppe commune ; aucun agent
+  généraliste ; Proactivité = déterministe sans IA.
+- `06-DATA_MODEL.md` — données = vérité ; hiérarchie des fichiers ; traçabilité (mesure vs proposition) ;
+  points d'extension (timeseries, marché) à ne pas implémenter sans besoin.
+- `07-GOVERNANCE.md` — autorité (Chief Architect), hiérarchie des sources, contribution, officialisation
+  d'un module, contrôle d'accès, fin de session obligatoire.
+- `08-ARCHITECTURE_DECISIONS.md` — journal ADR (001 agents=jobs ; 002 Kernel/Modules ; 003 Marketing
+  seul module officiel ; 004 plugins>kernel ; 005 « Module » sans renommage physique de `departements/`).
+
 **docs/** (référence transverse + produit)
 - `00-INDEX.md` — MOC Obsidian, point d'entrée admin (commandes licence/accès/attente).
 - `01-agence.md` — vision agence, 7 départements, structure obligatoire.
@@ -604,9 +625,12 @@ les deux discours coexistent dans le dépôt (voir §14).
 
 # 14. Faiblesses
 
-1. **Double identité non résolue** : la couche « OS d'agence marketing » (`README.md`, `AGENTS.md`,
-   `departements/`, pipeline éditorial) et la couche « OS d'agence assistée par IA » (PRD, agents,
-   landing) coexistent ; `README.md` parle encore de « mission La Grande Vision » comme cœur.
+1. **Double identité en cours de résolution** : la couche « OS d'agence marketing » (`README.md`,
+   `AGENTS.md`, `departements/`, pipeline éditorial) et la couche « OS d'agence assistée par IA » (PRD,
+   agents, landing) coexistent. **Cadrage posé le 2026-06-27** par `docs/FOUNDATION/` : le Marketing
+   devient explicitement **le seul module officiel** (ADR-003) au-dessus d'un **Kernel** sans métier
+   (ADR-002) ; reste à **aligner `README.md`/`AGENTS.md`** sur ce modèle (ils présentent encore « La
+   Grande Vision » comme le cœur).
 2. **Discours bêta contradictoire** : « 20 places gratuites à vie » (docs/11, `beta-seats.json`) vs
    « 10 places complètes + lancement sur abonnement » (landing/liste d'attente récentes).
 3. **Promesse « + activité de marché »** dans le slogan (`config/agence.json`) alors que le module
