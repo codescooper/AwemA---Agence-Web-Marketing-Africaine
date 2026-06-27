@@ -64,6 +64,22 @@
       "note": "Guide pas à pas : connect-linkedin.html. Connecteur --linkedin-all : résout l'org par vanity name (/company/<slug>), lit abonnés + impressions/engagement (Community Management API). Pré-requis : Page entreprise (admin), app vérifiée, produit Community Management API (Development Tier = immédiat pour ses propres Pages).",
       "doc": "docs/10-connecter-linkedin.md"
     },
+    "whatsapp": {
+      "label": "WhatsApp Business (Cloud API)",
+      "statut": "guide",
+      "keys": [
+        {"name": "WHATSAPP_TOKEN", "secret": true, "github": "secret",
+         "prompt": "Token Meta avec whatsapp_business_management / whatsapp_business_messaging (System User recommandé)"},
+        {"name": "WHATSAPP_PHONE_ID", "secret": false, "github": "secret",
+         "prompt": "Phone Number ID du numéro WhatsApp (App Meta → WhatsApp)"},
+        {"name": "WHATSAPP_WABA_ID", "secret": false, "github": "secret",
+         "prompt": "WhatsApp Business Account ID (WABA)"}
+      ],
+      "commands": {"sync_workflow": "sync-reseaux.yml"},
+      "rotate": "Régénère le token (Business Manager → System User), puis : awema rotate whatsapp WHATSAPP_TOKEN=<nouveau>. Mets à jour le Secret GitHub.",
+      "note": "Canal de MESSAGERIE/conversion (pas d'abonnés). Guide : connect-whatsapp.html. Connecteur --whatsapp-all PLANIFIÉ (analytics messages + tunnel + futur agent Modérateur). En attendant : renseigne le numéro whatsapp dans la fiche client.",
+      "doc": "connect-whatsapp.html"
+    },
     "ia": {
       "label": "IA (agents AWEMA — fournisseur au choix)",
       "statut": "operationnel",

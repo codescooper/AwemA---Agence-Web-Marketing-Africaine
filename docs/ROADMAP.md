@@ -70,6 +70,8 @@ Scoring, Tunnel, Automatisation) plutôt que de montrer de l'inachevé.
 - 🧊 **Agent Modérateur** (tri commentaires/DM, réponses préparées — nécessite ingestion/permissions write).
 - 🧊 **Agent Chef de projet** (validations, tâches, campagnes ; coordination des agents).
 - 🧊 **Instagram** (IG Pro relié), **LinkedIn live** (déblocage email pro), **X/Threads** (à évaluer).
+- 🧊 **WhatsApp Business (Cloud API)** : connecteur `--whatsapp-all` (analytics messages + Tunnel WhatsApp)
+  — guide prêt (`connect-whatsapp.html`), alimente le futur agent **Modérateur**.
 - 🧊 **Collaboration multi-utilisateur** (rôles, attributions).
 - 🧊 **Couche analytique / séries temporelles** (points d'extension déjà prévus — cf. PRD §8).
 - 🧊 **Opérateur** pousse lui-même Secrets/Variables GitHub (fin du copier-coller).
