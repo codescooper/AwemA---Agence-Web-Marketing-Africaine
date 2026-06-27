@@ -134,6 +134,7 @@
   function send(){ if(!valide())return;
     var sujet='Liste d\'attente AWEMA — '+F('nom');
     window.location.href='mailto:'+DEST+'?subject='+encodeURIComponent(sujet)+'&body='+encodeURIComponent(corps());
+    setTimeout(function(){window.location.href='merci.html';},900);   // confirmation après ouverture du mail
   }
   async function copier(){ if(!valide())return;
     try{await navigator.clipboard.writeText('À : '+DEST+'\nObjet : Liste d\'attente AWEMA — '+F('nom')+'\n\n'+corps());
