@@ -45,7 +45,7 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 │   ├── PLAN-EXECUTION-BETA.md       ← plan module par module (M0→M6)
 │   └── 01-… 14-…                    ← guides (conventions, charte, connecter réseaux/IA, sécurité…)
 │
-├── departements/                    ← un dossier par MODULE (cf. ADR-005 : « module » = département)
+├── modules/                    ← un dossier par MODULE (renommé depuis departements/ — ADR-006)
 │   └── marketing/                   ← 🟢 LE module officiel : méthodologie/ + templates/ + clients/
 │
 ├── outils/                          ← outils web transverses (100 % statiques)
@@ -70,7 +70,7 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 | **Chief Architect / contributeur** | [`docs/FOUNDATION/`](docs/FOUNDATION/README.md) puis [`docs/PRD-AWEMA.md`](docs/PRD-AWEMA.md) |
 | Un **agent IA** assigné à une tâche | [`AGENTS.md`](AGENTS.md) puis le module concerné |
 | Une **agence qui veut auto-héberger** | [`docs/09-auto-hebergement.md`](docs/09-auto-hebergement.md) + `setup.html` |
-| Au **module Marketing** | [`departements/marketing/README.md`](departements/marketing/README.md) |
+| Au **module Marketing** | [`modules/marketing/README.md`](modules/marketing/README.md) |
 | À la recherche d'un **outil** (cockpit, revue de visuels) | [`outils/README.md`](outils/README.md) |
 
 ---
@@ -87,7 +87,7 @@ Contrat d'agent : [`docs/FOUNDATION/05-AGENT_MODEL.md`](docs/FOUNDATION/05-AGENT
 
 **Exemple de client** : *La Grande Vision* (cabinet d'optique, Yopougon, Abidjan) — mission complète
 (90 jours, 180 contenus, tunnel WhatsApp, CRM, automatisation), illustrant le pipeline éditorial du
-module → [`departements/marketing/clients/la-grande-vision/`](departements/marketing/clients/la-grande-vision/).
+module → [`modules/marketing/clients/la-grande-vision/`](modules/marketing/clients/la-grande-vision/).
 
 ---
 

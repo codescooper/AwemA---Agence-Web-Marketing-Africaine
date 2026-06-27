@@ -60,7 +60,7 @@ def manifest():
 import re
 import unicodedata
 
-CLIENTS_DIR = os.path.join(RACINE, "departements", "marketing", "clients")
+CLIENTS_DIR = os.path.join(RACINE, "modules", "marketing", "clients")
 CLIENT_CHAMPS = ["nom", "secteur", "lieu", "statut", "fb_page_id", "ig_user_id",
                  "yt_handle", "yt_channel_id", "slogan"]
 CLIENT_LIENS = ["facebook", "instagram", "tiktok", "linkedin", "whatsapp", "youtube"]
@@ -93,7 +93,7 @@ def cmd_client_new(slug, pairs):
     if os.path.exists(cj):
         d = json.load(open(cj, encoding="utf-8"))
     else:
-        d = {"id": slug, "nom": nom, "secteur": "", "lieu": "", "departement": "marketing",
+        d = {"id": slug, "nom": nom, "secteur": "", "lieu": "", "module": "marketing",
              "statut": "actif", "initiales": _initiales(nom),
              "reseaux": {k: "" for k in CLIENT_LIENS},
              "chemins": {"campagne": "_donnees/campagne.json", "reseaux": "_donnees/reseaux.json",

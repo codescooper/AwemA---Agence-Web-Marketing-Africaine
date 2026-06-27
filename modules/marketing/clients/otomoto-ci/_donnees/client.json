@@ -1,0 +1,22 @@
+{
+  "id": "otomoto-ci",
+  "nom": "Otomoto.ci",
+  "secteur": "",
+  "lieu": "",
+  "module": "marketing",
+  "statut": "actif",
+  "initiales": "OT",
+  "reseaux": {
+    "facebook": "https://facebook.com/103416927857776",
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": "",
+    "whatsapp": ""
+  },
+  "chemins": {
+    "campagne": "_donnees/campagne.json",
+    "reseaux": "_donnees/reseaux.json",
+    "revue": "../../../../outils/revue-visuels/index.html?client=otomoto-ci"
+  },
+  "fb_page_id": "103416927857776"
+}

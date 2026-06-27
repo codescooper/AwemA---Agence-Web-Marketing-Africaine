@@ -10,7 +10,7 @@ Couche de données partagée par les outils web (dashboard, revue-visuels…).
 | `agence.js` | `window.AWEMA_REGISTRY = { clients:[…] }` (généré, consommé par les outils) |
 
 ## Source de vérité (par client)
-`departements/<dept>/clients/<client>/_donnees/` :
+`modules/<dept>/clients/<client>/_donnees/` :
 | Fichier | Contenu | Requis |
 |---|---|---|
 | `client.json` | Profil : id, nom, secteur, lieu, statut, **handles réseaux**, chemins | ✅ (pour être listé) |
@@ -23,7 +23,7 @@ python3 outils/_data/build.py
 ```
 
 ## Ajouter un client à l'agence
-1. Créer `departements/<dept>/clients/<nouveau-client>/_donnees/client.json`
+1. Créer `modules/<dept>/clients/<nouveau-client>/_donnees/client.json`
    (copier celui de `la-grande-vision`, adapter id/nom/secteur/handles).
 2. (Optionnel) ajouter `campagne.json` (via le générateur) et `reseaux.json`.
 3. `python3 outils/_data/build.py` → le client apparaît dans le dashboard.
@@ -41,7 +41,7 @@ Données officielles et fiables. Pré-requis : une app Meta + un **token** Page/
 permissions `pages_read_engagement`, `instagram_basic`, `instagram_manage_insights`.
 ```bash
 export META_TOKEN="EAAB..."; export FB_PAGE_ID="123..."; export IG_USER_ID="178..."
-python3 scripts/connect-reseaux.py --meta departements/marketing/clients/la-grande-vision
+python3 scripts/connect-reseaux.py --meta modules/marketing/clients/la-grande-vision
 python3 outils/_data/build.py
 ```
 Récupère : abonnés, nb posts, likes & commentaires agrégés, top posts.
@@ -50,7 +50,7 @@ Récupère : abonnés, nb posts, likes & commentaires agrégés, top posts.
 ### Voie 2 — Outil de reporting tiers (ex. TwoMinuteReports, Meta Business Suite)
 Connecter les comptes du client dans l'outil, **exporter un CSV**, puis :
 ```bash
-python3 scripts/connect-reseaux.py --manuel departements/marketing/clients/la-grande-vision export.csv
+python3 scripts/connect-reseaux.py --manuel modules/marketing/clients/la-grande-vision export.csv
 python3 outils/_data/build.py
 ```
 CSV attendu (souple) : `reseau,abonnes,posts,likes,commentaires,portee`.

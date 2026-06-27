@@ -35,7 +35,7 @@ Chaque client construit une **Mémoire Marketing** (`memoire.json`) qui nourrit 
 ## ✅ État actuel (ce qui tourne)
 
 ### Socle & organisation
-- Monorepo « système d'exploitation de l'agence » : `departements/`, `outils/`, `docs/`, `scripts/`.
+- Monorepo « système d'exploitation de l'agence » : `modules/`, `outils/`, `docs/`, `scripts/`.
 - Conventions + charte ([[docs/04-charte-graphique]]) : Bleu Nuit #0A1F44 · Bleu Ciel #4BA3FF · Gold #D4AF37 · Montserrat/Poppins.
 - 27 clients réels dans le registre (`outils/_data/agence.js`, régénéré par `build.py`).
 

@@ -36,7 +36,7 @@ AWEMA
 Chaque département suit **exactement** ce gabarit :
 
 ```
-departements/<nom-departement>/
+modules/<nom-departement>/
 ├── README.md            ← rôle, mission, méthode, livrables types du département
 ├── methodologie/        ← méthodes réutilisables (process, frameworks)
 ├── templates/           ← gabarits vierges prêts à dupliquer
@@ -54,14 +54,14 @@ departements/<nom-departement>/
 
 ## Ajouter un nouveau département (procédure)
 
-1. Créer `departements/<nom>/` avec les 3 sous-dossiers + `README.md`.
+1. Créer `modules/<nom>/` avec les 3 sous-dossiers + `README.md`.
 2. Copier les conventions depuis `docs/03-conventions.md`.
 3. Référencer le département dans la table ci-dessus.
 4. Documenter sa méthode dans `methodologie/`.
 
 ## Ajouter un nouveau client (procédure)
 
-1. Créer `departements/<dept>/clients/<client>/`.
+1. Créer `modules/<dept>/clients/<client>/`.
 2. Y déposer le brief dans `00-brief/`.
 3. Dériver la charte client dans `docs/04-charte-graphique.md`.
 4. Suivre la méthode du département.

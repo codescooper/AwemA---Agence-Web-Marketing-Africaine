@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Construit le registre multi-clients de l'agence pour les outils web.
 
-Scanne departements/<dept>/clients/<client>/_donnees/ et agrège, par client :
+Scanne modules/<dept>/clients/<client>/_donnees/ et agrège, par client :
   - client.json   (profil + réseaux + chemins)   [requis pour être listé]
   - campagne.json (les contenus du plan)          [optionnel]
   - reseaux.json  (présence digitale, réelle)     [optionnel]
@@ -31,7 +31,7 @@ def lire(path):
 
 def main():
     clients = []
-    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    motif = os.path.join(RACINE, "modules", "*", "clients", "*", "_donnees", "client.json")
     for cj in sorted(glob.glob(motif)):
         donnees = os.path.dirname(cj)                 # .../_donnees
         client = lire(cj) or {}

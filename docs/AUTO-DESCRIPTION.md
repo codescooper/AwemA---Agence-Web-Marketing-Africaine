@@ -38,11 +38,11 @@ agents IA, avec un principe constant : **données réelles, zéro fiction**.
 ```
 config/agence.json ─┐
                     ├─ build.py ─► outils/_data/config.js  (window.AWEMA_CONFIG)  ─► apply.js (thème, marque, liens fork)
-departements/.../client.json,    ─► outils/_data/agence.js  (window.AWEMA_REGISTRY) ─► dashboard / visualiseur
+modules/.../client.json,    ─► outils/_data/agence.js  (window.AWEMA_REGISTRY) ─► dashboard / visualiseur
    reseaux.json, campagne.json
 outils/_data/platforms.js  (identité de marque par réseau) ─► landing + dashboard
 ```
-- **Modèle de données par client** : `departements/<dept>/clients/<slug>/_donnees/`
+- **Modèle de données par client** : `modules/<dept>/clients/<slug>/_donnees/`
   - `client.json` : profil (nom, secteur, lieu, initiales) + handles réseaux + IDs techniques
     (`fb_page_id`, `yt_handle`/`yt_channel_id`, `linkedin_org_id`…) + chemins.
   - `reseaux.json` : **présence digitale réelle** — `global` (audience, posts, likes, commentaires,

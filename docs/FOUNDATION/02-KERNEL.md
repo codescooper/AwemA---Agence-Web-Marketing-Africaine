@@ -9,13 +9,13 @@ maj: 2026-06-27
 > Le Kernel = les **concepts universels** d'un OS d'agence. **Il ne contient aucune logique métier.**
 > Les **modules** (ex. Marketing) connaissent le Kernel ; **le Kernel ne connaît jamais les modules**.
 > Concrètement, le Kernel se manifeste comme des **conventions + contrats + outils transverses**, pas
-> comme un framework lourd. *(Aujourd'hui, un « module » vit physiquement dans `departements/<module>/` ;
-> cf. ADR-005 pour le vocabulaire vs l'emplacement.)*
+> comme un framework lourd. *(Un « module » vit physiquement dans `modules/<module>/` — répertoire
+> renommé depuis `departements/` par l'ADR-006.)*
 
 ## Les 11 concepts autorisés
 | Concept | Définition (universelle) | Manifestation actuelle dans le dépôt |
 |---|---|---|
-| **Mission** | Une unité de travail pour une entité cliente. | `departements/<module>/clients/<client>/` (+ `client.json`). |
+| **Mission** | Une unité de travail pour une entité cliente. | `modules/<module>/clients/<client>/` (+ `client.json` : champ `module`). |
 | **Workflow** | Une suite d'étapes reproductible. | Méthodologies de module + séquences GitHub Actions. |
 | **Knowledge** | Savoir réutilisable, indépendant d'un client. | `methodologie/`, `templates/`, `docs/`. |
 | **Memory** | Ce que le système retient dans le temps. | `memoire.json` (par client) ; historique `.awema/credentials.json`. |

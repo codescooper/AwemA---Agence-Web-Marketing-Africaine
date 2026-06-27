@@ -13,7 +13,7 @@ fidelite: "Faits tirés du dépôt + déductions explicitement étiquetées « D
 > sont cités **tels quels** pour être réutilisables.
 >
 > **Avertissement de cohérence.** Le projet a connu un **repositionnement majeur** (juin 2026) : d'un
-> « système d'exploitation d'une agence marketing » (couches `README.md`, `AGENTS.md`, `departements/`)
+> « système d'exploitation d'une agence marketing » (couches `README.md`, `AGENTS.md`, `modules/`)
 > vers un « **système d'exploitation d'une agence digitale assistée par IA** » (couches `docs/PRD-AWEMA.md`,
 > agents IA, landing produit, programme bêta). **Les deux couches coexistent dans le dépôt** ; certaines
 > incohérences en découlent et sont signalées en §14–15.
@@ -142,7 +142,7 @@ Conséquence : ajouter de l'IA **n'introduit qu'un seul secret** (une clé LLM) 
 ```
 config/agence.json ──► build.py ──► outils/_data/config.js (window.AWEMA_CONFIG) ──┐
 config/ia-providers.json ─► build.py ─► outils/_data/ia-providers.js ──────────────┤
-departements/<dept>/clients/<client>/_donnees/                                      │
+modules/<module>/clients/<client>/_donnees/                                         │
    ├─ client.json (obligatoire)                                                     │
    ├─ reseaux.json (présence réelle)        ──► build.py ──► outils/_data/agence.js │
    ├─ memoire.json (Mémoire Marketing)                       (window.AWEMA_REGISTRY)│
@@ -182,8 +182,8 @@ Alimentation des données réelles (hors-ligne, via Internet) :
 │   ├── PLAN-EXECUTION-BETA.md     Plan module par module M0→M6 (zéro régression)
 │   └── email-bienvenue.md         Modèle d'email aux agences acceptées
 │
-├── departements/                  Un dossier par département de l'agence
-│   └── marketing/                 SEUL département actif (6 autres « à venir » : Web, Design, Ads, Data, CRM, Direction)
+├── modules/                       Un dossier par MODULE (renommé depuis departements/ — ADR-006)
+│   └── marketing/                 SEUL module officiel & peuplé (autres domaines : rendus possibles, non développés)
 │       ├── README.md
 │       ├── methodologie/          Méthode Universelle de Production Éditoriale (10 phases)
 │       ├── templates/             Gabarits vierges : persona, fiche-contenu, script-video, calendrier, scoring
@@ -194,7 +194,7 @@ Alimentation des données réelles (hors-ligne, via Internet) :
 ├── outils/                        Outils web réutilisables (transverses, 100 % statiques)
 │   ├── README.md
 │   ├── _data/                     COUCHE DE DONNÉES : registre généré
-│   │   ├── build.py               Scanne departements/ + config/ → génère les .js
+│   │   ├── build.py               Scanne modules/ + config/ → génère les .js
 │   │   ├── agence.js              window.AWEMA_REGISTRY (clients + licence)   [GÉNÉRÉ]
 │   │   ├── config.js              window.AWEMA_CONFIG (branding)              [GÉNÉRÉ]
 │   │   ├── ia-providers.js        window.AWEMA_IA_PROVIDERS                   [GÉNÉRÉ]
@@ -263,7 +263,7 @@ Alimentation des données réelles (hors-ligne, via Internet) :
 ## Rôle des sous-dossiers `_donnees/` (par client)
 | Fichier | Contenu | Requis |
 |---|---|---|
-| `client.json` | Profil : `id`, `nom`, `secteur`, `lieu`, `departement`, `statut`, `initiales`, `reseaux{facebook,instagram,tiktok,linkedin,whatsapp,youtube}`, `chemins{campagne,reseaux,revue}`, optionnels `fb_page_id`/`yt_handle`/`yt_channel_id`. | ✅ (pour être listé) |
+| `client.json` | Profil : `id`, `nom`, `secteur`, `lieu`, `module`, `statut`, `initiales`, `reseaux{facebook,instagram,tiktok,linkedin,whatsapp,youtube}`, `chemins{campagne,reseaux,revue}`, optionnels `fb_page_id`/`yt_handle`/`yt_channel_id`. | ✅ (pour être listé) |
 | `reseaux.json` | Présence réelle consolidée multi-réseaux (voir schéma §6). | optionnel |
 | `memoire.json` | Mémoire Marketing : identité, ton, personas, produits, FAQ… | optionnel |
 | `campagne.json` | Plan éditorial (`total`, `contenus[]`). | optionnel |
@@ -518,7 +518,8 @@ Programme bêta (candidature + places + email), Liste d'attente (lancement), Lic
 - `07-GOVERNANCE.md` — autorité (Chief Architect), hiérarchie des sources, contribution, officialisation
   d'un module, contrôle d'accès, fin de session obligatoire.
 - `08-ARCHITECTURE_DECISIONS.md` — journal ADR (001 agents=jobs ; 002 Kernel/Modules ; 003 Marketing
-  seul module officiel ; 004 plugins>kernel ; 005 « Module » sans renommage physique de `departements/`).
+  seul module officiel ; 004 plugins>kernel ; 005 (différé, **remplacé**) → 006 renommage
+  `departements/` → `modules/` **exécuté**).
 
 **docs/** (référence transverse + produit)
 - `00-INDEX.md` — MOC Obsidian, point d'entrée admin (commandes licence/accès/attente).
@@ -546,7 +547,7 @@ Programme bêta (candidature + places + email), Liste d'attente (lancement), Lic
 - `PLAN-EXECUTION-BETA.md` — modules M0→M6 (règles d'or anti-régression, critères d'acceptation, séquencement).
 - `email-bienvenue.md` — modèle d'email aux agences acceptées (5 sections).
 
-**Par dossier** : chaque dossier d'`outils/`, `scripts/`, `departements/`, `templates/` porte son
+**Par dossier** : chaque dossier d'`outils/`, `scripts/`, `modules/`, `templates/` porte son
 `README.md` (convention « un dossier = un README »).
 
 ---
@@ -626,11 +627,10 @@ les deux discours coexistent dans le dépôt (voir §14).
 
 # 14. Faiblesses
 
-1. **Double identité — résolue au niveau documentaire (2026-06-27)** : le récit est désormais unifié
-   par `docs/FOUNDATION/` (Marketing = **seul module officiel**, ADR-003, au-dessus d'un **Kernel** sans
-   métier, ADR-002) ; **`README.md` et `AGENTS.md` ont été réécrits** sur ce modèle. *Reste un écart
-   purement physique* : le terme « Module » vit dans `departements/<module>/` (renommage différé,
-   réversible — ADR-005).
+1. **Double identité — résolue (2026-06-27)** : le récit est unifié par `docs/FOUNDATION/` (Marketing =
+   **seul module officiel**, ADR-003, au-dessus d'un **Kernel** sans métier, ADR-002) ; `README.md` et
+   `AGENTS.md` réécrits sur ce modèle ; le répertoire **`departements/` a été renommé `modules/`**
+   (ADR-006) et le champ `client.json` `departement` → `module`. Vocabulaire et structure **alignés**.
 2. **Discours bêta contradictoire** : « 20 places gratuites à vie » (docs/11, `beta-seats.json`) vs
    « 10 places complètes + lancement sur abonnement » (landing/liste d'attente récentes).
 3. **Promesse « + activité de marché »** dans le slogan (`config/agence.json`) alors que le module

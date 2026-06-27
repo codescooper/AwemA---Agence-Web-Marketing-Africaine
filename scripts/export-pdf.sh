@@ -13,7 +13,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CLIENT="$ROOT/departements/marketing/clients/la-grande-vision"
+CLIENT="$ROOT/modules/marketing/clients/la-grande-vision"
 OUT="$CLIENT/_exports-pdf"
 TMP="$(mktemp -d)"
 mkdir -p "$OUT"

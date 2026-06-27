@@ -44,4 +44,5 @@ contrat doit changer pour tous. Dans ce cas : **ADR obligatoire**, migration add
 ## Un module est-il un plugin ?
 Conceptuellement, un **module** (ex. Marketing) est le plus gros des plugins : un domaine métier qui
 **connaît le Kernel** et apporte ses workflows, sa knowledge, ses agents et ses connecteurs. Le Kernel
-ne le nomme jamais. Aujourd'hui, un module vit dans `departements/<module>/` (cf. ADR-005).
+ne le nomme jamais. Un module vit dans `modules/<module>/` (répertoire renommé depuis `departements/`,
+ADR-006).

@@ -46,7 +46,7 @@ aujourd'hui ? cohérent avec la vision ? ajoute de la complexité ? peut attendr
 ```
 docs/FOUNDATION/       → socle stable (Kernel, principes, plugins, agents, données, gouvernance, ADR)
 docs/                  → produit (PRD, ROADMAP, PLAN) + guides (conventions, charte, connexions, sécurité)
-departements/<module>/ → un MODULE : README + methodologie/ + templates/ + clients/<client>/
+modules/<module>/ → un MODULE : README + methodologie/ + templates/ + clients/<client>/
 outils/                → cockpit, revue-visuels, _data/build.py (registre)
 scripts/               → awema.py (opérateur), awema_ai.py, run-agent.py, connect-reseaux.py + manifestes
 config/ · tests/ · .github/workflows/
@@ -60,10 +60,10 @@ Connecte/maintient les plateformes ; **ne demande que l'inconnu**. Ex. : `/awema
 
 ## 6. Démarrer une tâche dans le module Marketing (checklist)
 
-- [ ] Lire `departements/marketing/README.md` (rôle & méthode)
+- [ ] Lire `modules/marketing/README.md` (rôle & méthode)
 - [ ] Lire le **brief client** : `clients/<client>/00-brief/` · la **charte** : `docs/04-charte-graphique.md`
 - [ ] Suivre la **Méthode Universelle de Production Éditoriale**
-      (`departements/marketing/methodologie/methode-universelle-production-editoriale.md`)
+      (`modules/marketing/methodologie/methode-universelle-production-editoriale.md`)
 - [ ] Produire dans les sous-dossiers numérotés ; mettre à jour les `README.md`
 - [ ] Vérifier la *Definition of Done* avant de livrer
 

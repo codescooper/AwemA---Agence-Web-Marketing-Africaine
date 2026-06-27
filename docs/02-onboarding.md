@@ -11,8 +11,8 @@ Lis dans l'ordre :
 
 ## Étape 2 — Rejoindre une mission (3 min)
 
-1. Identifie ton **département** : `departements/<dept>/README.md`.
-2. Identifie ton **client** : `departements/<dept>/clients/<client>/README.md`.
+1. Identifie ton **département** : `modules/<dept>/README.md`.
+2. Identifie ton **client** : `modules/<dept>/clients/<client>/README.md`.
 3. Lis le **brief** : `clients/<client>/00-brief/`.
 
 ## Étape 3 — Connaître les règles non négociables (2 min)

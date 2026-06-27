@@ -16,7 +16,8 @@ maj: 2026-06-27
 | 002 | Séparation Kernel / Modules | ✅ Accepté |
 | 003 | Marketing = seul module officiel | ✅ Accepté |
 | 004 | Plugins préférés aux modifications du Kernel | ✅ Accepté |
-| 005 | Vocabulaire « Module » sans renommage physique de `departements/` | ✅ Accepté |
+| 005 | Vocabulaire « Module » sans renommage physique de `departements/` | 🔁 Remplacé par ADR-006 |
+| 006 | Renommage `departements/` → `modules/` | ✅ Accepté |
 
 ---
 
@@ -76,7 +77,8 @@ modèle de plugins doit rester simple et bien documenté pour être réellement 
 à chargement dynamique complexe (viole stdlib/simplicité).
 
 ## ADR-005 — Vocabulaire « Module » sans renommage physique de `departements/`
-**Statut** : Accepté (2026-06-27).
+**Statut** : 🔁 **Remplacé par ADR-006** (2026-06-27, le même jour). Décision initiale conservée
+ci-dessous pour mémoire ; le renommage a finalement été **exécuté** sur décision de l'architecte.
 **Contexte.** La FOUNDATION introduit le mot **« Module »**. Physiquement, un domaine vit dans
 `departements/<dept>/`, et `outils/_data/build.py` scanne `departements/*/clients/*` ; les chemins
 clients, tests et workflows en dépendent.
@@ -90,7 +92,27 @@ vocabulaire/répertoire, explicitement tracé ici.
 **Alternatives rejetées.** Renommer immédiatement (casse `build.py`, chemins, tests — viole « ne pas
 casser l'existant ») ; garder uniquement « département » (perd la clarté du modèle Kernel/Module).
 
+## ADR-006 — Renommage `departements/` → `modules/`
+**Statut** : Accepté (2026-06-27). **Remplace ADR-005.**
+**Contexte.** La FOUNDATION (ADR-002/003) a posé le modèle **Kernel / Module** et fait du Marketing le
+seul module officiel. Le répertoire portait encore le nom historique `departements/`.
+**Problème.** L'écart vocabulaire (« module ») vs répertoire (`departements/`) nuit à la clarté pour une
+plateforme communautaire ; ADR-005 l'avait **différé** par prudence.
+**Décision.** **Renommer `departements/` → `modules/`** maintenant, de façon **mécanique et sûre** :
+(1) `git mv departements modules` ; (2) remplacer le chemin `departements` → `modules` dans le code,
+les docs, les workflows et `.gitignore` ; (3) renommer le **champ JSON** `"departement"` → `"module"`
+dans les `client.json` et les scripts qui l'écrivent ; (4) régénérer le registre (`build.py`) ;
+(5) tests verts. Aucune logique métier modifiée.
+**Conséquences.** (+) Vocabulaire et structure **alignés** ; clarté pour les contributeurs. (+) `build.py`,
+`run-agent.py`, `awema.py`, `connect-reseaux.py`, `preparer-copie-beta.py` scannent désormais `modules/`.
+(−) Un fork existant doit refaire le `git mv` + ajuster ses chemins (migration triviale, documentée ici).
+**Vérification.** 29 tests unittest verts ; aucune occurrence résiduelle de `departements` hors documents
+historiques ; cockpit chargé sans erreur.
+**Alternatives rejetées.** Conserver `departements/` (ADR-005 — incohérence durable) ; renommer aussi le
+**module** « marketing » (inutile : seul le conteneur changeait de nom) ; introduire un alias `modules/`
+→ `departements/` (complexité sans bénéfice).
+
 ---
 
-> **Prochain ADR libre : ADR-006.** Créer un ADR avant toute décision structurante (frontière de
+> **Prochain ADR libre : ADR-007.** Créer un ADR avant toute décision structurante (frontière de
 > données, nouveau module officiel, changement de contrat d'agent/plugin, migration de répertoires).

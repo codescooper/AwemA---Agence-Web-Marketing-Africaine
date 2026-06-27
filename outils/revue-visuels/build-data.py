@@ -15,7 +15,7 @@ import sys
 
 ICI = os.path.dirname(os.path.abspath(__file__))
 DEFAUT = os.path.normpath(os.path.join(
-    ICI, "..", "..", "departements", "marketing", "clients",
+    ICI, "..", "..", "modules", "marketing", "clients",
     "la-grande-vision", "_donnees", "campagne.json"))
 
 

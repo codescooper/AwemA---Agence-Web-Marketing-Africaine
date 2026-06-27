@@ -1,0 +1,22 @@
+{
+  "id": "yeble-maison-de-maroquinerie",
+  "nom": "YEBLE - Maison de maroquinerie",
+  "secteur": "",
+  "lieu": "",
+  "module": "marketing",
+  "statut": "actif",
+  "initiales": "Y-",
+  "reseaux": {
+    "facebook": "https://facebook.com/966797856520308",
+    "instagram": "",
+    "tiktok": "",
+    "linkedin": "",
+    "whatsapp": ""
+  },
+  "chemins": {
+    "campagne": "_donnees/campagne.json",
+    "reseaux": "_donnees/reseaux.json",
+    "revue": "../../../../outils/revue-visuels/index.html?client=yeble-maison-de-maroquinerie"
+  },
+  "fb_page_id": "966797856520308"
+}

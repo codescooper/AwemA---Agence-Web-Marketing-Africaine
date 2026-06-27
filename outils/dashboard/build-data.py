@@ -4,7 +4,7 @@
 Usage: python3 build-data.py [chemin/campagne.json]"""
 import json, os, sys
 ICI = os.path.dirname(os.path.abspath(__file__))
-DEFAUT = os.path.normpath(os.path.join(ICI, "..", "..", "departements", "marketing",
+DEFAUT = os.path.normpath(os.path.join(ICI, "..", "..", "modules", "marketing",
     "clients", "la-grande-vision", "_donnees", "campagne.json"))
 src = sys.argv[1] if len(sys.argv) > 1 else DEFAUT
 with open(src, encoding="utf-8") as f:
