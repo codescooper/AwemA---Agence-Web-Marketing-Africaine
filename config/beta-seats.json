@@ -1,5 +1,5 @@
 {
-  "_doc": "Suivi des 20 places du Programme Beta Community Managers (docs/11-programme-beta.md). Statuts : libre | invite | active | avertissement | recyclee. Ne PAS stocker de données personnelles sensibles ici — pseudo/handle + contact minimal suffisent. 20 places uniques, à vie, remplaçables si conditions non respectées.",
+  "_doc": "Suivi des 20 places de la PHASE 1 (bêta fondateur) — cf. docs/15-offre.md (offre canonique) et docs/11-programme-beta.md (conditions). Les 20 sont les bêta-testeurs qui façonnent le produit AVANT l'ouverture publique (Phase 2, sur abonnement ; liste d'attente = liste_attente ci-dessous). Statuts : libre | invite | active | avertissement | recyclee. Ne PAS stocker de données personnelles sensibles ici — pseudo/handle + contact minimal suffisent. 20 places uniques, à vie, remplaçables si conditions non respectées.",
   "programme": "Beta Community Managers — édition fondateur",
   "places_total": 20,
   "conditions": "docs/11-programme-beta.md",
