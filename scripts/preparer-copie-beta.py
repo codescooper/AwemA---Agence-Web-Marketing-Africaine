@@ -84,6 +84,23 @@ def main():
         if os.path.exists(fp):
             os.remove(fp)
 
+    # 2-0bis) Retire les documents INTERNES (journal, auto-descriptions citant des données réelles)
+    for f in ("docs/AWEMA-OS.md", "docs/AUTO-DESCRIPTION.md", "PROJECT_SELF_DESCRIPTION.md"):
+        fp = os.path.join(cible, f)
+        if os.path.exists(fp):
+            os.remove(fp)
+
+    # 2-0ter) Vide les alias de slugs (rattachements spécifiques à TES comptes)
+    al = os.path.join(cible, "config", "aliases.json")
+    if os.path.exists(al):
+        try:
+            a = json.load(open(al, encoding="utf-8"))
+            for k in [k for k in a if k != "_doc" and isinstance(a[k], dict)]:
+                a[k] = {}
+            json.dump(a, open(al, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
     # 2a) Licence remise à NON-ACTIVE : le pilote doit l'activer auprès d'AWEMA
     lic_path = os.path.join(cible, "config", "licence.json")
     if os.path.exists(lic_path):
@@ -125,6 +142,8 @@ def main():
     subprocess.call([sys.executable, os.path.join(cible, "outils", "_data", "build.py")], cwd=cible)
 
     print("\n✅ Copie d'accueil prête :", cible)
+    print("⚠️  À personnaliser (prose, non scrubable automatiquement) : docs/01-agence.md et "
+          "docs/04-charte-graphique.md décrivent encore TON agence/exemple — remplace-les par les tiens.")
     print("\nProchaines étapes :")
     print("  1. cd", cible, "&& git init && git add -A && git commit -m \"AWEMA — copie d'accueil beta\"")
     print("  2. Crée un dépôt GitHub vide, puis : git remote add origin <url> && git push -u origin main")
