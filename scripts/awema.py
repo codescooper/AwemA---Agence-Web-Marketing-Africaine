@@ -29,6 +29,8 @@ Commandes :
   awema licence revoquer-cle <cle> | set <cle> | verifier   gestion (voir docs/ACCES-AGENCE.md)
   awema acces demande "<agence>" [client= reseau= …]  enregistre une demande d'accès API managé
   awema acces lister | accepter <id> | refuser <id>   tu valides PAR AGENCE (défaut : API autonomes)
+  awema attente ajouter "<nom>" contact=… [profil=…]  inscrit à la liste d'attente (PRIVÉ, hors git)
+  awema attente lister | compter                      qui attend le lancement (sur abonnement)
   awema client new <slug|auto> ...   crée la fiche d'un client
   awema client memoire <slug> ...    édite la Mémoire Marketing (ton, personas, produits, faq…)
   awema client list                  liste les clients gérés
@@ -118,6 +120,7 @@ CONFIG_PATH = os.path.join(RACINE, "config", "agence.json")
 LICENCE_PATH = os.path.join(RACINE, "config", "licence.json")
 LEDGER = os.path.join(STORE_DIR, "licences-registre.json")   # registre PRIVÉ de délivrance (preuve)
 ACCES_REG = os.path.join(STORE_DIR, "acces-api-registre.json")  # demandes d'accès API managé (preuve)
+ATTENTE_REG = os.path.join(STORE_DIR, "liste-attente.json")  # liste d'attente lancement (PRIVÉ, hors git)
 CONFIG_CHAMPS = ("nom", "nom_complet", "tagline", "slogan", "initiales", "langue", "contact")
 CHARTE_KEYS = ("nuit", "ciel", "gold", "violet", "mint", "pink")
 
@@ -454,6 +457,76 @@ def cmd_acces(args):
         print(ligne)
 
 
+def _attente_load():
+    try:
+        return json.load(open(ATTENTE_REG, encoding="utf-8"))
+    except Exception:
+        return {"inscrits": []}
+
+
+def _attente_save(reg):
+    os.makedirs(STORE_DIR, exist_ok=True)
+    gi = os.path.join(STORE_DIR, ".gitignore")
+    if not os.path.exists(gi):
+        open(gi, "w").write("*\n")
+    with open(ATTENTE_REG, "w", encoding="utf-8") as f:
+        json.dump(reg, f, ensure_ascii=False, indent=2)
+    try:
+        os.chmod(ATTENTE_REG, 0o600)
+    except Exception:
+        pass
+
+
+def attente_ajouter(reg, nom, contact, profil, quand):
+    """Ajoute un inscrit à la liste d'attente du lancement. Fonction PURE (testable).
+    Dédoublonne sur le contact (email/tel) pour éviter les doublons d'un même intéressé."""
+    contact_norm = (contact or "").strip().lower()
+    for e in reg.get("inscrits", []):
+        if contact_norm and (e.get("contact", "").strip().lower() == contact_norm):
+            return e  # déjà inscrit → idempotent
+    n = len(reg.get("inscrits", [])) + 1
+    e = {"n": n, "nom": nom, "contact": contact, "profil": profil, "inscrit_le": quand}
+    reg.setdefault("inscrits", []).append(e)
+    return e
+
+
+def cmd_attente(args):
+    """Liste d'attente du lancement (sur abonnement). Stockée en PRIVÉ (.awema/, hors git).
+    Sous-commandes : ajouter "<nom>" contact=<email/tel> [profil=…] · lister · compter."""
+    sub = args[0] if args else "lister"
+    reg = _attente_load()
+
+    def kv(prefixe):
+        return next((a.split("=", 1)[1] for a in args[1:] if a.startswith(prefixe + "=")), "")
+
+    if sub == "ajouter":
+        nom = args[1] if len(args) > 1 and "=" not in args[1] else ""
+        if not nom:
+            sys.exit('Usage : awema attente ajouter "Nom" contact=email [profil=…]')
+        avant = len(reg.get("inscrits", []))
+        e = attente_ajouter(reg, nom, kv("contact"), kv("profil"), _now())
+        _attente_save(reg)
+        if len(reg["inscrits"]) == avant:
+            print(f"↺ Déjà inscrit·e — « {e['nom']} » (n°{e['n']}).")
+        else:
+            print(f"📩 Inscrit·e n°{e['n']} ajouté·e — « {nom} »"
+                  + (f" · {e['profil']}" if e["profil"] else "") + f" · total : {len(reg['inscrits'])}")
+        return
+    if sub == "compter":
+        print(len(reg.get("inscrits", [])))
+        return
+    # lister / défaut
+    ins = reg.get("inscrits", [])
+    if not ins:
+        print("Liste d'attente vide. (Ajouter : awema attente ajouter \"Nom\" contact=email)")
+        return
+    print(f"📋 Liste d'attente — {len(ins)} inscrit·e·s (PRIVÉ, {os.path.relpath(ATTENTE_REG, RACINE)}) :")
+    for e in ins:
+        print(f"  n°{e['n']:3}  {e.get('inscrit_le', '')[:10]}  {e['nom']}"
+              + (f" · {e['profil']}" if e.get("profil") else "")
+              + (f"  <{e['contact']}>" if e.get("contact") else ""))
+
+
 def cmd_client_list():
     motif = os.path.join(CLIENTS_DIR, "*", "_donnees", "client.json")
     import glob as _g
@@ -688,6 +761,8 @@ def main():
             cmd_licence(a[1:])
         elif c == "acces":
             cmd_acces(a[1:])
+        elif c == "attente":
+            cmd_attente(a[1:])
         else:
             print(__doc__)
             sys.exit(1)

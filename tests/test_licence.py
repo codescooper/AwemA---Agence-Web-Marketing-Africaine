@@ -28,6 +28,19 @@ class TestLicence(unittest.TestCase):
         self.assertEqual(e["client"], "Resto")
         self.assertEqual(len(reg["demandes"]), 1)
 
+    def test_attente_ajoute_et_dedoublonne(self):
+        reg = {"inscrits": []}
+        e1 = awema.attente_ajouter(reg, "Awa K.", "awa@x.com", "Community manager",
+                                   "2026-06-27T10:00:00+00:00")
+        awema.attente_ajouter(reg, "Awa (doublon)", "AWA@x.com", "Agence",
+                              "2026-06-27T11:00:00+00:00")  # même contact, casse ≠ → ignoré
+        e3 = awema.attente_ajouter(reg, "Ben T.", "ben@x.com", "Marque",
+                                   "2026-06-27T12:00:00+00:00")
+        self.assertEqual(e1["n"], 1)
+        self.assertEqual(e1["profil"], "Community manager")
+        self.assertEqual(e3["n"], 2)
+        self.assertEqual(len(reg["inscrits"]), 2)           # le doublon n'a pas été ajouté
+
     def test_format_cle(self):
         self.assertTrue(awema._licence_valide("AWEMA-18A7-2D12-3336"))
         self.assertFalse(awema._licence_valide("pas-bon"))
