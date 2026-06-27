@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWEMA — Récupération du code TikTok</title>
+<style>
+  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#13294f,#0A1F44);color:#eaf0fb}
+  .card{width:min(680px,92vw);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:20px;padding:30px;backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  h1{font-family:Montserrat,sans-serif;font-weight:800;margin:0 0 4px;font-size:22px}
+  h1 .g{color:var(--gold)}
+  p.sub{margin:0 0 20px;color:#9db0d6;font-size:13.5px}
+  .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9db0d6;margin:18px 0 6px}
+  .box{display:flex;gap:10px}
+  input{flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;padding:13px 14px;border-radius:12px;
+    border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);color:#fff;overflow:auto}
+  button{border:0;border-radius:12px;padding:0 18px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--ciel),#7C5CFF);color:#fff}
+  button:active{transform:translateY(1px)}
+  .ok{color:#34E5C4} .err{color:#FF7D9C}
+  .hint{margin-top:18px;font-size:12.5px;color:#9db0d6;line-height:1.7}
+  code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>AwemA Watcher <span class="g">·</span> code d'autorisation TikTok</h1>
+  <p class="sub">Cette page récupère le <strong>code</strong> renvoyé par TikTok après autorisation. Copie-le, puis échange-le en ligne de commande.</p>
+
+  <div id="zone"></div>
+
+  <div class="hint">
+    Étape suivante (à coller dans ton terminal) :<br>
+    <code>export TIKTOK_CLIENT_KEY="…" TIKTOK_CLIENT_SECRET="…"</code><br>
+    <code>python3 scripts/connect-reseaux.py --tiktok-auth "&lt;CODE&gt;" "&lt;REDIRECT_URI&gt;"</code><br>
+    → tu obtiens le <strong>refresh_token</strong> à mettre dans la Variable <code>TIKTOK_TOKENS</code>.
+  </div>
+</div>
+
+<script>
+  var p = new URLSearchParams(location.search);
+  var code = p.get('code'), err = p.get('error'), errd = p.get('error_description'), state = p.get('state');
+  var zone = document.getElementById('zone');
+  function row(label, value){
+    return '<div class="lbl">'+label+'</div><div class="box">'+
+      '<input id="v" readonly value="'+(value||'').replace(/"/g,'&quot;')+'">'+
+      '<button onclick="(async()=>{try{await navigator.clipboard.writeText(document.getElementById(\'v\').value);this.textContent=\'Copié ✓\'}catch(e){this.textContent=\'Sélectionne manuellement\'}})()">Copier</button></div>';
+  }
+  if(code){
+    zone.innerHTML = '<p class="ok">✅ Autorisation réussie. Voici ton code :</p>' + row('Code', code) +
+      (state ? '<div class="lbl">state</div><div class="box"><input readonly value="'+state+'"></div>' : '');
+  } else if(err){
+    zone.innerHTML = '<p class="err">❌ Erreur : '+err+'</p><p class="sub">'+(errd||'')+'</p>';
+  } else {
+    zone.innerHTML = '<p class="sub">Aucun code détecté dans l\'URL. Ouvre cette page via la redirection TikTok après autorisation (elle contiendra <code>?code=…</code>).</p>';
+  }
+</script>
+</body>
+</html>

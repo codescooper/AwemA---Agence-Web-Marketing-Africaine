@@ -1,0 +1,2 @@
+// Généré par build.py depuis config/agence.json — édite le JSON, pas ce fichier.
+window.AWEMA_CONFIG = {"nom": "AWEMA", "nom_complet": "Agence Web Marketing Africaine", "tagline": "Centre de pilotage", "slogan": "La présence en ligne et l'activité de marché de vos clients, pilotées.", "initiales": "A", "langue": "fr", "contact": "codescooper@gmail.com", "github": {"owner": "codescooper", "repo": "AwemA---Agence-Web-Marketing-Africaine"}, "charte": {"nuit": "#0A1F44", "ciel": "#4BA3FF", "gold": "#D4AF37", "violet": "#7C5CFF", "mint": "#34E5C4", "pink": "#FF7D9C"}};

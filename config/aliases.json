@@ -1,0 +1,4 @@
+{
+  "_doc": "Alias de slugs. Forme : {\"<reseau>\":{\"<slug-source>\":\"<slug-client>\"}}.",
+  "tiktok": {}
+}
