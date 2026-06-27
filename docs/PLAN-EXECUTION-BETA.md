@@ -30,7 +30,7 @@
   remonte le vrai message d'erreur API. Sortie **structurée** (JSON forcé via instruction + validation).
 - `scripts/agents.json` : manifeste d'agents (`{id, role, entrees[], sortie_schema, declencheur, modele}`).
 - `scripts/run-agent.py <agent> [client|--all]` : charge entrées → appelle `awema_ai` → valide → écrit
-  `departements/.../<client>/_donnees/_agents/<agent>.json`.
+  `modules/.../<client>/_donnees/_agents/<agent>.json`.
 - Cockpit : helper JS `loadAgent(client, nom)` + composant « feed d'agents » (vide propre).
 **Schéma de sortie (commun)** : `{ "agent","genere_le","modele","provenance":{...},"items":[...] }`.
 **Acceptation** : `run-agent.py --all` sans clé → skip propre ; avec clé → écrit un JSON valide ;

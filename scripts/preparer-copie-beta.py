@@ -42,7 +42,7 @@ CONFIG_TEMPLATE = {
 
 DEMO_CLIENT = {
     "id": "demo-client", "nom": "Client Démo", "secteur": "Exemple",
-    "lieu": "—", "departement": "marketing", "statut": "actif", "initiales": "CD",
+    "lieu": "—", "module": "marketing", "statut": "actif", "initiales": "CD",
     "reseaux": {"facebook": "", "instagram": "", "tiktok": "", "linkedin": "",
                 "whatsapp": "", "youtube": ""},
     "chemins": {"campagne": "_donnees/campagne.json", "reseaux": "_donnees/reseaux.json",
@@ -61,7 +61,7 @@ def main():
 
     # 1) Purge des clients réels → un seul client de DÉMO riche (effet « wow » immédiat,
     #    clairement étiqueté exemple, isolé des vraies données — cf. M6)
-    clients_dir = os.path.join(cible, "departements", "marketing", "clients")
+    clients_dir = os.path.join(cible, "modules", "marketing", "clients")
     if os.path.isdir(clients_dir):
         for d in os.listdir(clients_dir):
             shutil.rmtree(os.path.join(clients_dir, d), ignore_errors=True)
@@ -89,7 +89,7 @@ def main():
             pass
 
     # 2b) Neutralise le README du département (retire la liste des clients réels)
-    rdm = os.path.join(cible, "departements", "marketing", "README.md")
+    rdm = os.path.join(cible, "modules", "marketing", "README.md")
     if os.path.exists(rdm):
         lignes, garde = open(rdm, encoding="utf-8").read().splitlines(), []
         for ln in lignes:

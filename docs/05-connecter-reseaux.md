@@ -109,7 +109,7 @@ Tout s'affiche dans le dashboard, vue **Présence digitale**.
 
 Sans app Meta : exporter les chiffres depuis l'outil du client, puis :
 ```bash
-python3 scripts/connect-reseaux.py --manuel departements/marketing/clients/<client> export.csv
+python3 scripts/connect-reseaux.py --manuel modules/marketing/clients/<client> export.csv
 python3 outils/_data/build.py
 ```
 CSV attendu (souple) : `reseau,abonnes,posts,likes,commentaires,portee`
@@ -125,7 +125,7 @@ instagram,3110,38,2950,180,28000
 
 ## Voie C — Manuel : éditer le fichier
 
-Éditer directement `departements/marketing/clients/<client>/_donnees/reseaux.json`
+Éditer directement `modules/marketing/clients/<client>/_donnees/reseaux.json`
 (mêmes champs), passer `"connecte": true`, puis `python3 outils/_data/build.py`.
 
 ---

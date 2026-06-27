@@ -48,7 +48,7 @@ Les retours exportés (`retours-campagne.md`) servent à :
 ## Source des données
 
 `campagne.json` est produit par le générateur du client
-(`departements/marketing/clients/<client>/_generateur/generer.py` →
+(`modules/marketing/clients/<client>/_generateur/generer.py` →
 `_donnees/campagne.json`). Il contient, par contenu : titre, date, plateforme, persona,
 pilier, hook, CTA, format, KPI, les 3 prompts et les aperçus Canva connus.
 
@@ -56,7 +56,7 @@ pilier, hook, CTA, format, KPI, les 3 prompts et les aperçus Canva connus.
 
 ```bash
 # 1) régénérer la campagne (côté client)
-cd ../../departements/marketing/clients/exemple-client/_generateur && python3 generer.py
+cd ../../modules/marketing/clients/exemple-client/_generateur && python3 generer.py
 # 2) reconstruire les données de l'outil
 cd ../../../../../../outils/revue-visuels && python3 build-data.py
 ```

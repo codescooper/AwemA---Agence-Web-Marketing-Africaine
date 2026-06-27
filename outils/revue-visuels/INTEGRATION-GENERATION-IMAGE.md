@@ -69,7 +69,7 @@ raisonnable et conforme aux CGU d'OpenAI.
 2. Générer une image depuis un prompt :
    ```bash
    python3 scripts/generer-image-openai.py "<le prompt copié>" \
-     departements/marketing/clients/exemple-client/_visuels-recus/001.png
+     modules/marketing/clients/exemple-client/_visuels-recus/001.png
    ```
    ou en lot depuis `campagne.json` (voir l'en-tête du script).
 3. Dans l'outil, **glisse** l'image générée sur l'aperçu, ou indique son chemin dans

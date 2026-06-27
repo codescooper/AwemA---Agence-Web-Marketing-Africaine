@@ -37,7 +37,7 @@ def _lire(path):
 
 
 def _clients():
-    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    motif = os.path.join(RACINE, "modules", "*", "clients", "*", "_donnees", "client.json")
     out = []
     for cj in sorted(glob.glob(motif)):
         out.append((json.load(open(cj, encoding="utf-8")), os.path.dirname(cj)))

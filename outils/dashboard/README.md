@@ -35,6 +35,6 @@ digitale** affiche leurs réseaux. Ajouter/brancher un client : [`../_data/READM
 
 ## Reconstruire après une nouvelle génération
 ```bash
-cd ../../departements/marketing/clients/exemple-client/_generateur && python3 generer.py
+cd ../../modules/marketing/clients/exemple-client/_generateur && python3 generer.py
 cd ../../../../../../outils/dashboard && python3 build-data.py
 ```

@@ -3,7 +3,7 @@
   "nom": "Éclat Beauté — DÉMO",
   "secteur": "Institut de beauté (exemple)",
   "lieu": "Abidjan, CI",
-  "departement": "marketing",
+  "module": "marketing",
   "statut": "demo",
   "initiales": "EB",
   "_demo": true,

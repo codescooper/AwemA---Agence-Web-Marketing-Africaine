@@ -1,5 +1,9 @@
 # 11 — Programme Beta · 20 Community Managers
 
+> **Phase 1 du lancement.** Les 20 sont la **cohorte de bêta-testeurs fondateurs** qui façonnent le
+> produit **avant** l'ouverture au public (Phase 2, **sur abonnement**). Vue d'ensemble de l'offre et
+> des deux phases : **[`15-offre.md`](15-offre.md)** (document canonique).
+>
 > **L'essentiel** : 20 community managers reçoivent AWEMA **gratuitement, à vie**, en échange de
 > leurs **retours** pour améliorer l'outil. Places **uniques** et **nominatives**, **remplaçables**
 > en cas de non-respect des conditions ci-dessous.

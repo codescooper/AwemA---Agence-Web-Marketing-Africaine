@@ -14,7 +14,7 @@
 bash scripts/export-pdf.sh
 ```
 Les PDF sont écrits dans
-`departements/marketing/clients/exemple-client/_exports-pdf/`.
+`modules/marketing/clients/exemple-client/_exports-pdf/`.
 
 ## Pré-requis (une seule fois)
 

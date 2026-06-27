@@ -11,7 +11,7 @@ Remplit le contrat outils/_data (reseaux.json) à partir des réseaux sociaux. V
 
   2) META — UNE PAGE précise
      export META_TOKEN="EAAB..." FB_PAGE_ID="..." IG_USER_ID="..."
-     python3 connect-reseaux.py --meta departements/marketing/clients/exemple-client
+     python3 connect-reseaux.py --meta modules/marketing/clients/exemple-client
 
   3) IMPORT MANUEL (CSV exporté depuis Meta Business Suite / TwoMinuteReports / autre)
      python3 connect-reseaux.py --manuel <client_dir> <export.csv>
@@ -329,7 +329,7 @@ def _pages():
 
 
 def _trouver_client_par_pageid(page_id):
-    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    motif = os.path.join(RACINE, "modules", "*", "clients", "*", "_donnees", "client.json")
     for cj in glob.glob(motif):
         try:
             d = json.load(open(cj, encoding="utf-8"))
@@ -352,7 +352,7 @@ def _assurer_client_json(client_dir, pg):
     else:
         d = {
             "id": slug, "nom": nom, "secteur": "", "lieu": "",
-            "departement": "marketing", "statut": "actif", "initiales": initiales(nom),
+            "module": "marketing", "statut": "actif", "initiales": initiales(nom),
             "reseaux": {
                 "facebook": f"https://facebook.com/{pg.get('id')}",
                 "instagram": (f"https://instagram.com/{ig.get('username')}" if ig.get("username") else ""),
@@ -634,7 +634,7 @@ def via_meta_all():
         if ab is None:
             ab = pg.get("followers_count") or pg.get("fan_count")
         client_dir = _trouver_client_par_pageid(page_id) or os.path.join(
-            RACINE, "departements", "marketing", "clients", slugify(pg.get("name") or page_id))
+            RACINE, "modules", "marketing", "clients", slugify(pg.get("name") or page_id))
         _assurer_client_json(client_dir, pg)
         data = _vide()
         data["source"] = "meta-graph-api"
@@ -727,7 +727,7 @@ def _ts(unix):
 
 
 def _client_par_slug(slug):
-    d = os.path.join(RACINE, "departements", "marketing", "clients", slug)
+    d = os.path.join(RACINE, "modules", "marketing", "clients", slug)
     return d if os.path.isdir(os.path.join(d, "_donnees")) else None
 
 
@@ -744,7 +744,7 @@ def _assurer_client_tiktok(client_dir, slug, user):
     else:
         d = {
             "id": slug, "nom": nom, "secteur": "", "lieu": "",
-            "departement": "marketing", "statut": "actif", "initiales": initiales(nom),
+            "module": "marketing", "statut": "actif", "initiales": initiales(nom),
             "reseaux": {"facebook": "", "instagram": "", "tiktok": "https://www.tiktok.com/",
                         "linkedin": "", "whatsapp": ""},
             "chemins": {"campagne": "_donnees/campagne.json", "reseaux": "_donnees/reseaux.json",
@@ -832,7 +832,7 @@ def via_tiktok_all():
         canon = _alias_slug("tiktok", slug)              # rattache à la fiche canonique si alias
         client_dir = _client_par_slug(canon)
         if not client_dir:
-            client_dir = os.path.join(RACINE, "departements", "marketing", "clients", canon)
+            client_dir = os.path.join(RACINE, "modules", "marketing", "clients", canon)
             os.makedirs(os.path.join(client_dir, "_donnees"), exist_ok=True)
         _assurer_client_tiktok(client_dir, canon, user)  # client.json → visible au dashboard
         _ecrire(client_dir, _tiktok_data(user, videos))
@@ -919,7 +919,7 @@ def via_youtube_all():
     key = os.environ.get("YOUTUBE_API_KEY")
     if not key:
         sys.exit("❌ YOUTUBE_API_KEY requis (Secret/clé API Google).")
-    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    motif = os.path.join(RACINE, "modules", "*", "clients", "*", "_donnees", "client.json")
     n = 0
     for cj in glob.glob(motif):
         try:
@@ -1076,7 +1076,7 @@ def via_linkedin_all():
     token = _li_token()
     if not token:
         sys.exit("❌ LINKEDIN_TOKEN requis (access token OAuth, scopes r_organization_social / rw_organization_admin).")
-    motif = os.path.join(RACINE, "departements", "*", "clients", "*", "_donnees", "client.json")
+    motif = os.path.join(RACINE, "modules", "*", "clients", "*", "_donnees", "client.json")
     n = 0
     for cj in glob.glob(motif):
         try:

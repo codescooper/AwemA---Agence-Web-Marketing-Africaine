@@ -76,7 +76,7 @@
     <label>A · Commande opérateur (copie-la, l'agence la lance)</label>
     <div class="out" id="cmd">—<button class="btn" id="bc" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('cmd','bc')">Copier</button></div>
 
-    <label style="margin-top:16px">B · Fichier <code>departements/marketing/clients/&lt;slug&gt;/_donnees/client.json</code></label>
+    <label style="margin-top:16px">B · Fichier <code>modules/marketing/clients/&lt;slug&gt;/_donnees/client.json</code></label>
     <div class="out" id="json">—<button class="btn" id="bj" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('json','bj')">Copier</button></div>
     <div class="row"><button class="btn ghost" onclick="dl()">⬇️ Télécharger client.json</button></div>
     <div class="note">Astuce : dans Claude Code, tu peux aussi dire à l'opérateur « <b>/awema nouveau client …</b> » —
@@ -110,7 +110,7 @@
     let slug=F('slug'); if(!slugTouched){slug=slugify(nom);slugEl.value=nom?slug:'';}
     slug=slug||slugify(nom);
     const liens={facebook:'',instagram:F('instagram'),tiktok:F('tiktok'),linkedin:F('linkedin'),whatsapp:F('whatsapp'),youtube:F('yt_handle')?('https://www.youtube.com/'+F('yt_handle')):''};
-    const d={id:slug,nom:nom||'(sans nom)',secteur:F('secteur'),lieu:F('lieu'),departement:'marketing',
+    const d={id:slug,nom:nom||'(sans nom)',secteur:F('secteur'),lieu:F('lieu'),module:'marketing',
       statut:'actif',initiales:initiales(nom),reseaux:liens,
       chemins:{campagne:'_donnees/campagne.json',reseaux:'_donnees/reseaux.json',revue:'../../../../outils/revue-visuels/index.html?client='+slug}};
     if(F('fb_page_id'))d.fb_page_id=F('fb_page_id');

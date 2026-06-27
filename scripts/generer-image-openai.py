@@ -15,8 +15,8 @@ USAGE
 
 2) En lot depuis le campagne.json (génère les visuels manquants) :
    python3 scripts/generer-image-openai.py --batch \
-       departements/marketing/clients/exemple-client/_donnees/campagne.json \
-       departements/marketing/clients/exemple-client/_visuels-recus \
+       modules/marketing/clients/exemple-client/_donnees/campagne.json \
+       modules/marketing/clients/exemple-client/_visuels-recus \
        [--n 10] [--champ prompt_gpt]
 
 Tailles supportées par gpt-image-1 : 1024x1024, 1024x1536 (portrait), 1536x1024 (paysage).

@@ -79,7 +79,7 @@ Pour **chaque** compte TikTok à suivre :
 - **Secret** `TIKTOK_PAT` — un *fine-grained PAT* sur CE dépôt avec la permission
   **« Variables : Read and write »** (sert à réécrire le token roté après chaque run).
 - **Variable** `TIKTOK_TOKENS` — JSON associant **le slug du client** (nom du dossier dans
-  `departements/marketing/clients/<slug>`) à son refresh_token :
+  `modules/marketing/clients/<slug>`) à son refresh_token :
   ```json
   {"exemple-client": "rft.abc123...", "merveille-boutik": "rft.def456..."}
   ```
