@@ -145,7 +145,7 @@
           <div class="ttl" id="vTtl">—</div>
           <div class="vreco" id="vReco">—</div>
           <div class="cta" id="vCta">—</div>
-          <div class="sign">Exemple Client · « Voir la vie en grand. »</div>
+          <div class="sign">Ta marque · « ton slogan »</div>
         </div>
       </div>
       <div class="previews" id="previews"></div>
@@ -337,7 +337,7 @@ function show(i){
   v.querySelectorAll('img').forEach(n=>n.remove());
   const img=(s.image||it.image||"").trim();
   if(img){const im=new Image();im.src=img;im.onerror=()=>im.remove();v.appendChild(im);}
-  if(!v.querySelector(".sign")){const sg=document.createElement('div');sg.className="sign";sg.textContent="Exemple Client · « Voir la vie en grand. »";v.appendChild(sg);}
+  if(!v.querySelector(".sign")){const sg=document.createElement('div');sg.className="sign";sg.textContent="Ta marque · « ton slogan »";v.appendChild(sg);}
   // previews
   const pv=$("#previews");pv.innerHTML="";
   (it.apercus||[]).forEach((u,k)=>pv.insertAdjacentHTML('beforeend',`<a href="${u}" target="_blank" rel="noopener">🎨 Aperçu Canva ${k+1}</a>`));

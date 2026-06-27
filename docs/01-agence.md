@@ -28,8 +28,9 @@ AWEMA
 └── Direction & Opérations   ← coordination, qualité, finance, RH                        ⏳ à venir
 ```
 
-> La présente livraison concerne le **Département Marketing & Contenu** et sa **première
-> mission** : le cabinet d'optique **Exemple Client** (Yopougon, Côte d'Ivoire).
+> Le seul module officiel aujourd'hui est **Marketing & Contenu** (cf. `docs/FOUNDATION/`). Un client
+> de **démonstration** est fourni (*Éclat Beauté — DÉMO*) ; ajoute tes propres clients via
+> `nouveau-client.html`.
 
 ## Comment un département est structuré
 

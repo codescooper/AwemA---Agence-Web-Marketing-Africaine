@@ -13,11 +13,9 @@ maj: 2026-06-26
 - [[FOUNDATION/README]] — Constitution, Kernel, principes, plugins, agents, données, gouvernance, ADR
 
 ## 🎯 Vision & pilotage
-- [[AWEMA-OS]] — note maîtresse (vision, état, journal)
 - [[PRD-AWEMA]] — référence produit (OS d'agence assistée par IA, architecture des agents)
 - [[ROADMAP]] — feuille de route (source unique : NOW / BÊTA / POST-BÊTA)
 - [[PLAN-EXECUTION-BETA]] — plan module par module (M0→M6, zéro régression)
-- [[AUTO-DESCRIPTION]] — auto-description portable (pour analyse externe)
 
 ## 🗝️ Contrôle & accès (admin)
 - [[ACCES-AGENCE]] — **page de contrôle** : donner/retirer l'accès à une agence
@@ -65,10 +63,10 @@ python3 scripts/preparer-copie-beta.py ../awema-beta
 - Manifeste `scripts/agents.json` · client `scripts/awema_ai.py` · runner `scripts/run-agent.py`
 - Lancer : `python3 scripts/run-agent.py <agent> --all` (clé IA requise ; actions-du-jour marche sans IA)
 
-## 📊 État (au 2026-06-26)
-- 27 clients réels · cockpit + 4 agents · landing + onboarding + copie d'accueil bêta
-- IA agnostique (gratuites mises en avant) · contrôle d'accès (licence + validation API)
-- ~29 tests verts · branche de travail : `claude/keen-planck-p66rds`
+## 📊 État (template public)
+- 1 client de **démonstration** (Éclat Beauté) · cockpit + 4 agents · landing + onboarding
+- IA agnostique (options gratuites mises en avant) · contrôle d'accès (licence + validation API)
+- Harnais de tests stdlib · modèle Kernel/Module (cf. `docs/FOUNDATION/`)
 
 ---
 > 💡 Astuce Obsidian : active l'affichage **graphe** pour voir les liens entre notes ; cette note est
