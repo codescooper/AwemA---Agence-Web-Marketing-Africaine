@@ -42,7 +42,7 @@ class TestLicence(unittest.TestCase):
         self.assertEqual(len(reg["inscrits"]), 2)           # le doublon n'a pas été ajouté
 
     def test_format_cle(self):
-        self.assertTrue(awema._licence_valide("AWEMA-18A7-2D12-3336"))
+        self.assertTrue(awema._licence_valide("AWEMA-1A2B-3C4D-5E6F"))
         self.assertFalse(awema._licence_valide("pas-bon"))
         self.assertFalse(awema._licence_valide(""))
 
