@@ -27,6 +27,8 @@ Commandes :
   awema licence registre                             liste les licences délivrées (preuve : à qui/quand)
   awema licence verifier-cle <cle>                   prouve si TU as délivré cette clé (et à qui)
   awema licence revoquer-cle <cle> | set <cle> | verifier   gestion (voir docs/ACCES-AGENCE.md)
+  awema acces demande "<agence>" [client= reseau= …]  enregistre une demande d'accès API managé
+  awema acces lister | accepter <id> | refuser <id>   tu valides PAR AGENCE (défaut : API autonomes)
   awema client new <slug|auto> ...   crée la fiche d'un client
   awema client memoire <slug> ...    édite la Mémoire Marketing (ton, personas, produits, faq…)
   awema client list                  liste les clients gérés
@@ -115,6 +117,7 @@ def cmd_client_new(slug, pairs):
 CONFIG_PATH = os.path.join(RACINE, "config", "agence.json")
 LICENCE_PATH = os.path.join(RACINE, "config", "licence.json")
 LEDGER = os.path.join(STORE_DIR, "licences-registre.json")   # registre PRIVÉ de délivrance (preuve)
+ACCES_REG = os.path.join(STORE_DIR, "acces-api-registre.json")  # demandes d'accès API managé (preuve)
 CONFIG_CHAMPS = ("nom", "nom_complet", "tagline", "slogan", "initiales", "langue", "contact")
 CHARTE_KEYS = ("nuit", "ciel", "gold", "violet", "mint", "pink")
 
@@ -362,6 +365,95 @@ def cmd_licence(args):
         print("Activer : awema licence set <cle-fournie-par-AWEMA>")
 
 
+def _acces_load():
+    try:
+        return json.load(open(ACCES_REG, encoding="utf-8"))
+    except Exception:
+        return {"demandes": []}
+
+
+def _acces_save(reg):
+    os.makedirs(STORE_DIR, exist_ok=True)
+    gi = os.path.join(STORE_DIR, ".gitignore")
+    if not os.path.exists(gi):
+        open(gi, "w").write("*\n")
+    with open(ACCES_REG, "w", encoding="utf-8") as f:
+        json.dump(reg, f, ensure_ascii=False, indent=2)
+    try:
+        os.chmod(ACCES_REG, 0o600)
+    except Exception:
+        pass
+
+
+def acces_ajouter(reg, agence, contact, client, reseau, motif, quand):
+    """Ajoute une demande d'accès API managé. Fonction PURE (testable)."""
+    n = len(reg.get("demandes", [])) + 1
+    e = {"id": n, "agence": agence, "contact": contact, "client": client, "reseau": reseau,
+         "motif": motif, "demande_le": quand, "statut": "en_attente"}
+    reg.setdefault("demandes", []).append(e)
+    return e
+
+
+def cmd_acces(args):
+    """Accès API MANAGÉ (modèle B) — sur demande, validé PAR AGENCE. Par défaut, chaque agence
+    fournit ses propres API (modèle A). Le routage par NOS API n'a lieu qu'après ton accord explicite.
+    Sous-commandes : demande "<agence>" [contact= client= reseau= motif=] · lister ·
+    accepter <id> [note=] · refuser <id> [note=]."""
+    sub = args[0] if args else "lister"
+    reg = _acces_load()
+
+    def kv(prefixe):
+        return next((a.split("=", 1)[1] for a in args[2:] if a.startswith(prefixe + "=")), "")
+
+    if sub == "demande":
+        agence = args[1] if len(args) > 1 and "=" not in args[1] else ""
+        if not agence:
+            sys.exit('Usage : awema acces demande "Agence" [contact= client= reseau= motif=]')
+        e = acces_ajouter(reg, agence, kv("contact"), kv("client"), kv("reseau"), kv("motif"), _now())
+        _acces_save(reg)
+        print(f"📝 Demande n°{e['id']} enregistrée — « {agence} »"
+              + (f" · client: {e['client']}" if e["client"] else "")
+              + (f" · réseau: {e['reseau']}" if e["reseau"] else "") + " · statut: en_attente")
+        print("→ À valider : awema acces accepter " + str(e["id"]) + "  (ou refuser)")
+        return
+    if sub in ("accepter", "refuser"):
+        try:
+            idd = int(args[1])
+        except Exception:
+            sys.exit(f"Usage : awema acces {sub} <id> [note=…]")
+        note = kv("note")
+        statut = "accepte" if sub == "accepter" else "refuse"
+        trouve = False
+        for e in reg.get("demandes", []):
+            if e.get("id") == idd:
+                e["statut"] = statut
+                e["decide_le"] = _now()
+                if note:
+                    e["note"] = note
+                trouve = True
+        if not trouve:
+            sys.exit(f"Demande n°{idd} introuvable (voir : awema acces lister).")
+        _acces_save(reg)
+        print(f"{'✅ Acceptée' if statut == 'accepte' else '⛔ Refusée'} — demande n°{idd}.")
+        if statut == "accepte":
+            print("→ Ouvre l'accès côté plateforme (ajoute la Page à ton App Meta / testeur TikTok…), "
+                  "puis transmets le token via Secret GitHub. C'est le passage réel par tes API.")
+        return
+    # lister / défaut
+    ds = reg.get("demandes", [])
+    if not ds:
+        print("Aucune demande d'accès API managé. (Par défaut, les agences utilisent LEURS propres API.)")
+        return
+    print(f"📋 Demandes d'accès API managé — {len(ds)} (PREUVE, {os.path.relpath(ACCES_REG, RACINE)}) :")
+    for e in ds:
+        ligne = f"  n°{e['id']:2}  {e['statut']:11}  {e.get('demande_le', '')[:10]}  {e['agence']}"
+        if e.get("client"):
+            ligne += f" · {e['client']}"
+        if e.get("reseau"):
+            ligne += f" [{e['reseau']}]"
+        print(ligne)
+
+
 def cmd_client_list():
     motif = os.path.join(CLIENTS_DIR, "*", "_donnees", "client.json")
     import glob as _g
@@ -594,6 +686,8 @@ def main():
             cmd_setup([x for x in a[1:] if "=" in x])
         elif c == "licence":
             cmd_licence(a[1:])
+        elif c == "acces":
+            cmd_acces(a[1:])
         else:
             print(__doc__)
             sys.exit(1)

@@ -31,17 +31,32 @@ est **la tienne** (statut *Tech Provider*), alors :
 > est l'**outil opérationnel** (le code qu'on s'échange, le suivi, la base légale) ; l'**API access**
 > est le **cadenas réel**.
 
-### Les deux modèles — à choisir consciemment
-| Modèle | Indépendance agence | Ton contrôle | Quand |
-|---|---|---|---|
-| **A — Agence autonome** : chaque agence crée SES propres Apps (Meta/TikTok…) | Totale | Aucun (juste licence légale) | Tu veux un écosystème ouvert |
-| **B — AWEMA Tech Provider** : les agences passent par TES Apps pour les jetons de prod | Faible sur l'API | **Fort, révocable** | Tu veux garder la main (recommandé pour la bêta) |
+### Les deux modèles — A par défaut, B sur demande validée
+| Modèle | Quand | Ton contrôle |
+|---|---|---|
+| **A — Agence autonome (DÉFAUT)** : chaque agence crée SES propres Apps | Mode normal | Aucun besoin (licence + conditions) |
+| **B — AWEMA Tech Provider** : l'agence passe par TES Apps, **pour clients communs**, **sur validation** | Opt-in, clients communs | **Fort, révocable, validé par toi** |
 
-Pour un **verrou incontournable**, choisis **B**. Tu restes le « robinet » d'accès API.
+**Règle :** par défaut, **chaque agence fournit ses propres API**. Le passage par **tes** API n'a lieu que
+pour des **clients communs/hébergés par AWEMA**, **après ton accord explicite** (accepte/refuse par agence).
+Quand B s'applique, tu es le « robinet » → verrou réel et révocable.
+
+### Demandes d'accès API managé — tu acceptes/refuses (par agence)
+1. L'agence **demande** via `demande-acces.html` (email) — ou tu l'enregistres toi-même.
+2. Tu **journalises** la demande (preuve) :
+   `python3 scripts/awema.py acces demande "Baoulé Digital" contact=… client="…" reseau=meta motif="…"`
+3. Tu **décides**, par agence : `awema acces accepter <id>` (note=…) **ou** `awema acces refuser <id>`.
+   `awema acces lister` = état de toutes les demandes (preuve, `.awema/acces-api-registre.json`).
+4. **Si accepté seulement** : tu ouvres l'accès côté plateforme (ajoute la Page à ton App Meta / testeur
+   TikTok…) puis fournis le token. **Tant que tu n'as pas accepté + ouvert l'accès, rien ne transite par tes API.**
+
+> C'est ça, ton contrôle : **rien ne passe par tes API sans ton accord**, et le registre le prouve.
 
 ---
 
-## ✅ Checklist : donner l'accès à UNE agence (modèle B)
+## ✅ Checklist : donner l'accès à UNE agence
+> (Par défaut, l'agence est autonome — étapes 1-4 + 6-7. L'étape 5, modèle B, **seulement** si elle a
+> demandé un accès managé pour un client commun **et que tu l'as accepté**.)
 
 1. **Réceptionne la candidature** (formulaire `rejoindre.html` → email). Vérifie le profil.
 2. **Réserve une place** dans `config/beta-seats.json` (statut → `invite`, nom/handle/contact).

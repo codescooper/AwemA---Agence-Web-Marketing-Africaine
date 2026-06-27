@@ -18,6 +18,16 @@ class TestLicence(unittest.TestCase):
         self.assertEqual(len(e1["cle_hash"]), 64)           # sha256
         self.assertEqual(len(led["licences"]), 2)
 
+    def test_acces_demande(self):
+        reg = {"demandes": []}
+        e = awema.acces_ajouter(reg, "Agence A", "a@x.com", "Resto", "meta", "client commun",
+                                "2026-06-26T10:00:00+00:00")
+        self.assertEqual(e["id"], 1)
+        self.assertEqual(e["statut"], "en_attente")
+        self.assertEqual(e["reseau"], "meta")
+        self.assertEqual(e["client"], "Resto")
+        self.assertEqual(len(reg["demandes"]), 1)
+
     def test_format_cle(self):
         self.assertTrue(awema._licence_valide("AWEMA-18A7-2D12-3336"))
         self.assertFalse(awema._licence_valide("pas-bon"))

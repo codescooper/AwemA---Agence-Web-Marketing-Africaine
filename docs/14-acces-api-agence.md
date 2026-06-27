@@ -4,15 +4,16 @@
 > des accès API « niveau entreprise » : une **App développeur** par plateforme, souvent une
 > **vérification d'entreprise** et une **revue d'application** (App Review). Ce guide te mène de bout en bout.
 
-## Deux modèles (à décider d'abord)
-- **A — Agence autonome** : tu crées **tes propres Apps** sur chaque plateforme. Indépendance totale,
-  mais c'est toi qui passes la vérification d'entreprise + App Review.
-- **B — Via AWEMA (Tech Provider)** : tu passes par les Apps **déjà vérifiées d'AWEMA** ; on t'ajoute
-  tes Pages clientes et on te délivre les jetons. Démarrage **immédiat**, accès **révocable** par AWEMA.
-  *(Recommandé pour la bêta — cf. [[ACCES-AGENCE]].)*
+## Deux modèles — le **A est le défaut**
+- **A — Agence autonome (PAR DÉFAUT)** : tu crées **tes propres Apps** sur chaque plateforme. Indépendance
+  totale, aucune dépendance à AWEMA. C'est le mode normal : suis ce guide.
+- **B — Via AWEMA (Tech Provider) — sur demande & validation** : tu passes par les Apps **déjà vérifiées
+  d'AWEMA** *uniquement* pour des **clients communs / hébergés par AWEMA**. **Chaque demande est validée
+  au cas par cas par AWEMA** avant tout passage par ses API (accepte/refuse par agence).
+  → Demande : **`demande-acces.html`** · suivi/validation : [[ACCES-AGENCE]].
 
-> En modèle B, l'essentiel se résume à : nous transmettre l'**URL des Pages** de tes clients (dont tu es
-> admin) + accepter l'autorisation. AWEMA gère les Apps. Le reste de ce guide = modèle A (autonome).
+> Tu n'es **jamais obligé** de passer par AWEMA. Le modèle B est un service **opt-in**, réservé aux
+> clients communs, et **soumis à approbation**. Le reste de ce guide = modèle A (ton autonomie).
 
 ---
 
