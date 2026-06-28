@@ -57,8 +57,13 @@
 <script>
   var p = new URLSearchParams(location.search);
   var code = p.get('code'), err = p.get('error'), errd = p.get('error_description');
+  var state = p.get('state') || '';
   var redirect = location.origin + location.pathname;   // doit être identique à l'autorisation
   var zone = document.getElementById('zone');
+  // Fournisseur déduit du préfixe de state : 'li:' = LinkedIn, sinon TikTok (défaut/rétro-compat).
+  var PROV = (state.indexOf('li:') === 0)
+    ? { id:'linkedin', nom:'LinkedIn', wf:'linkedin-exchange.yml', slug:false }
+    : { id:'tiktok',   nom:'TikTok',   wf:'tiktok-exchange.yml',   slug:true };
 
   function codeRow(){
     return '<div class="lbl">Code reçu</div><div class="box">'+
@@ -74,11 +79,13 @@
       '(elle contient <code>?code=…</code>), ou démarre depuis <a href="connect-tiktok.html" style="color:var(--ciel)">Connecter TikTok</a>.</p>';
   } else {
     var slugDefault = (sessionStorage.getItem('awema-tt-slug') || '');
+    var slugField = PROV.slug
+      ? '<div class="lbl">Slug client (nom du dossier — laisse vide pour le déduire du compte)</div>'+
+        '<div class="box"><input class="txt" id="slug" placeholder="ex. ma-boutique" value="'+slugDefault.replace(/"/g,'&quot;')+'"></div>'
+      : '';
     zone.innerHTML =
-      '<p class="ok">✅ Autorisation réussie.</p>' + codeRow() +
-      '<div class="lbl">Slug client (nom du dossier — laisse vide pour le déduire du compte)</div>'+
-      '<div class="box"><input class="txt" id="slug" placeholder="ex. ma-boutique" value="'+slugDefault.replace(/"/g,'&quot;')+'"></div>'+
-      '<div class="go2"><button id="fin">⚡ Finaliser la connexion</button>'+
+      '<p class="ok">✅ Autorisation '+PROV.nom+' réussie.</p>' + codeRow() + slugField +
+      '<div class="go2"><button id="fin">⚡ Finaliser la connexion '+PROV.nom+'</button>'+
       '<span class="sub" id="who" style="margin:0"></span></div>'+
       '<div class="msg" id="msg"></div>';
 
@@ -90,19 +97,21 @@
     function msg(t,c){ var m=document.getElementById('msg'); m.textContent=t; m.style.color=c||'var(--muted)'; }
 
     document.getElementById('fin').onclick = function(){
-      var slug = document.getElementById('slug').value.trim();
+      var slugEl = document.getElementById('slug');
+      var inputs = { code: code, redirect_uri: redirect };
+      if (PROV.slug) inputs.slug = slugEl ? slugEl.value.trim() : '';
       if(!(window.AwemaGH)){ msg('Module GitHub indisponible.','#FF7D9C'); return; }
       msg('Connexion à GitHub…');
       AwemaGH.ensure(function(){
         who();
         msg('Déclenchement de l’échange sécurisé…');
-        AwemaGH.runWorkflow('tiktok-exchange.yml', { code: code, redirect_uri: redirect, slug: slug }, true)
+        AwemaGH.runWorkflow(PROV.wf, inputs, true)
           .then(function(){
-            msg('✅ Échange lancé. Dans ~30 s, le compte est enregistré. Lance ensuite « Sync TikTok ».','var(--mint)');
+            msg('✅ Échange '+PROV.nom+' lancé. Dans ~30 s c’est enregistré. Lance ensuite la synchro.','var(--mint)');
             document.getElementById('fin').disabled = true;
           })
           .catch(function(e){
-            msg('❌ '+(e.message||e)+' — vérifie que le workflow tiktok-exchange.yml et les Secrets TIKTOK_* sont en place.','#FF7D9C');
+            msg('❌ '+(e.message||e)+' — vérifie que le workflow '+PROV.wf+' et les Secrets sont en place.','#FF7D9C');
           });
       });
     };

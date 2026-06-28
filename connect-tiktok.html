@@ -176,7 +176,7 @@ python scripts\tiktok-onboard.py<button class="copy" data-c="c-cli">Copier</butt
     if(!ck){document.getElementById('authMsg').textContent='Renseigne la Client key de ton app TikTok.';
       document.getElementById('authMsg').style.color='#FF7D9C';return;}
     try{ localStorage.setItem('awema-tt-ck', ck); }catch(e){}
-    var state=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    var state='tt:'+Math.random().toString(36).slice(2)+Date.now().toString(36);
     try{ sessionStorage.setItem('awema-tt-state', state); }catch(e){}
     var url=AUTH+'?'+new URLSearchParams({client_key:ck,response_type:'code',scope:SCOPES,redirect_uri:oauthUrl,state:state}).toString();
     window.location.href=url;
