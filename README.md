@@ -70,6 +70,7 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 python3 scripts/awema.py serve     # build + serveur local + ouvre le navigateur
 ```
 Et pour **piloter AWEMA en langage naturel** depuis Claude (MCP) → [`docs/16-piloter-avec-claude-mcp.md`](docs/16-piloter-avec-claude-mcp.md).
+**Tout configurer (APIs, secrets, IA) pour tourner à 100 %** → [`docs/17-mise-en-route-complete.md`](docs/17-mise-en-route-complete.md).
 
 | Vous êtes… | Lisez en priorité |
 |---|---|

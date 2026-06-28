@@ -51,6 +51,7 @@ python3 scripts/preparer-copie-beta.py ../awema-beta
 - [[13-securite-donnees]] — isolation (chaque pilote = son fork), repo privé, secrets, RGPD
 
 ## 🔌 Connecter les plateformes
+- ⭐ **[[17-mise-en-route-complete]]** — **check-list complète** « faire tourner à 100 % » (quelles APIs, où ranger les secrets, dans quel ordre)
 - [[05-connecter-reseaux]] · [[06-obtenir-token-meta]] — Meta (Facebook/Instagram)
 - [[07-connecter-tiktok]] — TikTok · [[10-connecter-linkedin]] — LinkedIn
 - [[14-acces-api-agence]] — **accès API « dev entreprise »** (Meta App Review, etc.)
