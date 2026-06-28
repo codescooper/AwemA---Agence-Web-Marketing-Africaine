@@ -87,7 +87,10 @@
       <button class="btn" id="iaSave">⚡ Enregistrer la clé IA</button>
     </div>
     <div class="iamsg" id="iaMsg"></div>
-    <div class="row" style="margin-top:6px"><a class="su" href="connect-ia.html" style="font-size:12.5px;color:var(--ciel)">Pas encore de clé ? Choisir un fournisseur gratuit →</a></div>
+    <div class="row" style="margin-top:6px;gap:14px">
+      <a id="iaGet" class="su" href="#" target="_blank" rel="noopener" style="font-size:12.5px;color:var(--ciel);font-weight:600">🔑 Obtenir une clé →</a>
+      <a class="su" href="connect-ia.html" style="font-size:12.5px;color:var(--muted)">Comparer tous les fournisseurs →</a>
+    </div>
     <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="ia"> Ma clé IA est en place (Secret GitHub <code>GROQ_API_KEY</code> ou équivalent)</label>
   </div>
 
@@ -190,6 +193,17 @@
   // —— Étape IA : saisie dans l'app ——
   var IA_KEY={groq:'GROQ_API_KEY',gemini:'GEMINI_API_KEY',openai:'OPENAI_API_KEY',
     anthropic:'ANTHROPIC_API_KEY',mistral:'MISTRAL_API_KEY',openrouter:'OPENROUTER_API_KEY'};
+  var IA_SIGNUP={groq:'https://console.groq.com/keys',gemini:'https://aistudio.google.com/apikey',
+    openai:'https://platform.openai.com/api-keys',anthropic:'https://console.anthropic.com/settings/keys',
+    mistral:'https://console.mistral.ai/api-keys',openrouter:'https://openrouter.ai/keys'};
+  var IA_LABEL={groq:'Groq',gemini:'Gemini',openai:'OpenAI',anthropic:'Anthropic',mistral:'Mistral',openrouter:'OpenRouter'};
+  function refreshIaGet(){
+    var prov=document.getElementById('iaProv').value, a=document.getElementById('iaGet');
+    a.href=IA_SIGNUP[prov]||'connect-ia.html';
+    a.textContent='🔑 Obtenir une clé '+(IA_LABEL[prov]||'')+' ↗';
+  }
+  document.getElementById('iaProv').addEventListener('change',refreshIaGet);
+  refreshIaGet();
   function refreshIA(){
     var on=!!store.ia;
     document.getElementById('iaPill').className='pill '+(on?'ok':'todo');
@@ -231,6 +245,7 @@
   }
   refreshGH(); refreshIA(); progress();
 </script>
+<script src="outils/_design/awema-fork.js"></script>
 <script src="outils/_design/abeille.js" data-aide="configuration"></script>
 </body>
 </html>
