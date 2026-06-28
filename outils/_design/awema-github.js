@@ -14,7 +14,8 @@ window.AwemaGH = (function () {
   var API = 'https://api.github.com';
   function cfg() { try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch (e) { return {}; } }
   function connected() { var c = cfg(); return !!(c.token && c.owner && c.repo); }
-  function who() { var c = cfg(); return connected() ? (c.owner + '/' + c.repo) : null; }
+  function branch() { return cfg().branch || 'main'; }
+  function who() { var c = cfg(); return connected() ? (c.owner + '/' + c.repo + '@' + branch()) : null; }
   function disconnect() { localStorage.removeItem(LS); }
   function b64(s) { return btoa(unescape(encodeURIComponent(s))); }
 
@@ -32,7 +33,7 @@ window.AwemaGH = (function () {
   async function repoOK() { var c = cfg(); var r = await api('/repos/' + c.owner + '/' + c.repo); return r.ok; }
   async function sha(path) {
     var c = cfg();
-    var r = await api('/repos/' + c.owner + '/' + c.repo + '/contents/' + path + '?ref=main');
+    var r = await api('/repos/' + c.owner + '/' + c.repo + '/contents/' + path + '?ref=' + branch());
     if (r.status === 200) { var j = await r.json(); return j.sha; }
     return null;
   }
@@ -42,7 +43,7 @@ window.AwemaGH = (function () {
     if (!connected()) throw new Error('GitHub non connecté');
     var body = (typeof contenu === 'string') ? contenu : JSON.stringify(contenu, null, 2);
     var s = await sha(path);
-    var payload = { message: message || ('AWEMA : maj ' + path), content: b64(body), branch: 'main' };
+    var payload = { message: message || ('AWEMA : maj ' + path), content: b64(body), branch: branch() };
     if (s) payload.sha = s;
     var r = await api('/repos/' + c.owner + '/' + c.repo + '/contents/' + path, { method: 'PUT', body: JSON.stringify(payload) });
     if (!r.ok) throw new Error('GitHub ' + r.status + ' — ' + (await r.text()).slice(0, 180));
@@ -53,7 +54,7 @@ window.AwemaGH = (function () {
     var c = cfg();
     try {
       var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/workflows/' + fichier + '/dispatches',
-        { method: 'POST', body: JSON.stringify({ ref: 'main' }) });
+        { method: 'POST', body: JSON.stringify({ ref: branch() }) });
       return r.ok;
     } catch (e) { return false; }
   }
@@ -96,6 +97,7 @@ window.AwemaGH = (function () {
       '<small>Permissions : <b>Contents</b> = Read/Write, <b>Actions</b> = Read/Write. Le jeton reste sur ton appareil, jamais dans le dépôt.</small></p>' +
       '<label>Propriétaire (owner)</label><input id="awgh-o" value="' + (c.owner || g.owner || '') + '" placeholder="ton-pseudo">' +
       '<label>Dépôt (repo)</label><input id="awgh-r" value="' + (c.repo || g.repo || '') + '" placeholder="mon-depot">' +
+      '<label>Branche (où écrire)</label><input id="awgh-b" value="' + (c.branch || g.branch || 'main') + '" placeholder="main">' +
       '<label>Jeton (token, commence par github_pat_…)</label><input id="awgh-t" type="password" placeholder="github_pat_…">' +
       '<div class="msg" id="awgh-m"></div>' +
       '<div class="r"><button class="x" id="awgh-x">Annuler</button><button class="go" id="awgh-g">Connecter</button></div></div>';
@@ -103,11 +105,12 @@ window.AwemaGH = (function () {
     function close() { ov.remove(); }
     ov.querySelector('#awgh-x').onclick = close;
     ov.querySelector('#awgh-g').onclick = async function () {
-      var o = ov.querySelector('#awgh-o').value.trim(), r = ov.querySelector('#awgh-r').value.trim(), t = ov.querySelector('#awgh-t').value.trim();
+      var o = ov.querySelector('#awgh-o').value.trim(), r = ov.querySelector('#awgh-r').value.trim(),
+          bch = ov.querySelector('#awgh-b').value.trim() || 'main', t = ov.querySelector('#awgh-t').value.trim();
       var m = ov.querySelector('#awgh-m');
       if (!o || !r || !t) { m.style.color = '#FF7D9C'; m.textContent = 'Remplis owner, repo et jeton.'; return; }
       m.style.color = '#9db0d6'; m.textContent = 'Vérification…';
-      localStorage.setItem(LS, JSON.stringify({ owner: o, repo: r, token: t }));
+      localStorage.setItem(LS, JSON.stringify({ owner: o, repo: r, branch: bch, token: t }));
       try {
         if (await repoOK()) { m.style.color = '#34E5C4'; m.textContent = '✅ Connecté à ' + o + '/' + r; setTimeout(function () { close(); cb && cb(true); }, 600); }
         else { m.style.color = '#FF7D9C'; m.textContent = '❌ Accès refusé : vérifie le jeton et son dépôt.'; disconnect(); }
