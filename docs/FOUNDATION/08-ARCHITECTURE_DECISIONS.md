@@ -190,8 +190,13 @@ workflow valide ; `oauth.html`/`connect-tiktok.html` rendus sans erreur JS (cons
 et capture du `code` OK) ; suite unittest verte.
 **Alternatives rejetées.** Échange dans le navigateur (exposerait le `client_secret`) ; proxy/SaaS détenant le
 secret (trahit « zéro SaaS ») ; garder Python+localhost obligatoire (exclut les utilisateurs Pages-only) ;
-stocker le token en fichier committé (un token dans Git = fuite). Généralisation LinkedIn/Meta : même motif,
-**reportée** (un connecteur à la fois, vérifié sur le terrain).
+stocker le token en fichier committé (un token dans Git = fuite).
+**Généralisation (2026-06-28).** Le motif est désormais appliqué à **tous les réseaux** : `oauth.html` est
+**multi-fournisseur** (TikTok/LinkedIn via le préfixe du `state` : `tt:` / `li:`) et déclenche le bon workflow
+(`tiktok-exchange.yml` / `linkedin-exchange.yml`). Les réseaux **à token collé** (Meta, YouTube, WhatsApp) et
+les **clés IA** passent par un widget commun `awema-connect.js` → `AwemaGH.saveSecret`/`guideSecret`. LinkedIn
+réutilise le PAT TikTok (`secrets.AWEMA_PAT || secrets.TIKTOK_PAT`). **Résultat : plus aucune page n'impose de
+commande** ; le terminal Python ne subsiste qu'en repli `<details>`.
 
 ---
 
