@@ -90,11 +90,11 @@
     <h2><span class="num">6</span> Me transmettre 2 choses</h2>
     <ul>
       <li>La <b>clé API</b> (mets-la dans le Secret GitHub <code>YOUTUBE_API_KEY</code> — ne la colle pas en clair dans le chat).</li>
-      <li>Le <b>@handle / l'URL</b> de chaque chaîne (Mon Client, etc.) — ça, tu peux me le donner.</li>
+      <li>Le <b>@handle / l'URL</b> de chaque chaîne (Code Scooper, etc.) — ça, tu peux me le donner.</li>
     </ul>
-    <p>Je code alors le connecteur <code>--youtube-all</code> : abonnés, vues totales, nombre de
-      vidéos, + top vidéos, <b>fusionnés</b> dans la fiche de l'entité (à côté de Facebook &amp; TikTok).</p>
-    <a class="btn" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/settings/secrets/actions" target="_blank" rel="noopener">Ajouter le Secret YOUTUBE_API_KEY ↗</a>
+    <p>Le connecteur <code>--youtube-all</code> récupère abonnés, vues totales, nombre de vidéos
+      + top vidéos, <b>fusionnés</b> dans la fiche de l'entité (à côté de Facebook &amp; TikTok).</p>
+    <div id="awc-yt"></div>
   </div>
 </div>
 <script>
@@ -105,6 +105,15 @@
 </script>
 <script src="outils/_data/config.js" onerror=""></script>
 <script src="outils/_data/apply.js"></script>
+<script src="outils/_design/awema-github.js"></script>
+<script src="outils/_design/awema-connect.js"></script>
+<script>
+  AwemaConnect.secretBox('#awc-yt', {
+    name: 'YOUTUBE_API_KEY', label: 'clé API YouTube Data',
+    placeholder: 'Colle ta clé API YouTube (AIza…)',
+    sync: 'sync-reseaux.yml', syncLabel: 'Synchroniser YouTube'
+  });
+</script>
 <script src="outils/_design/abeille.js" data-aide="connect-youtube"></script>
 </body>
 </html>

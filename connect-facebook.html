@@ -81,21 +81,18 @@
   </div>
 
   <div class="step">
-    <h2><span class="num">5</span> Donner le token à AWEMA (Secret)</h2>
-    <p>Mets le token long dans le <b>Secret GitHub</b> <code>META_TOKEN</code> (jamais dans le dépôt, jamais en clair).</p>
-    <a class="btn" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/settings/secrets/actions" target="_blank" rel="noopener">Ajouter le Secret META_TOKEN ↗</a>
-    <p style="margin-top:14px">Ou en local, via l'opérateur :</p>
-    <div class="cmd" id="c1">python3 scripts/awema.py set meta META_TOKEN=TON_TOKEN<button class="copy" data-c="c1">Copier</button></div>
-  </div>
-
-  <div class="step">
-    <h2><span class="num">6</span> Lancer la synchro — 1 token → toutes les Pages</h2>
-    <p>Le connecteur découvre <b>toutes</b> tes Pages (<code>me/accounts</code>) et crée un client par Page :</p>
-    <div class="cmd" id="c2">python3 scripts/connect-reseaux.py --meta-all &amp;&amp; python3 outils/_data/build.py<button class="copy" data-c="c2">Copier</button></div>
-    <p>Ou lance le workflow <b>« Sync présence digitale (réseaux) »</b> (Actions → Run workflow).</p>
+    <h2><span class="num">5</span> Donner le token à AWEMA &amp; synchroniser <span style="font-size:11px;color:#06231d;background:var(--mint);border-radius:6px;padding:2px 7px;font-weight:700">sans terminal</span></h2>
+    <p>Colle ton token long ci-dessous : AWEMA l'enregistre en <b>Secret GitHub</b> <code>META_TOKEN</code>
+      (jamais dans le dépôt), puis lance la découverte de <b>toutes</b> tes Pages (un client par Page).</p>
+    <div id="awc-meta"></div>
     <div class="note">⚠️ En <b>mode dev</b> (sans App Review), seuls les comptes testeurs sont lisibles. Pour gérer
       de <b>vrais</b> clients en production : Vérification d'entreprise + App Review. Voir le guide
       <b>« Accès API (dev entreprise) »</b> (docs/14).</div>
+    <details style="margin-top:14px">
+      <summary style="cursor:pointer;color:var(--muted);font-size:12.5px">Tu préfères la ligne de commande (Python en local) ?</summary>
+      <div class="cmd" id="c1" style="margin-top:10px">python3 scripts/awema.py set meta META_TOKEN=TON_TOKEN<button class="copy" data-c="c1">Copier</button></div>
+      <div class="cmd" id="c2">python3 scripts/connect-reseaux.py --meta-all &amp;&amp; python3 outils/_data/build.py<button class="copy" data-c="c2">Copier</button></div>
+    </details>
   </div>
 
   <div class="step">
@@ -112,6 +109,15 @@
 </script>
 <script src="outils/_data/config.js" onerror=""></script>
 <script src="outils/_data/apply.js"></script>
+<script src="outils/_design/awema-github.js"></script>
+<script src="outils/_design/awema-connect.js"></script>
+<script>
+  AwemaConnect.secretBox('#awc-meta', {
+    name: 'META_TOKEN', label: 'token Meta longue durée',
+    placeholder: 'Colle ton token Meta (60 j ou System User)',
+    sync: 'sync-reseaux.yml', syncLabel: 'Découvrir mes Pages'
+  });
+</script>
 <script src="outils/_design/abeille.js" data-aide="connect-facebook"></script>
 </body>
 </html>
