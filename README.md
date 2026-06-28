@@ -65,12 +65,26 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 
 ## 🚀 Démarrage rapide
 
-**Lancer en local, une seule commande** (rien à installer — Python 3 suffit) :
+### Voie principale — depuis GitHub, sans rien installer (recommandé)
+
+> **Étape 0 (toujours) : Fork + activer Pages.** Tout le reste se configure **dans le navigateur**.
+
+1. **Fork** ce dépôt → tu en deviens propriétaire (ton instance privée).
+2. **Settings → Pages** → Source : branche `main`, dossier `/` → tu obtiens `https://<toi>.github.io/<repo>/`.
+3. Ouvre ton URL Pages → la bannière **« Mise en route »** t'accueille → **Connecter GitHub** (un PAT, une fois).
+4. Clé IA, tokens réseaux, OAuth TikTok/LinkedIn, clients : **tout depuis la page**. Les GitHub Actions
+   (agents, synchro) tournent toutes seules ; Pages sert le cockpit à jour.
+
+Aucune machine locale, aucun terminal. Le navigateur écrit dans **ton** dépôt via l'API GitHub
+(le PAT est le seul pont) — c'est le principe « GitHub = back-end » ([ADR-007](docs/FOUNDATION/08-ARCHITECTURE_DECISIONS.md)).
+Détails pas à pas → [`docs/17-mise-en-route-complete.md`](docs/17-mise-en-route-complete.md).
+
+### Voie power-user — en local (optionnel, si tu as Python 3)
+
 ```bash
 python3 scripts/awema.py serve     # build + serveur local + ouvre le navigateur
 ```
 Et pour **piloter AWEMA en langage naturel** depuis Claude (MCP) → [`docs/16-piloter-avec-claude-mcp.md`](docs/16-piloter-avec-claude-mcp.md).
-**Tout configurer (APIs, secrets, IA) pour tourner à 100 %** → [`docs/17-mise-en-route-complete.md`](docs/17-mise-en-route-complete.md).
 
 | Vous êtes… | Lisez en priorité |
 |---|---|
