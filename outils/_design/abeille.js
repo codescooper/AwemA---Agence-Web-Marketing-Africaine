@@ -27,10 +27,10 @@
       "Récupère le résultat : soit le <b>fichier client.json</b>, soit la <b>commande</b> à coller.",
       "Ensuite, connecte ses réseaux (boutons en bas) et remplis sa <b>Mémoire Marketing</b>." ] },
     memoire: { t: "L'ADN de la marque, pour l'IA", s: [
-      "Cette page <b>fabrique</b> le fichier <code>memoire.json</code> que liront les agents IA.",
+      "Cette page nourrit les agents IA avec l'identité de la marque.",
       "1) Choisis le client · 2) Remplis identité, ton, personas, produits, FAQ.",
-      "3) <b>Télécharge memoire.json</b> → dépose-le dans <code>…/clients/&lt;client&gt;/_donnees/</code> (ou copie la commande).",
-      "4) Lance <code>build.py</code>. Plus c'est rempli, plus l'IA est juste 🎯" ] },
+      "3) Clique <b>« Enregistrer »</b> : AWEMA écrit dans ton dépôt et met à jour l'IA <b>en arrière-plan</b>.",
+      "La 1ʳᵉ fois seulement, tu connectes ton GitHub. Plus c'est rempli, plus l'IA est juste 🎯" ] },
     "liste-attente": { t: "Reste informé·e", s: [
       "Les places pilotes sont complètes : laisse ton contact pour le lancement (sur abonnement).",
       "Remplis nom + email, clique <b>« M'ajouter »</b> : ça ouvre un mail pré-rempli — <b>envoie-le</b>." ] },

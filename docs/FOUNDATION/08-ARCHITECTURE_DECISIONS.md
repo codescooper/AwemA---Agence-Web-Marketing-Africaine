@@ -18,6 +18,7 @@ maj: 2026-06-27
 | 004 | Plugins préférés aux modifications du Kernel | ✅ Accepté |
 | 005 | Vocabulaire « Module » sans renommage physique de `departements/` | 🔁 Remplacé par ADR-006 |
 | 006 | Renommage `departements/` → `modules/` | ✅ Accepté |
+| 007 | GitHub = back-end (écriture navigateur → repo → Actions) | ✅ Accepté |
 
 ---
 
@@ -112,7 +113,29 @@ historiques ; cockpit chargé sans erreur.
 **module** « marketing » (inutile : seul le conteneur changeait de nom) ; introduire un alias `modules/`
 → `departements/` (complexité sans bénéfice).
 
+## ADR-007 — GitHub = back-end (écriture navigateur → repo → Actions)
+**Statut** : Accepté (2026-06-27).
+**Contexte.** L'outil vise des utilisateurs **non techniciens**. Or l'ADN impose un **front statique
+sans serveur** : le navigateur ne peut pas écrire dans le dépôt, d'où des étapes manuelles (télécharger
+un JSON, le déposer, lancer `build.py`). Le **traitement** (build + agents) est déjà automatisé par
+GitHub Actions ; seul le **chemin d'écriture** reste manuel.
+**Problème.** Comment offrir « l'utilisateur **valide**, tout se fait en arrière-plan » **sans** introduire
+un serveur qu'on héberge (donc sans trahir « zéro SaaS, auto-hébergé ») ?
+**Décision.** **GitHub *est* le back-end.** Le navigateur écrit dans le dépôt de l'utilisateur via l'**API
+REST GitHub** (`Contents`), puis déclenche une **Action** (build + agents) via `workflow_dispatch`. Le
+cockpit (GitHub Pages) sert le résultat ~1–2 min après. Brique réutilisable : `outils/_design/awema-github.js`.
+Auth : un **PAT à granularité fine**, limité au seul dépôt (Contents R/W, Actions R/W), saisi **une fois**
+et stocké **côté navigateur** (`localStorage`, jamais dans le dépôt — analogue au store `.awema`).
+Le **mode manuel** (téléchargement / commande) reste disponible en **repli** (zéro régression).
+**Conséquences.** (+) Non-technicien : remplir → « Enregistrer » → résultat servi. (+) Reste **auto-hébergé**
+(chacun son GitHub), **aucun serveur qu'on héberge**, Git = vérité. (−) Le token vit dans le navigateur
+(sensible → portée minimale, mono-dépôt, révocable). (−) `file://` est limité par CORS → exécuter via
+`http.server`/Pages pour l'écriture. (−) Dépendance à la disponibilité de l'API GitHub.
+**Alternatives rejetées.** Compagnon local (assouplit « pas de serveur », exige un lancement) ; SaaS hébergé
+(trahit l'ADN auto-hébergé) ; rester 100 % manuel (ne répond pas au besoin non-technicien) ; OAuth App
+(nécessiterait un serveur pour le client secret).
+
 ---
 
-> **Prochain ADR libre : ADR-007.** Créer un ADR avant toute décision structurante (frontière de
+> **Prochain ADR libre : ADR-008.** Créer un ADR avant toute décision structurante (frontière de
 > données, nouveau module officiel, changement de contrat d'agent/plugin, migration de répertoires).

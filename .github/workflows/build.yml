@@ -1,0 +1,46 @@
+name: Registre (build)
+
+# Régénère le registre des outils (outils/_data/*.js) dès qu'une donnée change.
+# Déclenché automatiquement quand le navigateur écrit dans le dépôt (ADR-007),
+# ou à la main. Aucune clé requise. N'enrichit PAS avec l'IA (c'est le rôle de agents.yml).
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "modules/**"
+      - "config/**"
+      - "outils/_data/build.py"
+
+permissions:
+  contents: write
+
+# Évite les exécutions concurrentes (un seul build à la fois par branche)
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Régénérer le registre
+        run: python3 outils/_data/build.py
+
+      - name: Commit si changements
+        run: |
+          git config user.name "awema-bot"
+          git config user.email "bot@awema.local"
+          if git diff --quiet -- outils/_data; then
+            echo "ℹ️ Registre déjà à jour."; exit 0
+          fi
+          git add outils/_data
+          git commit -m "chore(build): régénère le registre ($(date -u +%F))"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "✅ Registre régénéré."
