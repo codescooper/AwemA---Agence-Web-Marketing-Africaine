@@ -15,7 +15,6 @@ Usage : python3 build.py
 import glob
 import json
 import os
-from datetime import datetime, timezone
 
 ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.normpath(os.path.join(ICI, "..", ".."))
@@ -58,8 +57,9 @@ def main():
         })
 
     lic = lire(os.path.join(RACINE, "config", "licence.json")) or {}
-    registre = {"genere": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                "licence": {"statut": lic.get("statut", "non-active"), "agence": lic.get("agence", "")},
+    # Registre DÉTERMINISTE : pas d'horodatage de build (évite le bruit git ; la fraîcheur réelle
+    # vient des champs `maj` de chaque reseaux.json). Le registre ne change que si une donnée change.
+    registre = {"licence": {"statut": lic.get("statut", "non-active"), "agence": lic.get("agence", "")},
                 "clients": clients}
     out = os.path.join(ICI, "agence.js")
     with open(out, "w", encoding="utf-8") as f:
