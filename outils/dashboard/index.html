@@ -567,7 +567,8 @@ function cActionsDuJour(){
       <div style="margin-top:12px;color:var(--muted);font-size:12.5px;line-height:1.7">Génère-les (alertes <b>sans clé IA</b>, + propositions des agents si générées) :
       <code>python3 scripts/run-agent.py actions-du-jour --all</code>, puis régénère le registre.</div>`;
   }
-  return `<h3>${ic('bolt')} ${Math.min(items.length,3)} choses à faire aujourd'hui <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
+  const n=Math.min(items.length,3);
+  return `<h3>${ic('bolt')} ${n} chose${n>1?'s':''} à faire aujourd'hui <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
     <div class="sub">AWEMA te propose — priorisé &amp; sourcé${a.genere_le?' · '+a.genere_le.slice(0,10):''}</div>
     <div style="display:grid;gap:8px;margin-top:12px">
       ${items.map(it=>`<div style="display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:12px;background:var(--elev);border:1px solid var(--border);border-left:3px solid ${ADJ_COL[it.priorite]||'#7C5CFF'}">
