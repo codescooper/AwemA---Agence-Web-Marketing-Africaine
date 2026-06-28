@@ -59,8 +59,9 @@
   <div class="step"><b>1.</b> Crée une clé chez le fournisseur (clique « Obtenir une clé »).</div>
   <div class="step"><b>2.</b> Donne-la à AWEMA — au choix :
     <ul style="margin:8px 0 0 18px;color:#c9d6ef;font-size:13.4px">
+      <li><b>Le plus simple</b> : page <a href="configuration.html" style="color:var(--ciel)">Mise en route</a> → colle ta clé : AWEMA enregistre le fournisseur tout seul et te guide pour le secret (un collage).</li>
       <li><b>Local</b> : <code class="inline">python3 scripts/awema.py set ia &lt;CLE&gt;=…</code> (rangée dans <code class="inline">.awema/</code>, jamais committée)</li>
-      <li><b>Automatisation</b> : ajoute-la en <b>Secret GitHub</b> (Settings → Secrets → Actions) — le workflow quotidien la lira</li>
+      <li><b>Manuel</b> : ajoute-la en <b>Secret GitHub</b> (Settings → Secrets → Actions) — le workflow quotidien la lira</li>
     </ul>
   </div>
   <div class="step"><b>3.</b> <i>(optionnel)</i> choisis le fournisseur : <code class="inline">AWEMA_AI_PROVIDER=groq</code> — sinon auto-détection.</div>

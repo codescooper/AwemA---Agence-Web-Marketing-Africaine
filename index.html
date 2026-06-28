@@ -137,6 +137,27 @@
 <div class="mesh"><i></i><i></i><i></i></div>
 <div class="grid-ov"></div>
 
+<!-- Accueil 1er lancement : guide l'agence vers la mise en route tant que GitHub n'est pas connecté -->
+<div id="awemaWelcome" style="display:none;position:sticky;top:0;z-index:60;background:linear-gradient(120deg,#4BA3FF,#7C5CFF);color:#fff;font-family:Poppins,system-ui,sans-serif">
+  <div style="max-width:1140px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <span style="font-size:20px">👋</span>
+    <b style="font-size:14px">Bienvenue — configurons ton instance AWEMA.</b>
+    <span style="font-size:13px;opacity:.92;flex:1;min-width:160px">3 minutes guidées : GitHub, une IA gratuite, tes réseaux. AWEMA met tout en place tout seul ensuite.</span>
+    <a href="configuration.html" style="background:#fff;color:#0A1F44;font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:8px 15px;white-space:nowrap">🚀 Mise en route</a>
+    <button id="awemaWelcomeX" aria-label="Fermer" style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;opacity:.8;line-height:1">×</button>
+  </div>
+</div>
+<script>
+  (function(){
+    var connected=false; try{var c=JSON.parse(localStorage.getItem('awema-gh')||'{}');connected=!!(c.token&&c.owner&&c.repo);}catch(e){}
+    var dismissed=false; try{dismissed=localStorage.getItem('awema-welcome-x')==='1';}catch(e){}
+    if(!connected&&!dismissed){
+      var b=document.getElementById('awemaWelcome'); b.style.display='block';
+      document.getElementById('awemaWelcomeX').onclick=function(){b.style.display='none';try{localStorage.setItem('awema-welcome-x','1');}catch(e){}};
+    }
+  })();
+</script>
+
 <nav class="top">
   <div class="wrap in">
     <a class="brand" href="index.html"><span class="lg" data-ag="initiales">A</span><span data-ag="nom">AWEMA</span></a>

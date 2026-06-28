@@ -39,6 +39,10 @@
   .note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:3px solid var(--gold);padding-left:12px}
   a.inl{color:var(--ciel)}
   code{background:rgba(0,0,0,.3);border-radius:5px;padding:1px 5px;font-size:12px}
+  .iaform{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:4px}
+  .fld{background:rgba(0,0,0,.28);border:1px solid var(--bord);border-radius:11px;color:#fff;font:inherit;font-size:13.5px;padding:10px 12px}
+  #iaKey{flex:1;min-width:200px}
+  .iamsg{font-size:12.5px;margin-top:9px;min-height:16px}
   @media(max-width:680px){.net a{padding:6px 9px}}
 </style>
 </head>
@@ -66,11 +70,25 @@
 
   <!-- 2. IA -->
   <div class="card">
-    <h2>2 · Cerveau — une IA <span class="pill opt">recommandé · gratuit</span></h2>
-    <div class="d">Branche une IA (gratuite : Groq, Gemini, Ollama…) pour que les agents
-      <b>Analyste / Stratège / Créatif</b> travaillent. Sans IA, « 3 choses à faire aujourd'hui » marche quand même.</div>
-    <div class="row"><a class="btn gh" href="connect-ia.html">🤖 Choisir &amp; connecter une IA</a></div>
-    <label class="chk"><input type="checkbox" data-k="ia"> J'ai mis ma clé IA en Secret GitHub (ex. <code>GROQ_API_KEY</code>)</label>
+    <h2>2 · Cerveau — une IA <span class="pill todo" id="iaPill">recommandé · gratuit</span></h2>
+    <div class="d">Branche une IA (gratuite : Groq, Gemini…) pour que les agents
+      <b>Analyste / Stratège / Créatif</b> travaillent. <b>Colle ta clé ici</b> : AWEMA enregistre le
+      fournisseur tout seul et te guide pour le dernier collage. Sans IA, « 3 choses à faire aujourd'hui » marche quand même.</div>
+    <div class="iaform" id="iaForm">
+      <select id="iaProv" class="fld">
+        <option value="groq">Groq — gratuit (recommandé)</option>
+        <option value="gemini">Google Gemini — gratuit</option>
+        <option value="openai">OpenAI</option>
+        <option value="anthropic">Anthropic (Claude)</option>
+        <option value="mistral">Mistral</option>
+        <option value="openrouter">OpenRouter</option>
+      </select>
+      <input id="iaKey" class="fld" type="password" placeholder="Colle ta clé API ici (ex. gsk_…)" autocomplete="off">
+      <button class="btn" id="iaSave">⚡ Enregistrer la clé IA</button>
+    </div>
+    <div class="iamsg" id="iaMsg"></div>
+    <div class="row" style="margin-top:6px"><a class="su" href="connect-ia.html" style="font-size:12.5px;color:var(--ciel)">Pas encore de clé ? Choisir un fournisseur gratuit →</a></div>
+    <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="ia"> Ma clé IA est en place (Secret GitHub <code>GROQ_API_KEY</code> ou équivalent)</label>
   </div>
 
   <!-- 3. Réseaux -->
@@ -169,6 +187,36 @@
     c.onchange=function(){store[c.dataset.k]=c.checked;save();progress();};
   });
 
+  // —— Étape IA : saisie dans l'app ——
+  var IA_KEY={groq:'GROQ_API_KEY',gemini:'GEMINI_API_KEY',openai:'OPENAI_API_KEY',
+    anthropic:'ANTHROPIC_API_KEY',mistral:'MISTRAL_API_KEY',openrouter:'OPENROUTER_API_KEY'};
+  function refreshIA(){
+    var on=!!store.ia;
+    document.getElementById('iaPill').className='pill '+(on?'ok':'todo');
+    document.getElementById('iaPill').textContent=on?'IA en place':'recommandé · gratuit';
+  }
+  function iaMsg(t,c){var m=document.getElementById('iaMsg');m.textContent=t;m.style.color=c||'var(--muted)';}
+  document.getElementById('iaSave').onclick=function(){
+    var prov=document.getElementById('iaProv').value;
+    var key=document.getElementById('iaKey').value.trim();
+    var nom=IA_KEY[prov]||'GROQ_API_KEY';
+    if(!key){iaMsg('Colle d\'abord ta clé API.','#FF7D9C');return;}
+    if(!(window.AwemaGH)){iaMsg('Module GitHub indisponible.','#FF7D9C');return;}
+    iaMsg('Connexion à GitHub…');
+    AwemaGH.ensure(function(){
+      iaMsg('Enregistrement du fournisseur…');
+      AwemaGH.setVariable('AWEMA_AI_PROVIDER',prov).catch(function(){return{manual:true};}).then(function(){
+        return AwemaGH.saveSecret(nom,key);
+      }).then(function(res){
+        document.getElementById('iaKey').value='';
+        if(res&&res.ok){ iaMsg('✅ '+prov+' branché automatiquement. Les agents pourront travailler.','#34E5C4'); }
+        else { iaMsg('Presque ! Un dernier collage sur GitHub (fenêtre ouverte) — nom : '+nom,'#D4AF37'); AwemaGH.guideSecret(nom,key); }
+        store.ia=true; save(); refreshIA(); progress();
+        document.querySelectorAll('.chk input').forEach(function(c){if(c.dataset.k==='ia')c.checked=true;});
+      }).catch(function(e){ iaMsg('❌ '+(e.message||e),'#FF7D9C'); });
+    });
+  };
+
   // Progression : socle GitHub + IA + ≥1 réseau connecté + auto
   function progress(){
     var steps=[
@@ -181,7 +229,7 @@
     document.getElementById('bar').style.width=pct+'%';
     document.getElementById('progtx').textContent=pct+' %  ('+done+'/'+steps.length+')';
   }
-  refreshGH(); progress();
+  refreshGH(); refreshIA(); progress();
 </script>
 <script src="outils/_design/abeille.js" data-aide="configuration"></script>
 </body>

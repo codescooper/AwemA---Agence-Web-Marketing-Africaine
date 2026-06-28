@@ -59,6 +59,77 @@ window.AwemaGH = (function () {
     } catch (e) { return false; }
   }
 
+  // ——— Variables & Secrets GitHub Actions (config sans toucher aux menus GitHub) ———
+  // Une VARIABLE est en clair → écrite automatiquement (ex. AWEMA_AI_PROVIDER=groq).
+  // Un SECRET est chiffré (sealed-box). Si la crypto est dispo (AwemaGH.seal injecté),
+  // on l'écrit automatiquement ; sinon on guide l'utilisateur vers le bon écran GitHub.
+  function secretsUI() { var c = cfg(); return 'https://github.com/' + c.owner + '/' + c.repo + '/settings/secrets/actions/new'; }
+
+  // Écrit une variable Actions (texte clair). Best-effort : renvoie {ok}|{manual} si le jeton n'a pas le droit.
+  async function setVariable(name, value) {
+    var c = cfg();
+    if (!connected()) throw new Error('GitHub non connecté');
+    var base = '/repos/' + c.owner + '/' + c.repo + '/actions/variables';
+    // existe déjà ? → PATCH, sinon POST
+    var ex = await api(base + '/' + encodeURIComponent(name));
+    var r;
+    if (ex.status === 200) {
+      r = await api(base + '/' + encodeURIComponent(name), { method: 'PATCH', body: JSON.stringify({ name: name, value: value }) });
+    } else {
+      r = await api(base, { method: 'POST', body: JSON.stringify({ name: name, value: value }) });
+    }
+    if (r.ok || r.status === 204) return { ok: true };
+    if (r.status === 403 || r.status === 404) return { manual: true, reason: 'scope' };
+    throw new Error('GitHub ' + r.status + ' — ' + (await r.text()).slice(0, 160));
+  }
+
+  // Récupère la clé publique du dépôt (pour chiffrer un secret).
+  async function publicKey() {
+    var c = cfg();
+    var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/secrets/public-key');
+    if (!r.ok) throw new Error('public-key ' + r.status);
+    return r.json();
+  }
+
+  // Écrit un SECRET Actions. Auto si AwemaGH.seal(valeur, cléPubliqueB64)->base64 est branché,
+  // sinon renvoie {manual:true,...} pour le flux guidé (copie + lien direct).
+  async function saveSecret(name, value) {
+    var c = cfg();
+    if (!connected()) throw new Error('GitHub non connecté');
+    if (typeof AwemaGH !== 'undefined' && AwemaGH.seal) {
+      try {
+        var pk = await publicKey();
+        var enc = AwemaGH.seal(value, pk.key);
+        var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/secrets/' + encodeURIComponent(name),
+          { method: 'PUT', body: JSON.stringify({ encrypted_value: enc, key_id: pk.key_id }) });
+        if (r.ok || r.status === 201 || r.status === 204) return { ok: true, auto: true };
+        if (r.status === 403 || r.status === 404) return { manual: true, name: name, value: value, url: secretsUI(), reason: 'scope' };
+        throw new Error('GitHub ' + r.status);
+      } catch (e) { return { manual: true, name: name, value: value, url: secretsUI(), reason: 'crypto' }; }
+    }
+    return { manual: true, name: name, value: value, url: secretsUI(), reason: 'no-crypto' };
+  }
+
+  // Modale guidée : copie la valeur dans le presse-papier et ouvre le bon écran GitHub.
+  function guideSecret(name, value) {
+    injCss();
+    var url = secretsUI();
+    try { navigator.clipboard && navigator.clipboard.writeText(value); } catch (e) {}
+    var ov = document.createElement('div'); ov.className = 'awgh-ov on';
+    ov.innerHTML =
+      '<div class="awgh"><h3>🔑 Dernier geste — coller le secret</h3>' +
+      '<p>Ta valeur est <b>déjà copiée</b> dans le presse-papier ✓. Sur GitHub, mets exactement ce nom, ' +
+      'colle la valeur, et clique <b>Add secret</b>. C\'est tout — AWEMA fera le reste tout seul ensuite.</p>' +
+      '<label>Nom du secret (à recopier tel quel)</label><input id="awgh-sn" readonly value="' + name + '">' +
+      '<div class="msg" id="awgh-sm" style="color:#34E5C4">Valeur copiée — prête à coller dans le champ « Secret ».</div>' +
+      '<div class="r"><button class="x" id="awgh-sx">Fermer</button>' +
+      '<button class="go" id="awgh-sg">📋 Ouvrir GitHub → Nouveau secret</button></div></div>';
+    document.body.appendChild(ov);
+    ov.querySelector('#awgh-sx').onclick = function () { ov.remove(); };
+    ov.querySelector('#awgh-sn').onclick = function () { this.select(); };
+    ov.querySelector('#awgh-sg').onclick = function () { window.open(url, '_blank', 'noopener'); };
+  }
+
   // ——— Modale de connexion (une fois) ———
   function injCss() {
     if (document.getElementById('awgh-css')) return;
@@ -94,7 +165,8 @@ window.AwemaGH = (function () {
       '<p>AWEMA enregistre tes données <b>directement dans ton dépôt</b> et lance le traitement en arrière-plan. ' +
       'Crée un <b>jeton à granularité fine</b> limité à ton dépôt — ' +
       '<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">créer le jeton ↗</a><br>' +
-      '<small>Permissions : <b>Contents</b> = Read/Write, <b>Actions</b> = Read/Write. Le jeton reste sur ton appareil, jamais dans le dépôt.</small></p>' +
+      '<small>Permissions : <b>Contents</b> = R/W, <b>Actions</b> = R/W. Pour la config automatique des clés, ajoute aussi ' +
+      '<b>Variables</b> = R/W et <b>Secrets</b> = R/W <i>(optionnel)</i>. Le jeton reste sur ton appareil, jamais dans le dépôt.</small></p>' +
       '<label>Propriétaire (owner)</label><input id="awgh-o" value="' + (c.owner || g.owner || '') + '" placeholder="ton-pseudo">' +
       '<label>Dépôt (repo)</label><input id="awgh-r" value="' + (c.repo || g.repo || '') + '" placeholder="mon-depot">' +
       '<label>Branche (où écrire)</label><input id="awgh-b" value="' + (c.branch || g.branch || 'main') + '" placeholder="main">' +
@@ -120,5 +192,6 @@ window.AwemaGH = (function () {
   // Garantit une connexion puis exécute cb (ouvre la modale si besoin).
   function ensure(cb) { if (connected()) cb(true); else openConnect(cb); }
 
-  return { connected: connected, who: who, disconnect: disconnect, openConnect: openConnect, ensure: ensure, saveFile: saveFile, runWorkflow: runWorkflow };
+  return { connected: connected, who: who, disconnect: disconnect, openConnect: openConnect, ensure: ensure,
+    saveFile: saveFile, runWorkflow: runWorkflow, setVariable: setVariable, saveSecret: saveSecret, guideSecret: guideSecret };
 })();
