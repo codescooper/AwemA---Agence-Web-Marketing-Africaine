@@ -19,13 +19,12 @@
       "Commence par <b>« Voir la démo »</b> pour comprendre où tu vas." ] },
     setup: { t: "Mets l'outil à TA marque", s: [
       "Renseigne le nom de ton agence, ton contact et tes couleurs.",
-      "Clique <b>« Télécharger »</b> → place le fichier dans <code>config/agence.json</code>.",
-      "Puis lance <code>python3 outils/_data/build.py</code> : tout s'adapte (nom, logo, charte).",
-      "Astuce : tu peux aussi copier la commande et la coller dans Claude Code." ] },
+      "Clique <b>« Enregistrer »</b> : AWEMA écrit la config et régénère l'app <b>en arrière-plan</b>.",
+      "La 1ʳᵉ fois seulement, connecte ton GitHub. Tout s'adapte (nom, logo, charte)." ] },
     "nouveau-client": { t: "Crée la fiche d'un client", s: [
       "Donne au moins son <b>nom</b> (le reste est optionnel).",
-      "Récupère le résultat : soit le <b>fichier client.json</b>, soit la <b>commande</b> à coller.",
-      "Ensuite, connecte ses réseaux (boutons en bas) et remplis sa <b>Mémoire Marketing</b>." ] },
+      "Clique <b>« Enregistrer »</b> : la fiche est créée dans ton dépôt, visible au cockpit <b>en arrière-plan</b>.",
+      "Ensuite : connecte ses réseaux et remplis sa <b>Mémoire Marketing</b>." ] },
     memoire: { t: "L'ADN de la marque, pour l'IA", s: [
       "Cette page nourrit les agents IA avec l'identité de la marque.",
       "1) Choisis le client · 2) Remplis identité, ton, personas, produits, FAQ.",

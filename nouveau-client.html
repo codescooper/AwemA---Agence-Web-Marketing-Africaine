@@ -69,21 +69,24 @@
   </div>
 
   <div class="card">
-    <h2>3 · La fiche du client (générée)</h2>
-    <p class="lead" style="font-size:13.5px">Deux façons de l'enregistrer : la commande de l'opérateur (la plus simple),
-      ou le fichier <code>client.json</code> à placer dans le dossier du client.</p>
-
-    <label>A · Commande opérateur (copie-la, l'agence la lance)</label>
-    <div class="out" id="cmd">—<button class="btn" id="bc" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('cmd','bc')">Copier</button></div>
-
-    <label style="margin-top:16px">B · Fichier <code>modules/marketing/clients/&lt;slug&gt;/_donnees/client.json</code></label>
-    <div class="out" id="json">—<button class="btn" id="bj" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('json','bj')">Copier</button></div>
-    <div class="row"><button class="btn ghost" onclick="dl()">⬇️ Télécharger client.json</button></div>
-    <div class="note">Astuce : dans Claude Code, tu peux aussi dire à l'opérateur « <b>/awema nouveau client …</b> » —
-      il crée la fiche tout seul et te propose de connecter les réseaux.</div>
-    <div class="note" style="border-color:var(--mint)">Étape suivante recommandée : remplis sa
-      <a href="memoire.html" style="color:var(--mint)"><b>Mémoire Marketing</b></a> (ton, personas, produits, FAQ).
-      C'est l'ADN que les <b>agents IA</b> utilisent pour des propositions justes.</div>
+    <h2>3 · Enregistrer la fiche</h2>
+    <p class="lead" style="font-size:13.5px">Clique <b>Enregistrer</b> : AWEMA crée la fiche dans ton dépôt et
+      l'affiche au cockpit <b>en arrière-plan</b>. (1ʳᵉ fois : connecte ton GitHub.)</p>
+    <div class="row">
+      <button class="btn" id="saveBtn" onclick="enregistrerAuto()">💾 Enregistrer</button>
+      <span id="saveMsg" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div class="note" style="border-color:var(--mint);margin-top:12px">Étape suivante recommandée : remplis sa
+      <a href="memoire.html" style="color:var(--mint)"><b>Mémoire Marketing</b></a> (ton, personas, produits, FAQ) —
+      l'ADN que les <b>agents IA</b> utilisent.</div>
+    <details style="margin-top:16px">
+      <summary style="cursor:pointer;color:var(--muted);font-size:12.5px">⚙️ Mode manuel (avancé)</summary>
+      <label style="margin-top:12px">A · Commande opérateur</label>
+      <div class="out" id="cmd">—<button class="btn" id="bc" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('cmd','bc')">Copier</button></div>
+      <label style="margin-top:16px">B · Fichier <code>modules/marketing/clients/&lt;slug&gt;/_donnees/client.json</code></label>
+      <div class="out" id="json">—<button class="btn" id="bj" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('json','bj')">Copier</button></div>
+      <div class="row"><button class="btn ghost" onclick="dl()">⬇️ Télécharger client.json</button></div>
+    </details>
   </div>
 
   <div class="card">
@@ -132,10 +135,26 @@
   function dl(){const d=window.__client;if(!d||!F('nom'))return;
     const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='client.json';a.click();}
+  async function enregistrerAuto(){
+    const msg=document.getElementById('saveMsg'), btn=document.getElementById('saveBtn');
+    if(!F('nom')){msg.style.color='#FF7D9C';msg.textContent='Donne au moins le nom de l\'entité.';return;}
+    build();
+    const slug=(window.__client&&window.__client.id)||'';
+    AwemaGH.ensure(async function(ok){ if(!ok)return;
+      btn.disabled=true; msg.style.color='var(--muted)'; msg.textContent='💾 Création de la fiche…';
+      try{
+        await AwemaGH.saveFile('modules/marketing/clients/'+slug+'/_donnees/client.json', window.__client, 'AWEMA : client '+slug);
+        msg.style.color='#34E5C4'; msg.textContent='✅ Client créé ('+AwemaGH.who()+') — visible au cockpit (1-2 min).';
+        AwemaGH.runWorkflow('build.yml');
+      }catch(e){ msg.style.color='#FF7D9C'; msg.textContent='❌ '+e.message; }
+      finally{ btn.disabled=false; }
+    });
+  }
   build();
 </script>
 <script src="outils/_data/config.js" onerror=""></script>
 <script src="outils/_data/apply.js"></script>
+<script src="outils/_design/awema-github.js"></script>
 <script src="outils/_design/abeille.js" data-aide="nouveau-client"></script>
 </body>
 </html>

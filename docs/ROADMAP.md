@@ -12,7 +12,10 @@
 
 ## Horizon 0 — Acquis (ne pas régresser)
 - ✅ **Fondations** : corpus `docs/FOUNDATION/` (Constitution, Kernel/Module, principes, plugins,
-  agents, données, gouvernance, ADR-001→005) — vocabulaire et frontières d'architecture posés.
+  agents, données, gouvernance, ADR-001→007) — vocabulaire et frontières d'architecture posés.
+- ✅ **GitHub = back-end (ADR-007)** : « Enregistrer » écrit dans le dépôt via l'API GitHub +
+  déclenche build/agents (mémoire, setup, nouveau client) → **zéro étape manuelle** pour la saisie.
+  Agents **périodiques** : cron quotidien **+ après chaque sync** de données (analyses toujours fraîches).
 - ✅ Socle monorepo, conventions, charte, auto-hébergement (config → build → apply).
 - ✅ Présence digitale réelle : **Meta** (1 token → toutes les Pages), **TikTok** (OAuth + rotation),
   **YouTube** (clé API). Fusion multi-réseaux + alias.
@@ -78,7 +81,9 @@ Scoring, Tunnel, Automatisation) plutôt que de montrer de l'inachevé.
   — guide prêt (`connect-whatsapp.html`), alimente le futur agent **Modérateur**.
 - 🧊 **Collaboration multi-utilisateur** (rôles, attributions).
 - 🧊 **Couche analytique / séries temporelles** (points d'extension déjà prévus — cf. PRD §8).
-- 🧊 **Opérateur** pousse lui-même Secrets/Variables GitHub (fin du copier-coller).
+- 🔜 **Écriture des Secrets depuis le navigateur** : ADR-007 écrit déjà les **fichiers** (config, clients,
+  mémoire) ; reste à écrire aussi les **Secrets** (clés IA/tokens) côté navigateur (chiffrement libsodium)
+  pour automatiser la phase d'installation.
 
 ---
 

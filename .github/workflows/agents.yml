@@ -8,7 +8,10 @@ name: Agents IA (proactivité)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 6 * * *"   # chaque jour 06:30 UTC
+    - cron: "30 6 * * *"   # chaque jour 06:30 UTC (analyses toujours fraîches)
+  workflow_run:            # ré-analyse automatiquement APRÈS chaque rafraîchissement de données
+    workflows: ["Sync présence digitale (réseaux)", "Sync TikTok (présence digitale)"]
+    types: [completed]
 
 permissions:
   contents: write

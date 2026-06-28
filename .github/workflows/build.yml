@@ -9,6 +9,7 @@ on:
   push:
     paths:
       - "modules/**"
+      - "!modules/**/_agents/**"   # les sorties d'agents ne re-déclenchent pas le build (anti-boucle)
       - "config/**"
       - "outils/_data/build.py"
 

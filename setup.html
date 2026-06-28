@@ -86,14 +86,21 @@
   </div>
 
   <div class="card">
-    <h2>4 · Ton fichier <code>config/agence.json</code></h2>
-    <div class="out" id="json">—<button class="btn" id="bj" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('json','bj')">Copier</button></div>
+    <h2>4 · Enregistrer</h2>
+    <p class="lead" style="font-size:13px">Clique <b>Enregistrer</b> : AWEMA écrit <code>config/agence.json</code>
+      dans ton dépôt et régénère l'app <b>en arrière-plan</b>. (1ʳᵉ fois : connecte ton GitHub.)</p>
     <div class="row">
-      <button class="btn ghost" onclick="dl()">⬇️ Télécharger agence.json</button>
+      <button class="btn" id="saveBtn" onclick="enregistrerAuto()">💾 Enregistrer</button>
+      <span id="saveMsg" style="font-size:12.5px;color:var(--muted)"></span>
     </div>
-    <label style="margin-top:16px">Ou, en une commande (l'opérateur l'écrit + régénère tout)</label>
-    <div class="out" id="cmd">—<button class="btn" id="bc" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('cmd','bc')">Copier</button></div>
-    <div class="note">Dans Claude Code : « <b>/awema setup nom="…" github.owner="…"</b> » — l'opérateur écrit le fichier et régénère l'app.</div>
+    <details style="margin-top:16px">
+      <summary style="cursor:pointer;color:var(--muted);font-size:12.5px">⚙️ Mode manuel (avancé) — sans connexion GitHub</summary>
+      <div class="out" id="json" style="margin-top:12px">—<button class="btn" id="bj" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('json','bj')">Copier</button></div>
+      <div class="row"><button class="btn ghost" onclick="dl()">⬇️ Télécharger agence.json</button></div>
+      <label style="margin-top:16px">Ou, en une commande (l'opérateur l'écrit + régénère tout)</label>
+      <div class="out" id="cmd">—<button class="btn" id="bc" style="position:absolute;top:10px;right:10px;padding:7px 11px;font-size:11.5px" onclick="cp('cmd','bc')">Copier</button></div>
+      <div class="note">Dans Claude Code : « <b>/awema setup nom="…" github.owner="…"</b> » — l'opérateur écrit le fichier et régénère l'app.</div>
+    </details>
   </div>
 
   <div class="card">
@@ -111,6 +118,7 @@
 </div>
 
 <script src="outils/_data/config.js" onerror=""></script>
+<script src="outils/_design/awema-github.js"></script>
 <script>
   const DEF_CHARTE={nuit:'#0A1F44',ciel:'#4BA3FF',gold:'#D4AF37',violet:'#7C5CFF',mint:'#34E5C4',pink:'#FF7D9C'};
   const CL={nuit:'Bleu Nuit',ciel:'Bleu Ciel',gold:'Or',violet:'Violet',mint:'Menthe',pink:'Rose'};
@@ -169,6 +177,19 @@
     try{await navigator.clipboard.writeText(t);const b=document.getElementById(btn);b.textContent='Copié ✓';b.classList.add('ok');setTimeout(()=>{b.textContent='Copier';b.classList.remove('ok');},1400);}catch(e){}}
   function dl(){const blob=new Blob([JSON.stringify(window.__cfg,null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='agence.json';a.click();}
+  async function enregistrerAuto(){
+    const msg=document.getElementById('saveMsg'), btn=document.getElementById('saveBtn');
+    build();
+    AwemaGH.ensure(async function(ok){ if(!ok)return;
+      btn.disabled=true; msg.style.color='var(--muted)'; msg.textContent='💾 Enregistrement…';
+      try{
+        await AwemaGH.saveFile('config/agence.json', window.__cfg, 'AWEMA : config agence');
+        msg.style.color='#34E5C4'; msg.textContent='✅ Enregistré ('+AwemaGH.who()+') — l\'app se régénère (1-2 min).';
+        AwemaGH.runWorkflow('build.yml');
+      }catch(e){ msg.style.color='#FF7D9C'; msg.textContent='❌ '+e.message; }
+      finally{ btn.disabled=false; }
+    });
+  }
   // Pré-remplit avec la config existante du fork (si présente), pour éditer plutôt que repartir de zéro
   (function(){var c=window.AWEMA_CONFIG;if(!c)return;
     var set=(id,v)=>{if(v!=null&&document.getElementById(id))document.getElementById(id).value=v;};
