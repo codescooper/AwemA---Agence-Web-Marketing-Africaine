@@ -57,6 +57,9 @@ python3 scripts/preparer-copie-beta.py ../awema-beta
 - [[12-connecter-ia]] — brancher une IA (options **gratuites** : Groq, Gemini, Ollama…)
 - Guides web : `connect-tiktok.html` · `connect-youtube.html` · `connect-linkedin.html` · `connect-ia.html`
 
+## 🖥️ Lancer en local & piloter par IA
+- [[16-piloter-avec-claude-mcp]] — `awema serve` (1 commande) + **serveur MCP** (Claude pilote en langage naturel)
+
 ## 🏗️ Auto-hébergement & conventions
 - [[09-auto-hebergement]] — forker & personnaliser · `setup.html`
 - [[01-agence]] · [[02-onboarding]] · [[03-conventions]] · [[04-charte-graphique]]

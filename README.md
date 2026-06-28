@@ -65,6 +65,12 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 
 ## 🚀 Démarrage rapide
 
+**Lancer en local, une seule commande** (rien à installer — Python 3 suffit) :
+```bash
+python3 scripts/awema.py serve     # build + serveur local + ouvre le navigateur
+```
+Et pour **piloter AWEMA en langage naturel** depuis Claude (MCP) → [`docs/16-piloter-avec-claude-mcp.md`](docs/16-piloter-avec-claude-mcp.md).
+
 | Vous êtes… | Lisez en priorité |
 |---|---|
 | **Chief Architect / contributeur** | [`docs/FOUNDATION/`](docs/FOUNDATION/README.md) puis [`docs/PRD-AWEMA.md`](docs/PRD-AWEMA.md) |
