@@ -164,7 +164,36 @@ qu'elle n'est pas déposée. (−) Variables/Secrets API → CORS : exécuter vi
 mettre les clés API en **Variables** clair (fuite : visibles en lecture/logs) ; serveur/proxy qui détient les
 clés (trahit « zéro SaaS ») ; laisser le geste 100 % manuel (ne répond pas au besoin non-technicien).
 
+## ADR-009 — OAuth réseaux 100 % Pages-native (échange du code dans une Action)
+**Statut** : Accepté (2026-06-28).
+**Contexte.** L'onboarding TikTok exigeait **Python + un serveur `localhost`** (`tiktok-onboard.py` capture le
+`code` OAuth sur `127.0.0.1:8723`, puis échange `code→refresh_token` avec le `client_secret`). Une agence qui
+n'utilise **que GitHub Pages** (sans machine locale) ne pouvait donc pas connecter ses réseaux.
+**Problème.** Comment connecter un compte TikTok **depuis le navigateur sur Pages**, alors que l'échange du
+code requiert le **`client_secret`** — qui **ne peut pas vivre dans une page publique** ?
+**Décision.** Appliquer **ADR-007** à l'OAuth : **le navigateur capte le `code`, une GitHub Action fait
+l'échange.** (1) `connect-tiktok.html` construit l'URL d'autorisation avec `redirect_uri = oauth.html` (HTTPS,
+déjà la page de retour enregistrée) ; (2) TikTok renvoie sur `oauth.html?code=…` ; (3) la page déclenche
+`tiktok-exchange.yml` via `workflow_dispatch` (`AwemaGH.runWorkflow(file, inputs, strict)`) en passant `code`
++ `redirect_uri` + `slug` ; (4) l'Action (`scripts/tiktok-exchange.py`) échange avec
+`TIKTOK_CLIENT_KEY`/`TIKTOK_CLIENT_SECRET` (Secrets) et enregistre le `refresh_token` rotatif dans la Variable
+`TIKTOK_TOKENS` via `TIKTOK_PAT` — **exactement la persistance déjà éprouvée** par `tiktok-onboard.py`. Les 3
+Secrets se posent depuis `connect-tiktok.html` (réutilise `AwemaGH.saveSecret`/`guideSecret`, ADR-008).
+**Conséquences.** (+) Connexion d'un compte TikTok **sans Python, sans localhost** — un clic + *Authorize*.
+(+) Le `client_secret` reste **server-side** (Secret), jamais dans la page. (+) `redirect_uri` HTTPS = plus
+de bricolage `localhost`. (+) La logique d'échange est **partagée** avec le flux local (zéro divergence). (−) Le
+`code` transite en **entrée de workflow** (visible dans le journal du run) : acceptable car **usage unique +
+expiration courte + inutile sans le secret**. (−) Le flux Python reste en repli (utile hors-ligne). (−) Non
+testable depuis le sandbox (TikTok + API GitHub bloqués) → vérification sur la Pages de l'utilisateur.
+**Vérification.** `tiktok-exchange.py` se compile et échoue **proprement** (`::error::`) sans secrets ; YAML du
+workflow valide ; `oauth.html`/`connect-tiktok.html` rendus sans erreur JS (construction de l'URL d'autorisation
+et capture du `code` OK) ; suite unittest verte.
+**Alternatives rejetées.** Échange dans le navigateur (exposerait le `client_secret`) ; proxy/SaaS détenant le
+secret (trahit « zéro SaaS ») ; garder Python+localhost obligatoire (exclut les utilisateurs Pages-only) ;
+stocker le token en fichier committé (un token dans Git = fuite). Généralisation LinkedIn/Meta : même motif,
+**reportée** (un connecteur à la fois, vérifié sur le terrain).
+
 ---
 
-> **Prochain ADR libre : ADR-009.** Créer un ADR avant toute décision structurante (frontière de
+> **Prochain ADR libre : ADR-010.** Créer un ADR avant toute décision structurante (frontière de
 > données, nouveau module officiel, changement de contrat d'agent/plugin, migration de répertoires).

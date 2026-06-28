@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AWEMA — Connecter TikTok (guide pas à pas)</title>
+<title>AWEMA — Connecter TikTok (sans terminal)</title>
 <style>
   :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
     --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.12)}
@@ -27,6 +27,10 @@
   .btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:linear-gradient(135deg,var(--ciel),var(--violet));
     color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;border:0;border-radius:11px;padding:11px 16px;cursor:pointer}
   .btn.ghost{background:transparent;border:1px solid var(--bord);color:var(--tx);font-weight:600}
+  .btn:disabled{opacity:.5;cursor:default}
+  .fld{width:100%;margin-top:10px;background:rgba(0,0,0,.28);border:1px solid var(--bord);border-radius:11px;color:#fff;font:inherit;font-size:13.5px;padding:11px 13px}
+  .pair{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  .pair .fld{flex:1;min-width:180px;margin-top:0}
   .cmd{position:relative;margin-top:12px;background:rgba(0,0,0,.32);border:1px solid var(--bord);border-radius:12px;
     padding:13px 88px 13px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;white-space:pre-wrap;word-break:break-all;color:#dbe7ff}
   .copy{position:absolute;top:9px;right:9px;font-size:11.5px;border:1px solid var(--bord);background:rgba(255,255,255,.08);
@@ -34,110 +38,150 @@
   .copy.ok{background:var(--mint);color:#06231d;border-color:var(--mint)}
   .note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:3px solid var(--gold);padding-left:12px}
   .tag{font-size:11px;color:#06231d;background:var(--mint);border-radius:6px;padding:2px 7px;font-weight:700}
+  .msg{font-size:13px;margin-top:10px;min-height:18px}
   code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:6px;font-size:12.5px}
   a.inl{color:var(--ciel)}
+  details{margin-top:18px}
+  summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:600}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <a class="back" href="index.html">← AWEMA · Centre de pilotage</a>
-    <h1>Connecter <span class="g">TikTok</span> — guide pas à pas</h1>
-    <p class="lead">Suis les étapes dans l'ordre. La seule action « manuelle » imposée par TikTok :
-      te connecter au compte + cliquer <b>Authorize</b>. L'assistant fait tout le reste
-      (capture du code, échange, mise à jour de la liste des comptes).</p>
-    <span class="pill">⏱️ ~10 min la 1ʳᵉ fois · puis 30 s par compte</span>
+    <h1>Connecter <span class="g">TikTok</span> — sans terminal</h1>
+    <p class="lead">Tout se passe <b>dans cette page + GitHub</b>. Pas de Python, pas de localhost.
+      La seule action imposée par TikTok : te connecter au compte et cliquer <b>Authorize</b>.
+      AWEMA fait le reste (échange sécurisé en arrière-plan).</p>
+    <span class="pill">⏱️ ~10 min la 1ʳᵉ fois · puis 30 s par compte · 100 % navigateur</span>
   </header>
 
-  <!-- 1 — PAT -->
+  <!-- 1 — Secrets de l'app TikTok (une fois) -->
   <div class="step">
-    <h2><span class="num">1</span> Créer le « PAT » GitHub (clé d'automatisation)</h2>
-    <p>Le PAT autorise l'assistant à enregistrer tout seul tes comptes TikTok dans le projet.
-      C'est une clé personnelle, à créer <b>une seule fois</b>.</p>
-    <ul>
-      <li>Ouvre la page de création (bouton ci-dessous).</li>
-      <li><b>Token name</b> : <code>awema-tiktok</code> · <b>Expiration</b> : 90 jours (ou plus).</li>
-      <li><b>Repository access</b> : <i>Only select repositories</i> → choisis
-        <code>AwemA---Agence-Web-Marketing-Africaine</code>.</li>
-      <li><b>Permissions</b> → <i>Repository permissions</i> → <b>Variables</b> → <span class="tag">Read and write</span>.</li>
-      <li><b>Generate token</b> → <b>copie</b> le token (tu ne le reverras plus).</li>
-    </ul>
-    <a class="btn" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Créer le PAT ↗</a>
-    <div class="note">Garde ce token privé. Ne le colle nulle part en ligne — il sert juste à la commande
-      <code>set GH_PAT=…</code> de l'étape 3.</div>
+    <h2><span class="num">1</span> Enregistrer les clés de ton app TikTok <span class="tag">une fois</span></h2>
+    <p>Depuis <a class="inl" href="https://developers.tiktok.com/" target="_blank" rel="noopener">developers.tiktok.com</a>
+      (ton app → <i>Manage apps</i>), récupère <b>Client key</b> et <b>Client secret</b>. Il te faut aussi un
+      <b>PAT GitHub</b> (fine-grained, portée <b>Variables : Read and write</b>) —
+      <a class="inl" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">en créer un ↗</a>.
+      Colle-les ici : AWEMA les enregistre en <b>Secrets GitHub</b> (jamais dans le dépôt).</p>
+    <div class="pair"><input class="fld" id="sCK" placeholder="Client key (ex. sbaw…)"><button class="btn" id="bCK" style="margin:0">Enregistrer</button></div>
+    <div class="pair"><input class="fld" id="sCS" type="password" placeholder="Client secret"><button class="btn" id="bCS" style="margin:0">Enregistrer</button></div>
+    <div class="pair"><input class="fld" id="sPAT" type="password" placeholder="PAT GitHub (Variables R/W)"><button class="btn" id="bPAT" style="margin:0">Enregistrer</button></div>
+    <div class="msg" id="secMsg"></div>
+    <div class="note">Ces 3 valeurs deviennent les Secrets <code>TIKTOK_CLIENT_KEY</code>,
+      <code>TIKTOK_CLIENT_SECRET</code>, <code>TIKTOK_PAT</code>. Si l'écriture auto n'est pas dispo,
+      AWEMA ouvre le bon écran GitHub avec la valeur déjà copiée (un collage).</div>
   </div>
 
   <!-- 2 — Redirect URI -->
   <div class="step">
-    <h2><span class="num">2</span> Autoriser l'adresse locale dans l'app TikTok</h2>
-    <p>Pour que l'assistant récupère le code automatiquement, ajoute cette <b>Redirect URI</b>
-      dans l'app TikTok (section <i>URL properties</i> / <i>Login Kit</i>) :</p>
-    <div class="cmd" id="c-redir">http://127.0.0.1:8723/callback<button class="copy" data-c="c-redir">Copier</button></div>
-    <div class="note">Si TikTok refuse les adresses <code>localhost</code> : pas grave, tu lanceras l'assistant
-      avec l'option <code>--paste</code> (étape 4) — il réutilise l'adresse du projet déjà autorisée.</div>
+    <h2><span class="num">2</span> Autoriser l'adresse de retour dans l'app TikTok <span class="tag">une fois</span></h2>
+    <p>Dans l'app TikTok (<i>Login Kit</i> → <i>Redirect URI</i>), ajoute <b>exactement</b> cette adresse
+      (c'est ta page de retour, en HTTPS) :</p>
+    <div class="cmd" id="c-redir">…<button class="copy" data-c="c-redir">Copier</button></div>
+    <div class="note">C'est l'URL de <code>oauth.html</code> sur ton site. TikTok accepte les adresses HTTPS —
+      plus besoin de <code>localhost</code>.</div>
   </div>
 
-  <!-- 3 — Terminal -->
+  <!-- 3 — Connecter un compte -->
   <div class="step">
-    <h2><span class="num">3</span> Préparer le terminal</h2>
-    <p>Ouvre un terminal <b>dans le dossier du projet</b> et colle ces lignes
-      (remplace <code>TON_SECRET</code> et <code>TON_PAT</code>) :</p>
-    <div class="cmd" id="c-win">cd chemin\vers\awema---agence-web-marketing-africaine
-git pull
-set TIKTOK_CLIENT_KEY=sbaww0y3bflk3knbkj
-set TIKTOK_CLIENT_SECRET=TON_SECRET
-set GH_PAT=TON_PAT<button class="copy" data-c="c-win">Copier</button></div>
-    <div class="note">Mac / Linux : remplace chaque <code>set X=Y</code> par <code>export X=Y</code>.</div>
+    <h2><span class="num">3</span> Connecter un compte TikTok</h2>
+    <p><b>Connecte-toi d'abord</b>, dans ce navigateur, au compte TikTok que tu veux ajouter. Puis clique :</p>
+    <input class="fld" id="ckIn" placeholder="Client key de ton app (rappel — non secret)">
+    <button class="btn" id="goAuth">▶️ Connecter ce compte TikTok</button>
+    <div class="msg" id="authMsg"></div>
+    <div class="note">Tu arrives sur TikTok → <b>Authorize</b> → retour automatique sur AWEMA, qui finalise
+      (échange du code par GitHub Actions). Pour <b>plusieurs comptes</b> : change de compte TikTok connecté,
+      puis reviens ici et recommence.</div>
   </div>
 
-  <!-- 4 — Lancer l'assistant -->
+  <!-- 4 — Synchroniser -->
   <div class="step">
-    <h2><span class="num">4</span> Lancer l'assistant</h2>
-    <div class="cmd" id="c-run">python scripts\tiktok-onboard.py<button class="copy" data-c="c-run">Copier</button></div>
-    <p>Repli si TikTok a refusé l'adresse locale (étape 2) :</p>
-    <div class="cmd" id="c-paste">python scripts\tiktok-onboard.py --paste<button class="copy" data-c="c-paste">Copier</button></div>
-    <div class="note">Si <code>python</code> ne marche pas, essaie <code>py</code> à la place.</div>
-  </div>
-
-  <!-- 5 — Autoriser chaque compte -->
-  <div class="step">
-    <h2><span class="num">5</span> Autoriser chaque compte (en boucle)</h2>
-    <ul>
-      <li>Dans le navigateur, <b>connecte-toi au compte TikTok</b> à ajouter.</li>
-      <li>Reviens au terminal, appuie sur <b>Entrée</b> → le navigateur s'ouvre → clique <b>Authorize</b>.</li>
-      <li>L'assistant affiche le nom du compte et <b>propose un slug</b> (nom de dossier client) → <b>Entrée</b>.</li>
-      <li>« Ajouter un autre ? » → <b>change de compte TikTok</b> dans le navigateur et recommence.</li>
-      <li>Quand c'est fini, tape <b>q</b> → l'assistant <b>met à jour la liste des comptes tout seul</b>.</li>
-    </ul>
-    <div class="note">Important : c'est le compte <b>connecté dans le navigateur</b> au moment du clic qui est
-      capturé. Change donc de compte entre chaque autorisation.</div>
-  </div>
-
-  <!-- 6 — Synchroniser -->
-  <div class="step">
-    <h2><span class="num">6</span> Lancer la synchronisation</h2>
-    <p>Va sur la page du workflow et clique <b>Run workflow</b> → tous les comptes se synchronisent,
-      et leurs vraies stats apparaissent dans le dashboard.</p>
-    <a class="btn" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/actions/workflows/sync-tiktok.yml" target="_blank" rel="noopener">Ouvrir « Sync TikTok » ↗</a>
+    <h2><span class="num">4</span> Récupérer les stats</h2>
+    <p>Une fois tes comptes connectés, lance la synchro : leurs vraies métriques arrivent dans le dashboard.
+      Ensuite c'est <b>automatique chaque lundi</b>.</p>
+    <a class="btn" id="syncLink" href="#" target="_blank" rel="noopener">Ouvrir « Sync TikTok » ↗</a>
     <a class="btn ghost" href="outils/dashboard/index.html">Voir le dashboard →</a>
-    <div class="note">Ensuite, c'est <b>automatique</b> chaque lundi : le PAT permet de rafraîchir et
-      resauvegarder les jetons sans aucune intervention.</div>
   </div>
+
+  <!-- Repli : ligne de commande -->
+  <details>
+    <summary>Tu préfères la ligne de commande (Python en local) ?</summary>
+    <div class="step" style="margin-top:12px">
+      <p>Dans le dossier du projet :</p>
+      <div class="cmd" id="c-cli">git pull
+set TIKTOK_CLIENT_KEY=&lt;client key&gt;
+set TIKTOK_CLIENT_SECRET=&lt;client secret&gt;
+set GH_PAT=&lt;PAT Variables R/W&gt;
+python scripts\tiktok-onboard.py<button class="copy" data-c="c-cli">Copier</button></div>
+      <div class="note">Mac/Linux : <code>export X=Y</code>. Si <code>python</code> ne marche pas, essaie <code>py</code>.
+        Détails : <a class="inl" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/blob/main/docs/07-connecter-tiktok.md" target="_blank" rel="noopener">docs/07 ↗</a></div>
+    </div>
+  </details>
 </div>
 
+<script src="outils/_data/config.js" onerror=""></script>
+<script src="outils/_data/apply.js" onerror=""></script>
+<script src="outils/_design/awema-github.js"></script>
 <script>
-  document.querySelectorAll('.copy').forEach(b=>{
-    b.addEventListener('click',async()=>{
-      const el=document.getElementById(b.dataset.c);
-      const txt=el.childNodes[0].textContent.trim();
-      try{await navigator.clipboard.writeText(txt);b.textContent='Copié ✓';b.classList.add('ok');
-        setTimeout(()=>{b.textContent='Copier';b.classList.remove('ok');},1400);}
-      catch(e){b.textContent='Sélectionne';}
+  var AUTH = 'https://www.tiktok.com/v2/auth/authorize/';
+  var SCOPES = 'user.info.basic,user.info.profile,user.info.stats,video.list';
+  // URL de oauth.html, sœur de cette page → redirect_uri identique côté autorisation et échange.
+  var oauthUrl = location.origin + location.pathname.replace(/[^/]*$/, 'oauth.html');
+
+  // Redirect URI affichée (étape 2)
+  document.getElementById('c-redir').childNodes[0].textContent = oauthUrl;
+
+  // Lien Sync TikTok (vers le dépôt connecté si connu, sinon le dépôt par défaut)
+  (function(){
+    var g=(window.AWEMA_CONFIG&&AWEMA_CONFIG.github)||{}, ghc={}; try{ghc=JSON.parse(localStorage.getItem('awema-gh'))||{};}catch(e){}
+    var owner=ghc.owner||g.owner||'codescooper', repo=ghc.repo||g.repo||'AwemA---Agence-Web-Marketing-Africaine';
+    document.getElementById('syncLink').href='https://github.com/'+owner+'/'+repo+'/actions/workflows/sync-tiktok.yml';
+  })();
+
+  // Copies
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.c), txt=el.childNodes[0].textContent.trim();
+      navigator.clipboard.writeText(txt).then(function(){b.textContent='Copié ✓';b.classList.add('ok');
+        setTimeout(function(){b.textContent='Copier';b.classList.remove('ok');},1400);}).catch(function(){b.textContent='Sélectionne';});
     });
   });
+
+  // Étape 1 — enregistrer les 3 secrets via AwemaGH (auto si crypto, sinon guidé)
+  function secMsg(t,c){var m=document.getElementById('secMsg');m.textContent=t;m.style.color=c||'var(--muted)';}
+  function setSecret(inputId, name){
+    var v=document.getElementById(inputId).value.trim();
+    if(!v){secMsg('Renseigne d’abord '+name+'.','#FF7D9C');return;}
+    if(!window.AwemaGH){secMsg('Module GitHub indisponible.','#FF7D9C');return;}
+    secMsg('Connexion à GitHub…');
+    AwemaGH.ensure(function(){
+      secMsg('Enregistrement de '+name+'…');
+      AwemaGH.saveSecret(name, v).then(function(res){
+        document.getElementById(inputId).value='';
+        if(res&&res.ok){ secMsg('✅ '+name+' enregistré automatiquement.','var(--mint)'); }
+        else { secMsg('Presque ! '+name+' — un collage sur GitHub (fenêtre ouverte).','var(--gold)'); AwemaGH.guideSecret(name, v); }
+      }).catch(function(e){ secMsg('❌ '+(e.message||e),'#FF7D9C'); });
+    });
+  }
+  document.getElementById('bCK').onclick=function(){setSecret('sCK','TIKTOK_CLIENT_KEY');};
+  document.getElementById('bCS').onclick=function(){setSecret('sCS','TIKTOK_CLIENT_SECRET');};
+  document.getElementById('bPAT').onclick=function(){setSecret('sPAT','TIKTOK_PAT');};
+
+  // Étape 3 — lancer l'autorisation TikTok
+  var ckIn=document.getElementById('ckIn');
+  try{ ckIn.value = localStorage.getItem('awema-tt-ck') || ''; }catch(e){}
+  document.getElementById('goAuth').onclick=function(){
+    var ck=ckIn.value.trim();
+    if(!ck){document.getElementById('authMsg').textContent='Renseigne la Client key de ton app TikTok.';
+      document.getElementById('authMsg').style.color='#FF7D9C';return;}
+    try{ localStorage.setItem('awema-tt-ck', ck); }catch(e){}
+    var state=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    try{ sessionStorage.setItem('awema-tt-state', state); }catch(e){}
+    var url=AUTH+'?'+new URLSearchParams({client_key:ck,response_type:'code',scope:SCOPES,redirect_uri:oauthUrl,state:state}).toString();
+    window.location.href=url;
+  };
 </script>
-<script src="outils/_data/config.js" onerror=""></script>
-<script src="outils/_data/apply.js"></script>
 <script src="outils/_design/abeille.js" data-aide="connect-tiktok"></script>
 </body>
 </html>
