@@ -76,19 +76,28 @@
 
   <div class="card">
     <h2>Enregistrer</h2>
-    <p class="lead" style="font-size:13px">Deux façons : la commande opérateur, ou le fichier <code>memoire.json</code>.</p>
-    <label>A · Fichier <code>modules/marketing/clients/&lt;slug&gt;/_donnees/memoire.json</code></label>
-    <div class="out" id="json">—<button class="btn sm" id="bj" style="position:absolute;top:10px;right:10px" onclick="cp('json','bj')">Copier</button></div>
-    <div class="row"><button class="btn ghost" onclick="dl()">⬇️ Télécharger memoire.json</button></div>
-    <label style="margin-top:14px">B · Commande opérateur</label>
-    <div class="out" id="cmd">—<button class="btn sm" id="bc" style="position:absolute;top:10px;right:10px" onclick="cp('cmd','bc')">Copier</button></div>
-    <div class="note">Dans Claude Code : « <b>/awema client memoire …</b> ». Puis régénère : <code>python3 outils/_data/build.py</code>.</div>
+    <p class="lead" style="font-size:13px">Clique <b>Enregistrer</b> : AWEMA écrit dans ton dépôt et met à
+      jour l'IA <b>en arrière-plan</b>. La 1ʳᵉ fois, tu connectes ton GitHub (une seule fois).</p>
+    <div class="row">
+      <button class="btn" id="saveBtn" onclick="enregistrerAuto()">💾 Enregistrer</button>
+      <span id="saveMsg" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <details style="margin-top:16px">
+      <summary style="cursor:pointer;color:var(--muted);font-size:12.5px">⚙️ Mode manuel (avancé) — sans connexion GitHub</summary>
+      <label style="margin-top:12px">A · Fichier <code>modules/marketing/clients/&lt;slug&gt;/_donnees/memoire.json</code></label>
+      <div class="out" id="json">—<button class="btn sm" id="bj" style="position:absolute;top:10px;right:10px" onclick="cp('json','bj')">Copier</button></div>
+      <div class="row"><button class="btn ghost" onclick="dl()">⬇️ Télécharger memoire.json</button></div>
+      <label style="margin-top:14px">B · Commande opérateur</label>
+      <div class="out" id="cmd">—<button class="btn sm" id="bc" style="position:absolute;top:10px;right:10px" onclick="cp('cmd','bc')">Copier</button></div>
+      <div class="note">Dans Claude Code : « <b>/awema client memoire …</b> ». Puis régénère : <code>python3 outils/_data/build.py</code>.</div>
+    </details>
   </div>
 </div>
 
 <script src="outils/_data/agence.js" onerror=""></script>
 <script src="outils/_data/config.js" onerror=""></script>
 <script src="outils/_data/apply.js"></script>
+<script src="outils/_design/awema-github.js"></script>
 <script>
   const REG=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
   const F=id=>(document.getElementById(id).value||'').trim();
@@ -164,6 +173,24 @@
   function dl(){const blob=new Blob([JSON.stringify(window.__mem,null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='memoire.json';a.click();}
 
+  async function enregistrerAuto(){
+    const slug=document.getElementById('clientSel').value;
+    const msg=document.getElementById('saveMsg'), btn=document.getElementById('saveBtn');
+    if(!slug){msg.style.color='#FF7D9C';msg.textContent='Choisis d\'abord un client.';return;}
+    build();                                   // s'assure que window.__mem est à jour
+    AwemaGH.ensure(async function(ok){
+      if(!ok)return;
+      const path='modules/marketing/clients/'+slug+'/_donnees/memoire.json';
+      btn.disabled=true; msg.style.color='var(--muted)'; msg.textContent='💾 Enregistrement dans ton dépôt…';
+      try{
+        await AwemaGH.saveFile(path, window.__mem, 'AWEMA : mémoire '+slug);
+        msg.style.color='#34E5C4';
+        msg.textContent='✅ Enregistré ('+AwemaGH.who()+') — l\'IA met à jour tes propositions en arrière-plan (1-2 min).';
+        AwemaGH.runWorkflow('agents.yml');     // enrichissement IA (best-effort, sans bloquer)
+      }catch(e){ msg.style.color='#FF7D9C'; msg.textContent='❌ '+e.message; }
+      finally{ btn.disabled=false; }
+    });
+  }
   fillSelector(); onClient();
 </script>
 <script src="outils/_design/abeille.js" data-aide="memoire"></script>
