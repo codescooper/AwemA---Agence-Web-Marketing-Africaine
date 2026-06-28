@@ -49,14 +49,19 @@ window.AwemaGH = (function () {
     if (!r.ok) throw new Error('GitHub ' + r.status + ' — ' + (await r.text()).slice(0, 180));
     return r.json();
   }
-  // Déclenche un workflow (ex. 'agents.yml' ou 'build.yml') sur main. Best-effort (non bloquant).
-  async function runWorkflow(fichier) {
+  // Déclenche un workflow (ex. 'agents.yml', 'build.yml', 'tiktok-exchange.yml').
+  // inputs (optionnel) = objet passé au workflow_dispatch. Best-effort (non bloquant) par défaut ;
+  // si strict=true, lève en cas d'échec (utile pour les flux où l'utilisateur attend une confirmation).
+  async function runWorkflow(fichier, inputs, strict) {
     var c = cfg();
+    var body = { ref: branch() };
+    if (inputs && Object.keys(inputs).length) body.inputs = inputs;
     try {
       var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/workflows/' + fichier + '/dispatches',
-        { method: 'POST', body: JSON.stringify({ ref: branch() }) });
+        { method: 'POST', body: JSON.stringify(body) });
+      if (!r.ok && strict) throw new Error('GitHub ' + r.status + ' — ' + (await r.text()).slice(0, 160));
       return r.ok;
-    } catch (e) { return false; }
+    } catch (e) { if (strict) throw e; return false; }
   }
 
   // ——— Variables & Secrets GitHub Actions (config sans toucher aux menus GitHub) ———

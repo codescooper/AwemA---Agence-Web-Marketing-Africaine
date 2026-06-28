@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AWEMA — Récupération du code TikTok</title>
+<title>AWEMA — Connexion TikTok (finalisation)</title>
 <style>
-  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37}
+  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--mint:#34E5C4;--bord:rgba(255,255,255,.16);--muted:#9db0d6}
   *{box-sizing:border-box}
   body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;
     background:radial-gradient(1200px 600px at 50% -10%,#13294f,#0A1F44);color:#eaf0fb}
@@ -13,49 +13,99 @@
     border-radius:20px;padding:30px;backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
   h1{font-family:Montserrat,sans-serif;font-weight:800;margin:0 0 4px;font-size:22px}
   h1 .g{color:var(--gold)}
-  p.sub{margin:0 0 20px;color:#9db0d6;font-size:13.5px}
-  .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9db0d6;margin:18px 0 6px}
+  p.sub{margin:0 0 16px;color:var(--muted);font-size:13.5px}
+  .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:16px 0 6px}
   .box{display:flex;gap:10px}
   input{flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;padding:13px 14px;border-radius:12px;
-    border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);color:#fff;overflow:auto}
+    border:1px solid var(--bord);background:rgba(0,0,0,.25);color:#fff;overflow:auto}
+  input.txt{font-family:inherit}
   button{border:0;border-radius:12px;padding:0 18px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--ciel),#7C5CFF);color:#fff}
+  button.ghost{background:transparent;border:1px solid var(--bord);color:#eaf0fb}
   button:active{transform:translateY(1px)}
-  .ok{color:#34E5C4} .err{color:#FF7D9C}
-  .hint{margin-top:18px;font-size:12.5px;color:#9db0d6;line-height:1.7}
+  .ok{color:var(--mint)} .err{color:#FF7D9C}
+  .hint{margin-top:18px;font-size:12.5px;color:var(--muted);line-height:1.7}
   code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:6px}
+  .go2{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .go2 button{padding:12px 18px}
+  .msg{margin-top:12px;font-size:13px;min-height:18px}
+  details{margin-top:18px}
+  summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 </style>
 </head>
 <body>
 <div class="card">
-  <h1>AwemA Watcher <span class="g">·</span> code d'autorisation TikTok</h1>
-  <p class="sub">Cette page récupère le <strong>code</strong> renvoyé par TikTok après autorisation. Copie-le, puis échange-le en ligne de commande.</p>
+  <h1>Connexion TikTok <span class="g">·</span> finalisation</h1>
+  <p class="sub">TikTok t'a renvoyé ici après l'autorisation. AWEMA termine <strong>tout seul</strong> :
+    il déclenche l'échange sécurisé du code en arrière-plan (GitHub Actions). Aucun terminal.</p>
 
   <div id="zone"></div>
 
-  <div class="hint">
-    Étape suivante (à coller dans ton terminal) :<br>
-    <code>export TIKTOK_CLIENT_KEY="…" TIKTOK_CLIENT_SECRET="…"</code><br>
-    <code>python3 scripts/connect-reseaux.py --tiktok-auth "&lt;CODE&gt;" "&lt;REDIRECT_URI&gt;"</code><br>
-    → tu obtiens le <strong>refresh_token</strong> à mettre dans la Variable <code>TIKTOK_TOKENS</code>.
-  </div>
+  <details>
+    <summary>Plutôt en ligne de commande (si tu as Python en local)</summary>
+    <div class="hint">
+      <code>export TIKTOK_CLIENT_KEY="…" TIKTOK_CLIENT_SECRET="…"</code><br>
+      <code>python3 scripts/connect-reseaux.py --tiktok-auth "&lt;CODE&gt;" "&lt;REDIRECT_URI&gt;"</code><br>
+      → tu obtiens le <strong>refresh_token</strong> à mettre dans la Variable <code>TIKTOK_TOKENS</code>.
+      Le <em>redirect_uri</em> à utiliser est l'adresse de cette page.
+    </div>
+  </details>
 </div>
 
+<script src="outils/_data/config.js" onerror=""></script>
+<script src="outils/_data/apply.js" onerror=""></script>
+<script src="outils/_design/awema-github.js"></script>
 <script>
   var p = new URLSearchParams(location.search);
-  var code = p.get('code'), err = p.get('error'), errd = p.get('error_description'), state = p.get('state');
+  var code = p.get('code'), err = p.get('error'), errd = p.get('error_description');
+  var redirect = location.origin + location.pathname;   // doit être identique à l'autorisation
   var zone = document.getElementById('zone');
-  function row(label, value){
-    return '<div class="lbl">'+label+'</div><div class="box">'+
-      '<input id="v" readonly value="'+(value||'').replace(/"/g,'&quot;')+'">'+
-      '<button onclick="(async()=>{try{await navigator.clipboard.writeText(document.getElementById(\'v\').value);this.textContent=\'Copié ✓\'}catch(e){this.textContent=\'Sélectionne manuellement\'}})()">Copier</button></div>';
+
+  function codeRow(){
+    return '<div class="lbl">Code reçu</div><div class="box">'+
+      '<input id="v" readonly value="'+(code||'').replace(/"/g,'&quot;')+'">'+
+      '<button class="ghost" id="cp">Copier</button></div>';
   }
-  if(code){
-    zone.innerHTML = '<p class="ok">✅ Autorisation réussie. Voici ton code :</p>' + row('Code', code) +
-      (state ? '<div class="lbl">state</div><div class="box"><input readonly value="'+state+'"></div>' : '');
-  } else if(err){
-    zone.innerHTML = '<p class="err">❌ Erreur : '+err+'</p><p class="sub">'+(errd||'')+'</p>';
+
+  if (err) {
+    zone.innerHTML = '<p class="err">❌ Erreur TikTok : '+err+'</p><p class="sub">'+(errd||'')+'</p>'+
+      '<p class="sub">Relance la connexion depuis <a href="connect-tiktok.html" style="color:var(--ciel)">la page TikTok</a>.</p>';
+  } else if (!code) {
+    zone.innerHTML = '<p class="sub">Aucun code détecté. Ouvre cette page via la redirection TikTok '+
+      '(elle contient <code>?code=…</code>), ou démarre depuis <a href="connect-tiktok.html" style="color:var(--ciel)">Connecter TikTok</a>.</p>';
   } else {
-    zone.innerHTML = '<p class="sub">Aucun code détecté dans l\'URL. Ouvre cette page via la redirection TikTok après autorisation (elle contiendra <code>?code=…</code>).</p>';
+    var slugDefault = (sessionStorage.getItem('awema-tt-slug') || '');
+    zone.innerHTML =
+      '<p class="ok">✅ Autorisation réussie.</p>' + codeRow() +
+      '<div class="lbl">Slug client (nom du dossier — laisse vide pour le déduire du compte)</div>'+
+      '<div class="box"><input class="txt" id="slug" placeholder="ex. ma-boutique" value="'+slugDefault.replace(/"/g,'&quot;')+'"></div>'+
+      '<div class="go2"><button id="fin">⚡ Finaliser la connexion</button>'+
+      '<span class="sub" id="who" style="margin:0"></span></div>'+
+      '<div class="msg" id="msg"></div>';
+
+    document.getElementById('cp').onclick = function(){
+      try{ navigator.clipboard.writeText(code); this.textContent='Copié ✓'; }catch(e){ this.textContent='Sélectionne'; }
+    };
+    function who(){ var w=document.getElementById('who'); w.textContent = (window.AwemaGH&&AwemaGH.connected())?('GitHub : '+AwemaGH.who()):'GitHub non connecté'; }
+    who();
+    function msg(t,c){ var m=document.getElementById('msg'); m.textContent=t; m.style.color=c||'var(--muted)'; }
+
+    document.getElementById('fin').onclick = function(){
+      var slug = document.getElementById('slug').value.trim();
+      if(!(window.AwemaGH)){ msg('Module GitHub indisponible.','#FF7D9C'); return; }
+      msg('Connexion à GitHub…');
+      AwemaGH.ensure(function(){
+        who();
+        msg('Déclenchement de l’échange sécurisé…');
+        AwemaGH.runWorkflow('tiktok-exchange.yml', { code: code, redirect_uri: redirect, slug: slug }, true)
+          .then(function(){
+            msg('✅ Échange lancé. Dans ~30 s, le compte est enregistré. Lance ensuite « Sync TikTok ».','var(--mint)');
+            document.getElementById('fin').disabled = true;
+          })
+          .catch(function(e){
+            msg('❌ '+(e.message||e)+' — vérifie que le workflow tiktok-exchange.yml et les Secrets TIKTOK_* sont en place.','#FF7D9C');
+          });
+      });
+    };
   }
 </script>
 <script src="outils/_design/abeille.js" data-aide="oauth"></script>
