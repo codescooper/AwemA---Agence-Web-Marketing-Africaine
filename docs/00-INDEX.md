@@ -10,12 +10,15 @@ maj: 2026-06-26
 > puis ouvre cette note. Tout part d'ici.
 
 ## 🏛️ Fondations (référence stable — priment en cas de conflit)
-- [[FOUNDATION/README]] — Constitution, Kernel, principes, plugins, agents, données, gouvernance, ADR
+- [[FOUNDATION/README]] — corpus FOUNDATION : Constitution, Kernel, principes, plugins, agents, données, gouvernance, ADR
+- Loi suprême : [[FOUNDATION/00-CONSTITUTION]] · Concepts universels : [[FOUNDATION/02-KERNEL]] · Décisions : [[FOUNDATION/08-ARCHITECTURE_DECISIONS]]
 
 ## 🎯 Vision & pilotage
+- [[AWEMA-OS]] — note maîtresse (vision, état, journal)
 - [[PRD-AWEMA]] — référence produit (OS d'agence assistée par IA, architecture des agents)
 - [[ROADMAP]] — feuille de route (source unique : NOW / BÊTA / POST-BÊTA)
 - [[PLAN-EXECUTION-BETA]] — plan module par module (M0→M6, zéro régression)
+- [[AUTO-DESCRIPTION]] — auto-description portable (pour analyse externe)
 
 ## 🗝️ Contrôle & accès (admin)
 - [[ACCES-AGENCE]] — **page de contrôle** : donner/retirer l'accès à une agence
@@ -54,6 +57,9 @@ python3 scripts/preparer-copie-beta.py ../awema-beta
 - [[12-connecter-ia]] — brancher une IA (options **gratuites** : Groq, Gemini, Ollama…)
 - Guides web : `connect-tiktok.html` · `connect-youtube.html` · `connect-linkedin.html` · `connect-ia.html`
 
+## 🖥️ Lancer en local & piloter par IA
+- [[16-piloter-avec-claude-mcp]] — `awema serve` (1 commande) + **serveur MCP** (Claude pilote en langage naturel)
+
 ## 🏗️ Auto-hébergement & conventions
 - [[09-auto-hebergement]] — forker & personnaliser · `setup.html`
 - [[01-agence]] · [[02-onboarding]] · [[03-conventions]] · [[04-charte-graphique]]
@@ -63,10 +69,10 @@ python3 scripts/preparer-copie-beta.py ../awema-beta
 - Manifeste `scripts/agents.json` · client `scripts/awema_ai.py` · runner `scripts/run-agent.py`
 - Lancer : `python3 scripts/run-agent.py <agent> --all` (clé IA requise ; actions-du-jour marche sans IA)
 
-## 📊 État (template public)
-- 1 client de **démonstration** (Éclat Beauté) · cockpit + 4 agents · landing + onboarding
-- IA agnostique (options gratuites mises en avant) · contrôle d'accès (licence + validation API)
-- Harnais de tests stdlib · modèle Kernel/Module (cf. `docs/FOUNDATION/`)
+## 📊 État (au 2026-06-26)
+- 27 clients réels · cockpit + 4 agents · landing + onboarding + copie d'accueil bêta
+- IA agnostique (gratuites mises en avant) · contrôle d'accès (licence + validation API)
+- ~29 tests verts · branche de travail : `claude/keen-planck-p66rds`
 
 ---
 > 💡 Astuce Obsidian : active l'affichage **graphe** pour voir les liens entre notes ; cette note est

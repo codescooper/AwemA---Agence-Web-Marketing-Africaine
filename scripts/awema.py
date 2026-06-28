@@ -34,6 +34,7 @@ Commandes :
   awema client new <slug|auto> ...   crée la fiche d'un client
   awema client memoire <slug> ...    édite la Mémoire Marketing (ton, personas, produits, faq…)
   awema client list                  liste les clients gérés
+  awema serve [port]                 build + serveur local + ouvre le navigateur (1 commande)
 """
 import json
 import os
@@ -723,6 +724,39 @@ def cmd_connect(p):
     sys.exit(subprocess.call(cmd, shell=True, cwd=RACINE, env=env))
 
 
+def cmd_serve(args):
+    """Lance AWEMA en local en UNE commande : régénère le registre, démarre un serveur
+    statique (stdlib) et ouvre le navigateur. Usage : awema serve [port]."""
+    import http.server
+    import socketserver
+    import threading
+    import webbrowser
+    port = next((int(a) for a in args if a.isdigit()), 8000)
+    print("→ Régénération du registre…")
+    subprocess.call([sys.executable, os.path.join(RACINE, "outils", "_data", "build.py")])
+    os.chdir(RACINE)
+    handler = http.server.SimpleHTTPRequestHandler
+    httpd = None
+    for p in range(port, port + 20):                      # cherche un port libre
+        try:
+            httpd = socketserver.TCPServer(("127.0.0.1", p), handler)
+            port = p
+            break
+        except OSError:
+            continue
+    if not httpd:
+        sys.exit("❌ Aucun port libre entre %d et %d." % (port, port + 19))
+    url = "http://127.0.0.1:%d/index.html" % port
+    print("✅ AWEMA en local : %s" % url)
+    print("   Cockpit : http://127.0.0.1:%d/outils/dashboard/index.html" % port)
+    print("   (Ctrl+C pour arrêter)")
+    threading.Timer(0.8, lambda: webbrowser.open(url)).start()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\n👋 AWEMA arrêté.")
+
+
 def main():
     a = sys.argv[1:]
     if not a:
@@ -763,6 +797,8 @@ def main():
             cmd_acces(a[1:])
         elif c == "attente":
             cmd_attente(a[1:])
+        elif c == "serve":
+            cmd_serve(a[1:])
         else:
             print(__doc__)
             sys.exit(1)

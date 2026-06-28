@@ -65,6 +65,12 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 
 ## 🚀 Démarrage rapide
 
+**Lancer en local, une seule commande** (rien à installer — Python 3 suffit) :
+```bash
+python3 scripts/awema.py serve     # build + serveur local + ouvre le navigateur
+```
+Et pour **piloter AWEMA en langage naturel** depuis Claude (MCP) → [`docs/16-piloter-avec-claude-mcp.md`](docs/16-piloter-avec-claude-mcp.md).
+
 | Vous êtes… | Lisez en priorité |
 |---|---|
 | **Chief Architect / contributeur** | [`docs/FOUNDATION/`](docs/FOUNDATION/README.md) puis [`docs/PRD-AWEMA.md`](docs/PRD-AWEMA.md) |
@@ -85,10 +91,9 @@ connecteurs · Mémoire Marketing · agents IA · automatisation**.
 prêtes*) · Proactivité (*« 3 choses à faire aujourd'hui »*, déterministe, sans clé IA).
 Contrat d'agent : [`docs/FOUNDATION/05-AGENT_MODEL.md`](docs/FOUNDATION/05-AGENT_MODEL.md).
 
-**Client de démonstration** : *Éclat Beauté — DÉMO* (institut de beauté, exemple) — pour découvrir le
-cockpit et les agents IA **sans connecter de réseau**. Ouvre
-[`outils/dashboard/index.html?client=demo-client`](outils/dashboard/index.html?client=demo-client).
-Ajoute ensuite **tes** clients via `nouveau-client.html`.
+**Exemple de client** : *La Grande Vision* (cabinet d'optique, Yopougon, Abidjan) — mission complète
+(90 jours, 180 contenus, tunnel WhatsApp, CRM, automatisation), illustrant le pipeline éditorial du
+module → [`modules/marketing/clients/la-grande-vision/`](modules/marketing/clients/la-grande-vision/).
 
 ---
 
