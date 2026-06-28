@@ -135,7 +135,36 @@ Le **mode manuel** (téléchargement / commande) reste disponible en **repli** (
 (trahit l'ADN auto-hébergé) ; rester 100 % manuel (ne répond pas au besoin non-technicien) ; OAuth App
 (nécessiterait un serveur pour le client secret).
 
+## ADR-008 — Configuration des clés sans quitter AWEMA (variables auto, secrets guidés)
+**Statut** : Accepté (2026-06-28).
+**Contexte.** Avec ADR-007, le navigateur écrit déjà fichiers et déclenche les Actions. Restait **un** geste
+technique : pour que les **agents en arrière-plan (cron Actions)** puissent appeler l'IA et les réseaux, la
+clé doit vivre en **Secret GitHub** — donc l'agence devait aller dans *Settings → Secrets → Actions* à la main.
+**Problème.** Comment supprimer ce dernier aller-retour dans les menus GitHub, sans (a) héberger un serveur,
+(b) committer un secret, ni (c) embarquer une dépendance crypto lourde contre l'ADN « zéro dépendance, sans build » ?
+**Décision.** **Deux niveaux, selon la sensibilité de la donnée :**
+- **Variables Actions** (non sensibles : `AWEMA_AI_PROVIDER=groq`…) → écrites **automatiquement** par le
+  navigateur via l'API `actions/variables` (texte clair, aucune crypto requise).
+- **Secrets Actions** (clés API, tokens) → l'agence **saisit la valeur dans AWEMA** ; le navigateur la **copie**
+  et **ouvre l'écran GitHub exact** (`settings/secrets/actions/new`) : **un seul collage**, plus de navigation.
+  L'écriture **100 % automatique** des secrets exige un chiffrement **sealed-box** (X25519+XSalsa20-Poly1305) :
+  on **n'implémente pas de crypto maison** (risque) et on **ne télécharge pas** de lib (offline-first). Le point
+  d'intégration est **prêt** (`AwemaGH.saveSecret` chiffre via `AwemaGH.seal` si une lib auditée mono-fichier
+  est déposée dans `outils/_design/vendor/`) : **amélioration progressive**, sans imposer la dépendance.
+Le PAT peut recevoir, **en option**, les portées `Variables` R/W et `Secrets` R/W ; sinon tout retombe sur le
+flux guidé (aucune régression, portée minimale préservée).
+**Conséquences.** (+) Une agence configure ses clés **sans jamais ouvrir les menus GitHub** (variables) ou en
+**un collage** (secrets). (+) `configuration.html` devient un assistant : colle la clé → fournisseur enregistré
+seul → secret guidé. (+) Bannière d'accueil 1er lancement → la mise en route. (−) L'auto-écriture des secrets
+attend une lib crypto vendue mono-fichier (documentée, opt-in). (−) Le flux guidé reste un collage manuel tant
+qu'elle n'est pas déposée. (−) Variables/Secrets API → CORS : exécuter via `http.server`/Pages (déjà le cas).
+**Vérification.** Tests verts ; `configuration.html` chargé (assistant IA visible, fournisseur + champ clé) ;
+`AwemaGH.setVariable/saveSecret/guideSecret` exportés ; aucun secret écrit dans le dépôt.
+**Alternatives rejetées.** Crypto sealed-box écrite à la main (risque de sécurité, non testable hors-ligne) ;
+mettre les clés API en **Variables** clair (fuite : visibles en lecture/logs) ; serveur/proxy qui détient les
+clés (trahit « zéro SaaS ») ; laisser le geste 100 % manuel (ne répond pas au besoin non-technicien).
+
 ---
 
-> **Prochain ADR libre : ADR-008.** Créer un ADR avant toute décision structurante (frontière de
+> **Prochain ADR libre : ADR-009.** Créer un ADR avant toute décision structurante (frontière de
 > données, nouveau module officiel, changement de contrat d'agent/plugin, migration de répertoires).
