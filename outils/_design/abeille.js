@@ -21,6 +21,11 @@
       "Renseigne le nom de ton agence, ton contact et tes couleurs.",
       "Clique <b>« Enregistrer »</b> : AWEMA écrit la config et régénère l'app <b>en arrière-plan</b>.",
       "La 1ʳᵉ fois seulement, connecte ton GitHub. Tout s'adapte (nom, logo, charte)." ] },
+    configuration: { t: "Mise en route — configurer à 100 %", s: [
+      "Suis les 5 étapes : <b>GitHub → IA → réseaux → clients → lancer</b>.",
+      "Tu ne connectes que les réseaux de <b>tes</b> clients (pas tous).",
+      "La barre du haut suit ta progression ; l'état des réseaux est <b>détecté tout seul</b>.",
+      "Gérer de vrais clients exige une App vérifiée côté plateforme (exigence des réseaux, incompressible)." ] },
     "nouveau-client": { t: "Crée la fiche d'un client", s: [
       "Donne au moins son <b>nom</b> (le reste est optionnel).",
       "Clique <b>« Enregistrer »</b> : la fiche est créée dans ton dépôt, visible au cockpit <b>en arrière-plan</b>.",

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWEMA — Mise en route (configurer pour tourner à 100 %)</title>
+<meta name="description" content="Check-list guidée : connecte GitHub, une IA, et les réseaux de tes clients pour faire tourner AWEMA à 100 %.">
+<style>
+  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
+    --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.13)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.6;
+    background:radial-gradient(1100px 650px at 50% -12%,#16294f,#0A1F44 62%,#07162f);min-height:100vh;padding-bottom:70px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px}
+  header{padding:42px 0 6px}
+  .back{color:var(--muted);text-decoration:none;font-size:13px}
+  h1{font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(26px,4.6vw,38px);margin-top:12px;letter-spacing:-.02em}
+  h1 .g{background:linear-gradient(120deg,var(--gold),#f2d479);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);margin-top:8px;font-size:14.5px}
+  .prog{margin:18px 0 6px;background:rgba(0,0,0,.3);border:1px solid var(--bord);border-radius:30px;height:14px;overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ciel),var(--mint));transition:width .5s}
+  .progtx{font-size:12.5px;color:var(--muted);text-align:right}
+  .card{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:20px;margin-top:16px;backdrop-filter:blur(8px)}
+  .card h2{font-family:Montserrat,sans-serif;font-size:17px;display:flex;align-items:center;gap:10px}
+  .card .d{font-size:13px;color:var(--muted);margin:6px 0 12px}
+  .pill{font-size:11px;font-weight:700;border-radius:30px;padding:3px 10px;border:1px solid currentColor}
+  .ok{color:var(--mint)} .todo{color:var(--gold)} .opt{color:var(--muted)}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--ciel),var(--violet));color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;border:0;border-radius:11px;padding:10px 16px;cursor:pointer}
+  .btn.gh{background:transparent;border:1px solid var(--bord);color:var(--tx)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px}
+  .nets{display:grid;gap:9px;margin-top:6px}
+  .net{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--bord);border-radius:12px;background:rgba(255,255,255,.03)}
+  .net .pi{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:800;font-family:Montserrat;font-size:14px;flex:0 0 auto}
+  .net .nm{font-weight:600;font-size:14px} .net .su{font-size:11.5px;color:var(--muted)}
+  .net .sp{flex:1}
+  .net a{font-size:12.5px;color:var(--ciel);text-decoration:none;border:1px solid var(--bord);border-radius:9px;padding:7px 11px;white-space:nowrap}
+  .chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx);margin-top:8px;cursor:pointer}
+  .chk input{width:16px;height:16px}
+  .note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:3px solid var(--gold);padding-left:12px}
+  a.inl{color:var(--ciel)}
+  code{background:rgba(0,0,0,.3);border-radius:5px;padding:1px 5px;font-size:12px}
+  @media(max-width:680px){.net a{padding:6px 9px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">← Accueil</a>
+    <h1>Mise en <span class="g">route</span></h1>
+    <p class="lead">Configure tes APIs et ressources pour faire tourner AWEMA <b>à 100 %</b>. Tu ne connectes
+      que <b>les réseaux de tes clients</b>. L'app suit ta progression et te dit quoi faire.</p>
+    <div class="prog"><i id="bar"></i></div>
+    <div class="progtx" id="progtx">0 %</div>
+  </header>
+
+  <!-- 1. Socle GitHub -->
+  <div class="card">
+    <h2>1 · Socle — GitHub <span class="pill todo" id="ghPill">à connecter</span></h2>
+    <div class="d">GitHub héberge ton instance et reçoit tes données quand tu cliques « Enregistrer ».
+      Active aussi <b>Settings → Pages</b> (branche <code>main</code>, dossier <code>/</code>).</div>
+    <div class="row">
+      <button class="btn" id="ghBtn">🔗 Connecter mon GitHub</button>
+      <span class="su" id="ghWho" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+  </div>
+
+  <!-- 2. IA -->
+  <div class="card">
+    <h2>2 · Cerveau — une IA <span class="pill opt">recommandé · gratuit</span></h2>
+    <div class="d">Branche une IA (gratuite : Groq, Gemini, Ollama…) pour que les agents
+      <b>Analyste / Stratège / Créatif</b> travaillent. Sans IA, « 3 choses à faire aujourd'hui » marche quand même.</div>
+    <div class="row"><a class="btn gh" href="connect-ia.html">🤖 Choisir &amp; connecter une IA</a></div>
+    <label class="chk"><input type="checkbox" data-k="ia"> J'ai mis ma clé IA en Secret GitHub (ex. <code>GROQ_API_KEY</code>)</label>
+  </div>
+
+  <!-- 3. Réseaux -->
+  <div class="card">
+    <h2>3 · Les réseaux de tes clients</h2>
+    <div class="d">Pour chaque réseau que tes clients utilisent : crée l'App, récupère le token, mets-le en
+      <b>Secret GitHub</b> (le guide te montre où). L'état ci-dessous se met à jour dès qu'un client est connecté.</div>
+    <div class="nets" id="nets"></div>
+    <div class="note">⚠️ Gérer de <b>vrais</b> clients (pas tes comptes perso) demande, côté Meta/TikTok/LinkedIn,
+      une <b>App vérifiée + App Review</b> — c'est une exigence des plateformes (incompressible).
+      Détails &amp; alternative « via AWEMA » : <a class="inl" href="https://github.com/codescooper/AwemA---Agence-Web-Marketing-Africaine/blob/main/docs/14-acces-api-agence.md" target="_blank" rel="noopener">guide accès API</a>.</div>
+  </div>
+
+  <!-- 4. Clients & contenu -->
+  <div class="card">
+    <h2>4 · Tes clients &amp; leur ADN</h2>
+    <div class="d">Ajoute tes clients, puis remplis leur <b>Mémoire Marketing</b> (ton, personas, produits) —
+      c'est ce qui rend les propositions de l'IA justes.</div>
+    <div class="row">
+      <a class="btn gh" href="nouveau-client.html">➕ Ajouter un client</a>
+      <a class="btn gh" href="memoire.html">🧠 Mémoire Marketing</a>
+    </div>
+  </div>
+
+  <!-- 5. Automatisation -->
+  <div class="card">
+    <h2>5 · Lancer &amp; automatiser <span class="pill opt">une fois</span></h2>
+    <div class="d">Dans l'onglet <b>Actions</b> de ton dépôt GitHub, clique <b>Run workflow</b> sur
+      « Sync présence digitale » et « Sync TikTok » pour la 1ʳᵉ récupération de données. Ensuite,
+      <b>tout est autonome</b> : synchro périodique → agents (quotidien + après chaque sync) → cockpit à jour.</div>
+    <label class="chk"><input type="checkbox" data-k="auto"> J'ai lancé la première synchronisation</label>
+    <div class="row" style="margin-top:12px"><a class="btn" href="outils/dashboard/index.html">📊 Ouvrir le cockpit</a></div>
+  </div>
+</div>
+
+<script src="outils/_data/platforms.js" onerror=""></script>
+<script src="outils/_data/agence.js" onerror=""></script>
+<script src="outils/_data/config.js" onerror=""></script>
+<script src="outils/_data/apply.js"></script>
+<script src="outils/_design/awema-github.js"></script>
+<script>
+  var REG=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+  var PLAT=window.AWEMA_PLATFORMS||{};
+  // Réseaux + leur guide + clé dans par_reseau
+  var NETS=[
+    {k:'facebook',nom:'Facebook',guide:'connect-facebook.html'},
+    {k:'instagram',nom:'Instagram',guide:'connect-facebook.html'},
+    {k:'tiktok',nom:'TikTok',guide:'connect-tiktok.html'},
+    {k:'youtube',nom:'YouTube',guide:'connect-youtube.html'},
+    {k:'linkedin',nom:'LinkedIn',guide:'connect-linkedin.html'},
+    {k:'whatsapp',nom:'WhatsApp',guide:'connect-whatsapp.html'}
+  ];
+  // Un réseau est "connecté" si ≥1 client a des abonnés réels dessus (ou un handle pour whatsapp)
+  function netConnecte(k){
+    return REG.some(function(c){
+      var pr=(c.reseaux&&c.reseaux.par_reseau&&c.reseaux.par_reseau[k])||null;
+      if(pr&&pr.abonnes!=null)return true;
+      if(k==='whatsapp'&&c.profils&&c.profils.whatsapp)return true;
+      return false;
+    });
+  }
+  function netCount(k){
+    return REG.filter(function(c){var pr=(c.reseaux&&c.reseaux.par_reseau&&c.reseaux.par_reseau[k])||null;return pr&&pr.abonnes!=null;}).length;
+  }
+  var store={}; try{store=JSON.parse(localStorage.getItem('awema-config-chk'))||{};}catch(e){}
+  function save(){try{localStorage.setItem('awema-config-chk',JSON.stringify(store));}catch(e){}}
+
+  // Rendu réseaux
+  var nl=document.getElementById('nets');
+  NETS.forEach(function(n){
+    var p=PLAT[n.k]||{}; var col=p.couleur||p.color||'#4BA3FF'; var gly=p.glyphe||p.glyph||n.nom[0];
+    var on=netConnecte(n.k); var cnt=netCount(n.k);
+    var el=document.createElement('div'); el.className='net';
+    el.innerHTML='<span class="pi" style="background:'+col+'">'+gly+'</span>'+
+      '<div><div class="nm">'+n.nom+'</div><div class="su">'+(on?('✅ connecté'+(cnt?' · '+cnt+' client(s)':'')):'à connecter si tu en as besoin')+'</div></div>'+
+      '<div class="sp"></div>'+
+      '<span class="pill '+(on?'ok':'todo')+'">'+(on?'connecté':'à connecter')+'</span>'+
+      '<a href="'+n.guide+'">Guide →</a>';
+    nl.appendChild(el);
+  });
+
+  // GitHub
+  function refreshGH(){
+    var on=window.AwemaGH&&AwemaGH.connected();
+    document.getElementById('ghPill').className='pill '+(on?'ok':'todo');
+    document.getElementById('ghPill').textContent=on?'connecté':'à connecter';
+    document.getElementById('ghWho').textContent=on?('✅ '+AwemaGH.who()):'';
+    document.getElementById('ghBtn').textContent=on?'🔁 Reconfigurer GitHub':'🔗 Connecter mon GitHub';
+    progress();
+  }
+  document.getElementById('ghBtn').onclick=function(){ if(window.AwemaGH)AwemaGH.openConnect(refreshGH); };
+
+  // Cases à cocher
+  document.querySelectorAll('.chk input').forEach(function(c){
+    c.checked=!!store[c.dataset.k];
+    c.onchange=function(){store[c.dataset.k]=c.checked;save();progress();};
+  });
+
+  // Progression : socle GitHub + IA + ≥1 réseau connecté + auto
+  function progress(){
+    var steps=[
+      window.AwemaGH&&AwemaGH.connected(),
+      !!store.ia,
+      NETS.some(function(n){return netConnecte(n.k);}),
+      !!store.auto
+    ];
+    var done=steps.filter(Boolean).length, pct=Math.round(done/steps.length*100);
+    document.getElementById('bar').style.width=pct+'%';
+    document.getElementById('progtx').textContent=pct+' %  ('+done+'/'+steps.length+')';
+  }
+  refreshGH(); progress();
+</script>
+<script src="outils/_design/abeille.js" data-aide="configuration"></script>
+</body>
+</html>
