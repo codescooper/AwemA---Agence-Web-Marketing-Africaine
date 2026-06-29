@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-28T09:39:24+00:00",
+  "genere_le": "2026-06-29T10:53:44+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "madlipz-ci-cote-d-ivoire",
@@ -15,18 +15,6 @@
       "source": "cadence",
       "action": {
         "label": "Voir la présence",
-        "kind": "view",
-        "target": "reseaux"
-      }
-    },
-    {
-      "priorite": 2,
-      "type": "alerte",
-      "titre": "Audience en baisse",
-      "detail": "3939 → 3938 abonnés.",
-      "source": "evolution_audience",
-      "action": {
-        "label": "Analyser",
         "kind": "view",
         "target": "reseaux"
       }

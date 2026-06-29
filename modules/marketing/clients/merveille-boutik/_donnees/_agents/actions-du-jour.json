@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-28T09:39:24+00:00",
+  "genere_le": "2026-06-29T10:53:44+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "merveille-boutik",
@@ -11,7 +11,7 @@
       "priorite": 3,
       "type": "opportunite",
       "titre": "Ton format gagnant : album",
-      "detail": "Engagement moyen 85.0 — reproduis-le.",
+      "detail": "Engagement moyen 64.0 — reproduis-le.",
       "source": "types_contenu",
       "action": {
         "label": "Idées créatives",
