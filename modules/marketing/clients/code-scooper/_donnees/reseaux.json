@@ -1,15 +1,15 @@
 {
   "connecte": true,
-  "source": "youtube-data-api",
-  "maj": "2026-06-29T10:53:12+00:00",
+  "source": "tiktok-display-api",
+  "maj": "2026-06-29T11:28:58+00:00",
   "global": {
-    "audience": 7318,
-    "posts": 201,
-    "likes": 3128,
-    "commentaires": 438,
-    "partages": 160,
+    "audience": 7544,
+    "posts": 205,
+    "likes": 2928,
+    "commentaires": 476,
+    "partages": 159,
     "portee": null,
-    "vues": 49972,
+    "vues": 47756,
     "engagement_taux": 2.3
   },
   "par_reseau": {
@@ -32,13 +32,13 @@
       "vues": null
     },
     "tiktok": {
-      "abonnes": 6999,
-      "posts": 158,
-      "likes": 2851,
-      "commentaires": 411,
-      "partages": 139,
+      "abonnes": 7225,
+      "posts": 162,
+      "likes": 2651,
+      "commentaires": 449,
+      "partages": 138,
       "portee": null,
-      "vues": 45910
+      "vues": 43694
     },
     "linkedin": {
       "abonnes": null,
@@ -66,10 +66,10 @@
       "plateforme": "TikTok",
       "date": "2026-06-19T00:44:54+00:00",
       "lien": "https://www.tiktok.com/@codescooper/video/7652901061476338965?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 534,
-      "commentaires": 173,
-      "partages": 17,
-      "vues": 8809,
+      "likes": 617,
+      "commentaires": 218,
+      "partages": 22,
+      "vues": 9875,
       "type": "vidéo"
     },
     {
@@ -77,32 +77,10 @@
       "plateforme": "TikTok",
       "date": "2026-06-18T10:05:00+00:00",
       "lien": "https://www.tiktok.com/@codescooper/video/7652674343339674901?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 568,
-      "commentaires": 14,
+      "likes": 592,
+      "commentaires": 16,
       "partages": 87,
-      "vues": 14429,
-      "type": "vidéo"
-    },
-    {
-      "titre": "Réponse à @𝕂𝕀𝔾𝔼ℕ𝕊 bonne chance et so tu as besoin d’aide a un niveau hesite pas ",
-      "plateforme": "TikTok",
-      "date": "2026-06-17T06:44:00+00:00",
-      "lien": "https://www.tiktok.com/@codescooper/video/7652251462612815125?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 386,
-      "commentaires": 19,
-      "partages": 12,
-      "vues": 4340,
-      "type": "vidéo"
-    },
-    {
-      "titre": "Réponse à @koss yao or reveillé mon allergie le soir la , voici les termes :  Ca",
-      "plateforme": "TikTok",
-      "date": "2026-06-23T18:25:16+00:00",
-      "lien": "https://www.tiktok.com/@codescooper/video/7654658679853206805?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 313,
-      "commentaires": 14,
-      "partages": 0,
-      "vues": 3022,
+      "vues": 15053,
       "type": "vidéo"
     },
     {
@@ -110,32 +88,32 @@
       "plateforme": "TikTok",
       "date": "2026-06-23T12:09:42+00:00",
       "lien": "https://www.tiktok.com/@codescooper/video/7654561891615788309?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 215,
-      "commentaires": 53,
-      "partages": 14,
-      "vues": 2924,
+      "likes": 380,
+      "commentaires": 88,
+      "partages": 22,
+      "vues": 5067,
       "type": "vidéo"
     },
     {
-      "titre": "Réponse à @Black Mermaid 🧜🏾‍♂️ #ia #emplois #dev #afrique #code",
+      "titre": "Réponse à @koss yao or reveillé mon allergie le soir la , voici les termes :  Ca",
       "plateforme": "TikTok",
-      "date": "2026-06-17T07:04:30+00:00",
-      "lien": "https://www.tiktok.com/@codescooper/video/7652256737042418964?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 235,
-      "commentaires": 42,
-      "partages": 4,
-      "vues": 3689,
-      "type": "vidéo"
-    },
-    {
-      "titre": "#collage avec @Laurent voanh merci pour le partage meme si la partie de mouton m",
-      "plateforme": "TikTok",
-      "date": "2026-06-18T09:11:23+00:00",
-      "lien": "https://www.tiktok.com/@codescooper/video/7652660532146703636?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 69,
-      "commentaires": 9,
+      "date": "2026-06-23T18:25:16+00:00",
+      "lien": "https://www.tiktok.com/@codescooper/video/7654658679853206805?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 373,
+      "commentaires": 15,
       "partages": 1,
-      "vues": 1094,
+      "vues": 3616,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Réponse à @WinDe_13 bonne chance je suis la si tu as une question , donne vie a ",
+      "plateforme": "TikTok",
+      "date": "2026-06-23T08:40:33+00:00",
+      "lien": "https://www.tiktok.com/@codescooper/video/7654508008197655829?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 74,
+      "commentaires": 6,
+      "partages": 3,
+      "vues": 1290,
       "type": "vidéo"
     },
     {
@@ -143,10 +121,32 @@
       "plateforme": "TikTok",
       "date": "2026-06-20T15:11:16+00:00",
       "lien": "https://www.tiktok.com/@codescooper/video/7653495441870441748?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 55,
+      "likes": 58,
       "commentaires": 19,
       "partages": 0,
-      "vues": 779,
+      "vues": 831,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Réponse à @_user pas demo soucis moi et mon raisonnement con on prend le taboure",
+      "plateforme": "TikTok",
+      "date": "2026-06-28T08:39:17+00:00",
+      "lien": "https://www.tiktok.com/@codescooper/video/7656363085803932948?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 58,
+      "commentaires": 15,
+      "partages": 0,
+      "vues": 939,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Réponse à @Monsieur Ordinateur justement ma cible c’est celui qui n’a pas encore",
+      "plateforme": "TikTok",
+      "date": "2026-06-28T08:44:24+00:00",
+      "lien": "https://www.tiktok.com/@codescooper/video/7656364427964402964?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 60,
+      "commentaires": 7,
+      "partages": 1,
+      "vues": 774,
       "type": "vidéo"
     }
   ],
@@ -161,7 +161,7 @@
     },
     {
       "date": "2026-06-29",
-      "valeur": 7318
+      "valeur": 7544
     }
   ],
   "client": "code-scooper",
@@ -175,11 +175,11 @@
     "angry": 0
   },
   "cadence": {
-    "dernier_post": "2026-06-23T18:25:16+00:00",
-    "jours_depuis": 5,
+    "dernier_post": "2026-06-28T13:56:58+00:00",
+    "jours_depuis": 0,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
-    "dernier_reseau": "Facebook",
+    "dernier_reseau": "TikTok",
     "multi_reseaux": true
   },
   "meilleur_creneau": {
@@ -220,21 +220,22 @@
   },
   "top_commentateurs": [],
   "tiktok": {
-    "abonnes": 6999,
-    "video_count": 158,
-    "likes_total": 29546,
-    "vues_recentes": 45910,
+    "abonnes": 7225,
+    "video_count": 162,
+    "likes_total": 30434,
+    "vues_recentes": 43694,
     "display_name": "Code Scooper ( Afrocodeur )",
+    "dernier_post": "2026-06-28T13:56:58+00:00",
     "top_videos": [
       {
         "titre": "Attention a ce sur quoi tu clique #pirate #hacker #afrique #virus #menace ",
         "plateforme": "TikTok",
         "date": "2026-06-18T10:05:00+00:00",
         "lien": "https://www.tiktok.com/@codescooper/video/7652674343339674901?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 568,
-        "commentaires": 14,
+        "likes": 592,
+        "commentaires": 16,
         "partages": 87,
-        "vues": 14429,
+        "vues": 15053,
         "type": "vidéo"
       },
       {
@@ -242,43 +243,10 @@
         "plateforme": "TikTok",
         "date": "2026-06-19T00:44:54+00:00",
         "lien": "https://www.tiktok.com/@codescooper/video/7652901061476338965?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 534,
-        "commentaires": 173,
-        "partages": 17,
-        "vues": 8809,
-        "type": "vidéo"
-      },
-      {
-        "titre": "Réponse à @𝕂𝕀𝔾𝔼ℕ𝕊 bonne chance et so tu as besoin d’aide a un niveau hesite pas ",
-        "plateforme": "TikTok",
-        "date": "2026-06-17T06:44:00+00:00",
-        "lien": "https://www.tiktok.com/@codescooper/video/7652251462612815125?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 386,
-        "commentaires": 19,
-        "partages": 12,
-        "vues": 4340,
-        "type": "vidéo"
-      },
-      {
-        "titre": "Réponse à @Black Mermaid 🧜🏾‍♂️ #ia #emplois #dev #afrique #code",
-        "plateforme": "TikTok",
-        "date": "2026-06-17T07:04:30+00:00",
-        "lien": "https://www.tiktok.com/@codescooper/video/7652256737042418964?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 235,
-        "commentaires": 42,
-        "partages": 4,
-        "vues": 3689,
-        "type": "vidéo"
-      },
-      {
-        "titre": "Réponse à @koss yao or reveillé mon allergie le soir la , voici les termes :  Ca",
-        "plateforme": "TikTok",
-        "date": "2026-06-23T18:25:16+00:00",
-        "lien": "https://www.tiktok.com/@codescooper/video/7654658679853206805?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 313,
-        "commentaires": 14,
-        "partages": 0,
-        "vues": 3022,
+        "likes": 617,
+        "commentaires": 218,
+        "partages": 22,
+        "vues": 9875,
         "type": "vidéo"
       },
       {
@@ -286,10 +254,21 @@
         "plateforme": "TikTok",
         "date": "2026-06-23T12:09:42+00:00",
         "lien": "https://www.tiktok.com/@codescooper/video/7654561891615788309?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 215,
-        "commentaires": 53,
-        "partages": 14,
-        "vues": 2924,
+        "likes": 380,
+        "commentaires": 88,
+        "partages": 22,
+        "vues": 5067,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Réponse à @koss yao or reveillé mon allergie le soir la , voici les termes :  Ca",
+        "plateforme": "TikTok",
+        "date": "2026-06-23T18:25:16+00:00",
+        "lien": "https://www.tiktok.com/@codescooper/video/7654658679853206805?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 373,
+        "commentaires": 15,
+        "partages": 1,
+        "vues": 3616,
         "type": "vidéo"
       },
       {
@@ -297,25 +276,47 @@
         "plateforme": "TikTok",
         "date": "2026-06-23T08:40:33+00:00",
         "lien": "https://www.tiktok.com/@codescooper/video/7654508008197655829?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 63,
+        "likes": 74,
         "commentaires": 6,
-        "partages": 2,
-        "vues": 1116,
+        "partages": 3,
+        "vues": 1290,
         "type": "vidéo"
       },
       {
-        "titre": "#collage avec @Laurent voanh merci pour le partage meme si la partie de mouton m",
+        "titre": "Réponse à @_user pas demo soucis moi et mon raisonnement con on prend le taboure",
         "plateforme": "TikTok",
-        "date": "2026-06-18T09:11:23+00:00",
-        "lien": "https://www.tiktok.com/@codescooper/video/7652660532146703636?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 69,
-        "commentaires": 9,
-        "partages": 1,
-        "vues": 1094,
+        "date": "2026-06-28T08:39:17+00:00",
+        "lien": "https://www.tiktok.com/@codescooper/video/7656363085803932948?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 58,
+        "commentaires": 15,
+        "partages": 0,
+        "vues": 939,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Réponse à @Mr. PHP en vrai t’as touché le vrai point 😂😂😂😂 #vibecode #ia #dev #af",
+        "plateforme": "TikTok",
+        "date": "2026-06-20T01:50:45+00:00",
+        "lien": "https://www.tiktok.com/@codescooper/video/7653289119350656277?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 55,
+        "commentaires": 10,
+        "partages": 0,
+        "vues": 857,
+        "type": "vidéo"
+      },
+      {
+        "titre": "Réponse à @🥰 syntyche millane 👑🍀🤞💍  pas besoin d’agent pour commencer , juste de",
+        "plateforme": "TikTok",
+        "date": "2026-06-20T15:11:16+00:00",
+        "lien": "https://www.tiktok.com/@codescooper/video/7653495441870441748?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 58,
+        "commentaires": 19,
+        "partages": 0,
+        "vues": 831,
         "type": "vidéo"
       }
     ],
-    "maj": "2026-06-25T07:14:13+00:00"
+    "maj": "2026-06-29T11:28:58+00:00"
   },
   "youtube": {
     "abonnes": 32,

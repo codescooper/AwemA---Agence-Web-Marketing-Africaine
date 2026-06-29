@@ -19,13 +19,13 @@
       "vues": null
     },
     "tiktok": {
-      "abonnes": 703,
-      "posts": 67,
-      "likes": 1689,
-      "commentaires": 29,
+      "abonnes": 704,
+      "posts": 66,
+      "likes": 1721,
+      "commentaires": 31,
       "partages": 11,
       "portee": null,
-      "vues": 12806
+      "vues": 13228
     },
     "linkedin": {
       "abonnes": null,
@@ -55,7 +55,7 @@
       "likes": 1428,
       "commentaires": 10,
       "partages": 0,
-      "vues": 7138,
+      "vues": 7139,
       "type": "vidéo"
     },
     {
@@ -66,7 +66,7 @@
       "likes": 42,
       "commentaires": 0,
       "partages": 5,
-      "vues": 523,
+      "vues": 524,
       "type": "vidéo"
     },
     {
@@ -77,7 +77,18 @@
       "likes": 31,
       "commentaires": 8,
       "partages": 0,
-      "vues": 317,
+      "vues": 318,
+      "type": "vidéo"
+    },
+    {
+      "titre": "Animation after effect intro emission #3431 #intro #aftereffect #africa #motiong",
+      "plateforme": "TikTok",
+      "date": "2026-06-23T06:09:13+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7654468996879666453?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "likes": 31,
+      "commentaires": 2,
+      "partages": 0,
+      "vues": 500,
       "type": "vidéo"
     },
     {
@@ -96,21 +107,21 @@
       "plateforme": "TikTok",
       "date": "2026-04-21T19:04:16+00:00",
       "lien": "https://www.tiktok.com/@de.alman1/video/7631290344637795605?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 29,
+      "likes": 30,
       "commentaires": 1,
       "partages": 0,
-      "vues": 322,
+      "vues": 333,
       "type": "vidéo"
     },
     {
-      "titre": "Animation after effect intro emission #3431 #intro #aftereffect #africa #motiong",
+      "titre": "Ca me fait mal même …. Cotisations qui était sur menton laaaa … fhum #barbe #sha",
       "plateforme": "TikTok",
-      "date": "2026-06-23T06:09:13+00:00",
-      "lien": "https://www.tiktok.com/@de.alman1/video/7654468996879666453?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+      "date": "2024-04-02T21:24:50+00:00",
+      "lien": "https://www.tiktok.com/@de.alman1/video/7353383814263000325?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
       "likes": 27,
       "commentaires": 1,
       "partages": 0,
-      "vues": 472,
+      "vues": 380,
       "type": "vidéo"
     },
     {
@@ -123,25 +134,15 @@
       "partages": 1,
       "vues": 384,
       "type": "vidéo"
-    },
-    {
-      "titre": "Je donne vie a un de mes vieux texte grace a l’ia. Laisse moi un message si tu v",
-      "plateforme": "TikTok",
-      "date": "2024-11-27T03:03:24+00:00",
-      "lien": "https://www.tiktok.com/@de.alman1/video/7441789311336451383?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-      "likes": 13,
-      "commentaires": 1,
-      "partages": 0,
-      "vues": 256,
-      "type": "vidéo"
     }
   ],
   "tiktok": {
-    "abonnes": 703,
-    "video_count": 67,
-    "likes_total": 3821,
-    "vues_recentes": 12806,
+    "abonnes": 704,
+    "video_count": 66,
+    "likes_total": 3826,
+    "vues_recentes": 13228,
     "display_name": "De Alman",
+    "dernier_post": "2026-06-23T06:09:13+00:00",
     "top_videos": [
       {
         "titre": "",
@@ -151,7 +152,7 @@
         "likes": 1428,
         "commentaires": 10,
         "partages": 0,
-        "vues": 7138,
+        "vues": 7139,
         "type": "vidéo"
       },
       {
@@ -184,7 +185,7 @@
         "likes": 42,
         "commentaires": 0,
         "partages": 5,
-        "vues": 523,
+        "vues": 524,
         "type": "vidéo"
       },
       {
@@ -203,10 +204,10 @@
         "plateforme": "TikTok",
         "date": "2026-06-23T06:09:13+00:00",
         "lien": "https://www.tiktok.com/@de.alman1/video/7654468996879666453?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 27,
-        "commentaires": 1,
+        "likes": 31,
+        "commentaires": 2,
         "partages": 0,
-        "vues": 472,
+        "vues": 500,
         "type": "vidéo"
       },
       {
@@ -221,43 +222,47 @@
         "type": "vidéo"
       },
       {
-        "titre": "Ajm BTP, entreprise dynamique et en pleine expansion dans le secteur du bâtiment",
+        "titre": "Ca me fait mal même …. Cotisations qui était sur menton laaaa … fhum #barbe #sha",
         "plateforme": "TikTok",
-        "date": "2025-01-04T13:48:40+00:00",
-        "lien": "https://www.tiktok.com/@de.alman1/video/7456056845032033542?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
-        "likes": 3,
-        "commentaires": 0,
-        "partages": 2,
-        "vues": 347,
+        "date": "2024-04-02T21:24:50+00:00",
+        "lien": "https://www.tiktok.com/@de.alman1/video/7353383814263000325?utm_campaign=tt4d_open_api&utm_source=sbaww0y3bflk3knbkj",
+        "likes": 27,
+        "commentaires": 1,
+        "partages": 0,
+        "vues": 380,
         "type": "vidéo"
       }
     ],
-    "maj": "2026-06-25T07:14:11+00:00"
+    "maj": "2026-06-29T11:28:56+00:00"
   },
   "source": "tiktok-display-api",
   "client": "de-alman",
   "global": {
-    "audience": 703,
-    "posts": 67,
-    "likes": 1689,
-    "commentaires": 29,
+    "audience": 704,
+    "posts": 66,
+    "likes": 1721,
+    "commentaires": 31,
     "partages": 11,
     "portee": null,
-    "vues": 12806,
+    "vues": 13228,
     "engagement_taux": null
   },
   "connecte": true,
-  "maj": "2026-06-25T07:14:11+00:00",
+  "maj": "2026-06-29T11:28:56+00:00",
   "evolution_audience": [
     {
       "date": "2026-06-25",
       "valeur": 703
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 704
     }
   ],
   "cadence": {
     "dernier_post": "2026-06-23T06:09:13+00:00",
-    "jours_depuis": 3,
-    "dernier_reseau": "TikTok",
+    "jours_depuis": 6,
+    "dernier_reseau": "Facebook",
     "multi_reseaux": true
   }
 }
