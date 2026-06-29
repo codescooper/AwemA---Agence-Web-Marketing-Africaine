@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:27+00:00",
+  "maj": "2026-06-29T10:51:32+00:00",
   "global": {
     "audience": 82,
     "posts": 17,
@@ -9,7 +9,7 @@
     "commentaires": 2,
     "partages": 0,
     "portee": null,
-    "vues": 3,
+    "vues": 9,
     "engagement_taux": 3.4
   },
   "par_reseau": {
@@ -20,7 +20,7 @@
       "commentaires": 2,
       "partages": 0,
       "portee": null,
-      "vues": 3
+      "vues": 9
     },
     "instagram": {
       "abonnes": null,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 82
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 82
     }
   ],
   "client": "festicharite",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2025-08-19T07:17:54+0000",
-    "jours_depuis": 311,
+    "jours_depuis": 314,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

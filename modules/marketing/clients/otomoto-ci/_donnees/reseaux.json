@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:43+00:00",
+  "maj": "2026-06-29T10:52:01+00:00",
   "global": {
     "audience": 1,
     "posts": null,
@@ -68,6 +68,10 @@
     },
     {
       "date": "2026-06-25",
+      "valeur": 1
+    },
+    {
+      "date": "2026-06-29",
       "valeur": 1
     }
   ],

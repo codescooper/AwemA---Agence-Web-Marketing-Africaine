@@ -1,9 +1,9 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:45+00:00",
+  "maj": "2026-06-29T10:52:05+00:00",
   "global": {
-    "audience": 3823,
+    "audience": 3822,
     "posts": 21,
     "likes": 33,
     "commentaires": 6,
@@ -14,7 +14,7 @@
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 3823,
+      "abonnes": 3822,
       "posts": 21,
       "likes": 33,
       "commentaires": 6,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 3823
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 3822
     }
   ],
   "client": "awema-models",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2026-02-10T17:50:56+0000",
-    "jours_depuis": 136,
+    "jours_depuis": 138,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

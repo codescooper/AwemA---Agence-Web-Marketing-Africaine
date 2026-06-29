@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:34:02+00:00",
+  "maj": "2026-06-29T10:52:29+00:00",
   "global": {
     "audience": 468,
     "posts": 30,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 468
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 468
     }
   ],
   "client": "brava-afreeca",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2016-06-07T08:56:39+0000",
-    "jours_depuis": 3671,
+    "jours_depuis": 3674,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

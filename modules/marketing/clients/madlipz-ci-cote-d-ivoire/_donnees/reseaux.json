@@ -1,13 +1,13 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:34:06+00:00",
+  "maj": "2026-06-29T10:52:35+00:00",
   "global": {
     "audience": 3938,
     "posts": 30,
     "likes": 850,
     "commentaires": 116,
-    "partages": 317,
+    "partages": 316,
     "portee": null,
     "vues": 0,
     "engagement_taux": 1.1
@@ -18,7 +18,7 @@
       "posts": 30,
       "likes": 850,
       "commentaires": 116,
-      "partages": 317,
+      "partages": 316,
       "portee": null,
       "vues": 0
     },
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 3938
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 3938
     }
   ],
   "client": "madlipz-ci-cote-d-ivoire",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2024-07-21T20:37:04+0000",
-    "jours_depuis": 704,
+    "jours_depuis": 707,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",
@@ -257,7 +261,7 @@
       "Lundi": 24.5,
       "Mardi": 11.7,
       "Mercredi": 27.3,
-      "Jeudi": 32.0,
+      "Jeudi": 31.8,
       "Vendredi": 77.4,
       "Samedi": 59.0,
       "Dimanche": 41.5
@@ -275,7 +279,7 @@
     },
     "photo": {
       "n": 4,
-      "engagement_moyen": 13.5
+      "engagement_moyen": 13.2
     },
     "lien": {
       "n": 5,

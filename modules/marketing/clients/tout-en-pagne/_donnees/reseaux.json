@@ -1,9 +1,9 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:34:29+00:00",
+  "maj": "2026-06-29T10:53:07+00:00",
   "global": {
-    "audience": 2810,
+    "audience": 2809,
     "posts": 3,
     "likes": 11,
     "commentaires": 4,
@@ -14,7 +14,7 @@
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 2810,
+      "abonnes": 2809,
       "posts": 3,
       "likes": 11,
       "commentaires": 4,
@@ -130,6 +130,10 @@
     {
       "date": "2026-06-25",
       "valeur": 2810
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 2809
     }
   ],
   "client": "tout-en-pagne",
@@ -144,7 +148,7 @@
   },
   "cadence": {
     "dernier_post": "2020-02-29T09:58:57+0000",
-    "jours_depuis": 2309,
+    "jours_depuis": 2312,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

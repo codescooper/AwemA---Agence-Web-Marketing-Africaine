@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:34:16+00:00",
+  "maj": "2026-06-29T10:52:47+00:00",
   "global": {
     "audience": 588,
     "posts": 29,
@@ -9,7 +9,7 @@
     "commentaires": 4,
     "partages": 8,
     "portee": null,
-    "vues": 8,
+    "vues": 10,
     "engagement_taux": 0.3
   },
   "par_reseau": {
@@ -20,7 +20,7 @@
       "commentaires": 4,
       "partages": 8,
       "portee": null,
-      "vues": 8
+      "vues": 10
     },
     "instagram": {
       "abonnes": null,
@@ -235,6 +235,10 @@
     {
       "date": "2026-06-25",
       "valeur": 588
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 588
     }
   ],
   "client": "awema",
@@ -249,7 +253,7 @@
   },
   "cadence": {
     "dernier_post": "2026-03-24T19:33:18+0000",
-    "jours_depuis": 93,
+    "jours_depuis": 96,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:52+00:00",
+  "maj": "2026-06-29T10:52:17+00:00",
   "global": {
     "audience": 472,
     "posts": 30,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 472
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 472
     }
   ],
   "client": "bibliotech-abidjanaise",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2020-06-18T17:11:31+0000",
-    "jours_depuis": 2199,
+    "jours_depuis": 2201,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:40+00:00",
+  "maj": "2026-06-29T10:51:58+00:00",
   "global": {
     "audience": 0,
     "posts": 2,
@@ -110,6 +110,10 @@
     {
       "date": "2026-06-25",
       "valeur": 0
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 0
     }
   ],
   "client": "cashflow-club-civ",
@@ -124,7 +128,7 @@
   },
   "cadence": {
     "dernier_post": "2021-04-12T01:25:43+0000",
-    "jours_depuis": 1901,
+    "jours_depuis": 1904,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

@@ -1,26 +1,26 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:30+00:00",
+  "maj": "2026-06-29T10:51:41+00:00",
   "global": {
-    "audience": 24,
+    "audience": 50,
     "posts": 30,
-    "likes": 19,
+    "likes": 25,
     "commentaires": 0,
     "partages": 1,
     "portee": null,
-    "vues": 36,
-    "engagement_taux": 2.8
+    "vues": 54,
+    "engagement_taux": 1.7
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 24,
+      "abonnes": 50,
       "posts": 30,
-      "likes": 19,
+      "likes": 25,
       "commentaires": 0,
       "partages": 1,
       "portee": null,
-      "vues": 36
+      "vues": 54
     },
     "instagram": {
       "abonnes": null,
@@ -61,6 +61,26 @@
   },
   "top_fans": [],
   "top_posts": [
+    {
+      "titre": "Non, porter des lunettes n’aggrave pas la vue.\nUne correction adaptée permet sur",
+      "plateforme": "Facebook",
+      "date": "2026-05-13T23:59:07+0000",
+      "lien": "https://www.facebook.com/reel/1686537332476848/",
+      "likes": 7,
+      "commentaires": 0,
+      "partages": 0,
+      "type": "vidéo",
+      "reactions": {
+        "like": 7,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "portee": null
+    },
     {
       "titre": "Bienvenue en Juin !\nUn nouveau mois commence, une nouvelle opportunité de grandi",
       "plateforme": "Facebook",
@@ -200,26 +220,6 @@
         "angry": 0
       },
       "portee": null
-    },
-    {
-      "titre": "Que l’Esprit Saint remplisse vos cœurs de paix, de lumière et de sagesse. 🔥✨\nLa ",
-      "plateforme": "Facebook",
-      "date": "2026-05-24T13:50:39+0000",
-      "lien": "https://www.facebook.com/reel/1460816758680629/",
-      "likes": 1,
-      "commentaires": 0,
-      "partages": 0,
-      "type": "vidéo",
-      "reactions": {
-        "like": 1,
-        "love": 0,
-        "care": 0,
-        "haha": 0,
-        "wow": 0,
-        "sad": 0,
-        "angry": 0
-      },
-      "portee": null
     }
   ],
   "evolution_audience": [
@@ -230,11 +230,15 @@
     {
       "date": "2026-06-25",
       "valeur": 24
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 50
     }
   ],
   "client": "la-grande-vision",
   "reactions": {
-    "like": 19,
+    "like": 25,
     "love": 0,
     "care": 0,
     "haha": 0,
@@ -243,34 +247,34 @@
     "angry": 0
   },
   "cadence": {
-    "dernier_post": "2026-06-19T11:28:54+0000",
-    "jours_depuis": 7,
-    "posts_30j": 14,
-    "posts_par_semaine": 3.2,
+    "dernier_post": "2026-06-25T11:42:02+0000",
+    "jours_depuis": 3,
+    "posts_30j": 13,
+    "posts_par_semaine": 3.0,
     "dernier_reseau": "Facebook",
     "multi_reseaux": true
   },
   "meilleur_creneau": {
     "jour": "Dimanche",
-    "heure": "12h",
+    "heure": "23h",
     "par_jour": {
       "Lundi": 0.9,
-      "Mardi": 0.4,
-      "Mercredi": 0.6,
+      "Mardi": 0.5,
+      "Mercredi": 1.4,
       "Jeudi": 0.0,
       "Vendredi": 1.0,
       "Samedi": 0.0,
       "Dimanche": 1.5
     },
-    "recommandation": "Dimanche vers 12h"
+    "recommandation": "Dimanche vers 23h"
   },
   "types_contenu": {
     "vidéo": {
-      "n": 20,
-      "engagement_moyen": 0.7
+      "n": 21,
+      "engagement_moyen": 1.0
     },
     "photo": {
-      "n": 9,
+      "n": 8,
       "engagement_moyen": 0.6
     },
     "album": {

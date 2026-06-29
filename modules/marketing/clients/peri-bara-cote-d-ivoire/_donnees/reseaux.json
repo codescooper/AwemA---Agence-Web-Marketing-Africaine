@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:58+00:00",
+  "maj": "2026-06-29T10:52:24+00:00",
   "global": {
     "audience": 10,
     "posts": 12,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 10
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 10
     }
   ],
   "client": "peri-bara-cote-d-ivoire",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2020-01-07T08:23:51+0000",
-    "jours_depuis": 2362,
+    "jours_depuis": 2365,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

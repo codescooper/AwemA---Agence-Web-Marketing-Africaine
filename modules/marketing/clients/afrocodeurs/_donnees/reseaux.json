@@ -2,7 +2,7 @@
   "client": "afrocodeurs",
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:21+00:00",
+  "maj": "2026-06-29T10:51:17+00:00",
   "global": {
     "audience": 0,
     "posts": null,
@@ -69,6 +69,10 @@
     },
     {
       "date": "2026-06-25",
+      "valeur": 0
+    },
+    {
+      "date": "2026-06-29",
       "valeur": 0
     }
   ],

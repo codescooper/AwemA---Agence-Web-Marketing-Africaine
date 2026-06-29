@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:23+00:00",
+  "maj": "2026-06-29T10:51:22+00:00",
   "global": {
     "audience": 15,
     "posts": 7,
@@ -210,6 +210,10 @@
     {
       "date": "2026-06-25",
       "valeur": 15
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 15
     }
   ],
   "client": "yeble-maison-de-maroquinerie",
@@ -224,7 +228,7 @@
   },
   "cadence": {
     "dernier_post": "2026-03-20T18:31:28+0000",
-    "jours_depuis": 98,
+    "jours_depuis": 100,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

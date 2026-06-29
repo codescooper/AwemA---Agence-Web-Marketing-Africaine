@@ -1,26 +1,26 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:34:34+00:00",
+  "maj": "2026-06-29T10:53:12+00:00",
   "global": {
-    "audience": 212,
+    "audience": 211,
     "posts": 9,
     "likes": 106,
     "commentaires": 27,
     "partages": 44,
     "portee": null,
-    "vues": 7,
+    "vues": 2,
     "engagement_taux": 9.3
   },
   "par_reseau": {
     "facebook": {
-      "abonnes": 212,
+      "abonnes": 211,
       "posts": 9,
       "likes": 106,
       "commentaires": 27,
       "partages": 44,
       "portee": null,
-      "vues": 7
+      "vues": 2
     },
     "instagram": {
       "abonnes": null,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 212
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 211
     }
   ],
   "client": "yakoi",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2018-02-11T05:37:00+0000",
-    "jours_depuis": 3057,
+    "jours_depuis": 3060,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

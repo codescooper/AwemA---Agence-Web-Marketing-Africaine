@@ -1,7 +1,7 @@
 {
   "connecte": true,
   "source": "meta-graph-api",
-  "maj": "2026-06-25T07:33:48+00:00",
+  "maj": "2026-06-29T10:52:11+00:00",
   "global": {
     "audience": 524,
     "posts": 28,
@@ -230,6 +230,10 @@
     {
       "date": "2026-06-25",
       "valeur": 524
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 524
     }
   ],
   "client": "ivoire-petshop",
@@ -244,7 +248,7 @@
   },
   "cadence": {
     "dernier_post": "2024-08-11T01:44:51+0000",
-    "jours_depuis": 684,
+    "jours_depuis": 687,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
     "dernier_reseau": "Facebook",

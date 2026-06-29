@@ -1,7 +1,7 @@
 {
   "connecte": true,
-  "source": "tiktok-display-api",
-  "maj": "2026-06-25T07:45:41+00:00",
+  "source": "youtube-data-api",
+  "maj": "2026-06-29T10:53:12+00:00",
   "global": {
     "audience": 7318,
     "posts": 201,
@@ -9,7 +9,7 @@
     "commentaires": 438,
     "partages": 160,
     "portee": null,
-    "vues": 49961,
+    "vues": 49972,
     "engagement_taux": 2.3
   },
   "par_reseau": {
@@ -20,7 +20,7 @@
       "commentaires": 19,
       "partages": 21,
       "portee": null,
-      "vues": 0
+      "vues": 4
     },
     "instagram": {
       "abonnes": null,
@@ -56,7 +56,7 @@
       "commentaires": 8,
       "partages": null,
       "portee": null,
-      "vues": 4051
+      "vues": 4058
     }
   },
   "top_fans": [],
@@ -158,6 +158,10 @@
     {
       "date": "2026-06-25",
       "valeur": 7318
+    },
+    {
+      "date": "2026-06-29",
+      "valeur": 7318
     }
   ],
   "client": "code-scooper",
@@ -172,10 +176,10 @@
   },
   "cadence": {
     "dernier_post": "2026-06-23T18:25:16+00:00",
-    "jours_depuis": 3,
+    "jours_depuis": 5,
     "posts_30j": 0,
     "posts_par_semaine": 0.0,
-    "dernier_reseau": "TikTok",
+    "dernier_reseau": "Facebook",
     "multi_reseaux": true
   },
   "meilleur_creneau": {
@@ -316,8 +320,9 @@
   "youtube": {
     "abonnes": 32,
     "video_count": 13,
-    "vues_totales": 4051,
+    "vues_totales": 4058,
     "titre": "Code Scooper",
+    "dernier_post": "2026-04-03T00:29:20Z",
     "top_videos": [
       {
         "titre": "Masterclass pour maitriser l'IA et faire tes creations",
@@ -360,7 +365,7 @@
         "likes": 15,
         "commentaires": 1,
         "partages": 0,
-        "vues": 459,
+        "vues": 460,
         "type": "vidéo"
       },
       {
@@ -382,7 +387,7 @@
         "likes": 4,
         "commentaires": 2,
         "partages": 0,
-        "vues": 167,
+        "vues": 168,
         "type": "vidéo"
       },
       {
@@ -408,6 +413,6 @@
         "type": "vidéo"
       }
     ],
-    "maj": "2026-06-25T07:34:34+00:00"
+    "maj": "2026-06-29T10:53:12+00:00"
   }
 }
