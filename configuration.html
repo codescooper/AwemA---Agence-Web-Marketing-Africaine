@@ -56,16 +56,28 @@
     <p style="margin-top:8px"><a href="tutoriel.html" style="color:var(--ciel);font-size:13.5px;font-weight:600">🧭 Débutant ? Suis le guide complet pas à pas →</a></p>
     <div class="prog"><i id="bar"></i></div>
     <div class="progtx" id="progtx">0 %</div>
+    <div class="row" style="margin-top:6px;justify-content:space-between;gap:10px">
+      <span class="su" id="auditMsg" style="font-size:12.5px;color:var(--muted)">AWEMA coche tout seul ce qui est déjà fait dès que GitHub est connecté.</span>
+      <button class="btn gh" id="recheck" style="padding:6px 12px;font-size:12.5px">↻ Revérifier l'état</button>
+    </div>
   </header>
 
   <!-- 1. Socle GitHub -->
   <div class="card">
-    <h2>1 · Socle — GitHub <span class="pill todo" id="ghPill">à connecter</span></h2>
-    <div class="d">GitHub héberge ton instance et reçoit tes données quand tu cliques « Enregistrer ».
-      Active aussi <b>Settings → Pages</b> (branche <code>main</code>, dossier <code>/</code>).</div>
+    <h2>1 · Ton socle — GitHub <span class="pill todo" id="ghPill">à connecter</span></h2>
+    <div class="d">GitHub, c'est l'<b>hébergement gratuit</b> de ton AWEMA : il garde tes données et travaille en
+      arrière-plan quand tu cliques « Enregistrer ». Deux petites choses, une seule fois :</div>
     <div class="row">
       <button class="btn" id="ghBtn">🔗 Connecter mon GitHub</button>
       <span class="su" id="ghWho" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bord)">
+      <div class="d" style="margin:0 0 8px"><b>Mettre ton site en ligne</b> (« Pages ») — sinon ton AWEMA ne s'affiche pas.
+        Sur la page qui s'ouvre : <i>Branch</i> → <code>main</code>, dossier → <code>/ (root)</code>, puis <b>Save</b>.</div>
+      <div class="row">
+        <a class="btn gh" id="pagesBtn" href="#" target="_blank" rel="noopener">⚙️ Activer l'hébergement (Pages)</a>
+        <label class="chk" style="margin:0"><input type="checkbox" data-k="pages"> C'est activé (« site is live »)</label>
+      </div>
     </div>
   </div>
 
@@ -92,7 +104,6 @@
       <a id="iaGet" class="su" href="#" target="_blank" rel="noopener" style="font-size:12.5px;color:var(--ciel);font-weight:600">🔑 Obtenir une clé →</a>
       <a class="su" href="connect-ia.html" style="font-size:12.5px;color:var(--muted)">Comparer tous les fournisseurs →</a>
     </div>
-    <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="ia"> Ma clé IA est en place (Secret GitHub <code>GROQ_API_KEY</code> ou équivalent)</label>
   </div>
 
   <!-- 3. Réseaux -->
@@ -119,12 +130,17 @@
 
   <!-- 5. Automatisation -->
   <div class="card">
-    <h2>5 · Lancer &amp; automatiser <span class="pill opt">une fois</span></h2>
-    <div class="d">Dans l'onglet <b>Actions</b> de ton dépôt GitHub, clique <b>Run workflow</b> sur
-      « Sync présence digitale » et « Sync TikTok » pour la 1ʳᵉ récupération de données. Ensuite,
-      <b>tout est autonome</b> : synchro périodique → agents (quotidien + après chaque sync) → cockpit à jour.</div>
-    <label class="chk"><input type="checkbox" data-k="auto"> J'ai lancé la première synchronisation</label>
-    <div class="row" style="margin-top:12px"><a class="btn" href="outils/dashboard/index.html">📊 Ouvrir le cockpit</a></div>
+    <h2>5 · Lancer la 1ʳᵉ récupération <span class="pill opt">une fois</span></h2>
+    <div class="d">Un seul clic récupère les premières données de tes réseaux. Ensuite, <b>tout est autonome</b> :
+      synchro périodique → agents (quotidien + après chaque sync) → cockpit à jour, sans rien faire.</div>
+    <div class="row">
+      <button class="btn" id="syncBtn">▶️ Lancer la 1ʳᵉ récupération</button>
+      <a class="btn gh" href="outils/dashboard/index.html">📊 Ouvrir le cockpit</a>
+    </div>
+    <div class="iamsg" id="syncMsg"></div>
+    <details style="margin-top:10px"><summary style="cursor:pointer;color:var(--muted);font-size:12.5px">Le bouton ne marche pas ? Le faire à la main</summary>
+      <div class="note" style="margin-top:8px">Sur GitHub → onglet <b>Actions</b> → « Sync présence digitale » et « Sync TikTok » → bouton <b>Run workflow</b>.</div>
+    </details>
   </div>
 </div>
 
@@ -134,7 +150,10 @@
 <script src="outils/_data/apply.js"></script>
 <script src="outils/_design/awema-github.js"></script>
 <script>
-  var REG=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+  var REG_ALL=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+  // Le client de DÉMONSTRATION ne doit JAMAIS compter comme un vrai réseau connecté.
+  function isDemo(c){ return c.demo===true || c.id==='demo-client' || c.slug==='demo-client' || /D[ÉE]MO/i.test(c.nom||''); }
+  var REG=REG_ALL.filter(function(c){return !isDemo(c);});
   var PLAT=window.AWEMA_PLATFORMS||{};
   // Réseaux + leur guide + clé dans par_reseau
   var NETS=[
@@ -177,18 +196,17 @@
   // GitHub
   function refreshGH(){
     var on=window.AwemaGH&&AwemaGH.connected();
-    document.getElementById('ghPill').className='pill '+(on?'ok':'todo');
-    document.getElementById('ghPill').textContent=on?'connecté':'à connecter';
     document.getElementById('ghWho').textContent=on?('✅ '+AwemaGH.who()):'';
     document.getElementById('ghBtn').textContent=on?'🔁 Reconfigurer GitHub':'🔗 Connecter mon GitHub';
-    progress();
+    refreshPages();
+    render();
   }
-  document.getElementById('ghBtn').onclick=function(){ if(window.AwemaGH)AwemaGH.openConnect(refreshGH); };
+  document.getElementById('ghBtn').onclick=function(){ if(window.AwemaGH)AwemaGH.openConnect(function(){ refreshGH(); autoAudit(); }); };
 
   // Cases à cocher
   document.querySelectorAll('.chk input').forEach(function(c){
     c.checked=!!store[c.dataset.k];
-    c.onchange=function(){store[c.dataset.k]=c.checked;save();progress();};
+    c.onchange=function(){store[c.dataset.k]=c.checked;save();render();};
   });
 
   // —— Étape IA : saisie dans l'app ——
@@ -205,11 +223,6 @@
   }
   document.getElementById('iaProv').addEventListener('change',refreshIaGet);
   refreshIaGet();
-  function refreshIA(){
-    var on=!!store.ia;
-    document.getElementById('iaPill').className='pill '+(on?'ok':'todo');
-    document.getElementById('iaPill').textContent=on?'IA en place':'recommandé · gratuit';
-  }
   function iaMsg(t,c){var m=document.getElementById('iaMsg');m.textContent=t;m.style.color=c||'var(--muted)';}
   document.getElementById('iaSave').onclick=function(){
     var prov=document.getElementById('iaProv').value;
@@ -226,25 +239,101 @@
         document.getElementById('iaKey').value='';
         if(res&&res.ok){ iaMsg('✅ '+prov+' branché automatiquement. Les agents pourront travailler.','#34E5C4'); }
         else { iaMsg('Presque ! Un dernier collage sur GitHub (fenêtre ouverte) — nom : '+nom,'#D4AF37'); AwemaGH.guideSecret(nom,key); }
-        store.ia=true; save(); refreshIA(); progress();
-        document.querySelectorAll('.chk input').forEach(function(c){if(c.dataset.k==='ia')c.checked=true;});
+        store.ia=true; DET.ia=true; save(); render();
       }).catch(function(e){ iaMsg('❌ '+(e.message||e),'#FF7D9C'); });
     });
   };
 
-  // Progression : socle GitHub + IA + ≥1 réseau connecté + auto
+  // —— Sous-étape : activer l'hébergement (Pages), lien vers TON dépôt ——
+  function repoSlug(){
+    var c={}; try{c=JSON.parse(localStorage.getItem('awema-gh'))||{};}catch(e){}
+    if(c.owner&&c.repo)return c.owner+'/'+c.repo;
+    var g=(window.AWEMA_CONFIG&&AWEMA_CONFIG.github)||{};
+    if(g.owner&&g.repo)return g.owner+'/'+g.repo;
+    var h=location.hostname,seg=location.pathname.split('/').filter(Boolean);
+    if(/\.github\.io$/i.test(h))return h.replace(/\.github\.io$/i,'')+'/'+((seg[0]&&seg[0].indexOf('.')===-1)?seg[0]:h);
+    return '';
+  }
+  function refreshPages(){
+    var slug=repoSlug();
+    document.getElementById('pagesBtn').href = slug ? ('https://github.com/'+slug+'/settings/pages') : 'https://github.com/settings';
+  }
+
+  // —— Étape 5 : lancer la 1ʳᵉ récupération, dans l'app ——
+  function syncMsg(t,c){var m=document.getElementById('syncMsg');m.textContent=t;m.style.color=c||'var(--muted)';}
+  document.getElementById('syncBtn').onclick=function(){
+    if(!window.AwemaGH){syncMsg('Module GitHub indisponible.','#FF7D9C');return;}
+    syncMsg('Connexion à GitHub…');
+    AwemaGH.ensure(function(){
+      syncMsg('⏳ Lancement de la récupération…');
+      AwemaGH.runWorkflow('sync-reseaux.yml',{},true)
+        .then(function(){ return AwemaGH.runWorkflow('sync-tiktok.yml',{}); })
+        .then(function(){ syncMsg('✅ C\'est lancé ! Les données arrivent dans le cockpit dans ~1-2 min. Reviens et rafraîchis-le.','#34E5C4'); store.auto=true; DET.sync=true; save(); render(); })
+        .catch(function(e){ syncMsg('❌ '+(e.message||e)+' — ouvre le repli « à la main » ci-dessous.','#FF7D9C'); });
+    });
+  };
+
+  // ——————————————————————————————————————————————————————————————
+  //  Checklist AUTONOME : AWEMA interroge GitHub pour constater le vrai état.
+  //  DET = ce qui est DÉTECTÉ en ligne ; store = indices locaux (repli si l'API ne peut pas répondre).
+  // ——————————————————————————————————————————————————————————————
+  var DET = {};
+  function isDone(step){
+    if(step==='github') return !!(window.AwemaGH&&AwemaGH.connected());
+    if(step==='pages')   return DET.pages===true || !!store.pages;
+    if(step==='ia')      return DET.ia===true || !!store.ia;
+    if(step==='reseaux') return DET.reseaux===true || NETS.some(function(n){return netConnecte(n.k);});
+    if(step==='sync')    return DET.sync===true || !!store.auto;
+    return false;
+  }
+  function setAuditMsg(t,c,clearAfter){
+    var m=document.getElementById('auditMsg'); m.textContent=t; m.style.color=c||'var(--muted)';
+    if(clearAfter) setTimeout(function(){m.textContent='AWEMA recoche tout seul à chaque ouverture.';m.style.color='var(--muted)';},clearAfter);
+  }
   function progress(){
-    var steps=[
-      window.AwemaGH&&AwemaGH.connected(),
-      !!store.ia,
-      NETS.some(function(n){return netConnecte(n.k);}),
-      !!store.auto
-    ];
+    var steps=['github','pages','ia','reseaux','sync'].map(isDone);
     var done=steps.filter(Boolean).length, pct=Math.round(done/steps.length*100);
     document.getElementById('bar').style.width=pct+'%';
     document.getElementById('progtx').textContent=pct+' %  ('+done+'/'+steps.length+')';
   }
-  refreshGH(); refreshIA(); progress();
+  function render(){
+    // pastilles
+    var gh=isDone('github');
+    document.getElementById('ghPill').className='pill '+(gh?'ok':'todo');
+    document.getElementById('ghPill').textContent=gh?'connecté':'à connecter';
+    var ia=isDone('ia');
+    document.getElementById('iaPill').className='pill '+(ia?'ok':'todo');
+    document.getElementById('iaPill').textContent=ia?'IA en place':'recommandé · gratuit';
+    // case Pages reflète la détection
+    document.querySelectorAll('.chk input').forEach(function(c){ if(c.dataset.k==='pages') c.checked=isDone('pages'); });
+    progress();
+  }
+  var IA_SECRETS=['GROQ_API_KEY','GEMINI_API_KEY','OPENAI_API_KEY','ANTHROPIC_API_KEY','MISTRAL_API_KEY','OPENROUTER_API_KEY','CEREBRAS_API_KEY','TOGETHER_API_KEY','GITHUB_MODELS_TOKEN'];
+  var NET_SECRETS=['META_TOKEN','YOUTUBE_API_KEY','LINKEDIN_TOKEN','WHATSAPP_TOKEN','TIKTOK_CLIENT_KEY'];
+  var auditEnCours=false;
+  async function autoAudit(){
+    if(!(window.AwemaGH&&AwemaGH.connected())){ DET={}; render(); return; }
+    if(auditEnCours) return; auditEnCours=true;
+    setAuditMsg('🔎 Vérification de ton état sur GitHub…');
+    try{
+      var res=await Promise.all([
+        AwemaGH.pagesEnabled(), AwemaGH.listVariables(), AwemaGH.listSecrets(),
+        AwemaGH.latestRun('sync-reseaux.yml'), AwemaGH.latestRun('sync-tiktok.yml')
+      ]);
+      var pages=res[0], vars=res[1], secs=res[2], run1=res[3], run2=res[4];
+      if(pages!==null) DET.pages=pages;
+      if(vars!==null||secs!==null){
+        DET.ia=((vars||[]).indexOf('AWEMA_AI_PROVIDER')>=0)||((secs||[]).some(function(s){return IA_SECRETS.indexOf(s)>=0;}));
+        DET.reseaux=((secs||[]).some(function(s){return NET_SECRETS.indexOf(s)>=0;}))||((vars||[]).indexOf('TIKTOK_TOKENS')>=0)||((vars||[]).indexOf('LINKEDIN_TOKEN')>=0);
+      }
+      DET.sync=!!run1||!!run2;
+      setAuditMsg('✅ État vérifié — AWEMA a coché ce qui est déjà fait.','#34E5C4',3000);
+    }catch(e){ setAuditMsg('Vérification partielle (ton jeton n\'a pas tous les droits de lecture). Le suivi local prend le relais.','#D4AF37',4000); }
+    auditEnCours=false; render();
+  }
+  document.getElementById('recheck').onclick=autoAudit;
+
+  refreshGH(); refreshIaGet(); autoAudit();
 </script>
 <script src="outils/_design/awema-fork.js"></script>
 <script src="outils/_design/abeille.js" data-aide="configuration"></script>

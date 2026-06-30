@@ -27,9 +27,10 @@
       "Clique <b>« Enregistrer »</b> : AWEMA écrit la config et régénère l'app <b>en arrière-plan</b>.",
       "La 1ʳᵉ fois seulement, connecte ton GitHub. Tout s'adapte (nom, logo, charte)." ] },
     configuration: { t: "Mise en route — configurer à 100 %", s: [
-      "Suis les 5 étapes : <b>GitHub → IA → réseaux → clients → lancer</b>.",
+      "<b>Étape 1, ton socle :</b> GitHub = l'hébergement gratuit. Clique « Connecter mon GitHub », puis « Activer l'hébergement (Pages) ».",
+      "AWEMA <b>coche tout seul</b> ce qui est déjà fait (il vérifie ton état sur GitHub) — bouton « ↻ Revérifier » si besoin.",
       "Tu ne connectes que les réseaux de <b>tes</b> clients (pas tous).",
-      "La barre du haut suit ta progression ; l'état des réseaux est <b>détecté tout seul</b>.",
+      "<b>Dernière étape :</b> clique simplement « Lancer la 1ʳᵉ récupération » — ensuite tout est automatique.",
       "Gérer de vrais clients exige une App vérifiée côté plateforme (exigence des réseaux, incompressible)." ] },
     "nouveau-client": { t: "Crée la fiche d'un client", s: [
       "Donne au moins son <b>nom</b> (le reste est optionnel).",
@@ -57,9 +58,10 @@
       "Suis les étapes pour obtenir un <b>token</b>, copie-le (boutons « copier »).",
       "Place-le en <b>Secret GitHub</b> <code>META_TOKEN</code>, puis lance la synchro indiquée." ] },
     "connect-tiktok": { t: "Connecter TikTok", s: [
-      "Chaque compte s'autorise une fois (OAuth).",
-      "L'assistant <code>tiktok-onboard.py</code> fait le plus dur ; sinon, suis les étapes manuelles.",
-      "Les jetons se renouvellent tout seuls ensuite." ] },
+      "<b>Il te faut une « clé d'accès GitHub »</b> (un PAT) : clique « en créer un ↗ », cherche <b>Variables</b> → mets « Read and write », puis <b>copie le code tout de suite</b>.",
+      "Colle tes 3 valeurs (2 clés TikTok + la clé GitHub), une seule fois.",
+      "Ensuite : <b>clic → Authorize → retour → Finaliser</b>. AWEMA fait l'échange tout seul.",
+      "La partie « ligne de commande » est <b>réservée aux experts</b> : ignore-la." ] },
     "connect-youtube": { t: "Connecter YouTube", s: [
       "Crée une <b>clé API</b> Google (YouTube Data API v3) — pas d'OAuth, c'est public.",
       "Mets-la en Secret <code>YOUTUBE_API_KEY</code> et renseigne le <code>@handle</code> de la chaîne." ] },

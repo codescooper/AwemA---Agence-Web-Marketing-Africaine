@@ -94,8 +94,8 @@
 
   <div class="step">
     <h2><span class="num">5</span> Connecter la Page LinkedIn</h2>
-    <div class="warn">⚠️ Le <b>Client Secret</b> n'est pas le jeton qui lit les stats : il sert à <i>fabriquer</i>
-      un <b>access token</b> OAuth. AWEMA s'en occupe en arrière-plan (GitHub Actions) — toi, tu cliques juste.</div>
+    <div class="note" style="border-color:var(--mint,#34E5C4)">✅ Tu cliques, <b>AWEMA fait le reste en arrière-plan</b>, sans rien te demander de plus.
+      <span style="opacity:.8">(En coulisses : il transforme tes clés en un jeton de lecture — tu n'as pas à t'en occuper.)</span></div>
     <input id="liId" class="fld" placeholder="Client ID de ton app LinkedIn (rappel — non secret)"
       style="width:100%;margin-top:12px;background:rgba(0,0,0,.28);border:1px solid var(--bord);border-radius:11px;color:#fff;font:inherit;font-size:13.5px;padding:11px 13px">
     <button class="btn" id="goAuth">▶️ Connecter ma Page LinkedIn</button>

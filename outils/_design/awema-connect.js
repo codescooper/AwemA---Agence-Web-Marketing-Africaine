@@ -50,7 +50,8 @@ window.AwemaConnect = (function () {
 
     var inp = box.querySelector('input'), bSave = box.querySelector('.save'),
         bSync = box.querySelector('.sync'), m = box.querySelector('.m');
-    function msg(t, c) { m.textContent = t; m.style.color = c || 'var(--muted,#9db0d6)'; }
+    function msg(t, c, html) { if (html) m.innerHTML = t; else m.textContent = t; m.style.color = c || 'var(--muted,#9db0d6)'; }
+    if (bSync) { bSync.title = 'Enregistre d’abord ton token : ce bouton s’allume ensuite.'; msg('Étape 1 : enregistre ton token. Le bouton « ' + (opt.syncLabel || 'Synchroniser') + ' » s’allumera juste après.'); }
 
     bSave.onclick = function () {
       var v = inp.value.trim();
@@ -60,8 +61,9 @@ window.AwemaConnect = (function () {
         msg('Enregistrement de ' + opt.name + '…');
         AwemaGH.saveSecret(opt.name, v).then(function (res) {
           inp.value = '';
-          if (res && res.ok) { msg('✅ ' + opt.name + ' enregistré automatiquement.', '#34E5C4'); }
-          else { msg('Presque ! ' + opt.name + ' — un collage sur GitHub (fenêtre ouverte).', '#D4AF37'); AwemaGH.guideSecret(opt.name, v); }
+          var suite = bSync ? (' → clique maintenant « ' + (opt.syncLabel || 'Synchroniser') +' ».') : '';
+          if (res && res.ok) { msg('✅ Enregistré en sécurité.' + suite, '#34E5C4'); }
+          else { msg('Presque ! Un dernier collage sur GitHub (fenêtre ouverte).' + suite, '#D4AF37'); AwemaGH.guideSecret(opt.name, v); }
           if (bSync) bSync.disabled = false;
         }).catch(function (e) { msg('❌ ' + (e.message || e), '#FF7D9C'); });
       });
@@ -71,7 +73,7 @@ window.AwemaConnect = (function () {
       msg('Déclenchement de « ' + (opt.syncLabel || 'la synchro') + ' »…');
       AwemaGH.ensure(function () {
         AwemaGH.runWorkflow(opt.sync, {}, true)
-          .then(function () { msg('✅ Synchro lancée — les données arrivent dans ~1-2 min.', '#34E5C4'); })
+          .then(function () { msg('✅ Synchro lancée — les données arrivent dans <b>~1-2 min</b>. Va voir dans le <a href="index.html" style="color:var(--ciel,#4BA3FF)">Centre de pilotage</a> (rafraîchis la page).', '#34E5C4', true); })
           .catch(function (e) { msg('❌ ' + (e.message || e), '#FF7D9C'); });
       });
     };
