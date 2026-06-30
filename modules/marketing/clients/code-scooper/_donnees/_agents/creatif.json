@@ -1,0 +1,48 @@
+{
+  "agent": "creatif",
+  "genere_le": "2026-06-30T07:02:44+00:00",
+  "modele": "llama-3.3-70b-versatile",
+  "provenance": {
+    "client": "code-scooper",
+    "fichiers": [
+      "memoire.json",
+      "reseaux.json"
+    ],
+    "genere_par": "run-agent.py"
+  },
+  "items": [
+    {
+      "hook": "Découvrez le secret pour devenir un maître du coding !",
+      "script": "Salut les afrocodeurs ! Aujourd'hui, je vais vous partager mon outil préféré pour améliorer vos compétences en coding. C'est grâce à cet outil que j'ai pu réaliser des projets incroyables et aider mes collègues à résoudre des problèmes complexes. Alors, êtes-vous prêts à découvrir comment devenir un maître du coding ?",
+      "format": "Vidéo",
+      "reseau": "TikTok",
+      "prompt_image": "Un écran d'ordinateur avec des lignes de code et un visage souriant derrière",
+      "variantes": [
+        "Apprenez le coding en 5 minutes par jour !",
+        "Débloquez votre potentiel de codeur"
+      ]
+    },
+    {
+      "hook": "Attention à ce que vous cliquez en ligne !",
+      "script": "Salut les afrocodeurs ! Aujourd'hui, je vais vous parler d'un sujet très important : la sécurité en ligne. Vous savez que les pirates et les hackers sont partout, prêts à vous voler vos données personnelles. Alors, comment pouvez-vous vous protéger ? Je vais vous partager quelques conseils pour rester en sécurité en ligne.",
+      "format": "Vidéo",
+      "reseau": "TikTok",
+      "prompt_image": "Un écran d'ordinateur avec un avertissement de sécurité et un visage inquiet derrière",
+      "variantes": [
+        "Soyez prudent en ligne, vos données sont précieuses !",
+        "Protégez-vous des pirates et des hackers"
+      ]
+    },
+    {
+      "hook": "Faites un deal avec moi et obtenez mon outil de coding gratuit !",
+      "script": "Salut les afrocodeurs ! Aujourd'hui, je vais vous faire une offre incroyable. Si vous me suivez et que vous partagez mes contenus avec vos amis, je vous donnerai accès à mon outil de coding préféré gratuitement ! C'est une occasion unique de améliorer vos compétences en coding et de réaliser des projets incroyables.",
+      "format": "Vidéo",
+      "reseau": "TikTok",
+      "prompt_image": "Un écran d'ordinateur avec un outil de coding et un visage souriant derrière",
+      "variantes": [
+        "Obtenez mon outil de coding gratuit en échange de votre soutien !",
+        "Faites partie de la communauté des afrocodeurs et obtenez des outils gratuits"
+      ]
+    }
+  ]
+}
