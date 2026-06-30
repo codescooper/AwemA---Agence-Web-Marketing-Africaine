@@ -1,0 +1,27 @@
+{
+  "id": "p-20260630-0900-q33zj9",
+  "client": "code-scooper",
+  "reseaux": [
+    "facebook",
+    "youtube",
+    "tiktok"
+  ],
+  "publier_le": "2026-06-30T07:00:00.000Z",
+  "contenu": {
+    "texte": "un test de publication",
+    "lien": ""
+  },
+  "media": [],
+  "comptes": {
+    "facebook": "933816756749305",
+    "instagram": "",
+    "linkedin": "",
+    "youtube": "UCLPVeD-LPLYN1wE9V3_i6og",
+    "tiktok": ""
+  },
+  "statut": "programme",
+  "source": "manuel",
+  "resultats": {},
+  "tentatives": 0,
+  "cree_le": "2026-06-30T04:37:24.118Z"
+}
