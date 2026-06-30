@@ -1,6 +1,6 @@
 {
   "agent": "creatif",
-  "genere_le": "2026-06-30T07:02:44+00:00",
+  "genere_le": "2026-06-30T09:57:51+00:00",
   "modele": "llama-3.3-70b-versatile",
   "provenance": {
     "client": "code-scooper",
@@ -12,36 +12,33 @@
   },
   "items": [
     {
-      "hook": "Découvrez le secret pour devenir un maître du coding !",
-      "script": "Salut les afrocodeurs ! Aujourd'hui, je vais vous partager mon outil préféré pour améliorer vos compétences en coding. C'est grâce à cet outil que j'ai pu réaliser des projets incroyables et aider mes collègues à résoudre des problèmes complexes. Alors, êtes-vous prêts à découvrir comment devenir un maître du coding ?",
-      "format": "Vidéo",
+      "hook": "Découvrez les secrets de la sécurité informatique !",
+      "script": "Bonjour les afrocodeurs ! Aujourd'hui, nous allons parler de la sécurité informatique. Vous savez que la sécurité de vos données est cruciale, surtout dans le monde numérique d'aujourd'hui. Je vais vous partager quelques astuces pour protéger vos informations personnelles en ligne. Vous êtes prêts ? #sécuritéinformatique #afrocodeurs",
+      "format": "vidéo",
       "reseau": "TikTok",
-      "prompt_image": "Un écran d'ordinateur avec des lignes de code et un visage souriant derrière",
+      "prompt_image": "un jeune homme noir avec un ordinateur portable et un casque, avec un fond de code et des symboles de sécurité",
       "variantes": [
-        "Apprenez le coding en 5 minutes par jour !",
-        "Débloquez votre potentiel de codeur"
+        "Les pirates informatiques vous menacent-ils ?"
       ]
     },
     {
-      "hook": "Attention à ce que vous cliquez en ligne !",
-      "script": "Salut les afrocodeurs ! Aujourd'hui, je vais vous parler d'un sujet très important : la sécurité en ligne. Vous savez que les pirates et les hackers sont partout, prêts à vous voler vos données personnelles. Alors, comment pouvez-vous vous protéger ? Je vais vous partager quelques conseils pour rester en sécurité en ligne.",
-      "format": "Vidéo",
+      "hook": "Comment devenir un développeur expérimenté ?",
+      "script": "Bonjour à tous ! Si vous voulez devenir un développeur expérimenté, il faut que vous vous entraîniez régulièrement. Je vais vous partager quelques conseils pour améliorer vos compétences en développement. Premièrement, il faut que vous choisissiez un langage de programmation et que vous vous y consacriez. Deuxièmement, il faut que vous trabaliez sur des projets personnels pour mettre en pratique vos connaissances. Et troisièmement, il faut que vous suiviez les dernières tendances en développement pour rester à jour. #développement #programmation",
+      "format": "vidéo",
       "reseau": "TikTok",
-      "prompt_image": "Un écran d'ordinateur avec un avertissement de sécurité et un visage inquiet derrière",
+      "prompt_image": "un jeune homme noir avec un ordinateur portable, entouré de livres et de feuilles de papier",
       "variantes": [
-        "Soyez prudent en ligne, vos données sont précieuses !",
-        "Protégez-vous des pirates et des hackers"
+        "Les développeurs débutants, attention !"
       ]
     },
     {
-      "hook": "Faites un deal avec moi et obtenez mon outil de coding gratuit !",
-      "script": "Salut les afrocodeurs ! Aujourd'hui, je vais vous faire une offre incroyable. Si vous me suivez et que vous partagez mes contenus avec vos amis, je vous donnerai accès à mon outil de coding préféré gratuitement ! C'est une occasion unique de améliorer vos compétences en coding et de réaliser des projets incroyables.",
-      "format": "Vidéo",
+      "hook": "L'IA va-t-elle remplacer les développeurs ?",
+      "script": "Bonjour les afrocodeurs ! Aujourd'hui, nous allons parler de l'Intelligence Artificielle (IA) et de son impact sur le développement. Certains d'entre vous se demandent si l'IA va remplacer les développeurs. Eh bien, je vais vous dire que l'IA est un outil qui peut aider les développeurs à travailler plus efficacement, mais elle ne peut pas les remplacer. Les développeurs ont une créativité et une pensée critique que les machines ne peuvent pas reproduire. #IA #développement",
+      "format": "vidéo",
       "reseau": "TikTok",
-      "prompt_image": "Un écran d'ordinateur avec un outil de coding et un visage souriant derrière",
+      "prompt_image": "un jeune homme noir avec un ordinateur portable et un robot à côté de lui",
       "variantes": [
-        "Obtenez mon outil de coding gratuit en échange de votre soutien !",
-        "Faites partie de la communauté des afrocodeurs et obtenez des outils gratuits"
+        "L'IA, une menace pour les développeurs ?"
       ]
     }
   ]
