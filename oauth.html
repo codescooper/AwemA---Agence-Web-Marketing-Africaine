@@ -80,7 +80,7 @@
   } else {
     var slugDefault = (sessionStorage.getItem('awema-tt-slug') || '');
     var slugField = PROV.slug
-      ? '<div class="lbl">Slug client (nom du dossier — laisse vide pour le déduire du compte)</div>'+
+      ? '<div class="lbl">Nom court du client <span style="text-transform:none;color:var(--mint)">(facultatif — laisse vide, AWEMA utilisera le nom du compte)</span></div>'+
         '<div class="box"><input class="txt" id="slug" placeholder="ex. ma-boutique" value="'+slugDefault.replace(/"/g,'&quot;')+'"></div>'
       : '';
     zone.innerHTML =
@@ -92,11 +92,34 @@
     document.getElementById('cp').onclick = function(){
       try{ navigator.clipboard.writeText(code); this.textContent='Copié ✓'; }catch(e){ this.textContent='Sélectionne'; }
     };
-    function who(){ var w=document.getElementById('who'); w.textContent = (window.AwemaGH&&AwemaGH.connected())?('GitHub : '+AwemaGH.who()):'GitHub non connecté'; }
+    function who(){
+      var w=document.getElementById('who'); var on=window.AwemaGH&&AwemaGH.connected();
+      if(on){ w.textContent='GitHub : '+AwemaGH.who(); w.style.cursor='default'; w.onclick=null; }
+      else { w.innerHTML='<a href="#" style="color:var(--ciel)">🔗 Connecter mon GitHub d’abord</a>'; w.onclick=function(e){ e.preventDefault(); AwemaGH.openConnect(function(){who();}); }; }
+    }
     who();
     function msg(t,c){ var m=document.getElementById('msg'); m.textContent=t; m.style.color=c||'var(--muted)'; }
+    var fin=document.getElementById('fin');
 
-    document.getElementById('fin').onclick = function(){
+    // Suit le run d'échange et ne confirme le succès QUE s'il s'est vraiment terminé OK.
+    function pollRun(baselineId, tries){
+      if(tries>22){ msg('⏳ Toujours en cours. Reviens dans une minute : si la connexion a réussi, tu verras le compte dans le cockpit.','var(--muted)'); fin.disabled=false; return; }
+      setTimeout(function(){
+        AwemaGH.latestRun(PROV.wf).then(function(run){
+          if(!run || run.id===baselineId){ msg('⏳ Échange en cours…'); pollRun(baselineId, tries+1); return; }
+          if(run.status!=='completed'){ msg('⏳ Échange en cours… (vérification automatique)'); pollRun(baselineId, tries+1); return; }
+          if(run.conclusion==='success'){
+            msg('✅ Connexion '+PROV.nom+' réussie et enregistrée ! Tu peux maintenant lancer la synchro.','var(--mint)');
+          } else {
+            msg('❌ L’échange n’a pas abouti. Causes fréquentes : le code d’autorisation a expiré (relance la connexion), ou une clé manque. Détail du run ↗','#FF7D9C');
+            var m=document.getElementById('msg'); if(run.url){ m.innerHTML+=' <a href="'+run.url+'" target="_blank" rel="noopener" style="color:var(--ciel)">ouvrir</a>'; }
+            fin.disabled=false;
+          }
+        }).catch(function(){ pollRun(baselineId, tries+1); });
+      }, 3000);
+    }
+
+    fin.onclick = function(){
       var slugEl = document.getElementById('slug');
       var inputs = { code: code, redirect_uri: redirect };
       if (PROV.slug) inputs.slug = slugEl ? slugEl.value.trim() : '';
@@ -105,14 +128,17 @@
       AwemaGH.ensure(function(){
         who();
         msg('Déclenchement de l’échange sécurisé…');
-        AwemaGH.runWorkflow(PROV.wf, inputs, true)
-          .then(function(){
-            msg('✅ Échange '+PROV.nom+' lancé. Dans ~30 s c’est enregistré. Lance ensuite la synchro.','var(--mint)');
-            document.getElementById('fin').disabled = true;
-          })
-          .catch(function(e){
-            msg('❌ '+(e.message||e)+' — vérifie que le workflow '+PROV.wf+' et les Secrets sont en place.','#FF7D9C');
+        fin.disabled = true;
+        AwemaGH.latestRun(PROV.wf).then(function(prev){
+          var baselineId = prev && prev.id;
+          return AwemaGH.runWorkflow(PROV.wf, inputs, true).then(function(){
+            msg('⏳ Échange en cours… (vérification automatique, ~30 s)');
+            pollRun(baselineId, 0);
           });
+        }).catch(function(e){
+          fin.disabled = false;
+          msg('❌ '+(e.message||e)+' — vérifie que les clés '+PROV.nom+' (Secrets) sont bien en place.','#FF7D9C');
+        });
       });
     };
   }

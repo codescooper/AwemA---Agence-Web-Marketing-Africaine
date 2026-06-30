@@ -31,6 +31,52 @@ window.AwemaGH = (function () {
     }));
   }
   async function repoOK() { var c = cfg(); var r = await api('/repos/' + c.owner + '/' + c.repo); return r.ok; }
+  // Vérifie l'accès et renvoie le statut HTTP pour un message d'erreur précis.
+  async function repoCheck() { var c = cfg(); try { var r = await api('/repos/' + c.owner + '/' + c.repo); return { ok: r.ok, status: r.status }; } catch (e) { return { ok: false, status: 0 }; } }
+  // —— Détection autonome de l'état (best-effort : null = inconnu, l'appelant retombe sur un indice local) ——
+  // Hébergement GitHub Pages activé ? true / false / null(inconnu, ex. droit manquant).
+  async function pagesEnabled() {
+    var c = cfg();
+    try {
+      var r = await api('/repos/' + c.owner + '/' + c.repo + '/pages');
+      if (r.status === 200) return true;
+      if (r.status === 404) return false;
+      return null;
+    } catch (e) { return null; }
+  }
+  // Noms des Secrets Actions (sans les valeurs) — ou null si non autorisé.
+  async function listSecrets() {
+    var c = cfg();
+    try {
+      var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/secrets?per_page=100');
+      if (!r.ok) return null;
+      var j = await r.json();
+      return (j.secrets || []).map(function (s) { return s.name; });
+    } catch (e) { return null; }
+  }
+  // Noms des Variables Actions — ou null si non autorisé.
+  async function listVariables() {
+    var c = cfg();
+    try {
+      var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/variables?per_page=100');
+      if (!r.ok) return null;
+      var j = await r.json();
+      return (j.variables || []).map(function (v) { return v.name; });
+    } catch (e) { return null; }
+  }
+
+  // Suit le dernier run d'un workflow (pour confirmer le VRAI succès, pas juste le lancement).
+  // Renvoie { status, conclusion } ou null. status: 'queued'|'in_progress'|'completed'. conclusion: 'success'|'failure'|…
+  async function latestRun(fichier) {
+    var c = cfg();
+    try {
+      var r = await api('/repos/' + c.owner + '/' + c.repo + '/actions/workflows/' + fichier + '/runs?per_page=1');
+      if (!r.ok) return null;
+      var j = await r.json();
+      var run = (j.workflow_runs || [])[0];
+      return run ? { id: run.id, status: run.status, conclusion: run.conclusion, url: run.html_url } : null;
+    } catch (e) { return null; }
+  }
   async function sha(path) {
     var c = cfg();
     var r = await api('/repos/' + c.owner + '/' + c.repo + '/contents/' + path + '?ref=' + branch());
@@ -122,13 +168,17 @@ window.AwemaGH = (function () {
     try { navigator.clipboard && navigator.clipboard.writeText(value); } catch (e) {}
     var ov = document.createElement('div'); ov.className = 'awgh-ov on';
     ov.innerHTML =
-      '<div class="awgh"><h3>🔑 Dernier geste — coller le secret</h3>' +
-      '<p>Ta valeur est <b>déjà copiée</b> dans le presse-papier ✓. Sur GitHub, mets exactement ce nom, ' +
-      'colle la valeur, et clique <b>Add secret</b>. C\'est tout — AWEMA fera le reste tout seul ensuite.</p>' +
-      '<label>Nom du secret (à recopier tel quel)</label><input id="awgh-sn" readonly value="' + name + '">' +
-      '<div class="msg" id="awgh-sm" style="color:#34E5C4">Valeur copiée — prête à coller dans le champ « Secret ».</div>' +
+      '<div class="awgh"><h3>🔑 Dernier geste — ranger ta clé en sécurité</h3>' +
+      '<p>Un « secret », c’est un <b>coffre-fort privé de ton site</b> : GitHub y garde ta clé sans jamais l’afficher. ' +
+      'Ta valeur est <b>déjà copiée</b> ✓. Sur la page GitHub qui va s’ouvrir :</p>' +
+      '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#9db0d6);line-height:1.7">' +
+      '<li>Champ <b>Name</b> (= Nom) → colle le nom ci-dessous.</li>' +
+      '<li>Champ <b>Secret</b> (= Valeur) → colle (ta valeur est déjà copiée).</li>' +
+      '<li>Bouton vert <b>Add secret</b> (= Ajouter).</li></ol>' +
+      '<label>Nom à coller dans « Name »</label><input id="awgh-sn" readonly value="' + name + '">' +
+      '<div class="msg" id="awgh-sm" style="color:#34E5C4">Clé copiée ✓ — prête à coller dans « Secret ».</div>' +
       '<div class="r"><button class="x" id="awgh-sx">Fermer</button>' +
-      '<button class="go" id="awgh-sg">📋 Ouvrir GitHub → Nouveau secret</button></div></div>';
+      '<button class="go" id="awgh-sg">📋 Ouvrir GitHub → Ajouter</button></div></div>';
     document.body.appendChild(ov);
     ov.querySelector('#awgh-sx').onclick = function () { ov.remove(); };
     ov.querySelector('#awgh-sn').onclick = function () { this.select(); };
@@ -166,16 +216,21 @@ window.AwemaGH = (function () {
     var g = (window.AWEMA_CONFIG && window.AWEMA_CONFIG.github) || {};
     var ov = document.createElement('div'); ov.className = 'awgh-ov on';
     ov.innerHTML =
-      '<div class="awgh"><h3>🔗 Connecter GitHub (une seule fois)</h3>' +
-      '<p>AWEMA enregistre tes données <b>directement dans ton dépôt</b> et lance le traitement en arrière-plan. ' +
-      'Crée un <b>jeton à granularité fine</b> limité à ton dépôt — ' +
-      '<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">créer le jeton ↗</a><br>' +
-      '<small>Permissions : <b>Contents</b> = R/W, <b>Actions</b> = R/W. Pour la config automatique des clés, ajoute aussi ' +
-      '<b>Variables</b> = R/W et <b>Secrets</b> = R/W <i>(optionnel)</i>. Le jeton reste sur ton appareil, jamais dans le dépôt.</small></p>' +
-      '<label>Propriétaire (owner)</label><input id="awgh-o" value="' + (c.owner || g.owner || '') + '" placeholder="ton-pseudo">' +
-      '<label>Dépôt (repo)</label><input id="awgh-r" value="' + (c.repo || g.repo || '') + '" placeholder="mon-depot">' +
+      '<div class="awgh"><h3>🔗 Connecter ton compte GitHub <span style="font-weight:400;font-size:12px;color:var(--muted,#9db0d6)">(une seule fois)</span></h3>' +
+      '<p>AWEMA range tes données <b>dans ton espace GitHub</b> et travaille en arrière-plan. Il lui faut une ' +
+      '<b>clé d’accès</b> (un « jeton »). <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Créer ma clé ↗</a>, puis :</p>' +
+      '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#9db0d6);line-height:1.7">' +
+      '<li><b>Token name</b> : écris <code>awema</code>.</li>' +
+      '<li><b>Repository access</b> → <i>Only select repositories</i> → choisis <b>ton dépôt</b>.</li>' +
+      '<li><b>Repository permissions</b> → mets sur <i>Read and write</i> (lecture+écriture) : ' +
+      '<b>Contents</b>, <b>Actions</b>, <b>Variables</b>, <b>Secrets</b>.</li>' +
+      '<li><b>Generate token</b> → <b>copie tout de suite</b> la clé.</li></ol>' +
+      '<div style="font-size:11.5px;color:#ffe6ad;background:rgba(212,175,55,.1);border-left:3px solid #D4AF37;padding:7px 10px;border-radius:0 7px 7px 0;margin:0 0 12px">⚠️ GitHub n’affiche ta clé <b>qu’une seule fois</b>. Copie-la avant de fermer l’onglet ; perdue, recrée-en simplement une autre.</div>' +
+      '<label>Ton compte GitHub (owner)</label><input id="awgh-o" value="' + (c.owner || g.owner || '') + '" placeholder="ton-pseudo">' +
+      '<div style="font-size:11px;color:var(--muted,#9db0d6);margin-top:3px">Ton nom d’utilisateur GitHub (en haut à droite de github.com, ou dans <code>github.com/<b>TON-NOM</b>/mon-depot</code>).</div>' +
+      '<label>Nom du dépôt (repo)</label><input id="awgh-r" value="' + (c.repo || g.repo || '') + '" placeholder="mon-depot">' +
       '<label>Branche (où écrire)</label><input id="awgh-b" value="' + (c.branch || g.branch || 'main') + '" placeholder="main">' +
-      '<label>Jeton (token, commence par github_pat_…)</label><input id="awgh-t" type="password" placeholder="github_pat_…">' +
+      '<label>Ta clé d’accès (jeton)</label><input id="awgh-t" type="password" placeholder="github_pat_… ou ghp_…">' +
       '<div class="msg" id="awgh-m"></div>' +
       '<div class="r"><button class="x" id="awgh-x">Annuler</button><button class="go" id="awgh-g">Connecter</button></div></div>';
     document.body.appendChild(ov);
@@ -185,18 +240,25 @@ window.AwemaGH = (function () {
       var o = ov.querySelector('#awgh-o').value.trim(), r = ov.querySelector('#awgh-r').value.trim(),
           bch = ov.querySelector('#awgh-b').value.trim() || 'main', t = ov.querySelector('#awgh-t').value.trim();
       var m = ov.querySelector('#awgh-m');
-      if (!o || !r || !t) { m.style.color = '#FF7D9C'; m.textContent = 'Remplis owner, repo et jeton.'; return; }
+      if (!o || !r || !t) { m.style.color = '#FF7D9C'; m.textContent = 'Remplis ton compte, le nom du dépôt et la clé.'; return; }
       m.style.color = '#9db0d6'; m.textContent = 'Vérification…';
       localStorage.setItem(LS, JSON.stringify({ owner: o, repo: r, branch: bch, token: t }));
-      try {
-        if (await repoOK()) { m.style.color = '#34E5C4'; m.textContent = '✅ Connecté à ' + o + '/' + r; setTimeout(function () { close(); cb && cb(true); }, 600); }
-        else { m.style.color = '#FF7D9C'; m.textContent = '❌ Accès refusé : vérifie le jeton et son dépôt.'; disconnect(); }
-      } catch (e) { m.style.color = '#FF7D9C'; m.textContent = '❌ ' + e.message; disconnect(); }
+      var chk;
+      try { chk = await repoCheck(); }
+      catch (e) { m.style.color = '#FF7D9C'; m.textContent = '❌ Connexion à GitHub impossible (réseau). Réessaie dans un instant.'; disconnect(); return; }
+      if (chk.ok) { m.style.color = '#34E5C4'; m.textContent = '✅ Connecté à ' + o + '/' + r; setTimeout(function () { close(); cb && cb(true); }, 700); return; }
+      disconnect();
+      m.style.color = '#FF7D9C';
+      if (chk.status === 401) m.textContent = '❌ La clé ne fonctionne pas (invalide ou expirée). Recolle-la, ou recrée-en une.';
+      else if (chk.status === 404) m.textContent = '❌ Compte ou dépôt introuvable. Vérifie l’orthographe exacte (majuscules/minuscules).';
+      else if (chk.status === 403) m.textContent = '❌ Il manque un droit à la clé. Recrée-la en mettant Contents et Actions sur « Read and write ».';
+      else m.textContent = '❌ Connexion refusée (code ' + chk.status + '). Vérifie compte, dépôt et clé.';
     };
   }
   // Garantit une connexion puis exécute cb (ouvre la modale si besoin).
   function ensure(cb) { if (connected()) cb(true); else openConnect(cb); }
 
   return { connected: connected, who: who, disconnect: disconnect, openConnect: openConnect, ensure: ensure,
-    saveFile: saveFile, runWorkflow: runWorkflow, setVariable: setVariable, saveSecret: saveSecret, guideSecret: guideSecret };
+    saveFile: saveFile, runWorkflow: runWorkflow, setVariable: setVariable, saveSecret: saveSecret, guideSecret: guideSecret,
+    latestRun: latestRun, pagesEnabled: pagesEnabled, listSecrets: listSecrets, listVariables: listVariables };
 })();

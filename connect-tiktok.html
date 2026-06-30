@@ -76,9 +76,10 @@
   <!-- 2 — Redirect URI -->
   <div class="step">
     <h2><span class="num">2</span> Autoriser l'adresse de retour dans l'app TikTok <span class="tag">une fois</span></h2>
-    <p>Dans l'app TikTok (<i>Login Kit</i> → <i>Redirect URI</i>), ajoute <b>exactement</b> cette adresse
-      (c'est ta page de retour, en HTTPS) :</p>
-    <div class="cmd" id="c-redir">…<button class="copy" data-c="c-redir">Copier</button></div>
+    <p>TikTok doit savoir vers quelle page te ramener après ton autorisation. Ouvre la section
+      <i>Login Kit</i>, repère le champ <i>Redirect URI</i> (= <b>adresse de retour</b>) et colle-y
+      <b>exactement</b> cette adresse :</p>
+    <div class="cmd" id="c-redir">(adresse en cours de chargement…)<button class="copy" data-c="c-redir">Copier</button></div>
     <div class="note">C'est l'URL de <code>oauth.html</code> sur ton site. TikTok accepte les adresses HTTPS —
       plus besoin de <code>localhost</code>.</div>
   </div>
@@ -171,6 +172,11 @@ python scripts\tiktok-onboard.py<button class="copy" data-c="c-cli">Copier</butt
   // Étape 3 — lancer l'autorisation TikTok
   var ckIn=document.getElementById('ckIn');
   try{ ckIn.value = localStorage.getItem('awema-tt-ck') || ''; }catch(e){}
+  // La Client key saisie à l'étape 1 (champ sCK) pré-remplit l'étape 3 : on ne la redemande jamais.
+  (function(){ var sck=document.getElementById('sCK'); if(!sck)return;
+    if(!ckIn.value && sck.value.trim()) ckIn.value=sck.value.trim();
+    sck.addEventListener('input',function(){ var v=this.value.trim(); if(v){ ckIn.value=v; try{localStorage.setItem('awema-tt-ck',v);}catch(e){} } });
+  })();
   document.getElementById('goAuth').onclick=function(){
     var ck=ckIn.value.trim();
     if(!ck){document.getElementById('authMsg').textContent='Renseigne la Client key de ton app TikTok.';
