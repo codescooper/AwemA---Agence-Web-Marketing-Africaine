@@ -19,7 +19,15 @@
   },
   "statut": "programme",
   "source": "manuel",
-  "resultats": {},
-  "tentatives": 0,
-  "cree_le": "2026-06-30T12:33:12.140Z"
+  "resultats": {
+    "tiktok": {
+      "ok": false,
+      "error": "Connecteur vidéo à activer (validation plateforme requise)",
+      "differe": true,
+      "at": "2026-06-30T13:22:30.707603+00:00"
+    }
+  },
+  "tentatives": 1,
+  "cree_le": "2026-06-30T12:33:12.140Z",
+  "maj_le": "2026-06-30T13:22:30.707603+00:00"
 }
