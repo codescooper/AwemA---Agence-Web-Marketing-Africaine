@@ -220,8 +220,10 @@ a{color:inherit;text-decoration:none}
       <a class="active" data-go="overview" data-ic="grid"><span>Vue d'ensemble</span></a>
       <a data-go="publier" data-ic="cal"><span>Planifier &amp; publier</span></a>
       <a data-go="contenus" data-ic="layers"><span>Contenus</span></a>
+      <a data-go="memoire" data-ic="layers"><span>Mémoire</span></a>
       <a class="soon" data-go="scoring" data-ic="chart"><span>Scoring</span><em>bientôt</em></a>
       <a data-go="reseaux" data-ic="bubble"><span>Présence digitale</span></a>
+      <a data-go="connecter" data-ic="bubble"><span>Connecter les réseaux</span></a>
       <div class="lbl">Conversion</div>
       <a class="soon" data-go="tunnel" data-ic="chat"><span>Tunnel WhatsApp</span><em>bientôt</em></a>
       <a class="soon" data-go="auto" data-ic="bolt"><span>Automatisation</span><em>bientôt</em></a>
@@ -476,7 +478,7 @@ function cMemoire(){
         <span class="pill">${(m.produits||[]).length} produits</span>
         <span class="pill">${(m.faq||[]).length} FAQ</span></div></div>`
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Pas encore de mémoire. Renseigne identité, ton, personas, produits, FAQ — les agents en ont besoin.</div>`}
-    <div style="margin-top:14px"><a class="mini gold" href="${url}" target="_blank" rel="noopener" style="text-decoration:none">Éditer la mémoire ↗</a></div>`;
+    <div style="margin-top:14px"><a class="mini gold" href="#" onclick="go('memoire');return false" style="text-decoration:none">🧠 Éditer la mémoire →</a></div>`;
 }
 
 /* ---------- Agent Analyste (M2) : Pourquoi & Que faire ---------- */
@@ -822,7 +824,7 @@ function viewReseaux(){
     <div class="sub">Statistiques de Page entreprise (abonnés, impressions, engagement)</div>
     <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">${prof.linkedin?`Page renseignée — ${/^https?:/.test(prof.linkedin)?`<a href="${prof.linkedin}" target="_blank">voir la Page ↗</a>`:prof.linkedin}.`:'Aucune Page LinkedIn renseignée.'}
       Branche les données live en suivant le guide.</div>
-    <a class="mini gold" href="../../connect-linkedin.html" target="_blank" rel="noopener" style="display:inline-block;margin-top:12px;text-decoration:none">Connecter LinkedIn →</a>`,'col6');}
+    <a class="mini gold" href="#" onclick="go('connecter');return false" style="display:inline-block;margin-top:12px;text-decoration:none">Connecter LinkedIn →</a>`,'col6');}
 
   /* ---- Abonnés les plus actifs (vrais « top fans ») ---- */
   const fans=(m&&m.top_commentateurs)||(m&&m.top_fans)||[];
@@ -852,7 +854,7 @@ function viewReseaux(){
       const url=prof[r]; let right;
       if(ab!=null) right=`<span class="pill" style="background:${p.c}1f;color:${p.c};border-color:${p.c}66">● connecté · ${nf(ab)} abonnés</span>`+((url&&/^https?:/.test(url))?` <a href="${url}" target="_blank" style="color:${p.c}">↗</a>`:'');
       else if(url) right=/^https?:/.test(url)?`<a href="${url}" target="_blank" style="color:${p.c}">lien ↗</a>`:url;
-      else if(r==='linkedin') right=`<a href="../../connect-linkedin.html" target="_blank" class="pill" style="border-color:${p.c}66;color:${p.c}">connecter →</a>`;
+      else if(r==='linkedin') right=`<a href="#" onclick="go('connecter');return false" class="pill" style="border-color:${p.c}66;color:${p.c}">connecter →</a>`;
       else right='<span class="tag">à renseigner</span>';
       return `<div class="kvr"><b style="display:flex;align-items:center;gap:8px;font-weight:600">${pbadge(r)} ${p.nom}</b><span>${right}</span></div>`;}).join('')}</div>`,'col12');
 
@@ -1013,8 +1015,32 @@ function pubAfterGen(tries){ dashRefetch().then(function(){const cr=loadAgent(AC
     if(n>0||tries>=8){$("#pubGen").disabled=false;refreshPsub();go('publier');} else setTimeout(function(){pubAfterGen(tries+1);},4000);
   }).catch(function(){if(tries<8)setTimeout(function(){pubAfterGen(tries+1);},4000);else{$("#pubGen").disabled=false;refreshPsub();go('publier');}}); }
 
+/* ---------- Mémoire & Connexion réseaux : pages existantes IMBRIQUÉES (iframe, zéro duplication) ---------- */
+function frame(src,h){ return `<iframe src="${src}" title="AWEMA" style="width:100%;height:${h||'78vh'};border:1px solid var(--border);border-radius:14px;margin-top:12px;background:var(--bg,#0A1F44)" loading="lazy"></iframe>`; }
+function viewMemoire(){
+  if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
+  add(`<h3>${ic('layers')} Mémoire Marketing — ${escP(ACTIVE.nom)}</h3>
+    <div class="sub">L'ADN de marque qui nourrit les agents IA — édité ici, enregistré dans GitHub</div>
+    ${frame('../../memoire.html?client='+encodeURIComponent(ACTIVE.id))}`,'col12');
+}
+const RX_CX=[['facebook','Facebook & Instagram','connect-facebook.html'],['tiktok','TikTok','connect-tiktok.html'],['youtube','YouTube','connect-youtube.html'],['linkedin','LinkedIn','connect-linkedin.html'],['whatsapp','WhatsApp','connect-whatsapp.html'],['ia','IA (cerveau)','connect-ia.html']];
+let CX_SEL='connect-facebook.html';
+function viewConnecter(){
+  add(`<h3>${ic('bubble')} Connecter les réseaux</h3><div class="sub">Choisis un réseau — le guide s'ouvre ici, sans quitter le dashboard</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px" id="cxTiles">${RX_CX.map(r=>{const p=PLAT[r[0]]||{},col=p.c||'#4BA3FF';return `<button class="pill" data-pg="${r[2]}" style="cursor:pointer;border-color:${col}66;color:${col};padding:8px 13px;${r[2]===CX_SEL?'background:'+col+'22;':''}">${r[1]}</button>`;}).join('')}</div>
+    <div id="cxHost">${frame('../../'+CX_SEL,'72vh')}</div>`,'col12');
+  $$('#cxTiles button').forEach(function(b){ b.onclick=function(){
+    CX_SEL=b.dataset.pg;
+    $("#cxHost").innerHTML=frame('../../'+b.dataset.pg,'72vh');
+    const key=(RX_CX.find(function(r){return r[2]===b.dataset.pg;})||[])[0];
+    const col=(PLAT[key]||{}).c||'#4BA3FF';
+    $$('#cxTiles button').forEach(function(x){x.style.background='';});
+    b.style.background=col+'22';
+  };});
+}
+
 /* ---------- Routeur de vues ---------- */
-const SECTIONS={overview:["Vue d'ensemble",viewOverview],publier:["Planifier & publier",viewPublier],calendrier:["Calendrier éditorial",viewCalendrier],
+const SECTIONS={overview:["Vue d'ensemble",viewOverview],publier:["Planifier & publier",viewPublier],memoire:["Mémoire Marketing",viewMemoire],connecter:["Connecter les réseaux",viewConnecter],calendrier:["Calendrier éditorial",viewCalendrier],
   contenus:["Contenus",viewContenus],reseaux:["Présence digitale",viewReseaux],scoring:["Scoring A→E",viewScoring],
   tunnel:["Tunnel WhatsApp",viewTunnel],auto:["Automatisation",viewAuto],clients:["Clients & présence digitale",viewClients],
   reglages:["Réglages",viewReglages]};
@@ -1048,7 +1074,7 @@ function go(section){
 }
 
 /* ---------- Command palette ---------- */
-const NAVITEMS=[['overview','Vue d\'ensemble'],['publier','Planifier & publier'],['contenus','Contenus'],['reseaux','Présence digitale'],['scoring','Scoring (bientôt)'],['tunnel','Tunnel WhatsApp (bientôt)'],['auto','Automatisation (bientôt)'],['clients','Clients'],['reglages','Réglages']];
+const NAVITEMS=[['overview','Vue d\'ensemble'],['publier','Planifier & publier'],['contenus','Contenus'],['memoire','Mémoire Marketing'],['connecter','Connecter les réseaux'],['reseaux','Présence digitale'],['scoring','Scoring (bientôt)'],['tunnel','Tunnel WhatsApp (bientôt)'],['auto','Automatisation (bientôt)'],['clients','Clients'],['reglages','Réglages']];
 function openCmd(){$("#cmdOv").classList.add('on');$("#cmdIn").value='';$("#cmdIn").focus();cmdRender('');}
 function closeCmd(){$("#cmdOv").classList.remove('on');}
 let cmdSel=0,cmdList=[];

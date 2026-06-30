@@ -26,12 +26,14 @@ MANIFEST = os.path.join(ICI, "agents.json")
 
 
 def _agents():
-    return (json.load(open(MANIFEST, encoding="utf-8")) or {}).get("agents", {})
+    with open(MANIFEST, encoding="utf-8") as f:
+        return (json.load(f) or {}).get("agents", {})
 
 
 def _lire(path):
     try:
-        return json.load(open(path, encoding="utf-8"))
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
     except Exception:
         return None
 

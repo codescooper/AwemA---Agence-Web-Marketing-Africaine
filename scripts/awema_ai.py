@@ -29,7 +29,8 @@ ANTHROPIC_VERSION = "2023-06-01"
 # --------------------------------------------------------------------------- #
 def _registre():
     try:
-        d = json.load(open(os.path.join(RACINE, "config", "ia-providers.json"), encoding="utf-8"))
+        with open(os.path.join(RACINE, "config", "ia-providers.json"), encoding="utf-8") as f:
+            d = json.load(f)
         return d.get("defaut", "anthropic"), (d.get("providers") or {})
     except Exception:
         return "anthropic", {}
