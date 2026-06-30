@@ -34,10 +34,10 @@ jobs:
 
       - name: Synchroniser TOUTES les Pages (Meta Graph API)
         env:
-          META_TOKEN: ${{ secrets.META_TOKEN }}
+          META_TOKEN: ${{ secrets.META_TOKEN || vars.META_TOKEN }}
         run: |
           if [ -z "$META_TOKEN" ]; then
-            echo "::error::Secret META_TOKEN requis."; exit 1
+            echo "::error::META_TOKEN requis (Secret, ou Variable posée par « Se connecter avec Facebook »)."; exit 1
           fi
           python3 scripts/connect-reseaux.py --meta-all
 

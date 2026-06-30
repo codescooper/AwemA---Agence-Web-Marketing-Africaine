@@ -60,10 +60,10 @@
   var state = p.get('state') || '';
   var redirect = location.origin + location.pathname;   // doit être identique à l'autorisation
   var zone = document.getElementById('zone');
-  // Fournisseur déduit du préfixe de state : 'li:' = LinkedIn, sinon TikTok (défaut/rétro-compat).
-  var PROV = (state.indexOf('li:') === 0)
-    ? { id:'linkedin', nom:'LinkedIn', wf:'linkedin-exchange.yml', slug:false }
-    : { id:'tiktok',   nom:'TikTok',   wf:'tiktok-exchange.yml',   slug:true };
+  // Fournisseur déduit du préfixe de state : 'li:'=LinkedIn, 'fb:'=Facebook, sinon TikTok (défaut/rétro-compat).
+  var PROV = (state.indexOf('li:') === 0) ? { id:'linkedin', nom:'LinkedIn', wf:'linkedin-exchange.yml', slug:false }
+           : (state.indexOf('fb:') === 0) ? { id:'facebook', nom:'Facebook', wf:'meta-exchange.yml',     slug:false }
+           : { id:'tiktok', nom:'TikTok', wf:'tiktok-exchange.yml', slug:true };
 
   function codeRow(){
     return '<div class="lbl">Code reçu</div><div class="box">'+
