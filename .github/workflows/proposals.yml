@@ -1,0 +1,66 @@
+name: Propositions IA (à la demande)
+
+# Déclenché depuis le dashboard / la page Planifier : génère des propositions de posts pour UN client,
+# à partir d'une idée (optionnelle) ou de ce qui performe le mieux. Écrit _agents/creatif.json + committe.
+# Utilise la clé IA en Secret (skip gracieux si absente — le run signale alors « IA inactive »).
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: "Slug du client (ex. code-scooper)"
+        required: true
+      idee:
+        description: "Idée/thème (vide = s'appuyer sur ce qui marche)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: awema-proposals
+  cancel-in-progress: false
+
+jobs:
+  proposer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Générer les propositions (agent Créatif)
+        env:
+          AWEMA_AI_PROVIDER: ${{ vars.AWEMA_AI_PROVIDER }}
+          AWEMA_AI_MODEL: ${{ vars.AWEMA_AI_MODEL }}
+          AWEMA_IDEE: ${{ inputs.idee }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
+          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
+        run: |
+          python3 scripts/awema_ai.py --check || echo "::warning::IA non détectée — vérifie le Secret de ta clé + la Variable AWEMA_AI_PROVIDER."
+          python3 scripts/run-agent.py creatif "${{ inputs.client }}"
+
+      - name: Régénérer le registre
+        run: python3 outils/_data/build.py
+
+      - name: Commit si changements
+        run: |
+          git config user.name "awema-bot"
+          git config user.email "bot@awema.local"
+          if git diff --quiet; then
+            echo "::warning::Aucune proposition générée (IA inactive ? clé manquante ?)."; exit 0
+          fi
+          git add -A
+          git commit -m "chore(ia): propositions Créatif pour ${{ inputs.client }} ($(date -u +%FT%TZ))"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "✅ Propositions générées."

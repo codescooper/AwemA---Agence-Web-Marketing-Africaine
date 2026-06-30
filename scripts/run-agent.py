@@ -60,7 +60,15 @@ def _executer(nom, defn, client, donnees):
     ctx, fichiers = _entrees(defn, donnees)
     if not ctx:
         return None, "aucune entrée disponible (rien à analyser)"
-    prompt = (f"{defn.get('instruction','')}\n\n"
+    idee = (os.environ.get("AWEMA_IDEE") or "").strip()
+    consigne_idee = ""
+    if idee:
+        consigne_idee = (f"\n\nIDÉE/THÈME IMPOSÉ par l'utilisateur : « {idee[:500]} ».\n"
+                         "Décline des propositions autour de cette idée, tout en respectant le ton de la marque.")
+    else:
+        consigne_idee = ("\n\nAucune idée imposée : appuie-toi sur CE QUI MARCHE le mieux pour ce compte "
+                         "(top_posts, formats et réseaux les plus performants des données ci-dessous).")
+    prompt = (f"{defn.get('instruction','')}{consigne_idee}\n\n"
               f"Client : {client.get('nom')} ({client.get('secteur','')}).\n"
               f"Données disponibles (JSON) :\n{json.dumps(ctx, ensure_ascii=False)[:12000]}")
     schema_hint = defn.get("schema_hint") or '{"items":[{"titre":"...","explication":"..."}]}'
