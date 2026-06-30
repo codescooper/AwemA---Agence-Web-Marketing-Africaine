@@ -200,7 +200,35 @@ les **clés IA** passent par un widget commun `awema-connect.js` → `AwemaGH.sa
 réutilise le PAT TikTok (`secrets.AWEMA_PAT || secrets.TIKTOK_PAT`). **Résultat : plus aucune page n'impose de
 commande** ; le terminal Python ne subsiste qu'en repli `<details>`.
 
+## ADR-010 — Publication programmée (file d'attente Git + cron + connecteurs d'écriture)
+**Statut** : Accepté (2026-06-30).
+**Contexte.** AWEMA savait **lire** (synchro des stats). Le besoin : **planifier puis publier** des posts sur les
+réseaux connectés, avec proposition par les agents IA **ou** composition manuelle, sans serveur (ADN auto-hébergé).
+**Problème.** Comment programmer une publication à une date/heure et l'envoyer **sans serveur**, tout en restant
+robuste (pas de double-publication, traçable, reprise sur échec) ?
+**Décision.** Réutiliser « GitHub = back-end » (ADR-007) :
+1. **File d'attente dans Git** : un post = un fichier `modules/marketing/clients/<slug>/_donnees/_planning/<id>.json`
+   (réseaux, `publier_le` ISO-8601 UTC, contenu, média, `statut`, `resultats`, `source` ia|manuel, `tentatives`).
+   Les médias (image/vidéo) sont **committés** et servis par Pages → leur **URL publique** est passée aux plateformes
+   (Instagram l'exige déjà). `build.py` agrège `_planning/` dans le registre (`client.planning`) pour le calendrier.
+2. **Planificateur = cron Actions** : `publish.yml` (toutes les ~15 min + `workflow_dispatch`) lance `publisher.py`
+   qui sélectionne les posts **dus** (`statut=programme` et `publier_le<=maintenant`), publie via un **connecteur
+   par réseau**, **idempotent** (un réseau déjà `ok` n'est jamais republié), met à jour le statut
+   (`publie`/`partiel`/`echec` après N tentatives) et **committe** le résultat.
+3. **Composition** : page `planifier.html` (texte + média + réseaux + date) écrit le JSON via `AwemaGH.saveFile`.
+   Les **agents** (Créatif) proposent des posts (mode par défaut) ; l'utilisateur **valide d'un clic** ou compose
+   manuellement. Tokens d'écriture en **Secret/Variable**, jamais dans le navigateur.
+**Conséquences.** (+) Planifier→publier **sans serveur**, traçable dans Git, reprise sur échec. (+) Brique
+réutilisable (connecteurs) ; le module Marketing porte la logique, le Kernel reste agnostique. (−) **Écrire ≠ lire**
+: scopes de publication plus larges (re-connexion) et **App Review plus stricte** côté plateformes. (−) Le cron
+GitHub a une granularité **~5 min** et peut être **retardé** (pas de « 18:00:00 pile »). (−) **TikTok**/**Instagram**
+fortement gatées (souvent **brouillon** / Business uniquement) ; **YouTube** = upload vidéo lourd dans Actions.
+**Vérification.** Moteur de planification **testé** (sélection des dus, idempotence, transitions de statut) ;
+connecteurs codés selon specs des plateformes mais **à valider en live** (non testables hors-ligne).
+**Alternatives rejetées.** Outil de planification SaaS (trahit « zéro SaaS ») ; publication directe depuis le
+navigateur (exposerait les tokens d'écriture) ; scheduler dédié hébergé (serveur à maintenir).
+
 ---
 
-> **Prochain ADR libre : ADR-010.** Créer un ADR avant toute décision structurante (frontière de
+> **Prochain ADR libre : ADR-011.** Créer un ADR avant toute décision structurante (frontière de
 > données, nouveau module officiel, changement de contrat d'agent/plugin, migration de répertoires).

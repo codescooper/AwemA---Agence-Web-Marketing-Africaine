@@ -45,6 +45,14 @@ def main():
             a = lire(aj)
             if a:
                 agents[os.path.splitext(os.path.basename(aj))[0]] = a
+        # File d'attente de publication (ADR-010) : _donnees/_planning/<id>.json
+        planning = []
+        for pj in sorted(glob.glob(os.path.join(donnees, "_planning", "*.json"))):
+            if os.path.basename(pj) == "index.json":
+                continue
+            p = lire(pj)
+            if p:
+                planning.append(p)
         clients.append({
             **client,
             "_dir": rel,
@@ -54,6 +62,7 @@ def main():
             "reseaux": reseaux,                             # métriques (depuis reseaux.json) ou null
             "memoire": memoire,                             # Mémoire Marketing (depuis memoire.json) ou null
             "agents": agents or None,                       # sorties IA (depuis _agents/) ou null
+            "planning": planning or None,                   # file de publication (depuis _planning/) ou null
         })
 
     lic = lire(os.path.join(RACINE, "config", "licence.json")) or {}
