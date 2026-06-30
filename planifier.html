@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWEMA — Planifier &amp; publier (calendrier éditorial)</title>
+<meta name="description" content="Compose ou laisse l'IA proposer, programme la date, et AWEMA publie tout seul sur les réseaux connectés.">
+<style>
+  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
+    --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.13)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.6;
+    background:radial-gradient(1100px 650px at 50% -12%,#16294f,#0A1F44 62%,#07162f);min-height:100vh;padding-bottom:80px}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  header{padding:42px 0 6px}
+  .back{color:var(--muted);text-decoration:none;font-size:13px}
+  h1{font-family:Montserrat,sans-serif;font-weight:800;font-size:clamp(25px,4.4vw,36px);margin-top:12px;letter-spacing:-.02em}
+  h1 .g{background:linear-gradient(120deg,var(--gold),#f2d479);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);margin-top:8px;font-size:14.5px}
+  .tabs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .tab{background:var(--card);border:1px solid var(--bord);color:var(--tx);border-radius:11px;padding:9px 15px;font:600 13.5px Poppins;cursor:pointer}
+  .tab.on{background:linear-gradient(135deg,var(--ciel),var(--violet));border-color:transparent}
+  .panel{display:none;margin-top:16px} .panel.on{display:block}
+  .card{background:var(--card);border:1px solid var(--bord);border-radius:18px;padding:20px;margin-top:14px;backdrop-filter:blur(8px)}
+  label{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 5px}
+  input,select,textarea{width:100%;background:rgba(0,0,0,.28);border:1px solid var(--bord);border-radius:11px;color:#fff;font:inherit;font-size:13.5px;padding:10px 12px}
+  textarea{min-height:110px;resize:vertical;line-height:1.5}
+  .nets{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .netchk{display:flex;align-items:center;gap:7px;border:1px solid var(--bord);border-radius:10px;padding:7px 11px;cursor:pointer;font-size:13px}
+  .netchk input{width:auto}
+  .pi{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:11px;font-family:Montserrat}
+  .row2{display:flex;gap:12px;flex-wrap:wrap}.row2>div{flex:1;min-width:180px}
+  .btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:linear-gradient(135deg,var(--ciel),var(--violet));color:#fff;border:0;border-radius:11px;padding:11px 18px;font:700 13.5px Poppins;cursor:pointer}
+  .btn.gh{background:transparent;border:1px solid var(--bord)}
+  .msg{font-size:13px;margin-top:10px;min-height:18px}
+  .note{font-size:12.5px;color:var(--muted);margin-top:12px;border-left:3px solid var(--gold);padding-left:12px}
+  .item{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--bord);border-radius:13px;padding:13px;margin-top:10px;background:rgba(255,255,255,.03)}
+  .item .when{font-size:12px;color:var(--muted);white-space:nowrap}
+  .item .tx{flex:1;font-size:13.5px}
+  .badge{font-size:11px;font-weight:700;border-radius:20px;padding:3px 9px;border:1px solid currentColor;white-space:nowrap}
+  .b-programme{color:var(--gold)} .b-publie{color:var(--mint)} .b-echec{color:var(--pink)} .b-partiel{color:var(--ciel)} .b-brouillon{color:var(--muted)}
+  .prop{border:1px solid var(--bord);border-radius:13px;padding:14px;margin-top:10px;background:rgba(124,92,255,.06)}
+  .empty{color:var(--muted);font-size:13.5px;text-align:center;padding:24px}
+  a.inl{color:var(--ciel)}
+  .charc{font-size:11.5px;color:var(--muted);text-align:right;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">← Accueil</a>
+    <h1>Planifier &amp; <span class="g">publier</span></h1>
+    <p class="lead">Compose un post (ou laisse l'IA le proposer), choisis les réseaux et la date :
+      AWEMA publie <b>tout seul</b> le moment venu. <a class="inl" href="tutoriel.html">Guide</a></p>
+    <div class="tabs">
+      <button class="tab on" data-t="composer">✍️ Composer</button>
+      <button class="tab" data-t="propositions">💡 Propositions IA</button>
+      <button class="tab" data-t="calendrier">🗓️ Calendrier</button>
+    </div>
+  </header>
+
+  <!-- COMPOSER -->
+  <div class="panel on" id="p-composer">
+    <div class="card">
+      <label>Client</label>
+      <select id="cClient"></select>
+      <label>Réseaux où publier</label>
+      <div class="nets" id="cNets"></div>
+      <label>Texte du post</label>
+      <textarea id="cTexte" placeholder="Écris ton message…"></textarea>
+      <div class="charc" id="cChar">0 caractère</div>
+      <div class="row2">
+        <div><label>Image (URL ou fichier)</label><input id="cImg" placeholder="https://…/image.jpg"><input id="cImgFile" type="file" accept="image/*" style="margin-top:6px;font-size:12px;padding:6px"></div>
+        <div><label>Vidéo (URL — optionnel)</label><input id="cVid" placeholder="https://…/video.mp4"></div>
+      </div>
+      <div class="row2">
+        <div><label>Date</label><input id="cDate" type="date"></div>
+        <div><label>Heure</label><input id="cTime" type="time" value="09:00"></div>
+        <div><label>Lien (optionnel)</label><input id="cLien" placeholder="https://…"></div>
+      </div>
+      <button class="btn" id="cGo">🗓️ Programmer la publication</button>
+      <div class="msg" id="cMsg"></div>
+      <div class="note">AWEMA enregistre le post dans ta file d'attente (ton dépôt) et le publie au moment prévu
+        via une GitHub Action. <b>Image</b> : si tu choisis un fichier, il est hébergé sur ton site et son adresse
+        est transmise aux plateformes. <b>Vidéo</b> : colle une URL (YouTube/TikTok sont activés progressivement).</div>
+    </div>
+  </div>
+
+  <!-- PROPOSITIONS IA -->
+  <div class="panel" id="p-propositions">
+    <div class="card">
+      <p class="lead" style="margin:0 0 4px">Idées proposées par l'agent <b>Créatif</b> pour tes clients. Clique
+        <b>« Utiliser »</b> pour pré-remplir le composer, ajuste, puis programme.</p>
+      <div id="propList"></div>
+    </div>
+  </div>
+
+  <!-- CALENDRIER -->
+  <div class="panel" id="p-calendrier">
+    <div class="card">
+      <p class="lead" style="margin:0 0 4px">Tes posts programmés et publiés. Le statut se met à jour tout seul
+        après chaque passage du planificateur.</p>
+      <div id="calList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="outils/_data/platforms.js" onerror=""></script>
+<script src="outils/_data/agence.js" onerror=""></script>
+<script src="outils/_data/config.js" onerror=""></script>
+<script src="outils/_data/apply.js" onerror=""></script>
+<script src="outils/_design/awema-github.js"></script>
+<script>
+  var REG=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
+  var PLAT=window.AWEMA_PLATFORMS||{};
+  function isDemo(c){return c.demo===true||c.id==='demo-client'||c.slug==='demo-client'||/D[ÉE]MO/i.test(c.nom||'');}
+  var CLIENTS=REG;  // démo inclus pour pouvoir tester la planification
+  var NETS=[['facebook','Facebook'],['instagram','Instagram'],['linkedin','LinkedIn'],['youtube','YouTube'],['tiktok','TikTok']];
+
+  // Onglets
+  document.querySelectorAll('.tab').forEach(function(t){ t.onclick=function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('on');});
+    t.classList.add('on'); document.getElementById('p-'+t.dataset.t).classList.add('on');
+  };});
+
+  // Sélecteur client
+  var sel=document.getElementById('cClient');
+  if(!CLIENTS.length){ sel.innerHTML='<option>Aucun client — ajoute-en un d\'abord</option>'; }
+  CLIENTS.forEach(function(c,i){ var o=document.createElement('option'); o.value=i; o.textContent=(c.nom||c.slug||c.id||('client '+i)); sel.appendChild(o); });
+
+  // Cases réseaux
+  var netWrap=document.getElementById('cNets');
+  NETS.forEach(function(n){ var p=PLAT[n[0]]||{}; var col=p.couleur||p.color||'#4BA3FF'; var gly=p.glyphe||p.glyph||n[1][0];
+    var l=document.createElement('label'); l.className='netchk';
+    l.innerHTML='<input type="checkbox" value="'+n[0]+'"><span class="pi" style="background:'+col+'">'+gly+'</span>'+n[1];
+    netWrap.appendChild(l);
+  });
+
+  // Compteur de caractères
+  var tx=document.getElementById('cTexte');
+  tx.addEventListener('input',function(){document.getElementById('cChar').textContent=tx.value.length+' caractère'+(tx.value.length>1?'s':'');});
+
+  function cMsg(t,c){var m=document.getElementById('cMsg');m.innerHTML=t;m.style.color=c||'var(--muted)';}
+  function pad(n){return (n<10?'0':'')+n;}
+  function fileToB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=rej;r.readAsDataURL(f);});}
+  function comptesPour(c){
+    return {facebook:c.fb_page_id||c.facebook_page_id||'', instagram:c.ig_user_id||c.instagram_id||'',
+      linkedin:c.linkedin_org||c.linkedin_urn||'', youtube:c.yt_channel_id||'', tiktok:c.tiktok_open_id||''};
+  }
+
+  document.getElementById('cGo').onclick=async function(){
+    var c=CLIENTS[sel.value]; if(!c){cMsg('Choisis un client.','#FF7D9C');return;}
+    var reseaux=Array.prototype.slice.call(netWrap.querySelectorAll('input:checked')).map(function(i){return i.value;});
+    if(!reseaux.length){cMsg('Choisis au moins un réseau.','#FF7D9C');return;}
+    var texte=tx.value.trim(); if(!texte){cMsg('Écris le texte du post.','#FF7D9C');return;}
+    var date=document.getElementById('cDate').value, time=document.getElementById('cTime').value||'09:00';
+    if(!date){cMsg('Choisis une date.','#FF7D9C');return;}
+    var dt=new Date(date+'T'+time); if(isNaN(dt)){cMsg('Date/heure invalide.','#FF7D9C');return;}
+    if(!window.AwemaGH){cMsg('Module GitHub indisponible.','#FF7D9C');return;}
+
+    var rand=Math.random().toString(36).slice(2,8);
+    var id='p-'+date.replace(/-/g,'')+'-'+time.replace(':','')+'-'+rand;
+    var dir=c._dir||('modules/marketing/clients/'+(c.slug||c.id));
+    var media=[];
+    var imgUrl=document.getElementById('cImg').value.trim();
+    var vidUrl=document.getElementById('cVid').value.trim();
+
+    cMsg('Connexion à GitHub…');
+    AwemaGH.ensure(async function(){
+      try{
+        var imgFile=document.getElementById('cImgFile').files[0];
+        if(imgFile){
+          if(imgFile.size>4*1024*1024){cMsg('Image trop lourde (>4 Mo). Réduis-la ou utilise une URL.','#FF7D9C');return;}
+          var ext=(imgFile.name.split('.').pop()||'jpg').toLowerCase();
+          var mediaPath=dir+'/_donnees/_planning/media/'+id+'.'+ext;
+          cMsg('Envoi de l’image…');
+          await AwemaGH.saveFile(mediaPath, await fileToB64(imgFile), 'AWEMA : média '+id);
+          var base=location.href.replace(/[^/]*$/,'');
+          media.push({type:'image', url: base+mediaPath});
+        } else if(imgUrl){ media.push({type:'image', url:imgUrl}); }
+        if(vidUrl){ media.push({type:'video', url:vidUrl}); }
+
+        var item={ id:id, client:(c.slug||c.id), reseaux:reseaux, publier_le:dt.toISOString(),
+          contenu:{texte:texte, lien:document.getElementById('cLien').value.trim()},
+          media:media, comptes:comptesPour(c), statut:'programme', source:'manuel',
+          resultats:{}, tentatives:0, cree_le:new Date().toISOString() };
+
+        cMsg('Enregistrement dans ta file d’attente…');
+        await AwemaGH.saveFile(dir+'/_donnees/_planning/'+id+'.json', item, 'AWEMA : planifie '+id);
+        AwemaGH.runWorkflow('build.yml');  // régénère le calendrier (best-effort)
+        cMsg('✅ Programmé pour le <b>'+dt.toLocaleString()+'</b> sur '+reseaux.join(', ')+'. AWEMA publiera tout seul. <a class="inl" href="planifier.html">Voir le calendrier</a> (≈1 min).','var(--mint)');
+        tx.value=''; document.getElementById('cChar').textContent='0 caractère';
+      }catch(e){ cMsg('❌ '+(e.message||e),'#FF7D9C'); }
+    });
+  };
+
+  // —— Propositions IA (depuis l'agent Créatif) ——
+  function extraireIdees(c){
+    var a=(c.agents&&(c.agents.creatif||c.agents['créatif']))||null; if(!a)return [];
+    var out=[];
+    ['idees','propositions','posts','contenus','suggestions'].forEach(function(k){
+      var arr=a[k]; if(Array.isArray(arr)) arr.forEach(function(x){ out.push(typeof x==='string'?x:(x.texte||x.titre||x.idee||x.contenu||JSON.stringify(x))); });
+    });
+    return out;
+  }
+  var pl=document.getElementById('propList'); var any=false;
+  CLIENTS.forEach(function(c,i){ var idees=extraireIdees(c); if(!idees.length)return; any=true;
+    idees.slice(0,8).forEach(function(idee){
+      var d=document.createElement('div'); d.className='prop';
+      d.innerHTML='<div style="font-size:12px;color:var(--muted)">'+(c.nom||c.slug)+'</div><div style="font-size:13.5px;margin:5px 0 8px">'+
+        idee.replace(/</g,'&lt;').slice(0,400)+'</div><button class="btn gh" style="margin:0">✍️ Utiliser</button>';
+      d.querySelector('button').onclick=function(){
+        sel.value=i; tx.value=idee; document.getElementById('cChar').textContent=idee.length+' caractères';
+        document.querySelector('.tab[data-t="composer"]').click(); window.scrollTo(0,0);
+      };
+      pl.appendChild(d);
+    });
+  });
+  if(!any) pl.innerHTML='<div class="empty">Aucune proposition pour l’instant. Les agents en génèrent à chaque analyse — reviens après une synchro, ou compose manuellement.</div>';
+
+  // —— Calendrier (depuis registry.planning) ——
+  function badge(s){ var lbl={programme:'programmé',publie:'publié',echec:'échec',partiel:'partiel',brouillon:'brouillon'}[s]||s; return '<span class="badge b-'+(s||'brouillon')+'">'+lbl+'</span>'; }
+  var items=[];
+  CLIENTS.forEach(function(c){ (c.planning||[]).forEach(function(p){ items.push({c:c,p:p}); }); });
+  items.sort(function(a,b){ return (b.p.publier_le||'').localeCompare(a.p.publier_le||''); });
+  var cl=document.getElementById('calList');
+  if(!items.length){ cl.innerHTML='<div class="empty">Aucun post planifié. Va dans « ✍️ Composer » pour en créer un.</div>'; }
+  items.forEach(function(o){ var p=o.p; var when=p.publier_le?new Date(p.publier_le):null;
+    var d=document.createElement('div'); d.className='item';
+    d.innerHTML='<div class="when">'+(when?when.toLocaleString():'—')+'<br><span style="opacity:.7">'+(o.c.nom||o.c.slug||'')+'</span></div>'+
+      '<div class="tx">'+((p.contenu&&p.contenu.texte)||'').replace(/</g,'&lt;').slice(0,180)+
+      '<div style="font-size:11.5px;color:var(--muted);margin-top:4px">'+(p.reseaux||[]).join(' · ')+'</div></div>'+
+      badge(p.statut);
+    cl.appendChild(d);
+  });
+
+  // date par défaut = aujourd'hui
+  (function(){var n=new Date();document.getElementById('cDate').value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate());})();
+</script>
+<script src="outils/_design/awema-fork.js"></script>
+<script src="outils/_design/abeille.js" data-aide="planifier"></script>
+</body>
+</html>

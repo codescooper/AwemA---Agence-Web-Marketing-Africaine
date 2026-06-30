@@ -9,6 +9,11 @@
 
   // ——— Ce qu'Awa explique, page par page (court, chaleureux, jamais perdu) ———
   var AIDE = {
+    planifier: { t: "Planifier & publier 🗓️", s: [
+      "<b>Composer</b> : écris un post, choisis les réseaux + la date → « Programmer ». AWEMA publie tout seul le moment venu.",
+      "<b>Propositions IA</b> : reprends une idée de l'agent Créatif en un clic, ajuste, programme.",
+      "<b>Calendrier</b> : suis l'état (programmé / publié / échec) — mis à jour automatiquement.",
+      "Publier exige des droits d'écriture côté plateforme : reconnecte le réseau si besoin." ] },
     tutoriel: { t: "Le guide complet, pas à pas 🧭", s: [
       "Suis les 14 étapes <b>dans l'ordre</b> : de la copie du projet jusqu'à AWEMA qui tourne.",
       "Tu ne tapes <b>aucune commande</b> : tu cliques, tu colles, tu attends.",
