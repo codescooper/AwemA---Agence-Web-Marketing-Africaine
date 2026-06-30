@@ -91,5 +91,14 @@ class TestPublierItem(unittest.TestCase):
         self.assertEqual(it["statut"], "programme")  # différé ≠ échec définitif
 
 
+class TestMediasUrls(unittest.TestCase):
+    def test_extrait_les_urls_presentes(self):
+        item = {"media": [{"type": "image", "url": "u1"}, {"type": "video"}, {"url": "u2"}]}
+        self.assertEqual(publisher.medias_urls(item), ["u1", "u2"])
+
+    def test_sans_media_donne_liste_vide(self):
+        self.assertEqual(publisher.medias_urls({}), [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -351,7 +351,7 @@
   /* ---- vitrine plateformes (cartes de marque, métriques réelles si dispo) ---- */
   function netTotal(net){ var ab=0,n=0; clients.forEach(function(c){ var pr=c.reseaux&&c.reseaux.par_reseau;
     if(pr&&pr[net]&&pr[net].abonnes!=null){ ab+=pr[net].abonnes; n++; } }); return {ab:ab,n:n}; }
-  var STATUT={facebook:'Connecté',instagram:'Bientôt',tiktok:'Connecté',youtube:'Connecté',linkedin:'Nouveau',whatsapp:'Tunnel'};
+  var STATUT={facebook:'Connecté',instagram:'Via Facebook',tiktok:'Connecté',youtube:'Connecté',linkedin:'Nouveau',whatsapp:'Tunnel'};
   var maxAb=1; ['facebook','tiktok','youtube','linkedin'].forEach(function(k){ maxAb=Math.max(maxAb,netTotal(k).ab); });
   var show=document.getElementById('pshow');
   ['facebook','tiktok','youtube','linkedin','instagram','whatsapp'].forEach(function(k){
