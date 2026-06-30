@@ -89,8 +89,18 @@
   <!-- PROPOSITIONS IA -->
   <div class="panel" id="p-propositions">
     <div class="card">
-      <p class="lead" style="margin:0 0 4px">Idées proposées par l'agent <b>Créatif</b> pour tes clients. Clique
-        <b>« Utiliser »</b> pour pré-remplir le composer, ajuste, puis programme.</p>
+      <p class="lead" style="margin:0 0 6px"><b>Génère des propositions</b> : donne une idée, ou laisse vide pour
+        t'appuyer sur <b>ce qui marche le mieux</b> sur le compte. L'agent Créatif s'en occupe.</p>
+      <div class="row2">
+        <div><label>Client</label><select id="genClient"></select></div>
+        <div style="flex:2"><label>Idée / thème (optionnel)</label><input id="genIdee" placeholder="ex. promo rentrée — ou laisse vide"></div>
+      </div>
+      <button class="btn" id="genGo">✨ Générer des propositions</button>
+      <div class="msg" id="genMsg"></div>
+      <div class="note">Génération côté GitHub (~1 min) avec ta clé IA. <b>Rien ne se passe ?</b> Vérifie que ta clé
+        est bien posée et que le fournisseur est choisi : <a class="inl" href="configuration.html">Mise en route</a>.</div>
+      <hr style="border:none;border-top:1px solid var(--bord);margin:18px 0">
+      <p class="lead" style="margin:0 0 4px">Propositions disponibles — clique <b>« Utiliser »</b> pour pré-remplir le composer.</p>
       <div id="propList"></div>
     </div>
   </div>
@@ -192,6 +202,38 @@
         cMsg('✅ Programmé pour le <b>'+dt.toLocaleString()+'</b> sur '+reseaux.join(', ')+'. AWEMA publiera tout seul. <a class="inl" href="planifier.html">Voir le calendrier</a> (≈1 min).','var(--mint)');
         tx.value=''; document.getElementById('cChar').textContent='0 caractère';
       }catch(e){ cMsg('❌ '+(e.message||e),'#FF7D9C'); }
+    });
+  };
+
+  // —— Générateur de propositions à la demande (workflow proposals.yml + suivi) ——
+  var genSel=document.getElementById('genClient');
+  CLIENTS.forEach(function(c,i){ var o=document.createElement('option'); o.value=i; o.textContent=(c.nom||c.slug||c.id); genSel.appendChild(o); });
+  function genMsg(t,col){var m=document.getElementById('genMsg');m.innerHTML=t;m.style.color=col||'var(--muted)';}
+  function pollGen(baseId,tries){
+    if(tries>24){ genMsg('⏳ Toujours en cours. Recharge la page dans une minute pour voir les propositions.','var(--muted)'); document.getElementById('genGo').disabled=false; return; }
+    setTimeout(function(){
+      AwemaGH.latestRun('proposals.yml').then(function(run){
+        if(!run||run.id===baseId){ genMsg('⏳ Génération en cours…'); pollGen(baseId,tries+1); return; }
+        if(run.status!=='completed'){ genMsg('⏳ Génération en cours… (l’IA travaille)'); pollGen(baseId,tries+1); return; }
+        if(run.conclusion==='success'){ genMsg('✅ Propositions générées ! Rechargement…','var(--mint)'); setTimeout(function(){location.reload();},900); }
+        else { genMsg('❌ La génération a échoué — le plus souvent : <b>clé IA absente</b> (Secret non posé) ou fournisseur non choisi. Va sur <a class="inl" href="configuration.html">Mise en route</a>. <a class="inl" href="'+(run.url||'#')+'" target="_blank">détail</a>','#FF7D9C'); document.getElementById('genGo').disabled=false; }
+      }).catch(function(){ pollGen(baseId,tries+1); });
+    },3000);
+  }
+  document.getElementById('genGo').onclick=function(){
+    var c=CLIENTS[genSel.value]; if(!c){genMsg('Choisis un client.','#FF7D9C');return;}
+    var slug=c.slug||c.id; var idee=document.getElementById('genIdee').value.trim();
+    if(!window.AwemaGH){genMsg('Module GitHub indisponible.','#FF7D9C');return;}
+    genMsg('Connexion à GitHub…');
+    AwemaGH.ensure(function(){
+      document.getElementById('genGo').disabled=true;
+      genMsg('Lancement de l’IA…');
+      AwemaGH.latestRun('proposals.yml').then(function(prev){
+        var baseId=prev&&prev.id;
+        return AwemaGH.runWorkflow('proposals.yml',{client:slug,idee:idee},true).then(function(){
+          genMsg('⏳ L’IA génère tes propositions (~1 min)…'); pollGen(baseId,0);
+        });
+      }).catch(function(e){ document.getElementById('genGo').disabled=false; genMsg('❌ '+(e.message||e),'#FF7D9C'); });
     });
   };
 
