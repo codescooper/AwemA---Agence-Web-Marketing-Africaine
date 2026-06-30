@@ -46,7 +46,10 @@ jobs:
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
         run: |
-          python3 scripts/awema_ai.py --check || echo "::warning::IA non détectée — vérifie le Secret de ta clé + la Variable AWEMA_AI_PROVIDER."
+          if ! python3 scripts/awema_ai.py --check | grep -q "IA active"; then
+            echo "::error::Clé IA introuvable côté GitHub Actions. Ta clé doit être un SECRET (onglet « Secrets », PAS « Variables ») : Settings → Secrets and variables → Actions → New repository secret → nom exact GROQ_API_KEY (ou la clé de ton fournisseur)."
+            exit 1
+          fi
           python3 scripts/run-agent.py creatif "${{ inputs.client }}"
 
       - name: Régénérer le registre
@@ -57,7 +60,7 @@ jobs:
           git config user.name "awema-bot"
           git config user.email "bot@awema.local"
           if git diff --quiet; then
-            echo "::warning::Aucune proposition générée (IA inactive ? clé manquante ?)."; exit 0
+            echo "::error::IA active mais aucune proposition générée (réponse vide ou client sans données). Réessaie, ou vérifie la mémoire/les données du client."; exit 1
           fi
           git add -A
           git commit -m "chore(ia): propositions Créatif pour ${{ inputs.client }} ($(date -u +%FT%TZ))"

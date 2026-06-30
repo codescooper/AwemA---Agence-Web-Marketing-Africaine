@@ -238,9 +238,9 @@
         return AwemaGH.saveSecret(nom,key);
       }).then(function(res){
         document.getElementById('iaKey').value='';
-        if(res&&res.ok){ iaMsg('✅ '+prov+' branché automatiquement. Les agents pourront travailler.','#34E5C4'); }
-        else { iaMsg('Presque ! Un dernier collage sur GitHub (fenêtre ouverte) — nom : '+nom,'#D4AF37'); AwemaGH.guideSecret(nom,key); }
-        store.ia=true; DET.ia=true; save(); render();
+        if(res&&res.ok){ iaMsg('✅ '+prov+' branché automatiquement. Les agents pourront travailler.','#34E5C4'); store.ia=true; DET.ia=true; }
+        else { iaMsg('Presque ! Colle la clé comme SECRET sur GitHub (fenêtre ouverte), nom : '+nom+'. Puis « ↻ Revérifier l\'état » pour confirmer.','#D4AF37'); AwemaGH.guideSecret(nom,key); }
+        save(); render();
       }).catch(function(e){ iaMsg('❌ '+(e.message||e),'#FF7D9C'); });
     });
   };
@@ -281,10 +281,11 @@
   var DET = {};
   function isDone(step){
     if(step==='github') return !!(window.AwemaGH&&AwemaGH.connected());
-    if(step==='pages')   return DET.pages===true || !!store.pages;
-    if(step==='ia')      return DET.ia===true || !!store.ia;
+    // Quand AWEMA a pu VÉRIFIER en ligne (DET.x défini), c'est la vérité ; sinon repli sur l'indice local.
+    if(step==='pages')   return (DET.pages!==undefined)   ? DET.pages   : !!store.pages;
+    if(step==='ia')      return (DET.ia!==undefined)      ? DET.ia      : !!store.ia;
     if(step==='reseaux') return DET.reseaux===true || NETS.some(function(n){return netConnecte(n.k);});
-    if(step==='sync')    return DET.sync===true || !!store.auto;
+    if(step==='sync')    return (DET.sync!==undefined)    ? DET.sync    : !!store.auto;
     return false;
   }
   function setAuditMsg(t,c,clearAfter){
@@ -323,8 +324,10 @@
       ]);
       var pages=res[0], vars=res[1], secs=res[2], run1=res[3], run2=res[4];
       if(pages!==null) DET.pages=pages;
+      // IA « en place » = la CLÉ existe vraiment en SECRET (la Variable AWEMA_AI_PROVIDER ne suffit pas :
+      // sans le secret, les agents côté Actions sautent et rien n'est généré).
+      if(secs!==null){ DET.ia=secs.some(function(s){return IA_SECRETS.indexOf(s)>=0;}); }
       if(vars!==null||secs!==null){
-        DET.ia=((vars||[]).indexOf('AWEMA_AI_PROVIDER')>=0)||((secs||[]).some(function(s){return IA_SECRETS.indexOf(s)>=0;}));
         DET.reseaux=((secs||[]).some(function(s){return NET_SECRETS.indexOf(s)>=0;}))||((vars||[]).indexOf('TIKTOK_TOKENS')>=0)||((vars||[]).indexOf('LINKEDIN_TOKEN')>=0);
       }
       DET.sync=!!run1||!!run2;
