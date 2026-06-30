@@ -453,9 +453,9 @@ function cAgents(){
         <span class="t" style="opacity:.8">${(a.items&&a.items[0]&&(a.items[0].titre||a.items[0].explication))||'—'}</span>
         <span class="pill">${(a.items||[]).length} item(s)</span>
         <span class="pill">${(a.genere_le||'').slice(0,10)||'—'}</span></div>`;}).join('')}</div>`
-      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Aucun assistant généré pour l'instant.<br>
-        Lance <code>python3 scripts/run-agent.py analyste --all</code> (nécessite une clé IA <code>ANTHROPIC_API_KEY</code>),
-        puis régénère le registre. <span style="color:var(--muted2)">— socle M0, panneaux riches à venir (M2–M5).</span></div>`}`;
+      :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Aucun assistant généré pour l'instant.
+        Les agents tournent <b>automatiquement</b> (chaque jour + après chaque synchro) dès que ta clé IA est en place.
+        <a href="../../configuration.html" style="color:var(--gold)">Vérifier l'IA</a>.</div>`}`;
 }
 
 /* ---------- Mémoire Marketing (M1) — carburant des agents ---------- */
@@ -487,9 +487,9 @@ function cAnalyste(connected){
   const head=`<h3>${ic('bolt')} Pourquoi & Que faire <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
   if(!a||!(a.items||[]).length){
     return head+`<div class="sub">L'Analyste explique tes résultats et te dit quoi faire</div>
-      <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.7">${connected?'Pas encore d\'analyse.':'Connecte d\'abord les réseaux.'}
-      Génère-la : <code>python3 scripts/run-agent.py analyste ${ACTIVE?ACTIVE.id:'<client>'}</code>
-      (clé <code>ANTHROPIC_API_KEY</code> requise), puis régénère le registre.</div>`;
+      <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">${connected?'Pas encore d\'analyse.':'Connecte d\'abord les réseaux.'}
+      Généré <b>automatiquement</b> par les agents (quotidien + après synchro) si l'IA est en place.
+      <a href="../../configuration.html" style="color:var(--gold)">Vérifier l'IA</a>.</div>`;
   }
   const ins=(a.items||[]).filter(i=>i.type==='insight'), rec=(a.items||[]).filter(i=>i.type==='reco');
   const card=(i,reco)=>`<div class="li" style="flex-direction:column;align-items:flex-start;gap:5px;padding:12px 6px">
@@ -509,8 +509,9 @@ function cStratege(){
   const s=loadAgent(ACTIVE,'stratege');
   const head=`<h3>${ic('cal')} Plan recommandé <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
   if(!s){return head+`<div class="sub">Le Stratège transforme tes perfs en plan d'action</div>
-    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.7">Pas encore de plan.
-    Génère-le : <code>python3 scripts/run-agent.py stratege ${ACTIVE?ACTIVE.id:'<client>'}</code> (clé IA requise).</div>`;}
+    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Pas encore de plan.
+    Généré <b>automatiquement</b> par les agents (quotidien + après synchro) si l'IA est en place.
+    <a href="../../configuration.html" style="color:var(--gold)">Vérifier l'IA</a>.</div>`;}
   const plan=(s.items||[]), heures=(s.meilleures_heures||[]), obj=(s.objectifs||[]);
   return head+`<div class="sub">Stratège IA${s.genere_le?' · '+s.genere_le.slice(0,10):''} — à valider avant d'agir</div>
     <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
@@ -523,7 +524,7 @@ function cStratege(){
           <span class="pill" style="border-color:${col}66;color:${col}">${p.reseau||''}</span>
           <span class="pill">${p.format||''}</span>
           <span class="t" title="${(p.angle||'').replace(/"/g,'&quot;')}">${p.angle||''}</span></div>`;}).join('')}</div></div>`:''}
-    <div style="margin-top:14px"><button class="mini gold" onclick="toast('Pour pousser ce plan : python3 scripts/awema.py … (validation humaine requise)')">Pousser vers le plan →</button></div>`;
+    <div style="margin-top:14px"><a class="mini gold" href="../../planifier.html?client=${ACTIVE?encodeURIComponent(ACTIVE.id):''}&tab=composer" style="text-decoration:none">🗓️ Planifier ce plan →</a></div>`;
 }
 
 /* ---------- Agent Créatif (M4) : idées prêtes à publier ---------- */
@@ -532,9 +533,10 @@ function cpd(el){const t=el.dataset.t||'';navigator.clipboard.writeText(t).then(
 function cCreatif(){
   const c=loadAgent(ACTIVE,'creatif');
   const head=`<h3>${ic('layers')} Idées prêtes à publier <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  const planURL=`../../planifier.html?client=${ACTIVE?encodeURIComponent(ACTIVE.id):''}&tab=propositions`;
   if(!c||!(c.items||[]).length){return head+`<div class="sub">Le Créatif propose des publications calées sur ta marque et tes perfs</div>
-    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.7">Pas encore d'idées.
-    Génère-les : <code>python3 scripts/run-agent.py creatif ${ACTIVE?ACTIVE.id:'<client>'}</code> (clé IA + mémoire renseignée recommandée).</div>`;}
+    <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Pas encore d'idées pour ce client.</div>
+    <div style="margin-top:12px"><a class="mini gold" href="${planURL}" style="text-decoration:none">✨ Générer des propositions →</a></div>`;}
   const idea=i=>{const col=(PLAT[(i.reseau||'').toLowerCase()]||{}).c||'#7C5CFF';
     const plein=`${i.hook||''}\n\n${i.script||''}`;
     return `<div class="li" style="flex-direction:column;align-items:flex-start;gap:7px;padding:13px 8px">
@@ -550,7 +552,9 @@ function cCreatif(){
         <button class="mini gold" data-t="${escAttr(plein)}" onclick="cpd(this)">Copier l'idée</button></div></div>`;};
   return head+`<div class="sub">Créatif IA${c.genere_le?' · '+c.genere_le.slice(0,10):''} — relis et adapte avant de publier</div>
     <div class="list" style="margin-top:10px">${(c.items||[]).map(idea).join('')}</div>
-    <div style="margin-top:12px"><button class="mini gold" onclick="toast('Valider une idée → l\\'ajouter au plan via l\\'opérateur (validation humaine)')">Valider vers le plan →</button></div>`;
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <a class="mini gold" href="${planURL}" style="text-decoration:none">🗓️ Planifier ces idées →</a>
+      <a class="mini" href="${planURL}" style="text-decoration:none">✨ En générer d'autres</a></div>`;
 }
 
 /* ---------- Proactivité (M5) : « 3 choses à faire aujourd'hui » ---------- */
@@ -564,8 +568,8 @@ function cActionsDuJour(){
   if(!items.length){
     return `<h3>${ic('bolt')} Actions du jour <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
       <div class="sub">AWEMA te proposera quoi faire en priorité, chaque jour</div>
-      <div style="margin-top:12px;color:var(--muted);font-size:12.5px;line-height:1.7">Génère-les (alertes <b>sans clé IA</b>, + propositions des agents si générées) :
-      <code>python3 scripts/run-agent.py actions-du-jour --all</code>, puis régénère le registre.</div>`;
+      <div style="margin-top:12px;color:var(--muted);font-size:12.5px;line-height:1.6">Elles apparaissent <b>automatiquement</b> après la première synchronisation/analyse.</div>
+      <div style="margin-top:10px"><a class="mini gold" href="../../configuration.html" style="text-decoration:none">▶️ Lancer la 1ʳᵉ récupération →</a></div>`;
   }
   const n=Math.min(items.length,3);
   return `<h3>${ic('bolt')} ${n} chose${n>1?'s':''} à faire aujourd'hui <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
@@ -602,6 +606,7 @@ function viewCalendrier(){
   add(cUpcoming(14),'col8');
 }
 function viewContenus(){
+  add(cCreatif(),'col12');   // propositions IA générées (à exploiter / planifier)
   add(`<h3>${ic('layers')} Contenus du plan — ${A.total}
       <a class="mini gold" href="${revueURL()}" target="_blank" style="margin-left:auto;text-decoration:none">Ouvrir le visualiseur ↗</a></h3>
     <div class="sub">Filtrer et parcourir les ${A.total} contenus réels du client</div>
@@ -958,7 +963,7 @@ $("#themeBtn").onclick=()=>{const h=document.documentElement;const d=h.getAttrib
 $("#hamb").onclick=e=>{e.stopPropagation();$("#side").classList.toggle('open');};
 $("#main").addEventListener('click',e=>{if(e.target.closest('#hamb'))return;$("#side").classList.remove('open');});
 $("#cmdkBtn").onclick=openCmd;
-$("#newBtn").onclick=()=>{go('contenus');toast('Contenus — générez via _generateur/generer.py');};
+$("#newBtn").onclick=()=>{ location.href='../../planifier.html?client='+encodeURIComponent((ACTIVE&&ACTIVE.id)||'')+'&tab=composer'; };
 $("#cmdIn").oninput=e=>cmdRender(e.target.value);
 $("#cmdOv").onclick=e=>{if(e.target===$("#cmdOv"))closeCmd();};
 $$('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.go));
