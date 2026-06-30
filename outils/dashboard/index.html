@@ -218,7 +218,7 @@ a{color:inherit;text-decoration:none}
     <nav class="nav" id="nav">
       <div class="lbl">Pilotage</div>
       <a class="active" data-go="overview" data-ic="grid"><span>Vue d'ensemble</span></a>
-      <a href="../../planifier.html" data-ic="cal"><span>Planifier &amp; publier</span></a>
+      <a data-go="publier" data-ic="cal"><span>Planifier &amp; publier</span></a>
       <a data-go="contenus" data-ic="layers"><span>Contenus</span></a>
       <a class="soon" data-go="scoring" data-ic="chart"><span>Scoring</span><em>bientôt</em></a>
       <a data-go="reseaux" data-ic="bubble"><span>Présence digitale</span></a>
@@ -267,6 +267,8 @@ a{color:inherit;text-decoration:none}
 <script src="../_data/agence.js" onerror="window.__noReg=1"></script>
 <script src="../_data/config.js" onerror=""></script>
 <script src="../_data/apply.js"></script>
+<script src="../_design/awema-github.js"></script>
+<script src="../_design/awema-fork.js"></script>
 <script src="data.js" onerror="window.__noData=1"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -524,7 +526,7 @@ function cStratege(){
           <span class="pill" style="border-color:${col}66;color:${col}">${p.reseau||''}</span>
           <span class="pill">${p.format||''}</span>
           <span class="t" title="${(p.angle||'').replace(/"/g,'&quot;')}">${p.angle||''}</span></div>`;}).join('')}</div></div>`:''}
-    <div style="margin-top:14px"><a class="mini gold" href="../../planifier.html?client=${ACTIVE?encodeURIComponent(ACTIVE.id):''}&tab=composer" style="text-decoration:none">🗓️ Planifier ce plan →</a></div>`;
+    <div style="margin-top:14px"><button class="mini gold" onclick="go('publier')">🗓️ Planifier ce plan →</button></div>`;
 }
 
 /* ---------- Agent Créatif (M4) : idées prêtes à publier ---------- */
@@ -533,10 +535,9 @@ function cpd(el){const t=el.dataset.t||'';navigator.clipboard.writeText(t).then(
 function cCreatif(){
   const c=loadAgent(ACTIVE,'creatif');
   const head=`<h3>${ic('layers')} Idées prêtes à publier <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
-  const planURL=`../../planifier.html?client=${ACTIVE?encodeURIComponent(ACTIVE.id):''}&tab=propositions`;
   if(!c||!(c.items||[]).length){return head+`<div class="sub">Le Créatif propose des publications calées sur ta marque et tes perfs</div>
     <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Pas encore d'idées pour ce client.</div>
-    <div style="margin-top:12px"><a class="mini gold" href="${planURL}" style="text-decoration:none">✨ Générer des propositions →</a></div>`;}
+    <div style="margin-top:12px"><button class="mini gold" onclick="go('publier')">✨ Générer des propositions →</button></div>`;}
   const idea=i=>{const col=(PLAT[(i.reseau||'').toLowerCase()]||{}).c||'#7C5CFF';
     const plein=`${i.hook||''}\n\n${i.script||''}`;
     return `<div class="li" style="flex-direction:column;align-items:flex-start;gap:7px;padding:13px 8px">
@@ -553,8 +554,8 @@ function cCreatif(){
   return head+`<div class="sub">Créatif IA${c.genere_le?' · '+c.genere_le.slice(0,10):''} — relis et adapte avant de publier</div>
     <div class="list" style="margin-top:10px">${(c.items||[]).map(idea).join('')}</div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      <a class="mini gold" href="${planURL}" style="text-decoration:none">🗓️ Planifier ces idées →</a>
-      <a class="mini" href="${planURL}" style="text-decoration:none">✨ En générer d'autres</a></div>`;
+      <button class="mini gold" onclick="go('publier')">🗓️ Planifier ces idées →</button>
+      <button class="mini" onclick="go('publier')">✨ En générer d'autres</button></div>`;
 }
 
 /* ---------- Proactivité (M5) : « 3 choses à faire aujourd'hui » ---------- */
@@ -873,8 +874,94 @@ function viewReglages(){
   const r=$("#rTheme");if(r)r.onclick=()=>$("#themeBtn").click();
 }
 
+/* ---------- Planifier & publier (section native, branchée sur ACTIVE) ---------- */
+let PLANNED_LOCAL=[];
+const NETS_PUB=[['facebook','Facebook'],['instagram','Instagram'],['linkedin','LinkedIn'],['youtube','YouTube'],['tiktok','TikTok']];
+function escP(s){return String(s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
+function comptesPub(c){return {facebook:c.fb_page_id||c.facebook_page_id||'',instagram:c.ig_user_id||c.instagram_id||'',linkedin:c.linkedin_org||c.linkedin_urn||'',youtube:c.yt_channel_id||'',tiktok:c.tiktok_open_id||''};}
+function dashRefetch(){return fetch('../_data/agence.js?ts='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/=\s*(\{[\s\S]*\})\s*;?\s*$/);if(!m)throw 0;const d=JSON.parse(m[1]);CLIENTS=d.clients||[];window.AWEMA_REGISTRY=d;const cur=ACTIVE&&ACTIVE.id;ACTIVE=CLIENTS.find(c=>c.id===cur)||ACTIVE;return ACTIVE;});}
+function viewPublier(){
+  if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
+  const cr=loadAgent(ACTIVE,'creatif'), items=(cr&&cr.items)||[];
+  add(`<h3>${ic('layers')} Propositions IA <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">${escP(ACTIVE.nom)}</span></h3>
+    <div class="sub">Donne une idée, ou laisse vide → AWEMA s'appuie sur ce qui marche</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="pubIdee" class="fld" style="flex:1;min-width:180px" placeholder="Idée / thème (optionnel)"><button class="btn" id="pubGen">✨ Générer</button></div>
+    <div id="pubGenMsg" style="font-size:12.5px;min-height:16px;color:var(--muted)"></div>
+    <div class="list" id="pubProps" style="margin-top:10px">${items.length?items.map((it,ix)=>`
+      <div class="li" style="flex-direction:column;align-items:flex-start;gap:6px;padding:12px 8px">
+        <div style="display:flex;gap:8px;width:100%;align-items:center;flex-wrap:wrap"><b style="flex:1;min-width:140px">${escP(it.hook||'')}</b><span class="pill">${escP(it.reseau||'')}</span><span class="pill">${escP(it.format||'')}</span></div>
+        ${it.script?`<div style="color:var(--muted);font-size:12.4px;white-space:pre-wrap">${escP(it.script).slice(0,420)}</div>`:''}
+        <button class="mini gold" data-ix="${ix}" onclick="pubUse(this)">✍️ Utiliser ce contenu</button></div>`).join(''):'<div class="sub">Aucune proposition encore — clique « Générer ».</div>'}</div>`,'col6');
+
+  add(`<h3>${ic('cal')} Composer &amp; programmer</h3><div class="sub">Publié automatiquement à la date choisie</div>
+    <div id="pubNets" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">${NETS_PUB.map(n=>{const col=(PLAT[n[0]]||{}).c||'#4BA3FF';return `<label class="pill" style="cursor:pointer;display:inline-flex;gap:6px;align-items:center;border-color:${col}66"><input type="checkbox" value="${n[0]}" style="margin:0">${n[1]}</label>`;}).join('')}</div>
+    <textarea id="pubTexte" class="fld" style="width:100%;min-height:100px;margin-top:10px" placeholder="Texte du post…"></textarea>
+    <input id="pubImg" class="fld" style="width:100%;margin-top:8px" placeholder="Image (URL, optionnel)">
+    <div style="display:flex;gap:8px;margin-top:8px"><input id="pubDate" type="date" class="fld" style="flex:1"><input id="pubTime" type="time" value="09:00" class="fld" style="flex:1"></div>
+    <button class="btn" id="pubGo" style="margin-top:12px">🗓️ Programmer</button>
+    <div id="pubMsg" style="font-size:12.5px;min-height:16px;margin-top:8px;color:var(--muted)"></div>`,'col6');
+
+  const planning=(ACTIVE.planning||[]).concat(PLANNED_LOCAL.filter(p=>p.client===(ACTIVE.slug||ACTIVE.id)));
+  planning.sort((a,b)=>(b.publier_le||'').localeCompare(a.publier_le||''));
+  add(`<h3>${ic('cal')} Calendrier — ${planning.length} post(s)<a class="mini gold" href="${revueURL()}" target="_blank" style="margin-left:auto;text-decoration:none">Visualiseur ↗</a></h3>
+    <div class="sub">Programmés &amp; publiés pour ${escP(ACTIVE.nom)}</div>
+    <div class="list" style="margin-top:10px">${planning.length?planning.map(p=>{const st=p.statut||'brouillon',col={programme:'#D4AF37',publie:'#34E5C4',echec:'#FF7D9C',partiel:'#4BA3FF'}[st]||'#9db0d6';
+      return `<div class="li" style="align-items:flex-start;gap:10px;padding:11px 8px"><span style="font-size:11.4px;color:var(--muted);white-space:nowrap">${p.publier_le?new Date(p.publier_le).toLocaleString():'—'}</span><span style="flex:1;font-size:12.7px">${escP((p.contenu&&p.contenu.texte)||'').slice(0,140)}<div style="font-size:11px;color:var(--muted);margin-top:3px">${(p.reseaux||[]).join(' · ')}</div></span><span class="pill" style="border-color:${col}66;color:${col}">${st}</span></div>`;}).join(''):'<div class="sub">Aucun post planifié. Compose ci-dessus.</div>'}</div>`,'col12');
+
+  const n=new Date(),p2=x=>(x<10?'0':'')+x,dd=$("#pubDate"); if(dd)dd.value=n.getFullYear()+'-'+p2(n.getMonth()+1)+'-'+p2(n.getDate());
+  $("#pubGen").onclick=pubGenerer; $("#pubGo").onclick=pubProgrammer;
+}
+window.pubUse=function(btn){const cr=loadAgent(ACTIVE,'creatif'),it=((cr&&cr.items)||[])[+btn.dataset.ix];if(!it)return;
+  $("#pubTexte").value=(it.hook?it.hook+'\n\n':'')+(it.script||'');
+  $$("#pubNets input").forEach(i=>i.checked=(i.value===(it.reseau||'').toLowerCase()));
+  $("#pubTexte").scrollIntoView({behavior:'smooth',block:'center'});};
+function pubMsg(t,c){const m=$("#pubMsg");if(m){m.innerHTML=t;m.style.color=c||'var(--muted)';}}
+function pubProgrammer(){
+  if(!window.AwemaGH){pubMsg('Module GitHub indisponible.','#FF7D9C');return;}
+  const reseaux=$$("#pubNets input:checked").map(i=>i.value);
+  if(!reseaux.length){pubMsg('Choisis au moins un réseau.','#FF7D9C');return;}
+  const texte=$("#pubTexte").value.trim(); if(!texte){pubMsg('Écris le texte du post.','#FF7D9C');return;}
+  const date=$("#pubDate").value,time=$("#pubTime").value||'09:00';
+  if(!date){pubMsg('Choisis une date.','#FF7D9C');return;}
+  const dt=new Date(date+'T'+time); if(isNaN(dt)){pubMsg('Date/heure invalide.','#FF7D9C');return;}
+  const slug=ACTIVE.slug||ACTIVE.id,dir=ACTIVE._dir||('modules/marketing/clients/'+slug);
+  const id='p-'+date.replace(/-/g,'')+'-'+time.replace(':','')+'-'+Math.random().toString(36).slice(2,8);
+  const media=[],img=$("#pubImg").value.trim(); if(img)media.push({type:'image',url:img});
+  const item={id:id,client:slug,reseaux:reseaux,publier_le:dt.toISOString(),contenu:{texte:texte,lien:''},media:media,comptes:comptesPub(ACTIVE),statut:'programme',source:'manuel',resultats:{},tentatives:0,cree_le:new Date().toISOString()};
+  pubMsg('Connexion à GitHub…');
+  AwemaGH.ensure(function(){ pubMsg('Enregistrement dans la file d\'attente…');
+    AwemaGH.saveFile(dir+'/_donnees/_planning/'+id+'.json',item,'AWEMA : planifie '+id).then(function(){
+      AwemaGH.runWorkflow('build.yml'); PLANNED_LOCAL.unshift(item);
+      pubMsg('✅ Programmé pour '+dt.toLocaleString()+' — visible dans le calendrier ci-dessous.','#34E5C4');
+      go('publier');
+    }).catch(function(e){pubMsg('❌ '+(e.message||e),'#FF7D9C');});
+  });
+}
+function pubGenerer(){
+  if(!window.AwemaGH){$("#pubGenMsg").textContent='Module GitHub indisponible.';return;}
+  const slug=ACTIVE.slug||ACTIVE.id,idee=($("#pubIdee").value||'').trim(),gm=$("#pubGenMsg");
+  gm.style.color='var(--muted)'; gm.textContent='Connexion à GitHub…';
+  AwemaGH.ensure(function(){ $("#pubGen").disabled=true; gm.textContent='Lancement de l\'IA…';
+    AwemaGH.latestRun('proposals.yml').then(function(prev){const base=prev&&prev.id;
+      return AwemaGH.runWorkflow('proposals.yml',{client:slug,idee:idee},true).then(function(){gm.textContent='⏳ Génération (~1 min)…';pubPoll(base,0);});
+    }).catch(function(e){$("#pubGen").disabled=false;gm.style.color='#FF7D9C';gm.textContent='❌ '+(e.message||e);});
+  });
+}
+function pubPoll(base,tries){const gm=$("#pubGenMsg");
+  if(tries>24){gm.textContent='⏳ Toujours en cours. Reviens dans une minute.';$("#pubGen").disabled=false;return;}
+  setTimeout(function(){ AwemaGH.latestRun('proposals.yml').then(function(run){
+    if(!run||run.id===base){pubPoll(base,tries+1);return;}
+    if(run.status!=='completed'){pubPoll(base,tries+1);return;}
+    if(run.conclusion==='success'){gm.style.color='var(--mint)';gm.textContent='✅ Généré ! Récupération…';pubAfterGen(0);}
+    else{gm.style.color='#FF7D9C';gm.innerHTML='❌ Échec — <a href="'+(run.url||'#')+'" target="_blank" style="color:var(--gold)">voir le détail</a>.';$("#pubGen").disabled=false;}
+  }).catch(function(){pubPoll(base,tries+1);}); },3000);
+}
+function pubAfterGen(tries){ dashRefetch().then(function(){const cr=loadAgent(ACTIVE,'creatif'),n=((cr&&cr.items)||[]).length;
+    if(n>0||tries>=8){$("#pubGen").disabled=false;go('publier');} else setTimeout(function(){pubAfterGen(tries+1);},4000);
+  }).catch(function(){if(tries<8)setTimeout(function(){pubAfterGen(tries+1);},4000);else{$("#pubGen").disabled=false;go('publier');}}); }
+
 /* ---------- Routeur de vues ---------- */
-const SECTIONS={overview:["Vue d'ensemble",viewOverview],calendrier:["Calendrier éditorial",viewCalendrier],
+const SECTIONS={overview:["Vue d'ensemble",viewOverview],publier:["Planifier & publier",viewPublier],calendrier:["Calendrier éditorial",viewCalendrier],
   contenus:["Contenus",viewContenus],reseaux:["Présence digitale",viewReseaux],scoring:["Scoring A→E",viewScoring],
   tunnel:["Tunnel WhatsApp",viewTunnel],auto:["Automatisation",viewAuto],clients:["Clients & présence digitale",viewClients],
   reglages:["Réglages",viewReglages]};
@@ -908,7 +995,7 @@ function go(section){
 }
 
 /* ---------- Command palette ---------- */
-const NAVITEMS=[['overview','Vue d\'ensemble'],['calendrier','Calendrier (bientôt)'],['contenus','Contenus'],['reseaux','Présence digitale'],['scoring','Scoring (bientôt)'],['tunnel','Tunnel WhatsApp (bientôt)'],['auto','Automatisation (bientôt)'],['clients','Clients'],['reglages','Réglages']];
+const NAVITEMS=[['overview','Vue d\'ensemble'],['publier','Planifier & publier'],['contenus','Contenus'],['reseaux','Présence digitale'],['scoring','Scoring (bientôt)'],['tunnel','Tunnel WhatsApp (bientôt)'],['auto','Automatisation (bientôt)'],['clients','Clients'],['reglages','Réglages']];
 function openCmd(){$("#cmdOv").classList.add('on');$("#cmdIn").value='';$("#cmdIn").focus();cmdRender('');}
 function closeCmd(){$("#cmdOv").classList.remove('on');}
 let cmdSel=0,cmdList=[];
@@ -963,7 +1050,7 @@ $("#themeBtn").onclick=()=>{const h=document.documentElement;const d=h.getAttrib
 $("#hamb").onclick=e=>{e.stopPropagation();$("#side").classList.toggle('open');};
 $("#main").addEventListener('click',e=>{if(e.target.closest('#hamb'))return;$("#side").classList.remove('open');});
 $("#cmdkBtn").onclick=openCmd;
-$("#newBtn").onclick=()=>{ location.href='../../planifier.html?client='+encodeURIComponent((ACTIVE&&ACTIVE.id)||'')+'&tab=composer'; };
+$("#newBtn").onclick=()=>go('publier');
 $("#cmdIn").oninput=e=>cmdRender(e.target.value);
 $("#cmdOv").onclick=e=>{if(e.target===$("#cmdOv"))closeCmd();};
 $$('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.go));
