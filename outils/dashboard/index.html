@@ -314,8 +314,7 @@ function setClient(id){
   RES=(ACTIVE&&ACTIVE.reseaux)||null;
   try{localStorage.setItem('awema-client',ACTIVE?ACTIVE.id:'');}catch(e){}
   const sel=$("#clientSel"); if(sel&&ACTIVE)sel.value=ACTIVE.id;
-  $("#psub").textContent=ACTIVE?(ACTIVE.nom+' · '+(ACTIVE.lieu||'')+' · '+ITEMS.length+' contenus'):'Aucun client';
-  aggregate(); go(CURRENT||'overview');
+  aggregate(); refreshPsub(); go(CURRENT||'overview');
 }
 
 /* ---------- charts ---------- */
@@ -457,7 +456,7 @@ function cAgents(){
         <span class="pill">${(a.genere_le||'').slice(0,10)||'—'}</span></div>`;}).join('')}</div>`
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Aucun assistant généré pour l'instant.
         Les agents tournent <b>automatiquement</b> (chaque jour + après chaque synchro) dès que ta clé IA est en place.
-        <a href="../../configuration.html" style="color:var(--gold)">Vérifier l'IA</a>.</div>`}`;
+        <a href="#" onclick="go('reglages');return false" style="color:var(--gold)">Vérifier l'IA</a>.</div>`}`;
 }
 
 /* ---------- Mémoire Marketing (M1) — carburant des agents ---------- */
@@ -491,7 +490,7 @@ function cAnalyste(connected){
     return head+`<div class="sub">L'Analyste explique tes résultats et te dit quoi faire</div>
       <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">${connected?'Pas encore d\'analyse.':'Connecte d\'abord les réseaux.'}
       Généré <b>automatiquement</b> par les agents (quotidien + après synchro) si l'IA est en place.
-      <a href="../../configuration.html" style="color:var(--gold)">Vérifier l'IA</a>.</div>`;
+      <a href="#" onclick="go('reglages');return false" style="color:var(--gold)">Vérifier l'IA</a>.</div>`;
   }
   const ins=(a.items||[]).filter(i=>i.type==='insight'), rec=(a.items||[]).filter(i=>i.type==='reco');
   const card=(i,reco)=>`<div class="li" style="flex-direction:column;align-items:flex-start;gap:5px;padding:12px 6px">
@@ -513,7 +512,7 @@ function cStratege(){
   if(!s){return head+`<div class="sub">Le Stratège transforme tes perfs en plan d'action</div>
     <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Pas encore de plan.
     Généré <b>automatiquement</b> par les agents (quotidien + après synchro) si l'IA est en place.
-    <a href="../../configuration.html" style="color:var(--gold)">Vérifier l'IA</a>.</div>`;}
+    <a href="#" onclick="go('reglages');return false" style="color:var(--gold)">Vérifier l'IA</a>.</div>`;}
   const plan=(s.items||[]), heures=(s.meilleures_heures||[]), obj=(s.objectifs||[]);
   return head+`<div class="sub">Stratège IA${s.genere_le?' · '+s.genere_le.slice(0,10):''} — à valider avant d'agir</div>
     <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
@@ -570,7 +569,7 @@ function cActionsDuJour(){
     return `<h3>${ic('bolt')} Actions du jour <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
       <div class="sub">AWEMA te proposera quoi faire en priorité, chaque jour</div>
       <div style="margin-top:12px;color:var(--muted);font-size:12.5px;line-height:1.6">Elles apparaissent <b>automatiquement</b> après la première synchronisation/analyse.</div>
-      <div style="margin-top:10px"><a class="mini gold" href="../../configuration.html" style="text-decoration:none">▶️ Lancer la 1ʳᵉ récupération →</a></div>`;
+      <div style="margin-top:10px"><a class="mini gold" href="#" onclick="go('reglages');return false" style="text-decoration:none">▶️ Lancer la 1ʳᵉ récupération →</a></div>`;
   }
   const n=Math.min(items.length,3);
   return `<h3>${ic('bolt')} ${n} chose${n>1?'s':''} à faire aujourd'hui <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
@@ -859,19 +858,63 @@ function viewReseaux(){
 
   $$('.kpi .val[data-to]').forEach(el=>countup(el,+el.dataset.to,el.dataset.suf||''));
 }
+const IA_KEYNAME={groq:'GROQ_API_KEY',gemini:'GEMINI_API_KEY',openai:'OPENAI_API_KEY',anthropic:'ANTHROPIC_API_KEY',mistral:'MISTRAL_API_KEY',openrouter:'OPENROUTER_API_KEY'};
+const IA_SIGNUP={groq:'https://console.groq.com/keys',gemini:'https://aistudio.google.com/apikey',openai:'https://platform.openai.com/api-keys',anthropic:'https://console.anthropic.com/settings/keys',mistral:'https://console.mistral.ai/api-keys',openrouter:'https://openrouter.ai/keys'};
+function ghRepoSlug(){ try{const c=JSON.parse(localStorage.getItem('awema-gh'))||{}; if(c.owner&&c.repo)return c.owner+'/'+c.repo;}catch(e){} const g=(window.AWEMA_CONFIG&&AWEMA_CONFIG.github)||{}; return (g.owner&&g.repo)?g.owner+'/'+g.repo:''; }
 function viewReglages(){
-  add(`<h3>${ic('cog')} Apparence</h3><div class="sub">Thème de l'interface</div>
-    <div style="margin-top:14px"><button class="btn" id="rTheme" data-ic="moon" style="border:1px solid var(--border);background:var(--elev);padding:9px 14px;border-radius:11px;color:var(--tx)"> Basculer le thème</button></div>`,'col4');
-  add(`<h3>${ic('layers')} Source de données</h3><div class="sub">Registre multi-clients</div>
+  const gh=window.AwemaGH&&AwemaGH.connected();
+  add(`<h3>${ic('cog')} Mise en route <span class="pill" style="background:#34E5C422;color:#34E5C4;border-color:#34E5C466">tout dans le dashboard</span></h3>
+    <div class="sub">Configure GitHub, l'IA et la 1ʳᵉ récupération — sans quitter le dashboard</div>
+    <div style="margin-top:14px;font-size:13px">
+      <div class="kvr"><b>① GitHub</b><span>${gh?('✅ '+AwemaGH.who()+' · <button class="mini" id="rGh">Reconfigurer</button>'):'<button class="mini gold" id="rGh">🔗 Connecter mon GitHub</button>'}</span></div>
+      <div class="kvr"><b>② Hébergement</b><span><a class="mini" id="rPages" target="_blank" rel="noopener">⚙️ Activer Pages ↗</a></span></div>
+    </div>
+    <div style="margin-top:14px"><div class="sub" style="margin-bottom:6px"><b>③ Cerveau — une IA</b> (gratuite : Groq)</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <select id="rIaProv" class="fld" style="flex:0 0 auto"><option value="groq">Groq</option><option value="gemini">Gemini</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="mistral">Mistral</option><option value="openrouter">OpenRouter</option></select>
+        <input id="rIaKey" type="password" class="fld" style="flex:1;min-width:150px" placeholder="Colle ta clé IA">
+        <button class="btn" id="rIaSave">⚡ Enregistrer</button></div>
+      <div style="margin-top:6px"><a id="rIaGet" target="_blank" rel="noopener" style="color:var(--gold,#D4AF37);font-size:12px;text-decoration:none">🔑 Obtenir une clé</a></div>
+      <div id="rIaMsg" style="font-size:12.5px;min-height:15px;margin-top:6px;color:var(--muted)"></div></div>
+    <div style="margin-top:14px"><div class="sub" style="margin-bottom:6px"><b>④ Lancer la 1ʳᵉ récupération</b></div>
+      <button class="btn" id="rSync">▶️ Lancer maintenant</button>
+      <div id="rSyncMsg" style="font-size:12.5px;min-height:15px;margin-top:6px;color:var(--muted)"></div></div>`,'col8');
+  add(`<h3>${ic('cog')} Apparence &amp; données</h3><div class="sub">Thème + registre</div>
+    <div style="margin-top:12px"><button class="btn" id="rTheme" data-ic="moon" style="border:1px solid var(--border);background:var(--elev);padding:9px 14px;border-radius:11px;color:var(--tx)"> Basculer le thème</button></div>
     <div style="margin-top:14px;font-size:13px">
       <div class="kvr"><b>Clients</b><span>${CLIENTS.length}</span></div>
       <div class="kvr"><b>Client actif</b><span>${ACTIVE?ACTIVE.nom:'—'}</span></div>
       <div class="kvr"><b>Contenus</b><span>${A.total}</span></div>
-      <div class="kvr"><b>Registre</b><span>outils/_data/agence.js</span></div>
     </div>`,'col4');
-  add(`<h3>${ic('chart')} Données réelles</h3><div class="sub">Brancher les réseaux & l'analytics</div>
-    <div style="margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.65">Aucune donnée fictive. Présence digitale via <code>scripts/connect-reseaux.py</code> (Meta API / import). Performance via PostHog/Meta. Voir <code>outils/_data/README.md</code>.</div>`,'col4');
+  // wiring Mise en route
   const r=$("#rTheme");if(r)r.onclick=()=>$("#themeBtn").click();
+  const slug=ghRepoSlug(), pa=$("#rPages"); if(pa)pa.href= slug?('https://github.com/'+slug+'/settings/pages'):'https://github.com/settings';
+  const bGh=$("#rGh"); if(bGh)bGh.onclick=()=>{ if(window.AwemaGH)AwemaGH.openConnect(()=>go('reglages')); };
+  const prov=$("#rIaProv"), iaGet=$("#rIaGet");
+  function rIaGet(){ if(!prov||!iaGet)return; iaGet.href=IA_SIGNUP[prov.value]||'#'; iaGet.textContent='🔑 Obtenir une clé '+prov.value; }
+  if(prov){prov.onchange=rIaGet; rIaGet();}
+  const bIa=$("#rIaSave"); if(bIa)bIa.onclick=function(){
+    const p=prov.value, key=$("#rIaKey").value.trim(), nom=IA_KEYNAME[p]||'GROQ_API_KEY', m=$("#rIaMsg");
+    if(!key){m.style.color='#FF7D9C';m.textContent='Colle ta clé.';return;}
+    if(!window.AwemaGH){m.style.color='#FF7D9C';m.textContent='Module GitHub indisponible.';return;}
+    m.style.color='var(--muted)';m.textContent='Connexion à GitHub…';
+    AwemaGH.ensure(function(){ m.textContent='Enregistrement…';
+      AwemaGH.setVariable('AWEMA_AI_PROVIDER',p).catch(()=>({})).then(()=>AwemaGH.saveSecret(nom,key)).then(function(res){
+        $("#rIaKey").value='';
+        if(res&&res.ok){m.style.color='#34E5C4';m.textContent='✅ '+p+' branché. Les agents peuvent travailler.';}
+        else{m.style.color='#D4AF37';m.textContent='Presque ! Colle la clé comme SECRET (fenêtre ouverte), nom : '+nom;AwemaGH.guideSecret(nom,key);}
+      }).catch(e=>{m.style.color='#FF7D9C';m.textContent='❌ '+(e.message||e);});
+    });
+  };
+  const bSync=$("#rSync"); if(bSync)bSync.onclick=function(){
+    const m=$("#rSyncMsg"); if(!window.AwemaGH){m.style.color='#FF7D9C';m.textContent='Module GitHub indisponible.';return;}
+    m.style.color='var(--muted)';m.textContent='Connexion à GitHub…';
+    AwemaGH.ensure(function(){ m.textContent='⏳ Lancement…';
+      AwemaGH.runWorkflow('sync-reseaux.yml',{},true).then(()=>AwemaGH.runWorkflow('sync-tiktok.yml',{}))
+        .then(()=>{m.style.color='#34E5C4';m.textContent='✅ Lancé ! Données dans ~1-2 min (reviens au cockpit).';})
+        .catch(e=>{m.style.color='#FF7D9C';m.textContent='❌ '+(e.message||e);});
+    });
+  };
 }
 
 /* ---------- Planifier & publier (section native, branchée sur ACTIVE) ---------- */
@@ -879,7 +922,17 @@ let PLANNED_LOCAL=[];
 const NETS_PUB=[['facebook','Facebook'],['instagram','Instagram'],['linkedin','LinkedIn'],['youtube','YouTube'],['tiktok','TikTok']];
 function escP(s){return String(s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
 function comptesPub(c){return {facebook:c.fb_page_id||c.facebook_page_id||'',instagram:c.ig_user_id||c.instagram_id||'',linkedin:c.linkedin_org||c.linkedin_urn||'',youtube:c.yt_channel_id||'',tiktok:c.tiktok_open_id||''};}
-function dashRefetch(){return fetch('../_data/agence.js?ts='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/=\s*(\{[\s\S]*\})\s*;?\s*$/);if(!m)throw 0;const d=JSON.parse(m[1]);CLIENTS=d.clients||[];window.AWEMA_REGISTRY=d;const cur=ACTIVE&&ACTIVE.id;ACTIVE=CLIENTS.find(c=>c.id===cur)||ACTIVE;return ACTIVE;});}
+// Planning du client = commité (registre) + optimiste (PLANNED_LOCAL), dédoublonné par id.
+function currentPlanning(){ if(!ACTIVE)return []; const slug=ACTIVE.slug||ACTIVE.id, by={};
+  (ACTIVE.planning||[]).forEach(p=>by[p.id]=p);
+  PLANNED_LOCAL.filter(p=>p.client===slug).forEach(p=>{if(!by[p.id])by[p.id]=p;});
+  return Object.keys(by).map(k=>by[k]); }
+function propCount(){ const cr=ACTIVE&&loadAgent(ACTIVE,'creatif'); return (cr&&cr.items||[]).length; }
+// Compteur global (sous-titre) : reflète contenus de campagne + propositions IA + posts planifiés, et se rafraîchit.
+function refreshPsub(){ const el=$("#psub"); if(!el)return;
+  if(!ACTIVE){el.textContent='Aucun client';return;}
+  el.textContent=ACTIVE.nom+' · '+ITEMS.length+' contenus · '+propCount()+' proposition'+(propCount()>1?'s':'')+' · '+currentPlanning().length+' planifié'+(currentPlanning().length>1?'s':''); }
+function dashRefetch(){return fetch('../_data/agence.js?ts='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/=\s*(\{[\s\S]*\})\s*;?\s*$/);if(!m)throw 0;const d=JSON.parse(m[1]);CLIENTS=d.clients||[];window.AWEMA_REGISTRY=d;const cur=ACTIVE&&ACTIVE.id;ACTIVE=CLIENTS.find(c=>c.id===cur)||ACTIVE;ITEMS=(ACTIVE&&ACTIVE.campagne&&ACTIVE.campagne.contenus)||[];aggregate();refreshPsub();return ACTIVE;});}
 function viewPublier(){
   if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
   const cr=loadAgent(ACTIVE,'creatif'), items=(cr&&cr.items)||[];
@@ -901,7 +954,7 @@ function viewPublier(){
     <button class="btn" id="pubGo" style="margin-top:12px">🗓️ Programmer</button>
     <div id="pubMsg" style="font-size:12.5px;min-height:16px;margin-top:8px;color:var(--muted)"></div>`,'col6');
 
-  const planning=(ACTIVE.planning||[]).concat(PLANNED_LOCAL.filter(p=>p.client===(ACTIVE.slug||ACTIVE.id)));
+  const planning=currentPlanning();
   planning.sort((a,b)=>(b.publier_le||'').localeCompare(a.publier_le||''));
   add(`<h3>${ic('cal')} Calendrier — ${planning.length} post(s)<a class="mini gold" href="${revueURL()}" target="_blank" style="margin-left:auto;text-decoration:none">Visualiseur ↗</a></h3>
     <div class="sub">Programmés &amp; publiés pour ${escP(ACTIVE.nom)}</div>
@@ -933,7 +986,7 @@ function pubProgrammer(){
     AwemaGH.saveFile(dir+'/_donnees/_planning/'+id+'.json',item,'AWEMA : planifie '+id).then(function(){
       AwemaGH.runWorkflow('build.yml'); PLANNED_LOCAL.unshift(item);
       pubMsg('✅ Programmé pour '+dt.toLocaleString()+' — visible dans le calendrier ci-dessous.','#34E5C4');
-      go('publier');
+      refreshPsub(); go('publier');
     }).catch(function(e){pubMsg('❌ '+(e.message||e),'#FF7D9C');});
   });
 }
@@ -957,8 +1010,8 @@ function pubPoll(base,tries){const gm=$("#pubGenMsg");
   }).catch(function(){pubPoll(base,tries+1);}); },3000);
 }
 function pubAfterGen(tries){ dashRefetch().then(function(){const cr=loadAgent(ACTIVE,'creatif'),n=((cr&&cr.items)||[]).length;
-    if(n>0||tries>=8){$("#pubGen").disabled=false;go('publier');} else setTimeout(function(){pubAfterGen(tries+1);},4000);
-  }).catch(function(){if(tries<8)setTimeout(function(){pubAfterGen(tries+1);},4000);else{$("#pubGen").disabled=false;go('publier');}}); }
+    if(n>0||tries>=8){$("#pubGen").disabled=false;refreshPsub();go('publier');} else setTimeout(function(){pubAfterGen(tries+1);},4000);
+  }).catch(function(){if(tries<8)setTimeout(function(){pubAfterGen(tries+1);},4000);else{$("#pubGen").disabled=false;refreshPsub();go('publier');}}); }
 
 /* ---------- Routeur de vues ---------- */
 const SECTIONS={overview:["Vue d'ensemble",viewOverview],publier:["Planifier & publier",viewPublier],calendrier:["Calendrier éditorial",viewCalendrier],
