@@ -60,7 +60,7 @@ jobs:
           git config user.name "awema-bot"
           git config user.email "bot@awema.local"
           if git diff --quiet; then
-            echo "::error::IA active mais aucune proposition générée (réponse vide ou client sans données). Réessaie, ou vérifie la mémoire/les données du client."; exit 1
+            echo "::error::Aucune proposition générée. Voir le log de l'étape « Générer » ci-dessus pour la cause exacte (ex. erreur du fournisseur IA, réponse vide, ou client sans données)."; exit 1
           fi
           git add -A
           git commit -m "chore(ia): propositions Créatif pour ${{ inputs.client }} ($(date -u +%FT%TZ))"

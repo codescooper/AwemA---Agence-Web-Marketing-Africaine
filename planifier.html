@@ -216,7 +216,7 @@
         if(!run||run.id===baseId){ genMsg('⏳ Génération en cours…'); pollGen(baseId,tries+1); return; }
         if(run.status!=='completed'){ genMsg('⏳ Génération en cours… (l’IA travaille)'); pollGen(baseId,tries+1); return; }
         if(run.conclusion==='success'){ genMsg('✅ Propositions générées ! Rechargement…','var(--mint)'); setTimeout(function(){location.reload();},900); }
-        else { genMsg('❌ Échec — le plus souvent ta clé IA est en <b>Variable</b> alors qu\'il faut un <b>Secret</b>. Sur GitHub : Settings → Secrets and variables → Actions → onglet <b>Secrets</b> → New repository secret → nom <code>GROQ_API_KEY</code>. <a class="inl" href="'+(run.url||'#')+'" target="_blank">voir le détail du run</a>','#FF7D9C'); document.getElementById('genGo').disabled=false; }
+        else { genMsg('❌ La génération a échoué. <a class="inl" href="'+(run.url||'#')+'" target="_blank">Ouvre le détail du run</a> pour la cause exacte (souvent : erreur renvoyée par le fournisseur IA, ou clé posée en <b>Variable</b> au lieu de <b>Secret</b>).','#FF7D9C'); document.getElementById('genGo').disabled=false; }
       }).catch(function(){ pollGen(baseId,tries+1); });
     },3000);
   }
