@@ -52,6 +52,24 @@
     <a class="btn" href="https://business.facebook.com/" target="_blank" rel="noopener">Ouvrir Business Manager ↗</a>
   </div>
 
+  <!-- Méthode recommandée : Se connecter avec Facebook (OAuth) -->
+  <div class="step" style="border-color:rgba(52,229,196,.4)">
+    <h2><span class="num" style="background:linear-gradient(135deg,var(--mint,#34E5C4),var(--fb))">★</span> Méthode simple — Se connecter avec Facebook <span class="tag" style="font-size:11px;color:#06231d;background:var(--mint);border-radius:6px;padding:2px 7px;font-weight:700">sans terminal</span></h2>
+    <p>Si tu as une <b>app Facebook</b> (developers.facebook.com → Créer une app, type <i>Business</i>), enregistre ses 2 clés
+      ci-dessous, puis clique <b>Se connecter</b> : AWEMA récupère et allonge ton token tout seul (60 j).</p>
+    <p style="font-size:12.5px;color:var(--muted)">Dans l'app → <b>Facebook Login → Settings → Valid OAuth Redirect URIs</b>, ajoute cette adresse :</p>
+    <div class="cmd" id="c-fbredir" style="position:relative">(adresse en cours de chargement…)<button class="copy" data-c="c-fbredir">Copier</button></div>
+    <label style="display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 4px">App ID (non secret)</label>
+    <div class="pair" style="display:flex;gap:9px;flex-wrap:wrap"><input id="fbAppId" placeholder="Colle l'App ID" style="flex:1;min-width:200px;background:rgba(0,0,0,.28);border:1px solid var(--bord);border-radius:11px;color:#fff;font:inherit;font-size:13.5px;padding:10px 12px"><button class="btn" id="fbIdSave" style="margin:0">Enregistrer</button></div>
+    <div id="awc-fb-secret"></div>
+    <div id="awc-fb-pat"></div>
+    <div class="msg" id="fbMsg" style="font-size:13px;margin-top:8px;min-height:16px"></div>
+    <button class="btn" id="fbConnect" style="background:linear-gradient(135deg,var(--mint,#34E5C4),var(--fb))">▶️ Se connecter avec Facebook</button>
+    <div class="note">Le <b>PAT</b> (Variables R/W) sert à enregistrer le token. Déjà posé pour TikTok (<code>TIKTOK_PAT</code>) ? Inutile d'en remettre.</div>
+  </div>
+
+  <div style="text-align:center;color:var(--muted);font-size:12.5px;margin:18px 0 0">— ou méthode manuelle (coller un token) —</div>
+
   <div class="step">
     <h2><span class="num">2</span> Ouvrir l'explorateur d'API Graph</h2>
     <p>Connecte-toi avec le compte qui administre les Pages. C'est gratuit.</p>
@@ -112,10 +130,52 @@
 <script src="outils/_design/awema-github.js"></script>
 <script src="outils/_design/awema-connect.js"></script>
 <script>
+  // Méthode manuelle (token collé)
   AwemaConnect.secretBox('#awc-meta', {
     name: 'META_TOKEN', label: 'token Meta longue durée',
     placeholder: 'Colle ton token Meta (60 j ou System User)',
     sync: 'sync-reseaux.yml', syncLabel: 'Découvrir mes Pages'
+  });
+
+  // —— Méthode OAuth « Se connecter avec Facebook » ——
+  AwemaConnect.secretBox('#awc-fb-secret', {name:'FACEBOOK_APP_SECRET', label:'App Secret', placeholder:'Colle l’App Secret'});
+  AwemaConnect.secretBox('#awc-fb-pat', {name:'AWEMA_PAT', label:'PAT (Variables R/W)', placeholder:'PAT GitHub — ou réutilise TIKTOK_PAT'});
+
+  var FB_AUTH='https://www.facebook.com/v21.0/dialog/oauth';
+  var FB_SCOPES='pages_show_list,pages_read_engagement,pages_read_user_content,read_insights,instagram_basic,instagram_manage_insights,business_management';
+  var oauthUrl=location.origin+location.pathname.replace(/[^/]*$/,'oauth.html');
+  document.getElementById('c-fbredir').childNodes[0].textContent=oauthUrl;
+
+  var fbAppId=document.getElementById('fbAppId');
+  try{ fbAppId.value=localStorage.getItem('awema-fb-appid')||''; }catch(e){}
+  function fbMsg(t,c){var m=document.getElementById('fbMsg');m.textContent=t;m.style.color=c||'var(--muted)';}
+
+  document.getElementById('fbIdSave').onclick=function(){
+    var v=fbAppId.value.trim();
+    if(!v){fbMsg('Renseigne d’abord l’App ID.','#FF7D9C');return;}
+    try{localStorage.setItem('awema-fb-appid',v);}catch(e){}
+    if(!window.AwemaGH){fbMsg('Module GitHub indisponible.','#FF7D9C');return;}
+    fbMsg('Enregistrement de l’App ID…');
+    AwemaGH.ensure(function(){
+      AwemaGH.saveSecret('FACEBOOK_APP_ID',v).then(function(res){
+        if(res&&res.ok) fbMsg('✅ App ID enregistré.','#34E5C4');
+        else { fbMsg('Presque ! Un collage sur GitHub (fenêtre ouverte).','#D4AF37'); AwemaGH.guideSecret('FACEBOOK_APP_ID',v); }
+      }).catch(function(e){fbMsg('❌ '+(e.message||e),'#FF7D9C');});
+    });
+  };
+
+  document.getElementById('fbConnect').onclick=function(){
+    var id=fbAppId.value.trim();
+    if(!id){fbMsg('Renseigne l’App ID (et clique « Enregistrer ») avant de te connecter.','#FF7D9C');return;}
+    try{localStorage.setItem('awema-fb-appid',id);}catch(e){}
+    var state='fb:'+Math.random().toString(36).slice(2)+Date.now().toString(36);
+    var url=FB_AUTH+'?'+new URLSearchParams({client_id:id,redirect_uri:oauthUrl,scope:FB_SCOPES,response_type:'code',state:state}).toString();
+    window.location.href=url;
+  };
+
+  // copie de la Redirect URI
+  document.querySelectorAll('.copy').forEach(function(b){ if(b.dataset.c!=='c-fbredir')return;
+    b.addEventListener('click',function(){ navigator.clipboard.writeText(oauthUrl).then(function(){b.textContent='Copié ✓';b.classList.add('ok');setTimeout(function(){b.textContent='Copier';b.classList.remove('ok');},1400);}).catch(function(){}); });
   });
 </script>
 <script src="outils/_design/awema-fork.js"></script>

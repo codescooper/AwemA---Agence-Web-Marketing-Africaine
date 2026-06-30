@@ -117,7 +117,11 @@
     'box-shadow:0 12px 26px -8px rgba(212,175,55,.7);transition:transform .18s}',
     '.awa-btn:hover{transform:translateY(-3px) scale(1.05)}',
     '.awa-btn .dot{position:absolute;top:-3px;right:-3px;width:16px;height:16px;border-radius:50%;',
-    'background:#FF7D9C;color:#fff;font:700 11px/16px Poppins,sans-serif;text-align:center}',
+    'background:#FF7D9C;color:#fff;font:700 11px/16px Poppins,sans-serif;text-align:center;animation:awaPulse 2s ease-in-out infinite}',
+    '@keyframes awaPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,125,156,.6)}70%{box-shadow:0 0 0 7px rgba(255,125,156,0)}}',
+    '.awa-tip{position:fixed;right:84px;bottom:30px;z-index:9998;background:#13234a;color:#eaf0fb;border:1px solid rgba(255,255,255,.14);',
+    'border-radius:10px;padding:6px 11px;font:600 12px Poppins,sans-serif;white-space:nowrap;box-shadow:0 10px 24px -10px rgba(0,0,0,.6);opacity:0;transform:translateX(8px);transition:.25s;pointer-events:none}',
+    '.awa-tip.on{opacity:1;transform:translateX(0)}',
     '.awa-pop{position:fixed;right:20px;bottom:88px;z-index:9999;width:min(340px,calc(100vw - 40px));',
     'background:var(--card,#13234a);border:1px solid var(--bord,rgba(255,255,255,.14));border-radius:18px;',
     'padding:18px;color:var(--tx,#eaf0fb);box-shadow:0 24px 60px -18px rgba(0,0,0,.6);',
@@ -138,8 +142,13 @@
   // ——— Construction ———
   function build() {
     var btn = document.createElement('button');
-    btn.className = 'awa-btn'; btn.setAttribute('aria-label', "Aide d'Awa l'abeille");
+    btn.className = 'awa-btn'; btn.setAttribute('aria-label', "Besoin d'aide ? Clique sur Awa l'abeille");
+    btn.title = "Besoin d'aide ? Clique sur Awa 🐝";
     btn.innerHTML = BEE + '<span class="dot">?</span>';
+    var tip = document.createElement('div'); tip.className = 'awa-tip'; tip.textContent = "Besoin d'aide ?";
+    btn.addEventListener('mouseenter', function(){ tip.classList.add('on'); });
+    btn.addEventListener('mouseleave', function(){ tip.classList.remove('on'); });
+    document.body.appendChild(tip);
     var pop = document.createElement('div');
     pop.className = 'awa-pop';
     pop.innerHTML = '<h4>' + BEE.replace('width="30" height="30"', 'width="22" height="22"') +

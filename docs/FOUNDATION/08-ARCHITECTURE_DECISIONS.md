@@ -191,9 +191,11 @@ et capture du `code` OK) ; suite unittest verte.
 **Alternatives rejetées.** Échange dans le navigateur (exposerait le `client_secret`) ; proxy/SaaS détenant le
 secret (trahit « zéro SaaS ») ; garder Python+localhost obligatoire (exclut les utilisateurs Pages-only) ;
 stocker le token en fichier committé (un token dans Git = fuite).
-**Généralisation (2026-06-28).** Le motif est désormais appliqué à **tous les réseaux** : `oauth.html` est
-**multi-fournisseur** (TikTok/LinkedIn via le préfixe du `state` : `tt:` / `li:`) et déclenche le bon workflow
-(`tiktok-exchange.yml` / `linkedin-exchange.yml`). Les réseaux **à token collé** (Meta, YouTube, WhatsApp) et
+**Généralisation (2026-06-28).** Le motif est désormais appliqué à **tous les réseaux OAuth** : `oauth.html` est
+**multi-fournisseur** (TikTok / LinkedIn / Facebook via le préfixe du `state` : `tt:` / `li:` / `fb:`) et
+déclenche le bon workflow (`tiktok-exchange.yml` / `linkedin-exchange.yml` / `meta-exchange.yml`). Pour Meta,
+« Se connecter avec Facebook » échange le code → token longue durée (60 j) → Variable `META_TOKEN`
+(lue en `secrets.META_TOKEN || vars.META_TOKEN`), supprimant le parcours manuel Graph API Explorer. Les réseaux **à token collé** (Meta, YouTube, WhatsApp) et
 les **clés IA** passent par un widget commun `awema-connect.js` → `AwemaGH.saveSecret`/`guideSecret`. LinkedIn
 réutilise le PAT TikTok (`secrets.AWEMA_PAT || secrets.TIKTOK_PAT`). **Résultat : plus aucune page n'impose de
 commande** ; le terminal Python ne subsiste qu'en repli `<details>`.
