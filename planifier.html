@@ -215,14 +215,28 @@
       AwemaGH.latestRun('proposals.yml').then(function(run){
         if(!run||run.id===baseId){ genMsg('⏳ Génération en cours…'); pollGen(baseId,tries+1); return; }
         if(run.status!=='completed'){ genMsg('⏳ Génération en cours… (l’IA travaille)'); pollGen(baseId,tries+1); return; }
-        if(run.conclusion==='success'){ genMsg('✅ Propositions générées ! Rechargement…','var(--mint)'); setTimeout(function(){location.reload();},900); }
+        if(run.conclusion==='success'){ genMsg('✅ Généré ! Récupération de tes propositions…','var(--mint)'); attendreProps(0); }
         else { genMsg('❌ La génération a échoué. <a class="inl" href="'+(run.url||'#')+'" target="_blank">Ouvre le détail du run</a> pour la cause exacte (souvent : erreur renvoyée par le fournisseur IA, ou clé posée en <b>Variable</b> au lieu de <b>Secret</b>).','#FF7D9C'); document.getElementById('genGo').disabled=false; }
       }).catch(function(){ pollGen(baseId,tries+1); });
     },3000);
   }
+  var genSlug='';
+  // Récupère le registre à jour (délai Pages possible) jusqu'à voir les nouvelles propositions, puis affiche-les EN PLACE.
+  function attendreProps(tries){
+    refetchRegistry().then(function(){
+      var c=CLIENTS.filter(function(x){return (x.slug||x.id)===genSlug;})[0];
+      var n=c?propsClient(c).length:0;
+      if(n>0 || tries>=8){
+        renderProps();
+        document.querySelector('.tab[data-t="propositions"]').click();
+        genMsg(n>0?('✅ '+n+' proposition(s) prêtes ci-dessous.'):'✅ Généré. Si rien n’apparaît, recharge dans ~1 min (publication GitHub Pages).','var(--mint)');
+        document.getElementById('genGo').disabled=false;
+      } else { setTimeout(function(){attendreProps(tries+1);},4000); }
+    }).catch(function(){ if(tries<8) setTimeout(function(){attendreProps(tries+1);},4000); else { document.getElementById('genGo').disabled=false; genMsg('✅ Généré. Recharge dans ~1 min pour voir les propositions.','var(--mint)'); } });
+  }
   document.getElementById('genGo').onclick=function(){
     var c=CLIENTS[genSel.value]; if(!c){genMsg('Choisis un client.','#FF7D9C');return;}
-    var slug=c.slug||c.id; var idee=document.getElementById('genIdee').value.trim();
+    var slug=c.slug||c.id; genSlug=slug; var idee=document.getElementById('genIdee').value.trim();
     if(!window.AwemaGH){genMsg('Module GitHub indisponible.','#FF7D9C');return;}
     genMsg('Connexion à GitHub…');
     AwemaGH.ensure(function(){
@@ -237,29 +251,45 @@
     });
   };
 
-  // —— Propositions IA (depuis l'agent Créatif) ——
-  function extraireIdees(c){
-    var a=(c.agents&&(c.agents.creatif||c.agents['créatif']))||null; if(!a)return [];
-    var out=[];
-    ['idees','propositions','posts','contenus','suggestions'].forEach(function(k){
-      var arr=a[k]; if(Array.isArray(arr)) arr.forEach(function(x){ out.push(typeof x==='string'?x:(x.texte||x.titre||x.idee||x.contenu||JSON.stringify(x))); });
+  // —— Propositions IA (depuis l'agent Créatif : enveloppe { items:[{hook,script,format,reseau,prompt_image,variantes}] }) ——
+  function esc(s){return (s||'').toString().replace(/[&<>]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m];});}
+  function propsClient(c){ var a=(c.agents&&(c.agents.creatif||c.agents['créatif']))||null; return (a&&Array.isArray(a.items))?a.items:[]; }
+  var pl=document.getElementById('propList');
+  function renderProps(){
+    pl.innerHTML=''; var any=false;
+    CLIENTS.forEach(function(c,i){
+      propsClient(c).forEach(function(it){
+        any=true;
+        var hook=(it.hook||'').toString(), script=(it.script||it.texte||it.contenu||'').toString();
+        var reseau=(it.reseau||'').toString(), format=(it.format||'').toString();
+        var d=document.createElement('div'); d.className='prop';
+        d.innerHTML=
+          '<div style="font-size:12px;color:var(--muted)">'+esc(c.nom||c.slug)+(reseau?' · <b style="color:var(--ciel)">'+esc(reseau)+'</b>':'')+(format?' · '+esc(format):'')+'</div>'+
+          (hook?'<div style="font-weight:700;margin:6px 0 3px;font-size:14px">'+esc(hook)+'</div>':'')+
+          '<div style="font-size:13px;color:#cdd9f0;white-space:pre-wrap">'+esc(script).slice(0,700)+'</div>'+
+          (it.prompt_image?'<div style="font-size:11.5px;color:var(--muted);margin-top:7px">🖼️ <i>'+esc(it.prompt_image).slice(0,220)+'</i></div>':'')+
+          '<button class="btn gh" style="margin-top:11px">✍️ Utiliser ce contenu</button>';
+        d.querySelector('button').onclick=function(){
+          sel.value=i;
+          var t=(hook?hook+'\n\n':'')+script;
+          tx.value=t; document.getElementById('cChar').textContent=t.length+' caractère'+(t.length>1?'s':'');
+          netWrap.querySelectorAll('input').forEach(function(inp){ inp.checked=(inp.value===reseau.toLowerCase()); });
+          document.querySelector('.tab[data-t="composer"]').click(); window.scrollTo(0,0);
+        };
+        pl.appendChild(d);
+      });
     });
-    return out;
+    if(!any) pl.innerHTML='<div class="empty">Aucune proposition pour l’instant. Clique « ✨ Générer des propositions » ci-dessus, ou compose manuellement.</div>';
   }
-  var pl=document.getElementById('propList'); var any=false;
-  CLIENTS.forEach(function(c,i){ var idees=extraireIdees(c); if(!idees.length)return; any=true;
-    idees.slice(0,8).forEach(function(idee){
-      var d=document.createElement('div'); d.className='prop';
-      d.innerHTML='<div style="font-size:12px;color:var(--muted)">'+(c.nom||c.slug)+'</div><div style="font-size:13.5px;margin:5px 0 8px">'+
-        idee.replace(/</g,'&lt;').slice(0,400)+'</div><button class="btn gh" style="margin:0">✍️ Utiliser</button>';
-      d.querySelector('button').onclick=function(){
-        sel.value=i; tx.value=idee; document.getElementById('cChar').textContent=idee.length+' caractères';
-        document.querySelector('.tab[data-t="composer"]').click(); window.scrollTo(0,0);
-      };
-      pl.appendChild(d);
+  renderProps();
+
+  // Rafraîchit le registre depuis le dépôt (sans recharger la page) — survit au délai de GitHub Pages.
+  function refetchRegistry(){
+    return fetch('outils/_data/agence.js?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
+      var m=t.match(/=\s*(\{[\s\S]*\})\s*;?\s*$/); if(!m) throw new Error('registre illisible');
+      var d=JSON.parse(m[1]); CLIENTS=(d.clients||[]).filter(function(c){return !isDemo(c);}); return CLIENTS;
     });
-  });
-  if(!any) pl.innerHTML='<div class="empty">Aucune proposition pour l’instant. Les agents en génèrent à chaque analyse — reviens après une synchro, ou compose manuellement.</div>';
+  }
 
   // —— Calendrier (depuis registry.planning) ——
   function badge(s){ var lbl={programme:'programmé',publie:'publié',echec:'échec',partiel:'partiel',brouillon:'brouillon'}[s]||s; return '<span class="badge b-'+(s||'brouillon')+'">'+lbl+'</span>'; }
@@ -279,6 +309,14 @@
 
   // date par défaut = aujourd'hui
   (function(){var n=new Date();document.getElementById('cDate').value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate());})();
+
+  // Pré-sélection du client + onglet via l'URL (ex. depuis le dashboard : planifier.html?client=code-scooper&tab=propositions)
+  (function(){
+    var q=new URLSearchParams(location.search), cli=q.get('client'), tab=q.get('tab');
+    if(cli){ var idx=CLIENTS.findIndex(function(c){return (c.slug||c.id)===cli;});
+      if(idx>=0){ sel.value=idx; genSel.value=idx; } }
+    if(tab && document.querySelector('.tab[data-t="'+tab+'"]')) document.querySelector('.tab[data-t="'+tab+'"]').click();
+  })();
 </script>
 <script src="outils/_design/awema-fork.js"></script>
 <script src="outils/_design/abeille.js" data-aide="planifier"></script>
