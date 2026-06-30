@@ -9,6 +9,11 @@
 
   // ——— Ce qu'Awa explique, page par page (court, chaleureux, jamais perdu) ———
   var AIDE = {
+    tutoriel: { t: "Le guide complet, pas à pas 🧭", s: [
+      "Suis les 14 étapes <b>dans l'ordre</b> : de la copie du projet jusqu'à AWEMA qui tourne.",
+      "Tu ne tapes <b>aucune commande</b> : tu cliques, tu colles, tu attends.",
+      "À chaque étape, repère le <b>✅ « ce que tu vois »</b> : c'est ta preuve que c'est réussi.",
+      "Bloqué ? Note l'étape + le message exact, et demande de l'aide." ] },
     index: { t: "Bienvenue chez AWEMA 👋", s: [
       "Ici tu découvres l'outil : ce qu'il fait et pour qui.",
       "Clique <b>« Explorer le dashboard »</b> pour voir le cockpit en action.",
