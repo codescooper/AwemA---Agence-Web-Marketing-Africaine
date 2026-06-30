@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-29T11:29:12+00:00",
+  "genere_le": "2026-06-30T10:05:47+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "afriq-btp",
@@ -15,6 +15,18 @@
       "source": "cadence",
       "action": {
         "label": "Voir la présence",
+        "kind": "view",
+        "target": "reseaux"
+      }
+    },
+    {
+      "priorite": 2,
+      "type": "reco",
+      "titre": "Publier du contenu régulièrement",
+      "detail": "Publier au moins un post par semaine sur Facebook",
+      "source": "analyste",
+      "action": {
+        "label": "Voir l'analyse",
         "kind": "view",
         "target": "reseaux"
       }

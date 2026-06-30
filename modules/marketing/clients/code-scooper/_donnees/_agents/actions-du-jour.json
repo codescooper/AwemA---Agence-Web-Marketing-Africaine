@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-29T11:29:12+00:00",
+  "genere_le": "2026-06-30T10:05:47+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "code-scooper",
@@ -15,6 +15,18 @@
       "source": "types_contenu",
       "action": {
         "label": "Idées créatives",
+        "kind": "view",
+        "target": "overview"
+      }
+    },
+    {
+      "priorite": 3,
+      "type": "creatif",
+      "titre": "Idée prête : Découvrez les secrets de la sécurité informatique !",
+      "detail": "TikTok · vidéo",
+      "source": "creatif",
+      "action": {
+        "label": "Voir les idées",
         "kind": "view",
         "target": "overview"
       }

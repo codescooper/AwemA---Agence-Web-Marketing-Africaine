@@ -1,0 +1,73 @@
+{
+  "agent": "stratege",
+  "genere_le": "2026-06-30T10:05:45+00:00",
+  "modele": "llama-3.3-70b-versatile",
+  "provenance": {
+    "client": "zegen-ci",
+    "fichiers": [
+      "reseaux.json"
+    ],
+    "genere_par": "run-agent.py"
+  },
+  "items": [
+    {
+      "jour": "Lundi",
+      "heure": "19h",
+      "format": "Story",
+      "angle": "Présentation d'un nouveau produit",
+      "reseau": "Facebook"
+    },
+    {
+      "jour": "Mardi",
+      "heure": "19h",
+      "format": "Video",
+      "angle": "Témoignage client",
+      "reseau": "YouTube"
+    },
+    {
+      "jour": "Mercredi",
+      "heure": "12h",
+      "format": "Article",
+      "angle": "Conseils d'experts dans le domaine",
+      "reseau": "LinkedIn"
+    },
+    {
+      "jour": "Jeudi",
+      "heure": "12h",
+      "format": "Photo",
+      "angle": "Nouveautés de la marque",
+      "reseau": "Instagram"
+    },
+    {
+      "jour": "Vendredi",
+      "heure": "15h",
+      "format": "Live",
+      "angle": "Questions-réponses avec un expert",
+      "reseau": "TikTok"
+    },
+    {
+      "jour": "Samedi",
+      "heure": "10h",
+      "format": "Infographie",
+      "angle": "Statistiques intéressantes sur l'industrie",
+      "reseau": "Facebook"
+    },
+    {
+      "jour": "Dimanche",
+      "heure": "18h",
+      "format": " Publication de blog",
+      "angle": "Réflexion sur l'actualité de la marque",
+      "reseau": "LinkedIn"
+    }
+  ],
+  "cadence_recommandee": "4 publications/semaine",
+  "meilleures_heures": [
+    "Mardi 19h",
+    "Jeudi 12h"
+  ],
+  "objectifs": [
+    "Augmenter la visibilité de la marque de 20% sur les médias sociaux",
+    "Accroître l'engagement des followers de 15% grâce aux publications régulières",
+    "Développer une communauté active autour de la marque"
+  ]
+}

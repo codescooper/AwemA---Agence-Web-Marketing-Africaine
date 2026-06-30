@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-29T11:29:12+00:00",
+  "genere_le": "2026-06-30T10:05:47+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "agnero-alain-photography-2015",
@@ -27,6 +27,18 @@
       "source": "evolution_audience",
       "action": {
         "label": "Analyser",
+        "kind": "view",
+        "target": "reseaux"
+      }
+    },
+    {
+      "priorite": 2,
+      "type": "reco",
+      "titre": "Publier des photos régulièrement",
+      "detail": "Publier une photo le jeudi à 17h cette semaine",
+      "source": "analyste",
+      "action": {
+        "label": "Voir l'analyse",
         "kind": "view",
         "target": "reseaux"
       }

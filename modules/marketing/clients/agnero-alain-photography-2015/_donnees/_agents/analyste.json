@@ -1,0 +1,71 @@
+{
+  "agent": "analyste",
+  "genere_le": "2026-06-30T10:05:41+00:00",
+  "modele": "llama-3.3-70b-versatile",
+  "provenance": {
+    "client": "agnero-alain-photography-2015",
+    "fichiers": [
+      "reseaux.json"
+    ],
+    "genere_par": "run-agent.py"
+  },
+  "items": [
+    {
+      "type": "insight",
+      "titre": "Engagement élevé sur les publications de photos",
+      "explication": "Les publications de type photo génèrent un engagement moyen de 12,3, ce qui est supérieur à la moyenne générale.",
+      "preuve": {
+        "metrique": "engagement_moyen",
+        "valeur": 12.3
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Publier des photos régulièrement",
+      "explication": "Pour maintenir un engagement élevé, il est recommandé de publier des photos régulièrement, notamment le jeudi à 17h.",
+      "preuve": {
+        "metrique": "meilleur_creneau",
+        "valeur": "Jeudi 17h"
+      },
+      "action": "Publier une photo le jeudi à 17h cette semaine"
+    },
+    {
+      "type": "insight",
+      "titre": "Faible activité depuis plusieurs mois",
+      "explication": "Le dernier post date de plus de 680 jours, ce qui indique une faible activité sur les réseaux sociaux.",
+      "preuve": {
+        "metrique": "jours_depuis",
+        "valeur": 687
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Réactiver les réseaux sociaux",
+      "explication": "Il est recommandé de réactiver les réseaux sociaux en publiant du contenu régulièrement pour maintenir un engagement élevé et augmenter la visibilité.",
+      "preuve": {
+        "metrique": "posts_par_semaine",
+        "valeur": 0.0
+      },
+      "action": "Publier au moins une fois par semaine pendant les 4 prochaines semaines"
+    },
+    {
+      "type": "insight",
+      "titre": "Présence uniquement sur Facebook",
+      "explication": "Les données disponibles montrent que la seule plateforme utilisée est Facebook, avec 3095 abonnés.",
+      "preuve": {
+        "metrique": "abonnes",
+        "valeur": 3095
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Explorer d'autres plateformes",
+      "explication": "Il est recommandé d'explorer d'autres plateformes pour augmenter la visibilité et le reach, notamment Instagram et YouTube.",
+      "preuve": {
+        "metrique": "par_reseau",
+        "valeur": "facebook"
+      },
+      "action": "Créer un compte sur Instagram et YouTube et publier du contenu régulièrement"
+    }
+  ]
+}
