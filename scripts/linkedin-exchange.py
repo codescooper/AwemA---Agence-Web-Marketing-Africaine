@@ -8,8 +8,8 @@ vit en Secret GitHub, jamais dans le navigateur. Le script :
      et, s'il existe, le refresh_token dans LINKEDIN_REFRESH_TOKEN.
 
 Entrées (env) :
-  TT_CODE / LI_CODE      code OAuth (entrée workflow)             — requis
-  TT_REDIRECT / LI_REDIRECT  redirect_uri EXACTE (oauth.html)     — requis
+  LI_CODE                code OAuth (entrée workflow)             — requis
+  LI_REDIRECT            redirect_uri EXACTE (oauth.html)         — requis
   LINKEDIN_CLIENT_ID     Secret app LinkedIn                      — requis
   LINKEDIN_CLIENT_SECRET Secret app LinkedIn                      — requis
   GH_PAT                 PAT (Variables: R/W) — AWEMA_PAT ou TIKTOK_PAT — requis pour écrire
@@ -20,60 +20,25 @@ ADN : stdlib uniquement, aucun secret écrit dans le dépôt, token jamais impri
 import json
 import os
 import sys
-import urllib.parse
-import urllib.request
-from urllib.error import HTTPError
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _oauth_lib import post_form, gh_set_var, fail  # noqa: E402
 
 TOKEN = "https://www.linkedin.com/oauth/v2/accessToken"
 
 
-def _post_form(url, params):
-    body = urllib.parse.urlencode(params).encode()
-    req = urllib.request.Request(url, data=body,
-                                 headers={"Content-Type": "application/x-www-form-urlencoded"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
-
-
 def echanger(cid, cs, code, redirect):
-    d = _post_form(TOKEN, {"grant_type": "authorization_code", "code": code,
-                           "redirect_uri": redirect, "client_id": cid, "client_secret": cs})
+    d = post_form(TOKEN, {"grant_type": "authorization_code", "code": code,
+                          "redirect_uri": redirect, "client_id": cid, "client_secret": cs})
     if not d.get("access_token"):
         raise RuntimeError("réponse sans access_token : %s" % d)
     return d
 
 
-def gh(method, path, pat, data=None):
-    req = urllib.request.Request("https://api.github.com" + path, method=method,
-                                 data=(json.dumps(data).encode() if data is not None else None),
-                                 headers={"Authorization": "Bearer " + pat,
-                                          "Accept": "application/vnd.github+json",
-                                          "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.status, (r.read().decode() or "")
-
-
-def gh_set_var(repo, pat, name, value):
-    try:
-        gh("PATCH", "/repos/%s/actions/variables/%s" % (repo, name), pat,
-           {"name": name, "value": value})
-    except HTTPError as e:
-        if e.code == 404:
-            gh("POST", "/repos/%s/actions/variables" % repo, pat, {"name": name, "value": value})
-        else:
-            raise
-
-
-def fail(msg):
-    print("::error::" + msg)
-    sys.exit(1)
-
-
 def main():
     cid = (os.environ.get("LINKEDIN_CLIENT_ID") or "").strip()
     cs = (os.environ.get("LINKEDIN_CLIENT_SECRET") or "").strip()
-    code = (os.environ.get("LI_CODE") or os.environ.get("TT_CODE") or "").strip()
-    redirect = (os.environ.get("LI_REDIRECT") or os.environ.get("TT_REDIRECT") or "").strip()
+    code = (os.environ.get("LI_CODE") or "").strip()
+    redirect = (os.environ.get("LI_REDIRECT") or "").strip()
     pat = (os.environ.get("GH_PAT") or "").strip()
     repo = os.environ.get("GITHUB_REPOSITORY", "")
 

@@ -22,45 +22,10 @@ import os
 import sys
 import urllib.parse
 import urllib.request
-from urllib.error import HTTPError
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _oauth_lib import get_json, gh_set_var, fail  # noqa: E402
 
 GRAPH = "https://graph.facebook.com/v21.0"
-
-
-def _get(url):
-    try:
-        with urllib.request.urlopen(url, timeout=30) as r:
-            return json.load(r)
-    except HTTPError as e:
-        try:
-            return json.loads(e.read().decode())
-        except Exception:
-            return {"error": {"message": "HTTP %s" % e.code}}
-
-
-def gh(method, path, pat, data=None):
-    req = urllib.request.Request("https://api.github.com" + path, method=method,
-                                 data=(json.dumps(data).encode() if data is not None else None),
-                                 headers={"Authorization": "Bearer " + pat,
-                                          "Accept": "application/vnd.github+json",
-                                          "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.status, (r.read().decode() or "")
-
-
-def gh_set_var(repo, pat, name, value):
-    try:
-        gh("PATCH", "/repos/%s/actions/variables/%s" % (repo, name), pat, {"name": name, "value": value})
-    except HTTPError as e:
-        if e.code == 404:
-            gh("POST", "/repos/%s/actions/variables" % repo, pat, {"name": name, "value": value})
-        else:
-            raise
-
-
-def fail(msg):
-    print("::error::" + msg)
-    sys.exit(1)
 
 
 def main():
@@ -79,14 +44,14 @@ def main():
         fail("PAT manquant (Secret AWEMA_PAT ou TIKTOK_PAT, « Variables: Read and write »).")
 
     print("🔑 Échange du code Meta…")
-    d = _get(GRAPH + "/oauth/access_token?" + urllib.parse.urlencode({
+    d = get_json(GRAPH + "/oauth/access_token?" + urllib.parse.urlencode({
         "client_id": app_id, "client_secret": app_secret, "redirect_uri": redirect, "code": code}))
     short = d.get("access_token")
     if not short:
         fail("Pas de token : " + json.dumps(d.get("error") or d)[:180])
 
     print("⏳ Allongement en token longue durée…")
-    d2 = _get(GRAPH + "/oauth/access_token?" + urllib.parse.urlencode({
+    d2 = get_json(GRAPH + "/oauth/access_token?" + urllib.parse.urlencode({
         "grant_type": "fb_exchange_token", "client_id": app_id,
         "client_secret": app_secret, "fb_exchange_token": short}))
     longtok = d2.get("access_token") or short

@@ -26,6 +26,8 @@ import unicodedata
 import urllib.parse
 import urllib.request
 from urllib.error import HTTPError
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _oauth_lib import post_form, gh, fail, UA  # noqa: E402
 
 TOKEN = "https://open.tiktokapis.com/v2/oauth/token/"
 USERINFO = "https://open.tiktokapis.com/v2/user/info/?fields=display_name"
@@ -36,16 +38,8 @@ def slugify(s):
     return re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
 
 
-def _post_form(url, params):
-    body = urllib.parse.urlencode(params).encode()
-    req = urllib.request.Request(url, data=body,
-                                 headers={"Content-Type": "application/x-www-form-urlencoded"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
-
-
 def echanger(ck, cs, code, redirect):
-    d = _post_form(TOKEN, {"client_key": ck, "client_secret": cs, "code": code,
+    d = post_form(TOKEN, {"client_key": ck, "client_secret": cs, "code": code,
                            "grant_type": "authorization_code", "redirect_uri": redirect})
     if d.get("error"):
         raise RuntimeError("%s — %s" % (d.get("error"), d.get("error_description")))
@@ -54,21 +48,11 @@ def echanger(ck, cs, code, redirect):
 
 def nom_compte(access):
     try:
-        req = urllib.request.Request(USERINFO, headers={"Authorization": "Bearer " + access})
+        req = urllib.request.Request(USERINFO, headers={"Authorization": "Bearer " + access, "User-Agent": UA})
         with urllib.request.urlopen(req, timeout=30) as r:
             return (json.load(r).get("data", {}).get("user", {}) or {}).get("display_name", "")
     except Exception:
         return ""
-
-
-def gh(method, path, pat, data=None):
-    req = urllib.request.Request("https://api.github.com" + path, method=method,
-                                 data=(json.dumps(data).encode() if data is not None else None),
-                                 headers={"Authorization": "Bearer " + pat,
-                                          "Accept": "application/vnd.github+json",
-                                          "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.status, (r.read().decode() or "")
 
 
 def gh_get_tokens(repo, pat):
@@ -92,11 +76,6 @@ def gh_set_tokens(repo, pat, mapping):
                {"name": "TIKTOK_TOKENS", "value": value})
         else:
             raise
-
-
-def fail(msg):
-    print("::error::" + msg)
-    sys.exit(1)
 
 
 def main():
