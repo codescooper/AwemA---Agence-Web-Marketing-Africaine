@@ -50,7 +50,8 @@ def parse_iso(s):
 
 
 def http(url, data=None, headers=None, method=None):
-    h = {"Accept": "application/json"}
+    # User-Agent explicite : sans lui, des pare-feux (Cloudflare) bloquent « Python-urllib » (403/1010).
+    h = {"Accept": "application/json", "User-Agent": "AWEMA/1.0 (+https://github.com/codescooper/awema-os)"}
     if headers:
         h.update(headers)
     body = None

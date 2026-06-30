@@ -112,7 +112,12 @@ def _extraire_json(texte):
 
 
 def _post(url, headers, payload):
-    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+    # User-Agent explicite : sans lui, le pare-feu Cloudflare de certains fournisseurs (ex. Groq)
+    # bloque la requête « Python-urllib » avec un 403 / code 1010. On n'écrase pas un en-tête fourni.
+    h = {"User-Agent": "AWEMA/1.0 (+https://github.com/codescooper/awema-os)",
+         "Accept": "application/json"}
+    h.update(headers or {})
+    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=h)
     try:
         with urllib.request.urlopen(req, timeout=90) as r:
             return json.load(r)
