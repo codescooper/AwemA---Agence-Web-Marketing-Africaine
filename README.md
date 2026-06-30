@@ -67,6 +67,9 @@ gouvernance, ADR). **Il prime en cas de conflit.**
 
 ### Voie principale — depuis GitHub, sans rien installer (recommandé)
 
+> 🧭 **Débutant ? Suis le [Tutoriel d'installation complet (pas à pas)](docs/TUTORIEL-AGENCE.md)** — du fork
+> jusqu'à AWEMA qui tourne, sans aucune commande.
+
 > **Étape 0 (toujours) : Fork + activer Pages.** Tout le reste se configure **dans le navigateur**.
 
 1. **Fork** ce dépôt → tu en deviens propriétaire (ton instance privée).
