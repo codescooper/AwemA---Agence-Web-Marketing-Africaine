@@ -32,16 +32,16 @@
       "ok": false,
       "error": "Connecteur vidéo à activer (validation plateforme requise)",
       "differe": true,
-      "at": "2026-07-01T10:33:14.145345+00:00"
+      "at": "2026-07-01T13:26:17.948563+00:00"
     },
     "tiktok": {
       "ok": false,
       "error": "Connecteur vidéo à activer (validation plateforme requise)",
       "differe": true,
-      "at": "2026-07-01T10:33:14.145345+00:00"
+      "at": "2026-07-01T13:26:17.948563+00:00"
     }
   },
-  "tentatives": 11,
+  "tentatives": 12,
   "cree_le": "2026-06-30T04:37:24.118Z",
-  "maj_le": "2026-07-01T10:33:14.145345+00:00"
+  "maj_le": "2026-07-01T13:26:17.948563+00:00"
 }
