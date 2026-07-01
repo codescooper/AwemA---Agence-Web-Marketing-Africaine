@@ -3,20 +3,20 @@
   "genere_le": "2026-07-01T10:27:42+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
-    "client": "zegen-ci",
+    "client": "afrocodeurs",
     "genere_par": "run-agent.py"
   },
   "items": [
     {
       "priorite": 2,
-      "type": "plan",
-      "titre": "Publie : Présentation d'un nouveau produit",
-      "detail": "Facebook · Story · Lundi",
-      "source": "stratege",
+      "type": "reco",
+      "titre": "Connecter les réseaux sociaux",
+      "detail": "Connecter les réseaux sociaux dès que possible.",
+      "source": "analyste",
       "action": {
-        "label": "Voir le plan",
+        "label": "Voir l'analyse",
         "kind": "view",
-        "target": "overview"
+        "target": "reseaux"
       }
     }
   ]

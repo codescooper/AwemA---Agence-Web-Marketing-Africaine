@@ -1,6 +1,6 @@
 {
   "agent": "analyste",
-  "genere_le": "2026-06-30T10:05:41+00:00",
+  "genere_le": "2026-07-01T10:27:38+00:00",
   "modele": "llama-3.3-70b-versatile",
   "provenance": {
     "client": "agnero-alain-photography-2015",
@@ -12,60 +12,60 @@
   "items": [
     {
       "type": "insight",
-      "titre": "Engagement élevé sur les publications de photos",
-      "explication": "Les publications de type photo génèrent un engagement moyen de 12,3, ce qui est supérieur à la moyenne générale.",
+      "titre": "Faible activité récente",
+      "explication": "Le compte n'a pas publié de contenu depuis plus de 600 jours, ce qui peut entraîner une diminution de l'engagement des abonnés.",
       "preuve": {
-        "metrique": "engagement_moyen",
-        "valeur": 12.3
-      }
-    },
-    {
-      "type": "reco",
-      "titre": "Publier des photos régulièrement",
-      "explication": "Pour maintenir un engagement élevé, il est recommandé de publier des photos régulièrement, notamment le jeudi à 17h.",
-      "preuve": {
-        "metrique": "meilleur_creneau",
-        "valeur": "Jeudi 17h"
-      },
-      "action": "Publier une photo le jeudi à 17h cette semaine"
-    },
-    {
-      "type": "insight",
-      "titre": "Faible activité depuis plusieurs mois",
-      "explication": "Le dernier post date de plus de 680 jours, ce qui indique une faible activité sur les réseaux sociaux.",
-      "preuve": {
-        "metrique": "jours_depuis",
+        "metrique": "jours_depuis_dernier_post",
         "valeur": 687
       }
     },
     {
       "type": "reco",
-      "titre": "Réactiver les réseaux sociaux",
-      "explication": "Il est recommandé de réactiver les réseaux sociaux en publiant du contenu régulièrement pour maintenir un engagement élevé et augmenter la visibilité.",
+      "titre": "Reprendre la publication de contenu",
+      "explication": "Pour raviver l'engagement, il est recommandé de publier du contenu régulièrement, au moins une fois par semaine.",
       "preuve": {
         "metrique": "posts_par_semaine",
         "valeur": 0.0
       },
-      "action": "Publier au moins une fois par semaine pendant les 4 prochaines semaines"
+      "action": "Publiez un nouveau post sur Facebook cette semaine"
     },
     {
       "type": "insight",
-      "titre": "Présence uniquement sur Facebook",
-      "explication": "Les données disponibles montrent que la seule plateforme utilisée est Facebook, avec 3095 abonnés.",
+      "titre": "Contenu photo le plus performant",
+      "explication": "Les publications de type photo obtiennent en moyenne un engagement moyen de 12,3, ce qui est supérieur à d'autres types de contenu.",
       "preuve": {
-        "metrique": "abonnes",
-        "valeur": 3095
+        "metrique": "engagement_moyen_photo",
+        "valeur": 12.3
       }
     },
     {
       "type": "reco",
-      "titre": "Explorer d'autres plateformes",
-      "explication": "Il est recommandé d'explorer d'autres plateformes pour augmenter la visibilité et le reach, notamment Instagram et YouTube.",
+      "titre": "Publier plus de photos",
+      "explication": "Pour augmenter l'engagement, il est conseillé de publier plus de contenu de type photo, qui semble être apprécié par les abonnés.",
       "preuve": {
-        "metrique": "par_reseau",
-        "valeur": "facebook"
+        "metrique": "n_photo",
+        "valeur": 23
       },
-      "action": "Créer un compte sur Instagram et YouTube et publier du contenu régulièrement"
+      "action": "Préparez et publiez une nouvelle série de photos cette semaine"
+    },
+    {
+      "type": "insight",
+      "titre": "Meilleur créneau horaire pour les publications",
+      "explication": "Le jeudi à 17h est identifié comme le meilleur créneau horaire pour les publications, avec un engagement moyen supérieur à d'autres jours et heures.",
+      "preuve": {
+        "metrique": "meilleur_creneau",
+        "valeur": "Jeudi 17h"
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Planifier les publications au meilleur créneau",
+      "explication": "Pour maximiser l'engagement, planifiez vos publications pour le jeudi à 17h, ce qui semble être le moment où vos abonnés sont les plus actifs et réactifs.",
+      "preuve": {
+        "metrique": "par_jour_Jeudi",
+        "valeur": 14.0
+      },
+      "action": "Programmez vos prochaines publications pour le jeudi à 17h"
     }
   ]
 }

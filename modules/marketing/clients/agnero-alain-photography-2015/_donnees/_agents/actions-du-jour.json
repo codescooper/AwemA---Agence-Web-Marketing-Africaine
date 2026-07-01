@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-30T10:05:47+00:00",
+  "genere_le": "2026-07-01T10:27:42+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "agnero-alain-photography-2015",
@@ -34,8 +34,8 @@
     {
       "priorite": 2,
       "type": "reco",
-      "titre": "Publier des photos régulièrement",
-      "detail": "Publier une photo le jeudi à 17h cette semaine",
+      "titre": "Reprendre la publication de contenu",
+      "detail": "Publiez un nouveau post sur Facebook cette semaine",
       "source": "analyste",
       "action": {
         "label": "Voir l'analyse",

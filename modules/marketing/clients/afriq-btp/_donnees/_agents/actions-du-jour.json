@@ -1,6 +1,6 @@
 {
   "agent": "actions-du-jour",
-  "genere_le": "2026-06-30T10:05:47+00:00",
+  "genere_le": "2026-07-01T10:27:42+00:00",
   "modele": "agrégation (sans IA)",
   "provenance": {
     "client": "afriq-btp",
@@ -22,7 +22,7 @@
     {
       "priorite": 2,
       "type": "reco",
-      "titre": "Publier du contenu régulièrement",
+      "titre": "Augmenter la cadence de publication",
       "detail": "Publier au moins un post par semaine sur Facebook",
       "source": "analyste",
       "action": {

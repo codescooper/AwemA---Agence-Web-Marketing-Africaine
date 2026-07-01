@@ -1,6 +1,6 @@
 {
   "agent": "analyste",
-  "genere_le": "2026-06-30T10:05:38+00:00",
+  "genere_le": "2026-07-01T10:27:35+00:00",
   "modele": "llama-3.3-70b-versatile",
   "provenance": {
     "client": "afriq-btp",
@@ -13,7 +13,7 @@
     {
       "type": "insight",
       "titre": "Faible audience sur Facebook",
-      "explication": "L'audience sur Facebook est très basse et n'a pas évolué ces derniers jours",
+      "explication": "L'audience sur Facebook est très faible, ce qui peut indiquer un manque d'efforts de marketing ciblés sur cette plateforme.",
       "preuve": {
         "metrique": "audience",
         "valeur": 2
@@ -21,32 +21,41 @@
     },
     {
       "type": "reco",
-      "titre": "Publier du contenu régulièrement",
-      "explication": "Il est nécessaire de publier du contenu régulièrement pour augmenter l'audience et l'engagement",
+      "titre": "Augmenter la cadence de publication",
+      "explication": "Il est nécessaire d'augmenter la fréquence de publication sur Facebook pour améliorer l'engagement et la visibilité de la page.",
       "preuve": {
-        "metrique": "posts_30j",
-        "valeur": 0
+        "metrique": "jours_depuis_dernier_post",
+        "valeur": 2417
       },
       "action": "Publier au moins un post par semaine sur Facebook"
     },
     {
       "type": "insight",
-      "titre": "Meilleur moment de publication",
-      "explication": "Le meilleur moment de publication est le samedi à 4h",
+      "titre": "Type de contenu le plus performant",
+      "explication": "Les publications de type 'statut' ont un engagement moyen légèrement supérieur aux autres types de contenu, mais il est important de noter que les données sont limitées.",
       "preuve": {
-        "metrique": "meilleur_creneau",
-        "valeur": "Samedi 04h"
+        "metrique": "engagement_moyen_statut",
+        "valeur": 0.2
       }
     },
     {
       "type": "reco",
-      "titre": "Optimiser les types de contenu",
-      "explication": "Il est nécessaire d'optimiser les types de contenu pour améliorer l'engagement",
+      "titre": "Publier à l'heure appropriée",
+      "explication": "Il est recommandé de publier sur Facebook le samedi à 4h pour maximiser l'engagement, selon les données historiques.",
       "preuve": {
-        "metrique": "types_contenu",
-        "valeur": "statut: 0.2"
+        "metrique": "meilleur_creneau",
+        "valeur": "Samedi 04h"
       },
-      "action": "Essayer d'autres types de contenu que les statuts pour améliorer l'engagement"
+      "action": "Planifier les prochaines publications sur Facebook pour le samedi à 4h"
+    },
+    {
+      "type": "insight",
+      "titre": "Manque de diversité dans les réseaux sociaux",
+      "explication": "L'absence de données sur les autres réseaux sociaux tels que Instagram, TikTok, LinkedIn et YouTube indique un manque de présence et de diversité dans les réseaux sociaux.",
+      "preuve": {
+        "metrique": "connecte_autres_reseaux",
+        "valeur": null
+      }
     }
   ]
 }
