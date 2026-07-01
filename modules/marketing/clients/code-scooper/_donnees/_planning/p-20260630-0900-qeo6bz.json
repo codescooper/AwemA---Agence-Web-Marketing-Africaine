@@ -24,10 +24,10 @@
       "ok": false,
       "error": "Connecteur vidéo à activer (validation plateforme requise)",
       "differe": true,
-      "at": "2026-06-30T23:37:58.110213+00:00"
+      "at": "2026-07-01T01:57:01.613938+00:00"
     }
   },
-  "tentatives": 6,
+  "tentatives": 7,
   "cree_le": "2026-06-30T12:33:12.140Z",
-  "maj_le": "2026-06-30T23:37:58.110213+00:00"
+  "maj_le": "2026-07-01T01:57:01.613938+00:00"
 }
