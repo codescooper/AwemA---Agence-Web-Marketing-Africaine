@@ -109,9 +109,10 @@ connecteurs · Mémoire Marketing · agents IA · automatisation**.
 prêtes*) · Proactivité (*« 3 choses à faire aujourd'hui »*, déterministe, sans clé IA).
 Contrat d'agent : [`docs/FOUNDATION/05-AGENT_MODEL.md`](docs/FOUNDATION/05-AGENT_MODEL.md).
 
-**Exemple de client** : *La Grande Vision* (cabinet d'optique, Yopougon, Abidjan) — mission complète
-(90 jours, 180 contenus, tunnel WhatsApp, CRM, automatisation), illustrant le pipeline éditorial du
-module → [`modules/marketing/clients/la-grande-vision/`](modules/marketing/clients/la-grande-vision/).
+**Exemple de client** : le client de **démo** (livré avec le template) illustre la structure d'une
+mission complète — calendrier éditorial, présence digitale, Mémoire Marketing, sorties d'agents →
+[`modules/marketing/clients/`](modules/marketing/clients/). Chaque client réel suit exactement la
+même arborescence `_donnees/`.
 
 ---
 

@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       client:
-        description: "Slug du client (ex. code-scooper)"
+        description: "Slug du client (ex. mon-client)"
         required: true
       idee:
         description: "Idée/thème (vide = s'appuyer sur ce qui marche)"

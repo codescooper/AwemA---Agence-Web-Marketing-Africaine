@@ -18,7 +18,7 @@ class TestSlugify(unittest.TestCase):
         self.assertEqual(awema._slugify(""), "client")
 
     def test_idempotent_sur_un_slug(self):
-        self.assertEqual(awema._slugify("la-grande-vision"), "la-grande-vision")
+        self.assertEqual(awema._slugify("mon-client"), "mon-client")
 
 
 class TestInitiales(unittest.TestCase):

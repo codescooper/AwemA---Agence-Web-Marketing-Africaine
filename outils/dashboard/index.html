@@ -1148,7 +1148,7 @@ function licenceBanner(){
 function boot(){
   licenceBanner();
   CLIENTS=(window.AWEMA_REGISTRY&&window.AWEMA_REGISTRY.clients)||[];
-  if(!CLIENTS.length&&window.CAMPAGNE){CLIENTS=[{id:'la-grande-vision',nom:window.CAMPAGNE.client||'Client',
+  if(!CLIENTS.length&&window.CAMPAGNE){CLIENTS=[{id:'client-standalone',nom:window.CAMPAGNE.client||'Client',
     lieu:window.CAMPAGNE.lieu||'',secteur:'',statut:'actif',profils:{},reseaux:null,
     campagne:{total:window.CAMPAGNE.total,contenus:window.CAMPAGNE.contenus}}];}
   $("#who").innerHTML=((window.AWEMA_CONFIG&&window.AWEMA_CONFIG.nom)||'AWEMA')+'<small>Directeur Marketing</small>';

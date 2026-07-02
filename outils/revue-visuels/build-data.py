@@ -14,13 +14,19 @@ import os
 import sys
 
 ICI = os.path.dirname(os.path.abspath(__file__))
-DEFAUT = os.path.normpath(os.path.join(
-    ICI, "..", "..", "modules", "marketing", "clients",
-    "la-grande-vision", "_donnees", "campagne.json"))
+
+
+def _defaut():
+    import glob
+    hits = sorted(glob.glob(os.path.join(ICI, "..", "..", "modules", "*", "clients", "*",
+                                          "_donnees", "campagne.json")))
+    if not hits:
+        sys.exit("Usage: python3 build-data.py <chemin/campagne.json> (aucune campagne trouvée)")
+    return hits[0]
 
 
 def main():
-    src = sys.argv[1] if len(sys.argv) > 1 else DEFAUT
+    src = sys.argv[1] if len(sys.argv) > 1 else _defaut()
     with open(src, encoding="utf-8") as f:
         data = json.load(f)
     out = os.path.join(ICI, "data.js")

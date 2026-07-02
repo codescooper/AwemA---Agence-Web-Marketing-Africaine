@@ -148,7 +148,7 @@ GitHub → **Settings → Secrets and variables → Actions** :
 | **Secret** | `META_TOKEN` | le Page token (étape 5) |
 | **Variable** | `FB_PAGE_ID` | étape 3 |
 | **Variable** | `IG_USER_ID` | étape 4 |
-| **Variable** | `CLIENT_DIR` | `modules/marketing/clients/la-grande-vision` |
+| **Variable** | `CLIENT_DIR` | `modules/marketing/clients/mon-client` |
 
 Puis : onglet **Actions → « Sync présence digitale » → Run workflow**.
 (Détails : [`docs/05-connecter-reseaux.md`](05-connecter-reseaux.md).)
@@ -156,7 +156,7 @@ Puis : onglet **Actions → « Sync présence digitale » → Run workflow**.
 > En local plutôt qu'en Action :
 > ```bash
 > export META_TOKEN="EAAB..."; export FB_PAGE_ID="..."; export IG_USER_ID="..."
-> python3 scripts/connect-reseaux.py --meta modules/marketing/clients/la-grande-vision
+> python3 scripts/connect-reseaux.py --meta modules/marketing/clients/mon-client
 > python3 outils/_data/build.py
 > ```
 
