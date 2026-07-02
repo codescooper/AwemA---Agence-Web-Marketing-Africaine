@@ -28,6 +28,12 @@ GitHub Pages gratuit exige un dépôt **public**. Si **ton** dépôt est public,
 1. ✅ **Garde ton instance de production en dépôt PRIVÉ.** Pour des Pages privées, GitHub demande un
    plan **Pro/Team** — sinon : héberge le tableau de bord **en local** (`file://`) ou sur un hébergeur
    avec **contrôle d'accès** (Netlify/Cloudflare Pages + mot de passe). Le code marche à l'identique.
+   > ⚠️ **Coût caché à connaître avant de passer en privé** : sur un dépôt **public**, les minutes
+   > GitHub Actions sont **illimitées et gratuites** ; sur un dépôt **privé**, le plan Free en donne
+   > **2 000/mois** — or la seule publication programmée (cron toutes les 15 min) en consomme ~1 500 à
+   > 3 000/mois, plus les syncs et agents. En privé, il faut donc soit un plan payant, soit **espacer le
+   > cron de `publish.yml`** (ex. toutes les heures : `0 * * * *`), soit accepter l'arrêt des workflows
+   > en fin de mois. Choix documenté ici pour trancher en connaissance de cause.
 2. ✅ **Sépare partage de code et données.** Si tu veux que des gens contribuent au *code*, fais-le sur
    un dépôt public **sans tes données** (ou via la copie d'accueil) ; garde le dépôt **avec données** privé.
 3. ✅ **Ne partage que la copie d'accueil** aux pilotes (elle est déjà propre). Ne leur donne jamais

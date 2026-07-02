@@ -39,6 +39,10 @@ def maintenant():
 
 
 def parse_iso(s):
+    """Parse ISO-8601. Les offsets de fuseau sont HONORÉS (les pages d'interface écrivent du vrai
+    UTC via toISOString(), converti depuis l'heure locale de l'agence : Lagos 09:00 → 08:00Z).
+    Une date SANS offset (JSON édité à la main) est interprétée comme UTC — mets un offset
+    explicite (ex. 2026-07-02T09:00:00+01:00) si tu écris les fichiers _planning toi-même."""
     if not s:
         return None
     s = s.strip().replace("Z", "+00:00")

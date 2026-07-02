@@ -868,7 +868,7 @@ function viewReglages(){
   add(`<h3>${ic('cog')} Mise en route <span class="pill" style="background:#34E5C422;color:#34E5C4;border-color:#34E5C466">tout dans le dashboard</span></h3>
     <div class="sub">Configure GitHub, l'IA et la 1ʳᵉ récupération — sans quitter le dashboard</div>
     <div style="margin-top:14px;font-size:13px">
-      <div class="kvr"><b>① GitHub</b><span>${gh?('✅ '+AwemaGH.who()+' · <button class="mini" id="rGh">Reconfigurer</button>'):'<button class="mini gold" id="rGh">🔗 Connecter mon GitHub</button>'}</span></div>
+      <div class="kvr"><b>① GitHub</b><span>${gh?('✅ '+AwemaGH.who()+' · <button class="mini" id="rGh">Reconfigurer</button> <button class="mini" id="rGhOut" title="Efface la clé d’accès de CE navigateur — indispensable sur un ordinateur partagé">🔒 Se déconnecter</button>'):'<button class="mini gold" id="rGh">🔗 Connecter mon GitHub</button>'}</span></div>
       <div class="kvr"><b>② Hébergement</b><span><a class="mini" id="rPages" target="_blank" rel="noopener">⚙️ Activer Pages ↗</a></span></div>
     </div>
     <div style="margin-top:14px"><div class="sub" style="margin-bottom:6px"><b>③ Cerveau — une IA</b> (gratuite : Groq)</div>
@@ -892,6 +892,7 @@ function viewReglages(){
   const r=$("#rTheme");if(r)r.onclick=()=>$("#themeBtn").click();
   const slug=ghRepoSlug(), pa=$("#rPages"); if(pa)pa.href= slug?('https://github.com/'+slug+'/settings/pages'):'https://github.com/settings';
   const bGh=$("#rGh"); if(bGh)bGh.onclick=()=>{ if(window.AwemaGH)AwemaGH.openConnect(()=>go('reglages')); };
+  const bOut=$("#rGhOut"); if(bOut)bOut.onclick=()=>{ AwemaGH.disconnect(); go('reglages'); };
   const prov=$("#rIaProv"), iaGet=$("#rIaGet");
   function rIaGet(){ if(!prov||!iaGet)return; iaGet.href=IA_SIGNUP[prov.value]||'#'; iaGet.textContent='🔑 Obtenir une clé '+prov.value; }
   if(prov){prov.onchange=rIaGet; rIaGet();}

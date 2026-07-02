@@ -37,6 +37,14 @@ class TestEstDu(unittest.TestCase):
     def test_date_invalide_pas_du(self):
         self.assertFalse(publisher.est_du(post(publier_le="n'importe quoi"), REF))
 
+    def test_offset_de_fuseau_honore(self):
+        # Invariant fuseau (audit) : les offsets ISO sont honorés. Réf = 18:00 UTC.
+        # Lagos (UTC+1) 18:30 locale = 17:30 UTC → dû ; 19:30 locale = 18:30 UTC → futur.
+        self.assertTrue(publisher.est_du(post(publier_le="2026-07-02T18:30:00+01:00"), REF))
+        self.assertFalse(publisher.est_du(post(publier_le="2026-07-02T19:30:00+01:00"), REF))
+        # Sans offset : interprété UTC (documenté dans parse_iso).
+        self.assertEqual(publisher.parse_iso("2026-07-02T18:30:00").utcoffset().total_seconds(), 0)
+
 
 class TestPublierItem(unittest.TestCase):
     def faux_publish(self, mapping):
