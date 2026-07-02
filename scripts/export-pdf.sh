@@ -9,11 +9,17 @@
 # Pré-requis (une seule fois) :
 #   pip install playwright   (+ un Chromium ; PLAYWRIGHT_BROWSERS_PATH ou CHROME_BIN)
 #
-# Usage :  bash scripts/export-pdf.sh
+# Usage :  bash scripts/export-pdf.sh [dossier-client]
+#          (défaut : $AWEMA_CLIENT_DIR, sinon le premier client trouvé)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CLIENT="$ROOT/modules/marketing/clients/la-grande-vision"
+CLIENT="${1:-${AWEMA_CLIENT_DIR:-}}"
+if [ -z "$CLIENT" ]; then
+  CLIENT="$(ls -d "$ROOT"/modules/*/clients/*/ 2>/dev/null | head -1)"
+  CLIENT="${CLIENT%/}"
+fi
+[ -n "$CLIENT" ] && [ -d "$CLIENT" ] || { echo "Usage: bash scripts/export-pdf.sh <dossier-client>"; exit 1; }
 OUT="$CLIENT/_exports-pdf"
 TMP="$(mktemp -d)"
 mkdir -p "$OUT"

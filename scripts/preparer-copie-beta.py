@@ -17,6 +17,7 @@ Puis : pousser ce dossier dans un NOUVEAU dépôt GitHub et le marquer « Templa
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -143,8 +144,8 @@ def neutraliser(cible):
         lignes = open(gi, encoding="utf-8").read().splitlines()
         out, vus = [], set()
         for ln in lignes:
-            g = ln.replace("modules/marketing/clients/la-grande-vision/",
-                           "modules/marketing/clients/*/")
+            # Généralise TOUT chemin client codé en dur (quel que soit le slug)
+            g = re.sub(r"(modules/[^/\s]+/clients/)[^/\s*]+/", r"\1*/", ln)
             if g.strip().startswith("modules/marketing/clients/"):
                 if g in vus:
                     continue

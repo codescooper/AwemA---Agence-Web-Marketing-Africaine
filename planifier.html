@@ -310,7 +310,7 @@
   // date par défaut = aujourd'hui
   (function(){var n=new Date();document.getElementById('cDate').value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate());})();
 
-  // Pré-sélection du client + onglet via l'URL (ex. depuis le dashboard : planifier.html?client=code-scooper&tab=propositions)
+  // Pré-sélection du client + onglet via l'URL (ex. depuis le dashboard : planifier.html?client=mon-client&tab=propositions)
   (function(){
     var q=new URLSearchParams(location.search), cli=q.get('client'), tab=q.get('tab');
     if(cli){ var idx=CLIENTS.findIndex(function(c){return (c.slug||c.id)===cli;});

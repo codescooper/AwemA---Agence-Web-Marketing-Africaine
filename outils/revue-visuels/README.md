@@ -56,7 +56,7 @@ pilier, hook, CTA, format, KPI, les 3 prompts et les aperçus Canva connus.
 
 ```bash
 # 1) régénérer la campagne (côté client)
-cd ../../modules/marketing/clients/la-grande-vision/_generateur && python3 generer.py
+cd ../../modules/marketing/clients/mon-client/_generateur && python3 generer.py
 # 2) reconstruire les données de l'outil
 cd ../../../../../../outils/revue-visuels && python3 build-data.py
 ```
