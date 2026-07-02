@@ -48,7 +48,7 @@
 <body>
 <div class="wrap">
   <header>
-    <a class="back" href="index.html">← AWEMA · Centre de pilotage</a>
+    <a class="back" href="index.html" target="_top">← AWEMA · Centre de pilotage</a>
     <h1>Connecter <span class="g">TikTok</span> — sans terminal</h1>
     <p class="lead">Tout se passe <b>dans cette page + GitHub</b>. Pas de Python, pas de localhost.
       La seule action imposée par TikTok : te connecter au compte et cliquer <b>Authorize</b>.
@@ -102,7 +102,7 @@
     <p>Une fois tes comptes connectés, lance la synchro : leurs vraies métriques arrivent dans le dashboard.
       Ensuite c'est <b>automatique chaque lundi</b>.</p>
     <a class="btn" id="syncLink" href="#" target="_blank" rel="noopener">Ouvrir « Sync TikTok » ↗</a>
-    <a class="btn ghost" href="outils/dashboard/index.html">Voir le dashboard →</a>
+    <a class="btn ghost" href="outils/dashboard/index.html" target="_top">Voir le dashboard →</a>
   </div>
 
   <!-- Repli : ligne de commande -->
@@ -185,7 +185,8 @@ python scripts\tiktok-onboard.py<button class="copy" data-c="c-cli">Copier</butt
     var state='tt:'+Math.random().toString(36).slice(2)+Date.now().toString(36);
     try{ sessionStorage.setItem('awema-tt-state', state); }catch(e){}
     var url=AUTH+'?'+new URLSearchParams({client_key:ck,response_type:'code',scope:SCOPES,redirect_uri:oauthUrl,state:state}).toString();
-    window.location.href=url;
+    // Sort de l'iframe du dashboard si nécessaire (les pages de login OAuth interdisent le framing).
+    (window.top||window).location.href=url;
   };
 </script>
 <script src="outils/_design/awema-fork.js"></script>

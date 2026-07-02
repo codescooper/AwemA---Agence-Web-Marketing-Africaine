@@ -75,6 +75,21 @@ def token(name):
     return (os.environ.get(name) or "").strip() or None
 
 
+def msg_erreur(r):
+    """Message d'erreur lisible, robuste quel que soit le format de `r`.
+
+    http() renvoie {"error": "<chaîne>"} sur timeout/URLError et l'API renvoie
+    {"error": {"message": ...}} : sans ce garde-fou, `.get("message")` sur une
+    chaîne lève AttributeError et fait crasher toute la publication.
+    """
+    e = (r or {}).get("error")
+    if isinstance(e, dict):
+        return e.get("message") or str(e)[:160]
+    if isinstance(e, str):
+        return e[:160]
+    return str(r)[:160]
+
+
 # ————————————————————————— connecteurs d'écriture —————————————————————————
 # Chaque connecteur : (item, medias[urls]) -> {"ok":bool, "url"|"error":..., "detail":...}
 # Codés selon les specs ; à valider en live (scopes d'écriture + IDs de compte + App Review requis).
@@ -110,7 +125,7 @@ def c_facebook(item, medias):
     if st in (200, 201) and (r.get("id") or r.get("post_id")):
         pubid = r.get("post_id") or r.get("id")
         return {"ok": True, "url": "https://www.facebook.com/%s" % pubid, "detail": pubid}
-    return {"ok": False, "error": (r.get("error") or {}).get("message") or str(r)[:160]}
+    return {"ok": False, "error": msg_erreur(r)}
 
 
 def c_linkedin(item, medias):
@@ -133,7 +148,7 @@ def c_linkedin(item, medias):
                  headers={"Authorization": "Bearer " + tok, "X-Restli-Protocol-Version": "2.0.0"})
     if st in (200, 201) and r.get("id"):
         return {"ok": True, "url": "https://www.linkedin.com/feed/update/%s" % r.get("id"), "detail": r.get("id")}
-    return {"ok": False, "error": r.get("message") or str(r)[:160]}
+    return {"ok": False, "error": msg_erreur(r)}
 
 
 def c_instagram(item, medias):
@@ -151,13 +166,13 @@ def c_instagram(item, medias):
         headers={"Content-Type": "application/x-www-form-urlencoded"})
     cid = r.get("id")
     if not cid:
-        return {"ok": False, "error": (r.get("error") or {}).get("message") or str(r)[:160]}
+        return {"ok": False, "error": msg_erreur(r)}
     st, r2 = http(GRAPH + "/%s/media_publish" % ig, data=urllib.parse.urlencode(
         {"creation_id": cid, "access_token": tok}).encode(),
         headers={"Content-Type": "application/x-www-form-urlencoded"})
     if r2.get("id"):
         return {"ok": True, "url": "https://www.instagram.com/", "detail": r2.get("id")}
-    return {"ok": False, "error": (r2.get("error") or {}).get("message") or str(r2)[:160]}
+    return {"ok": False, "error": msg_erreur(r2)}
 
 
 def c_video_a_venir(item, medias):
@@ -199,22 +214,35 @@ def publier_item(item, ref, publish=None, dry=False):
         if dry:
             res = {"ok": True, "url": "(dry-run)", "detail": "simulation"}
         else:
-            res = publish(reseau, item, med)
+            try:
+                res = publish(reseau, item, med)
+            except Exception as e:
+                # Un réseau qui plante ne doit jamais faire perdre les réseaux déjà publiés du même item.
+                res = {"ok": False, "error": ("exception: %s" % e)[:160]}
         res = dict(res)
         res["at"] = horo
         item["resultats"][reseau] = res
     # statut global
     reseaux = item.get("reseaux") or []
-    oks = [r for r in reseaux if item["resultats"].get(r, {}).get("ok")]
-    differes = [r for r in reseaux if item["resultats"].get(r, {}).get("differe")]
-    if len(oks) == len(reseaux):
+    resolus = [r for r in reseaux if item["resultats"].get(r, {}).get("ok")]
+    attente = [r for r in reseaux if not item["resultats"].get(r, {}).get("ok")
+               and item["resultats"].get(r, {}).get("differe")]
+    echecs = [r for r in reseaux if r not in resolus and r not in attente]
+    if len(resolus) == len(reseaux):
         item["statut"] = "publie"
-    elif oks:
-        item["statut"] = "partiel"
+    elif echecs:
+        # Au moins un réseau en échec réel (hors différé) → on compte les tentatives.
+        # La transition vers « echec » s'applique AUSSI aux posts partiels (au moins un succès) :
+        # sans ça, un post partiel était re-tenté toutes les 15 min indéfiniment.
         item["tentatives"] = item.get("tentatives", 0) + 1
+        if item["tentatives"] >= MAX_TENTATIVES:
+            item["statut"] = "echec"
+        else:
+            item["statut"] = "partiel" if resolus else "programme"
     else:
-        item["tentatives"] = item.get("tentatives", 0) + 1
-        item["statut"] = "echec" if (item["tentatives"] >= MAX_TENTATIVES and not differes) else "programme"
+        # Il ne reste que des réseaux différés (vidéo à venir) : mis en attente, plus de re-tentative
+        # en boucle (évite le churn de commits). Réactivables quand le connecteur vidéo sera livré.
+        item["statut"] = "attente_video"
     item["maj_le"] = horo
     return item
 
@@ -238,9 +266,14 @@ def main():
         if not est_du(item, ref):
             continue
         avant = item.get("statut")
-        item = publier_item(item, ref, dry=dry)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(item, f, ensure_ascii=False, indent=2)
+        try:
+            item = publier_item(item, ref, dry=dry)
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(item, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            # Un item défaillant ne doit jamais empêcher les suivants d'être publiés/enregistrés.
+            print("⚠️ échec traitement %s (%s)" % (os.path.relpath(path, RACINE), e))
+            continue
         traites += 1
         print("• %s : %s → %s" % (os.path.relpath(path, RACINE), avant, item["statut"]))
     print("✅ %d post(s) traité(s)%s." % (traites, " [DRY-RUN]" if dry else ""))

@@ -16,6 +16,11 @@ on:
 permissions:
   contents: write
 
+# Groupe PARTAGÉ avec tous les workflows committeurs : écriture du dépôt en série (anti-course sur agence.js).
+concurrency:
+  group: awema-git-write
+  cancel-in-progress: false
+
 jobs:
   agents:
     runs-on: ubuntu-latest
@@ -52,14 +57,6 @@ jobs:
         run: python3 outils/_data/build.py
 
       - name: Commit si changements
-        run: |
-          git config user.name "awema-bot"
-          git config user.email "bot@awema.local"
-          if git diff --quiet; then
-            echo "ℹ️ Aucune nouvelle proposition."; exit 0
-          fi
-          git add -A
-          git commit -m "chore(agents): propositions IA + actions du jour ($(date -u +%F))"
-          git pull --rebase origin "${GITHUB_REF_NAME}" || true
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          echo "✅ Propositions des agents mises à jour."
+        uses: ./.github/actions/commit-push
+        with:
+          message: "chore(agents): propositions IA + actions du jour (run ${{ github.run_number }})"

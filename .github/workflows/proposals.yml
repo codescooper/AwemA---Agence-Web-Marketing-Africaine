@@ -19,7 +19,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: awema-proposals
+  # Groupe PARTAGÉ avec tous les workflows committeurs : écriture du dépôt en série (anti-course sur agence.js).
+  group: awema-git-write
   cancel-in-progress: false
 
 jobs:
@@ -36,6 +37,7 @@ jobs:
           AWEMA_AI_PROVIDER: ${{ vars.AWEMA_AI_PROVIDER }}
           AWEMA_AI_MODEL: ${{ vars.AWEMA_AI_MODEL }}
           AWEMA_IDEE: ${{ inputs.idee }}
+          AWEMA_CLIENT: ${{ inputs.client }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -50,20 +52,20 @@ jobs:
             echo "::error::Clé IA introuvable côté GitHub Actions. Ta clé doit être un SECRET (onglet « Secrets », PAS « Variables ») : Settings → Secrets and variables → Actions → New repository secret → nom exact GROQ_API_KEY (ou la clé de ton fournisseur)."
             exit 1
           fi
-          python3 scripts/run-agent.py creatif "${{ inputs.client }}"
+          python3 scripts/run-agent.py creatif "$AWEMA_CLIENT"
 
       - name: Régénérer le registre
         run: python3 outils/_data/build.py
 
-      - name: Commit si changements
+      # L'utilisateur attend un résultat : si rien n'a été généré, on échoue BRUYAMMENT (avant le push).
+      - name: Vérifier qu'une proposition a été produite
         run: |
-          git config user.name "awema-bot"
-          git config user.email "bot@awema.local"
           if git diff --quiet; then
-            echo "::error::Aucune proposition générée. Voir le log de l'étape « Générer » ci-dessus pour la cause exacte (ex. erreur du fournisseur IA, réponse vide, ou client sans données)."; exit 1
+            echo "::error::Aucune proposition générée. Voir le log de l'étape « Générer » ci-dessus pour la cause exacte (ex. erreur du fournisseur IA, réponse vide, ou client sans données)."
+            exit 1
           fi
-          git add -A
-          git commit -m "chore(ia): propositions Créatif pour ${{ inputs.client }} ($(date -u +%FT%TZ))"
-          git pull --rebase origin "${GITHUB_REF_NAME}" || true
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          echo "✅ Propositions générées."
+
+      - name: Commit si changements
+        uses: ./.github/actions/commit-push
+        with:
+          message: "chore(ia): propositions Créatif pour ${{ inputs.client }} (run ${{ github.run_number }})"

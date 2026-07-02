@@ -13,8 +13,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: awema-publish
-  cancel-in-progress: false   # ne jamais interrompre une publication en cours
+  # Groupe PARTAGÉ par tous les workflows qui committent le dépôt (publish, build, sync-*, agents,
+  # proposals) : ils s'exécutent en série, ce qui supprime à la racine les conflits sur agence.js
+  # (registre mono-ligne régénéré par chacun) et les pertes de commit par course.
+  group: awema-git-write
+  cancel-in-progress: false   # ne jamais interrompre une écriture en cours
 
 jobs:
   publier:
@@ -37,14 +40,6 @@ jobs:
         run: python3 outils/_data/build.py
 
       - name: Commit si changements
-        run: |
-          git config user.name "awema-bot"
-          git config user.email "bot@awema.local"
-          if git diff --quiet; then
-            echo "ℹ️ Rien à publier."; exit 0
-          fi
-          git add -A
-          git commit -m "chore(publication): statuts de la file d'attente ($(date -u +%FT%TZ))"
-          git pull --rebase origin "${GITHUB_REF_NAME}" || true
-          git push origin "HEAD:${GITHUB_REF_NAME}"
-          echo "✅ File d'attente mise à jour."
+        uses: ./.github/actions/commit-push
+        with:
+          message: "chore(publication): statuts de la file d'attente (run ${{ github.run_number }})"

@@ -32,7 +32,7 @@
 <body>
 <div class="wrap">
   <header>
-    <a class="back" href="index.html">← AWEMA · Centre de pilotage</a>
+    <a class="back" href="index.html" target="_top">← AWEMA · Centre de pilotage</a>
     <div class="lgmark">in</div>
     <h1>Connecter <span class="g">LinkedIn</span> — guide pas à pas</h1>
     <p class="lead">LinkedIn donne accès aux statistiques d'une <b>Page entreprise</b> (abonnés, impressions,
@@ -151,7 +151,8 @@
     try{ localStorage.setItem('awema-li-id',cid); }catch(e){}
     var state='li:'+Math.random().toString(36).slice(2)+Date.now().toString(36);
     var url=AUTH+'?'+new URLSearchParams({response_type:'code',client_id:cid,redirect_uri:oauthUrl,scope:SCOPES,state:state}).toString();
-    window.location.href=url;
+    // Sort de l'iframe du dashboard si nécessaire (les pages de login OAuth interdisent le framing).
+    (window.top||window).location.href=url;
   };
 </script>
 <script src="outils/_design/awema-fork.js"></script>

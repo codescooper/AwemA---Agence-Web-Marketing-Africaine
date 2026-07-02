@@ -1026,12 +1026,14 @@ function viewMemoire(){
 const RX_CX=[['facebook','Facebook & Instagram','connect-facebook.html'],['tiktok','TikTok','connect-tiktok.html'],['youtube','YouTube','connect-youtube.html'],['linkedin','LinkedIn','connect-linkedin.html'],['whatsapp','WhatsApp','connect-whatsapp.html'],['ia','IA (cerveau)','connect-ia.html']];
 let CX_SEL='connect-facebook.html';
 function viewConnecter(){
-  add(`<h3>${ic('bubble')} Connecter les réseaux</h3><div class="sub">Choisis un réseau — le guide s'ouvre ici, sans quitter le dashboard</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px" id="cxTiles">${RX_CX.map(r=>{const p=PLAT[r[0]]||{},col=p.c||'#4BA3FF';return `<button class="pill" data-pg="${r[2]}" style="cursor:pointer;border-color:${col}66;color:${col};padding:8px 13px;${r[2]===CX_SEL?'background:'+col+'22;':''}">${r[1]}</button>`;}).join('')}</div>
+  add(`<h3>${ic('bubble')} Connecter les réseaux</h3><div class="sub">Choisis un réseau — le guide s'ouvre ici. La connexion elle-même s'ouvre en plein écran (les fenêtres de login refusent l'affichage imbriqué).</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center" id="cxTiles">${RX_CX.map(r=>{const p=PLAT[r[0]]||{},col=p.c||'#4BA3FF';return `<button class="pill" data-pg="${r[2]}" style="cursor:pointer;border-color:${col}66;color:${col};padding:8px 13px;${r[2]===CX_SEL?'background:'+col+'22;':''}">${r[1]}</button>`;}).join('')}
+      <a id="cxFull" href="../../${CX_SEL}" target="_blank" rel="noopener" class="pill" style="margin-left:auto;padding:8px 13px;text-decoration:none">↗ Ouvrir en plein écran</a></div>
     <div id="cxHost">${frame('../../'+CX_SEL,'72vh')}</div>`,'col12');
   $$('#cxTiles button').forEach(function(b){ b.onclick=function(){
     CX_SEL=b.dataset.pg;
     $("#cxHost").innerHTML=frame('../../'+b.dataset.pg,'72vh');
+    const full=$("#cxFull"); if(full) full.href='../../'+b.dataset.pg;
     const key=(RX_CX.find(function(r){return r[2]===b.dataset.pg;})||[])[0];
     const col=(PLAT[key]||{}).c||'#4BA3FF';
     $$('#cxTiles button').forEach(function(x){x.style.background='';});

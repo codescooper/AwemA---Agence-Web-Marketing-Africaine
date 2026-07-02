@@ -36,7 +36,7 @@
 <body>
 <div class="wrap">
   <header>
-    <a class="back" href="index.html">← AWEMA · Centre de pilotage</a>
+    <a class="back" href="index.html" target="_top">← AWEMA · Centre de pilotage</a>
     <div class="lgmark">f</div>
     <h1>Connecter <span class="g">Facebook</span> &amp; Instagram — guide pas à pas</h1>
     <p class="lead">Le plus puissant : <b>un seul token Meta</b> découvre <b>toutes</b> tes Pages et crée
@@ -170,7 +170,8 @@
     try{localStorage.setItem('awema-fb-appid',id);}catch(e){}
     var state='fb:'+Math.random().toString(36).slice(2)+Date.now().toString(36);
     var url=FB_AUTH+'?'+new URLSearchParams({client_id:id,redirect_uri:oauthUrl,scope:FB_SCOPES,response_type:'code',state:state}).toString();
-    window.location.href=url;
+    // Sort de l'iframe du dashboard si nécessaire (les pages de login OAuth interdisent le framing).
+    (window.top||window).location.href=url;
   };
 
   // copie de la Redirect URI
