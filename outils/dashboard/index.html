@@ -349,6 +349,66 @@ function donut(data,size=132){
     <text x="${R}" y="${R-2}" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="26" fill="var(--tx)">${tot}</text>
     <text x="${R}" y="${R+16}" text-anchor="middle" font-size="10.5" fill="var(--muted)">contenus</text></svg>`;
 }
+/* ---------- courbe d'évolution des abonnés (échelle temporelle réelle) ---------- */
+const MOIS_FR=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+function dfr(iso){const d=new Date(iso);return d.getDate()+' '+MOIS_FR[d.getMonth()];}
+function courbeAudience(ev){
+  // ev = [{date,valeur}] — x proportionnel au TEMPS réel (les synchros sont irrégulières).
+  const pts=(ev||[]).filter(p=>p&&p.date&&typeof p.valeur==='number')
+    .map(p=>({t:+new Date(p.date),date:p.date,v:p.valeur})).sort((a,b)=>a.t-b.t);
+  if(pts.length<2)return {html:`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">
+    Pas encore assez d'historique (${pts.length} point). La synchro hebdomadaire l'alimente — chaque
+    passage ajoute un point, la courbe se dessine toute seule.</div>`,pts:[]};
+  const W=760,H=230,L=52,R=16,T=16,B=30;
+  const t0=pts[0].t,t1=pts[pts.length-1].t||t0+1;
+  let mn=Math.min(...pts.map(p=>p.v)),mx=Math.max(...pts.map(p=>p.v));
+  const pad=Math.max((mx-mn)*.08,1);mn=Math.max(0,mn-pad);mx+=pad;
+  const X=t=>L+(t-t0)/((t1-t0)||1)*(W-L-R), Y=v=>T+(1-(v-mn)/(mx-mn))*(H-T-B);
+  pts.forEach(p=>{p.x=X(p.t);p.y=Y(p.v);});
+  const d=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+  const area=d+` L${pts[pts.length-1].x.toFixed(1)} ${H-B} L${pts[0].x.toFixed(1)} ${H-B} Z`;
+  // grille récessive : 3 niveaux + libellés discrets
+  let grid='';[0,.5,1].forEach(f=>{const v=mn+(mx-mn)*f,y=Y(v);
+    grid+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="rgba(247,244,234,.07)"/>`+
+      `<text x="${L-8}" y="${y+4}" text-anchor="end" font-size="10.5" fill="var(--muted2)">${nf(Math.round(v))}</text>`;});
+  const xh=[pts[0],pts[Math.floor((pts.length-1)/2)],pts[pts.length-1]];
+  const xl=[...new Set(xh)].map(p=>`<text x="${p.x}" y="${H-9}" text-anchor="middle" font-size="10.5" fill="var(--muted2)">${dfr(p.date)}</text>`).join('');
+  const last=pts[pts.length-1];
+  const html=`<div style="position:relative;margin-top:12px">
+    <svg id="evChart" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" role="img"
+      aria-label="Évolution des abonnés : de ${nf(pts[0].v)} le ${dfr(pts[0].date)} à ${nf(last.v)} le ${dfr(last.date)}">
+      <defs><linearGradient id="evGrad" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#FFC94D" stop-opacity=".22"/><stop offset="1" stop-color="#FFC94D" stop-opacity="0"/></linearGradient></defs>
+      ${grid}${xl}
+      <path d="${area}" fill="url(#evGrad)"/>
+      <path d="${d}" fill="none" stroke="#FFC94D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="${last.x}" cy="${last.y}" r="3.6" fill="#FFC94D" stroke="var(--bg,#191919)" stroke-width="2"/>
+      <text x="${Math.min(last.x,W-R-4)}" y="${Math.max(last.y-10,12)}" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--tx)">${nf(last.v)}</text>
+      <line id="evX" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="rgba(255,201,77,.4)" stroke-dasharray="3 3" style="display:none"/>
+      <circle id="evDot" r="4.5" fill="#FFC94D" stroke="var(--bg,#191919)" stroke-width="2" style="display:none"/>
+      <rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="transparent" id="evHit"/>
+    </svg>
+    <div id="evTip" style="display:none;position:absolute;pointer-events:none;background:#161616;border:1px solid rgba(255,201,77,.35);border-radius:9px;padding:6px 10px;font-size:12px;white-space:nowrap;box-shadow:0 10px 24px -8px rgba(0,0,0,.6);z-index:5"></div>
+  </div>`;
+  return {html,pts,W,H};
+}
+function wireCourbe(c){
+  const svg=$("#evChart"),tip=$("#evTip"),dot=$("#evDot"),xln=$("#evX"),hit=$("#evHit");
+  if(!svg||!c.pts.length)return;
+  function move(e){
+    const r=svg.getBoundingClientRect(),sx=(e.clientX-r.left)*(c.W/r.width);
+    let best=c.pts[0];c.pts.forEach(p=>{if(Math.abs(p.x-sx)<Math.abs(best.x-sx))best=p;});
+    dot.setAttribute('cx',best.x);dot.setAttribute('cy',best.y);dot.style.display='';
+    xln.setAttribute('x1',best.x);xln.setAttribute('x2',best.x);xln.style.display='';
+    const i=c.pts.indexOf(best),prev=i>0?c.pts[i-1]:null,delta=prev?best.v-prev.v:null;
+    tip.innerHTML=`<b>${nf(best.v)}</b> abonnés · ${dfr(best.date)}${delta!=null?` <span style="color:${delta>=0?'#34E5C4':'#FF7D9C'}">${delta>=0?'+':''}${nf(delta)}</span>`:''}`;
+    tip.style.display='block';
+    const px=best.x/c.W*r.width, py=best.y/c.H*r.height;
+    tip.style.left=Math.min(px+12,r.width-tip.offsetWidth-4)+'px';tip.style.top=Math.max(py-40,0)+'px';
+  }
+  hit.addEventListener('mousemove',move);
+  hit.addEventListener('mouseleave',()=>{tip.style.display='none';dot.style.display='none';xln.style.display='none';});
+}
 function spark(vals,color){
   const w=120,h=34,mx=Math.max(...vals),mn=Math.min(...vals),rng=(mx-mn)||1;
   const pts=vals.map((v,i)=>[i/(vals.length-1)*w,h-3-((v-mn)/rng)*(h-8)]);
@@ -730,6 +790,13 @@ function viewClients(){
         <div class="kpibox"><div class="val2">${(c.campagne&&c.campagne.total)||0}</div><div class="lab">contenus</div></div>
       </div>
       <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">${netChips}</div>
+      ${(()=>{const ev=(r.evolution_audience||[]).filter(p=>p&&typeof p.valeur==='number');
+        if(ev.length<2)return '';
+        const d0=ev[0].valeur,d1=ev[ev.length-1].valeur,dl=d1-d0;
+        return `<div style="margin-top:10px;display:flex;align-items:center;gap:10px">
+          ${spark(ev.map(p=>p.valeur),'#FFC94D')}
+          <span class="pill" style="border-color:${dl>=0?'#34E5C4':'#FF7D9C'}55;color:${dl>=0?'#34E5C4':'#FF7D9C'}">${dl>=0?'▲ +':'▼ '}${nf(dl)}</span>
+          <span style="font-size:11px;color:var(--muted)">abonnés · ${ev.length} relevés</span></div>`;})()}
       ${cad?`<div style="margin-top:8px;font-size:11.5px;color:var(--muted)">Dernier post : <b style="color:${cad.jours_depuis>7?'#FF7D9C':'var(--tx)'}">${cad.jours_depuis==null?'—':'il y a '+cad.jours_depuis+' j'}</b> · ${cad.posts_par_semaine||0}/sem</div>`:''}
       ${profilLinks(c)}
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
@@ -758,6 +825,20 @@ function viewReseaux(){
   kpis.forEach(([lab,v,icn,c,suf])=>{const isNull=(v==null);
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
       <div class="val" ${isNull?'':`data-to="${v}" data-suf="${suf||''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
+
+  /* ---- Évolution des abonnés dans le temps (courbe réelle, échelle temporelle) ----
+     NB : nf est redéclaré LOCALEMENT plus bas dans cette fonction (zone morte temporelle) → alias. */
+  const nfv=v=>(v==null?'—':(+v).toLocaleString('fr-FR'));
+  const ev=(m&&m.evolution_audience)||[];
+  const cc=courbeAudience(ev);
+  const evPts=(ev||[]).filter(p=>p&&typeof p.valeur==='number');
+  const evDelta=evPts.length>1?evPts[evPts.length-1].valeur-evPts[0].valeur:null;
+  add(`<h3>${ic('chart')} Évolution des abonnés</h3>
+    <div class="sub">Audience totale relevée à chaque synchronisation — données réelles</div>
+    ${cc.html}
+    ${evPts.length>1?`<div style="margin-top:8px;font-size:12px;color:var(--muted)">Du <b style="color:var(--tx)">${dfr(evPts[0].date)}</b> (${nfv(evPts[0].valeur)}) au <b style="color:var(--tx)">${dfr(evPts[evPts.length-1].date)}</b> (${nfv(evPts[evPts.length-1].valeur)}) ·
+      <b style="color:${evDelta>=0?'#34E5C4':'#FF7D9C'}">${evDelta>=0?'+':''}${nfv(evDelta)} abonné${Math.abs(evDelta)>1?'s':''}</b> · ${evPts.length} relevés</div>`:''}`,'col12');
+  wireCourbe(cc);
 
   /* ---- ANALYSTE IA : « Pourquoi & Que faire » (M2) ---- */
   add(cAnalyste(connected), 'col12');
@@ -861,10 +942,7 @@ function viewReseaux(){
       ${p.type?`<span class="pill">${p.type}</span>`:''}<span class="pill">👍 ${p.likes}</span><span class="pill">💬 ${p.commentaires}</span>${p.partages?`<span class="pill">↗ ${p.partages}</span>`:''}${p.portee!=null?`<span class="pill">👁 ${p.portee}</span>`:''}${p.lien?`<a href="${p.lien}" target="_blank" class="pill">voir ↗</a>`:''}</div>`).join('')}</div>`
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">Disponible une fois les réseaux connectés.</div>`}`,'col12');
 
-  /* ---- Évolution audience ---- */
-  const ev=(m&&m.evolution_audience)||[];
-  if(ev.length>1){const map={};ev.forEach((p,i)=>map[i+1]=p.valeur);add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">${ev.length} relevés · du ${ev[0].date} à ${ev[ev.length-1].date}</div>${area(map)}`,'col12');}
-  else if(connected){add(`<h3>${ic('chart')} Évolution de l'audience</h3><div class="sub">La courbe se construit à chaque sync</div><div style="margin-top:14px;color:var(--muted);font-size:12.5px">1 relevé pour l'instant — un point est ajouté à chaque synchronisation.</div>`,'col12');}
+  /* (l'évolution de l'audience est affichée en tête de vue — courbe temporelle interactive) */
 
   /* ---- Présence par réseau (reflète l'état réel de connexion, pas seulement les liens saisis) ---- */
   const PRES=(m&&m.par_reseau)||{}, OBJ={tiktok:m&&m.tiktok,youtube:m&&m.youtube,linkedin:m&&m.linkedin};
