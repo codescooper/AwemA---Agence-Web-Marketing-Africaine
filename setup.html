@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AWEMA — Personnaliser mon agence (auto-hébergement)</title>
 <style>
-  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
-    --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.13)}
+  :root{--nuit:#222222;--ciel:#FFC94D;--gold:#D4AF37;--violet:#EDA914;--mint:#34E5C4;--pink:#FF7D9C;
+    --tx:#F1EDE2;--muted:#B3AA92;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.13)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.6;
-    background:radial-gradient(1100px 650px at 50% -12%,#16294f,#0A1F44 62%,#07162f);min-height:100vh;padding-bottom:60px}
+    background:radial-gradient(1100px 650px at 50% -12%,#2A2A2A,#222222 62%,#1E1E1E);min-height:100vh;padding-bottom:60px}
   .wrap{max-width:900px;margin:0 auto;padding:0 22px}
   header{padding:48px 0 8px}
   .back{color:var(--muted);text-decoration:none;font-size:13px}
@@ -21,13 +21,13 @@
   .card h2{font-family:Montserrat,sans-serif;font-size:17px;margin-bottom:6px}
   label{display:block;font-size:12px;color:var(--muted);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.05em}
   input{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--bord);background:rgba(0,0,0,.25);color:#fff;font:inherit;font-size:14px}
-  input::placeholder{color:#6b7a9c}
+  input::placeholder{color:#8C846C}
   input[type=color]{padding:4px;height:42px;cursor:pointer}
   .colorrow{display:flex;align-items:center;gap:10px}
   .colorrow input[type=color]{width:54px;flex:0 0 auto}
   .colorrow input[type=text]{flex:1}
   .req{color:var(--gold)}
-  .out{position:relative;margin-top:12px;background:rgba(0,0,0,.34);border:1px solid var(--bord);border-radius:12px;padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;white-space:pre-wrap;word-break:break-word;color:#dbe7ff;max-height:340px;overflow:auto}
+  .out{position:relative;margin-top:12px;background:rgba(0,0,0,.34);border:1px solid var(--bord);border-radius:12px;padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;white-space:pre-wrap;word-break:break-word;color:#EFE7CF;max-height:340px;overflow:auto}
   .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
   .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--ciel),var(--violet));color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;border:0;border-radius:11px;padding:11px 16px;cursor:pointer}
   .btn.ghost{background:transparent;border:1px solid var(--bord);color:var(--tx)}
@@ -120,7 +120,7 @@
 <script src="outils/_data/config.js" onerror=""></script>
 <script src="outils/_design/awema-github.js"></script>
 <script>
-  const DEF_CHARTE={nuit:'#0A1F44',ciel:'#4BA3FF',gold:'#D4AF37',violet:'#7C5CFF',mint:'#34E5C4',pink:'#FF7D9C'};
+  const DEF_CHARTE={nuit:'#222222',ciel:'#FFC94D',gold:'#D4AF37',violet:'#EDA914',mint:'#34E5C4',pink:'#FF7D9C'};
   const CL={nuit:'Bleu Nuit',ciel:'Bleu Ciel',gold:'Or',violet:'Violet',mint:'Menthe',pink:'Rose'};
   const F=id=>(document.getElementById(id).value||'').trim();
   function slugify(s){return (s||'').normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase();}

@@ -10,28 +10,28 @@
 <style>
 :root{
   /* Dark (défaut) — deep navy + accents électriques */
-  --bg:#070B14; --bg2:#0A1120; --surface:rgba(255,255,255,.045); --surface-solid:#0E1626;
+  --bg:#191919; --bg2:#1F1F1F; --surface:rgba(255,255,255,.045); --surface-solid:#262626;
   --elev:rgba(255,255,255,.06); --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.13);
-  --tx:#E7ECF7; --muted:#8A98B3; --muted2:#5D6B86;
-  --blue:#4BA3FF; --violet:#7C5CFF; --mint:#34E5C4; --gold:#D4AF37; --pink:#FF7D9C; --amber:#FFC861;
-  --grad:linear-gradient(135deg,#4BA3FF 0%,#7C5CFF 100%);
-  --grad-mint:linear-gradient(135deg,#34E5C4,#4BA3FF);
+  --tx:#F0ECE1; --muted:#A59D89; --muted2:#7D7663;
+  --blue:#FFC94D; --violet:#EDA914; --mint:#34E5C4; --gold:#D4AF37; --pink:#FF7D9C; --amber:#FFC861;
+  --grad:linear-gradient(135deg,#FFC94D 0%,#EDA914 100%);
+  --grad-mint:linear-gradient(135deg,#34E5C4,#FFC94D);
   --glass-blur:saturate(160%) blur(16px);
   --shadow:0 18px 50px -16px rgba(0,0,0,.65);
-  --glow:0 0 0 1px var(--border), 0 8px 30px -10px rgba(75,163,255,.35);
+  --glow:0 0 0 1px var(--border), 0 8px 30px -10px rgba(255,201,77,.35);
   --r:20px; --r-sm:13px;
 }
 html[data-theme="light"]{
-  --bg:#EEF2F9; --bg2:#E7ECF6; --surface:rgba(255,255,255,.72); --surface-solid:#FFFFFF;
-  --elev:rgba(255,255,255,.9); --border:rgba(12,22,45,.09); --border2:rgba(12,22,45,.16);
-  --tx:#0E1626; --muted:#5D6B86; --muted2:#7C8AA6;
-  --shadow:0 18px 44px -18px rgba(20,35,80,.28); --glow:0 0 0 1px var(--border),0 10px 30px -12px rgba(75,163,255,.30);
+  --bg:#FAF6EC; --bg2:#F3EEDF; --surface:rgba(255,255,255,.72); --surface-solid:#FFFFFF;
+  --elev:rgba(255,255,255,.9); --border:rgba(45,40,26,.09); --border2:rgba(45,40,26,.16);
+  --tx:#262626; --muted:#7D7663; --muted2:#8D8672;
+  --shadow:0 18px 44px -18px rgba(0,0,0,.28); --glow:0 0 0 1px var(--border),0 10px 30px -12px rgba(255,201,77,.30);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:
-   radial-gradient(1100px 600px at 82% -8%,rgba(124,92,255,.16),transparent 60%),
-   radial-gradient(900px 600px at 0% 0%,rgba(75,163,255,.14),transparent 55%),
+   radial-gradient(1100px 600px at 82% -8%,rgba(237,169,20,.16),transparent 60%),
+   radial-gradient(900px 600px at 0% 0%,rgba(255,201,77,.14),transparent 55%),
    var(--bg);
   color:var(--tx);-webkit-font-smoothing:antialiased;overflow:hidden}
 h1,h2,h3,.disp{font-family:'Plus Jakarta Sans','Inter',sans-serif;letter-spacing:-.02em}
@@ -47,7 +47,7 @@ a{color:inherit;text-decoration:none}
   border-right:1px solid var(--border);min-height:0}
 .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 16px}
 .logo{width:38px;height:38px;border-radius:12px;background:var(--grad);display:grid;place-items:center;
-  font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;box-shadow:0 8px 22px -6px rgba(124,92,255,.7)}
+  font-family:'Plus Jakarta Sans';font-weight:800;color:#fff;box-shadow:0 8px 22px -6px rgba(237,169,20,.7)}
 .brand b{font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;display:block;line-height:1.1}
 .brand span{font-size:11px;color:var(--muted)}
 .nav{display:flex;flex-direction:column;gap:3px;overflow:auto}
@@ -56,7 +56,7 @@ a{color:inherit;text-decoration:none}
   font-size:13.5px;font-weight:500;transition:.18s;border:1px solid transparent}
 .nav a svg{width:18px;height:18px;opacity:.9}
 .nav a:hover{background:var(--elev);color:var(--tx)}
-.nav a.active{color:var(--tx);background:linear-gradient(120deg,rgba(75,163,255,.16),rgba(124,92,255,.13));
+.nav a.active{color:var(--tx);background:linear-gradient(120deg,rgba(255,201,77,.16),rgba(237,169,20,.13));
   border-color:var(--border2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
 .nav a.active svg{color:var(--blue)}
 .side .foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;
@@ -83,8 +83,8 @@ a{color:inherit;text-decoration:none}
 .iconbtn:hover{border-color:var(--border2);transform:translateY(-1px)}
 .iconbtn svg{width:18px;height:18px}
 .cta{display:flex;align-items:center;gap:8px;padding:10px 15px;border-radius:12px;border:none;cursor:pointer;
-  background:var(--grad);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 10px 24px -8px rgba(124,92,255,.6);transition:.18s}
-.cta:hover{transform:translateY(-2px);box-shadow:0 16px 30px -10px rgba(124,92,255,.75)}
+  background:var(--grad);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 10px 24px -8px rgba(237,169,20,.6);transition:.18s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 16px 30px -10px rgba(237,169,20,.75)}
 
 /* ---------- Bento grid ---------- */
 .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;grid-auto-rows:minmax(10px,auto)}
@@ -126,7 +126,7 @@ a{color:inherit;text-decoration:none}
 .funnel{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 .fstep{display:flex;align-items:center;gap:12px}
 .fstep .frow{flex:1;height:30px;border-radius:9px;background:var(--grad);display:flex;align-items:center;padding:0 12px;
-  color:#fff;font-size:12px;font-weight:600;box-shadow:0 8px 20px -10px rgba(75,163,255,.5);animation:grow .9s both}
+  color:#fff;font-size:12px;font-weight:600;box-shadow:0 8px 20px -10px rgba(255,201,77,.5);animation:grow .9s both}
 .fstep .v{width:54px;text-align:right;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* upcoming list */
@@ -195,7 +195,7 @@ a{color:inherit;text-decoration:none}
 
 /* Vue Contenus : champs + table */
 .fld{background:var(--elev);border:1px solid var(--border);border-radius:10px;color:var(--tx);padding:9px 11px;font-size:13px;outline:none;transition:.16s}
-.fld:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(75,163,255,.16)}
+.fld:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(255,201,77,.16)}
 .ctable{margin-top:6px;font-size:12.5px}
 .trow{display:grid;grid-template-columns:46px 104px 132px 56px 1fr 120px;gap:10px;align-items:center;padding:9px 8px;border-bottom:1px solid var(--border)}
 .trow.thead{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;position:sticky;top:0;background:var(--surface-solid);z-index:1}
@@ -275,7 +275,7 @@ a{color:inherit;text-decoration:none}
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const PLAT=window.AWEMA_PLATFORMS||{};
-function pbadge(net,extra){const p=PLAT[net]||{c:'#4BA3FF',grad:'var(--grad)',glyph:'•',nom:net};
+function pbadge(net,extra){const p=PLAT[net]||{c:'#FFC94D',grad:'var(--grad)',glyph:'•',nom:net};
   return `<span class="pi" style="width:24px;height:24px;border-radius:8px;display:inline-grid;place-items:center;
     color:#fff;font-weight:800;font-size:11px;font-family:'Plus Jakarta Sans';background:${p.grad}${extra||''}">${p.glyph}</span>`;}
 function ic(n){const p={
@@ -296,7 +296,7 @@ function ic(n){const p={
 /* Injecte les icônes SVG dans tous les éléments marqués data-ic */
 $$('[data-ic]').forEach(el=>el.insertAdjacentHTML('afterbegin', ic(el.dataset.ic)));
 
-const PILCOLOR={PIL1:'#4BA3FF',PIL2:'#7C5CFF',PIL3:'#34E5C4',PIL4:'#FF7D9C',PIL5:'#FFC861',PIL6:'#9AA7C2'};
+const PILCOLOR={PIL1:'#FFC94D',PIL2:'#EDA914',PIL3:'#34E5C4',PIL4:'#FF7D9C',PIL5:'#FFC861',PIL6:'#A29A85'};
 const PILNAME={PIL1:'Pédagogie',PIL2:'Produits',PIL3:'Preuve sociale',PIL4:'Offres',PIL5:'Vie locale',PIL6:'B2B/Coulisses'};
 let CLIENTS=[], ACTIVE=null, ITEMS=[], RES=null, A={};
 function revueURL(id){return '../revue-visuels/index.html?client='+encodeURIComponent(id||(ACTIVE&&ACTIVE.id)||'');}
@@ -366,14 +366,14 @@ function area(map){
   const fill=line+` L${w} ${h} L0 ${h} Z`;
   const dots=pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.6" fill="var(--blue)"/>`).join('');
   return `<svg width="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="margin-top:14px;overflow:visible">
-    <defs><linearGradient id="ar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#4BA3FF" stop-opacity=".4"/><stop offset="1" stop-color="#4BA3FF" stop-opacity="0"/></linearGradient></defs>
+    <defs><linearGradient id="ar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFC94D" stop-opacity=".4"/><stop offset="1" stop-color="#FFC94D" stop-opacity="0"/></linearGradient></defs>
     <path d="${fill}" fill="url(#ar)"/><path d="${line}" fill="none" stroke="url(#arl)" stroke-width="2.5"/>
-    <linearGradient id="arl" x1="0" x2="1"><stop offset="0" stop-color="#4BA3FF"/><stop offset="1" stop-color="#7C5CFF"/></linearGradient>${dots}</svg>`;
+    <linearGradient id="arl" x1="0" x2="1"><stop offset="0" stop-color="#FFC94D"/><stop offset="1" stop-color="#EDA914"/></linearGradient>${dots}</svg>`;
 }
 function ring(pct,size=104){const R=size/2,r=R-9,C=2*Math.PI*r,o=C*(1-pct/100);
   return `<div class="ring"><svg width="${size}" height="${size}"><circle cx="${R}" cy="${R}" r="${r}" fill="none" stroke="var(--elev)" stroke-width="9"/>
     <circle cx="${R}" cy="${R}" r="${r}" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${o}" transform="rotate(-90 ${R} ${R})"/>
-    <defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#34E5C4"/><stop offset="1" stop-color="#4BA3FF"/></linearGradient></defs></svg>
+    <defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#34E5C4"/><stop offset="1" stop-color="#FFC94D"/></linearGradient></defs></svg>
     <div class="pc" style="position:absolute">${pct}%</div></div>`;}
 
 function countup(el,to,suf=''){let s=null,dur=900;const step=t=>{if(!s)s=t;const p=Math.min((t-s)/dur,1);
@@ -381,7 +381,7 @@ function countup(el,to,suf=''){let s=null,dur=900;const step=t=>{if(!s)s=t;const
 
 function card(cls){const d=document.createElement('article');d.className='card '+cls;return d;}
 function add(html,cls){const c=card((cls||'')+' fade');c.innerHTML=html;$("#grid").appendChild(c);return c;}
-const PC=['#4BA3FF','#7C5CFF','#34E5C4','#FFC861','#FF7D9C'];
+const PC=['#FFC94D','#EDA914','#34E5C4','#FFC861','#FF7D9C'];
 
 /* ---------- KPIs RÉELS (aucune donnée fictive) ---------- */
 function cKpisReal(){
@@ -391,9 +391,9 @@ function cKpisReal(){
   const aud=RES&&RES.global?RES.global.audience:null;
   const audS=(RES&&RES.evolution_audience&&RES.evolution_audience.length>1)?RES.evolution_audience.map(p=>p.valeur):null;
   const cards=[
-    {ic:'layers',c:'#4BA3FF',lab:'Contenus planifiés',val:A.total,spark:wk.length>1?wk:null},
+    {ic:'layers',c:'#FFC94D',lab:'Contenus planifiés',val:A.total,spark:wk.length>1?wk:null},
     {ic:'check',c:'#34E5C4',lab:'Production validée',val:pct,suf:'%',sub:A.valide+' / '+A.total},
-    {ic:'grid',c:'#7C5CFF',lab:'Plateformes actives',val:plt},
+    {ic:'grid',c:'#EDA914',lab:'Plateformes actives',val:plt},
     {ic:'eye',c:'#FFC861',lab:'Audience réseaux',val:aud,spark:audS}
   ];
   cards.forEach((k,i)=>{const isNull=(k.val==null);
@@ -432,7 +432,7 @@ function cPlanning(){
     <div class="sub">${A.start} → ${A.end} · 2 publications/jour</div>${area(A.semaines)}`;
 }
 function cBareme(){
-  const b=[['A','#34E5C4','À reproduire'],['B','#4BA3FF','À optimiser'],['C','#FFC861','À optimiser'],['D','#FF9F45','Surveiller'],['E','#FF7D9C','À abandonner']];
+  const b=[['A','#34E5C4','À reproduire'],['B','#FFC94D','À optimiser'],['C','#FFC861','À optimiser'],['D','#FF9F45','Surveiller'],['E','#FF7D9C','À abandonner']];
   return `<h3>${ic('target')} Scoring A→E</h3><div class="sub">Barème de décision — scores réels après mesure</div>
     <div class="auto" style="margin-top:12px">${b.map(([g,c,a])=>`<div class="arow"><span class="dot" style="background:${c}"></span>Note ${g}<span class="s">${a}</span></div>`).join('')}</div>`;
 }
@@ -471,7 +471,7 @@ function cActionsCom(){
 function loadAgent(client,nom){return ((client&&client.agents)||{})[nom]||null;}
 function cAgents(){
   const ag=(ACTIVE&&ACTIVE.agents)||null, names=ag?Object.keys(ag):[];
-  return `<h3>${ic('bolt')} Assistants IA <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF55">${names.length}</span></h3>
+  return `<h3>${ic('bolt')} Assistants IA <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91455">${names.length}</span></h3>
     <div class="sub">Les agents travaillent en tâche de fond et proposent des actions</div>
     ${names.length?`<div class="list" style="margin-top:10px">${names.map(n=>{const a=ag[n]||{};
       return `<div class="li"><b style="text-transform:capitalize;flex:0 0 auto">${n}</b>
@@ -506,10 +506,10 @@ function cMemoire(){
 /* ---------- Agent Analyste (M2) : Pourquoi & Que faire ---------- */
 function cPreuve(p){ if(!p||p.metrique==null) return '';
   const v=(p.valeur!=null?(typeof p.valeur==='number'?(+p.valeur).toLocaleString('fr-FR'):p.valeur):'');
-  return `<span class="pill" style="background:rgba(75,163,255,.12);color:var(--blue);border-color:rgba(75,163,255,.4)">📊 ${p.metrique}: ${v}${p.variation?` (${p.variation})`:''}</span>`;}
+  return `<span class="pill" style="background:rgba(255,201,77,.12);color:var(--blue);border-color:rgba(255,201,77,.4)">📊 ${p.metrique}: ${v}${p.variation?` (${p.variation})`:''}</span>`;}
 function cAnalyste(connected){
   const a=loadAgent(ACTIVE,'analyste');
-  const head=`<h3>${ic('bolt')} Pourquoi & Que faire <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  const head=`<h3>${ic('bolt')} Pourquoi & Que faire <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91466">proposition IA</span></h3>`;
   if(!a||!(a.items||[]).length){
     return head+`<div class="sub">L'Analyste explique tes résultats et te dit quoi faire</div>
       <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">${connected?'Pas encore d\'analyse.':'Connecte d\'abord les réseaux.'}
@@ -532,7 +532,7 @@ function cAnalyste(connected){
 /* ---------- Agent Stratège (M3) : Plan recommandé ---------- */
 function cStratege(){
   const s=loadAgent(ACTIVE,'stratege');
-  const head=`<h3>${ic('cal')} Plan recommandé <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  const head=`<h3>${ic('cal')} Plan recommandé <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91466">proposition IA</span></h3>`;
   if(!s){return head+`<div class="sub">Le Stratège transforme tes perfs en plan d'action</div>
     <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Pas encore de plan.
     Généré <b>automatiquement</b> par les agents (quotidien + après synchro) si l'IA est en place.
@@ -544,7 +544,7 @@ function cStratege(){
       ${heures.map(h=>`<span class="pill">🕐 ${h}</span>`).join('')}</div>
     ${obj.length?`<div style="margin-top:12px"><div class="lab">Objectifs</div><div class="list">${obj.map(o=>`<div class="li"><span style="color:var(--mint)">◎</span><span class="t">${typeof o==='string'?o:(o.titre||o.objectif||'')}</span></div>`).join('')}</div></div>`:''}
     ${plan.length?`<div style="margin-top:12px"><div class="lab">Semaine proposée (${plan.length})</div>
-      <div class="list">${plan.map(p=>{const col=(PLAT[(p.reseau||'').toLowerCase()]||{}).c||'#7C5CFF';
+      <div class="list">${plan.map(p=>{const col=(PLAT[(p.reseau||'').toLowerCase()]||{}).c||'#EDA914';
         return `<div class="li"><span class="pill" style="width:74px;justify-content:center">${p.jour||''}${p.heure?' '+p.heure:''}</span>
           <span class="pill" style="border-color:${col}66;color:${col}">${p.reseau||''}</span>
           <span class="pill">${p.format||''}</span>
@@ -557,11 +557,11 @@ function escAttr(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt
 function cpd(el){const t=el.dataset.t||'';navigator.clipboard.writeText(t).then(()=>toast('Copié ✓')).catch(()=>toast('Sélectionne puis copie'));}
 function cCreatif(){
   const c=loadAgent(ACTIVE,'creatif');
-  const head=`<h3>${ic('layers')} Idées prêtes à publier <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">proposition IA</span></h3>`;
+  const head=`<h3>${ic('layers')} Idées prêtes à publier <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91466">proposition IA</span></h3>`;
   if(!c||!(c.items||[]).length){return head+`<div class="sub">Le Créatif propose des publications calées sur ta marque et tes perfs</div>
     <div style="margin-top:14px;color:var(--muted);font-size:12.5px;line-height:1.6">Pas encore d'idées pour ce client.</div>
     <div style="margin-top:12px"><button class="mini gold" onclick="go('publier')">✨ Générer des propositions →</button></div>`;}
-  const idea=i=>{const col=(PLAT[(i.reseau||'').toLowerCase()]||{}).c||'#7C5CFF';
+  const idea=i=>{const col=(PLAT[(i.reseau||'').toLowerCase()]||{}).c||'#EDA914';
     const plein=`${i.hook||''}\n\n${i.script||''}`;
     return `<div class="li" style="flex-direction:column;align-items:flex-start;gap:7px;padding:13px 8px">
       <div style="display:flex;gap:8px;width:100%;align-items:center;flex-wrap:wrap">
@@ -590,16 +590,16 @@ function adjAction(ac){ if(!ac) return '';
 function cActionsDuJour(){
   const a=loadAgent(ACTIVE,'actions-du-jour'), items=(a&&a.items)||[];
   if(!items.length){
-    return `<h3>${ic('bolt')} Actions du jour <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
+    return `<h3>${ic('bolt')} Actions du jour <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91466">IA proactif</span></h3>
       <div class="sub">AWEMA te proposera quoi faire en priorité, chaque jour</div>
       <div style="margin-top:12px;color:var(--muted);font-size:12.5px;line-height:1.6">Elles apparaissent <b>automatiquement</b> après la première synchronisation/analyse.</div>
       <div style="margin-top:10px"><a class="mini gold" href="#" onclick="go('reglages');return false" style="text-decoration:none">▶️ Lancer la 1ʳᵉ récupération →</a></div>`;
   }
   const n=Math.min(items.length,3);
-  return `<h3>${ic('bolt')} ${n} chose${n>1?'s':''} à faire aujourd'hui <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">IA proactif</span></h3>
+  return `<h3>${ic('bolt')} ${n} chose${n>1?'s':''} à faire aujourd'hui <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91466">IA proactif</span></h3>
     <div class="sub">AWEMA te propose — priorisé &amp; sourcé${a.genere_le?' · '+a.genere_le.slice(0,10):''}</div>
     <div style="display:grid;gap:8px;margin-top:12px">
-      ${items.map(it=>`<div style="display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:12px;background:var(--elev);border:1px solid var(--border);border-left:3px solid ${ADJ_COL[it.priorite]||'#7C5CFF'}">
+      ${items.map(it=>`<div style="display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:12px;background:var(--elev);border:1px solid var(--border);border-left:3px solid ${ADJ_COL[it.priorite]||'#EDA914'}">
         <span style="font-size:18px;flex:0 0 auto">${ADJ_ICON[it.type]||'•'}</span>
         <div style="flex:1;min-width:0"><b style="font-size:13.5px">${it.titre||''}</b><div style="font-size:12px;color:var(--muted)">${it.detail||''}</div></div>
         ${adjAction(it.action)}</div>`).join('')}
@@ -705,9 +705,9 @@ function viewClients(){
   const audTot=sum(c=>c.reseaux&&c.reseaux.global&&c.reseaux.global.audience);
   const repTot=sum(c=>c.reseaux&&c.reseaux.a_repondre&&c.reseaux.a_repondre.total);
   const contTot=sum(c=>c.campagne&&c.campagne.total);
-  [['users','#4BA3FF','Clients',tot,''],['bubble','#34E5C4','Connectés',conn,' / '+tot],
+  [['users','#FFC94D','Clients',tot,''],['bubble','#34E5C4','Connectés',conn,' / '+tot],
    ['eye','#FFC861','Audience agence',audTot,''],['chat','#FF7D9C','À répondre',repTot,''],
-   ['layers','#7C5CFF','Contenus',contTot,'']].forEach(([icn,c,lab,val,sub])=>{
+   ['layers','#EDA914','Contenus',contTot,'']].forEach(([icn,c,lab,val,sub])=>{
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div></div>
       <div class="val" data-to="${val}">0</div><div class="lab">${lab}${sub?' <span style="color:var(--muted)">'+sub+'</span>':''}</div>`,'col3 kpi');
   });
@@ -718,7 +718,7 @@ function viewClients(){
     const r=c.reseaux||{}, g=r.global||{}, act=ACTIVE&&c.id===ACTIVE.id;
     const rep=(r.a_repondre&&r.a_repondre.total)||0, cad=r.cadence;
     const nets=netAudience(c);
-    const netChips=Object.entries(nets).map(([n,v])=>{const p=PLAT[n]||{c:'#9AA7C2',nom:n};
+    const netChips=Object.entries(nets).map(([n,v])=>{const p=PLAT[n]||{c:'#A29A85',nom:n};
       return `<span class="pill" style="display:inline-flex;align-items:center;gap:6px;border-color:${p.c}55;color:var(--tx)">${pbadge(n)} ${p.nom} · ${nf(v)}</span>`;}).join('')
       ||'<span class="tag">réseaux à connecter</span>';
     add(`<h3>${c.nom}${act?'<span class="chip up" style="margin-left:auto">actif</span>':''}</h3>
@@ -751,10 +751,10 @@ function tempsRel(iso){if(!iso)return '—';const d=Math.floor((Date.now()-new D
 
 function viewReseaux(){
   const m=RES, prof=(ACTIVE&&ACTIVE.profils)||{}, connected=m&&m.connecte, g=(m&&m.global)||{};
-  const kpis=[['Audience',g.audience,'users','#4BA3FF'],['Posts (récents)',g.posts,'layers','#7C5CFF'],
+  const kpis=[['Audience',g.audience,'users','#FFC94D'],['Posts (récents)',g.posts,'layers','#EDA914'],
     ['Réactions',g.likes,'bolt','#34E5C4'],['Commentaires',g.commentaires,'chat','#FFC861'],
-    ['Partages',g.partages,'target','#9AA7C2'],['Vues (28j)',g.vues,'eye','#FF7D9C']];
-  if(g.engagement_taux!=null)kpis.push(['Engag./abonné',g.engagement_taux,'bolt','#4BA3FF','%']);
+    ['Partages',g.partages,'target','#A29A85'],['Vues (28j)',g.vues,'eye','#FF7D9C']];
+  if(g.engagement_taux!=null)kpis.push(['Engag./abonné',g.engagement_taux,'bolt','#FFC94D','%']);
   kpis.forEach(([lab,v,icn,c,suf])=>{const isNull=(v==null);
     add(`<div class="top"><div class="ic" style="color:${c};background:${c}1a;border-color:${c}40">${ic(icn)}</div>${isNull?'<span class="tag">à connecter</span>':''}</div>
       <div class="val" ${isNull?'':`data-to="${v}" data-suf="${suf||''}"`}>${isNull?'—':'0'}</div><div class="lab">${lab}</div>`,'col4 kpi');});
@@ -791,7 +791,7 @@ function viewReseaux(){
   /* ---- Meilleur créneau ---- */
   const cr=(m&&m.meilleur_creneau)||null;
   add(`<h3>${ic('cal')} Meilleur créneau</h3><div class="sub">Quand l'engagement est le plus fort</div>
-    ${cr?`<div style="margin:12px 0"><span class="pill" style="background:#4BA3FF22;color:#4BA3FF;font-size:13px">📅 ${cr.recommandation}</span></div>
+    ${cr?`<div style="margin:12px 0"><span class="pill" style="background:#FFC94D22;color:#FFC94D;font-size:13px">📅 ${cr.recommandation}</span></div>
       ${bars(Object.entries(cr.par_jour).map(([j,v])=>[j,v]),v=>Math.round(v))}`
       :`<div style="margin-top:14px;color:var(--muted);font-size:12.5px">${connected?'Pas assez de données.':'À connecter.'}</div>`}`,'col6');
 
@@ -871,7 +871,7 @@ function viewReseaux(){
   add(`<h3>${ic('bubble')} Présence par réseau</h3>
     <div class="sub">${connected?('Connecté · '+(m.source||'')+(m.maj?' · maj '+m.maj.slice(0,10):'')):'Non connecté — aucune donnée inventée'}</div>
     <div style="margin-top:12px;font-size:12.5px">${['facebook','instagram','tiktok','youtube','linkedin','whatsapp'].map(r=>{
-      const p=PLAT[r]||{nom:r,c:'#9AA7C2'};
+      const p=PLAT[r]||{nom:r,c:'#A29A85'};
       const ab=(PRES[r]&&PRES[r].abonnes!=null)?PRES[r].abonnes:((OBJ[r]&&OBJ[r].abonnes!=null)?OBJ[r].abonnes:null);
       const url=prof[r]; let right;
       if(ab!=null) right=`<span class="pill" style="background:${p.c}1f;color:${p.c};border-color:${p.c}66">● connecté · ${nf(ab)} abonnés</span>`+((url&&/^https?:/.test(url))?` <a href="${url}" target="_blank" style="color:${p.c}">↗</a>`:'');
@@ -961,7 +961,7 @@ function dashRefetch(){return fetch('../_data/agence.js?ts='+Date.now(),{cache:'
 function viewPublier(){
   if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
   const cr=loadAgent(ACTIVE,'creatif'), items=(cr&&cr.items)||[];
-  add(`<h3>${ic('layers')} Propositions IA <span class="pill" style="background:#7C5CFF22;color:#7C5CFF;border-color:#7C5CFF66">${escP(ACTIVE.nom)}</span></h3>
+  add(`<h3>${ic('layers')} Propositions IA <span class="pill" style="background:#EDA91422;color:#EDA914;border-color:#EDA91466">${escP(ACTIVE.nom)}</span></h3>
     <div class="sub">Donne une idée, ou laisse vide → AWEMA s'appuie sur ce qui marche</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="pubIdee" class="fld" style="flex:1;min-width:180px" placeholder="Idée / thème (optionnel)"><button class="btn" id="pubGen">✨ Générer</button></div>
     <div id="pubGenMsg" style="font-size:12.5px;min-height:16px;color:var(--muted)"></div>
@@ -972,7 +972,7 @@ function viewPublier(){
         <button class="mini gold" data-ix="${ix}" onclick="pubUse(this)">✍️ Utiliser ce contenu</button></div>`).join(''):'<div class="sub">Aucune proposition encore — clique « Générer ».</div>'}</div>`,'col6');
 
   add(`<h3>${ic('cal')} Composer &amp; programmer</h3><div class="sub">Publié automatiquement à la date choisie</div>
-    <div id="pubNets" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">${NETS_PUB.map(n=>{const col=(PLAT[n[0]]||{}).c||'#4BA3FF';return `<label class="pill" style="cursor:pointer;display:inline-flex;gap:6px;align-items:center;border-color:${col}66"><input type="checkbox" value="${n[0]}" style="margin:0">${n[1]}</label>`;}).join('')}</div>
+    <div id="pubNets" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">${NETS_PUB.map(n=>{const col=(PLAT[n[0]]||{}).c||'#FFC94D';return `<label class="pill" style="cursor:pointer;display:inline-flex;gap:6px;align-items:center;border-color:${col}66"><input type="checkbox" value="${n[0]}" style="margin:0">${n[1]}</label>`;}).join('')}</div>
     <textarea id="pubTexte" class="fld" style="width:100%;min-height:100px;margin-top:10px" placeholder="Texte du post…"></textarea>
     <input id="pubImg" class="fld" style="width:100%;margin-top:8px" placeholder="Image (URL, optionnel)">
     <div style="display:flex;gap:8px;margin-top:8px"><input id="pubDate" type="date" class="fld" style="flex:1"><input id="pubTime" type="time" value="09:00" class="fld" style="flex:1"></div>
@@ -983,7 +983,7 @@ function viewPublier(){
   planning.sort((a,b)=>(b.publier_le||'').localeCompare(a.publier_le||''));
   add(`<h3>${ic('cal')} Calendrier — ${planning.length} post(s)<a class="mini gold" href="${revueURL()}" target="_blank" style="margin-left:auto;text-decoration:none">Visualiseur ↗</a></h3>
     <div class="sub">Programmés &amp; publiés pour ${escP(ACTIVE.nom)}</div>
-    <div class="list" style="margin-top:10px">${planning.length?planning.map(p=>{const st=p.statut||'brouillon',col={programme:'#D4AF37',publie:'#34E5C4',echec:'#FF7D9C',partiel:'#4BA3FF'}[st]||'#9db0d6';
+    <div class="list" style="margin-top:10px">${planning.length?planning.map(p=>{const st=p.statut||'brouillon',col={programme:'#D4AF37',publie:'#34E5C4',echec:'#FF7D9C',partiel:'#FFC94D'}[st]||'#B3AA92';
       return `<div class="li" style="align-items:flex-start;gap:10px;padding:11px 8px"><span style="font-size:11.4px;color:var(--muted);white-space:nowrap">${p.publier_le?new Date(p.publier_le).toLocaleString():'—'}</span><span style="flex:1;font-size:12.7px">${escP((p.contenu&&p.contenu.texte)||'').slice(0,140)}<div style="font-size:11px;color:var(--muted);margin-top:3px">${(p.reseaux||[]).join(' · ')}</div></span><span class="pill" style="border-color:${col}66;color:${col}">${st}</span></div>`;}).join(''):'<div class="sub">Aucun post planifié. Compose ci-dessus.</div>'}</div>`,'col12');
 
   const n=new Date(),p2=x=>(x<10?'0':'')+x,dd=$("#pubDate"); if(dd)dd.value=n.getFullYear()+'-'+p2(n.getMonth()+1)+'-'+p2(n.getDate());
@@ -1039,7 +1039,7 @@ function pubAfterGen(tries){ dashRefetch().then(function(){const cr=loadAgent(AC
   }).catch(function(){if(tries<8)setTimeout(function(){pubAfterGen(tries+1);},4000);else{$("#pubGen").disabled=false;refreshPsub();go('publier');}}); }
 
 /* ---------- Mémoire & Connexion réseaux : pages existantes IMBRIQUÉES (iframe, zéro duplication) ---------- */
-function frame(src,h){ return `<iframe src="${src}" title="AWEMA" style="width:100%;height:${h||'78vh'};border:1px solid var(--border);border-radius:14px;margin-top:12px;background:var(--bg,#0A1F44)" loading="lazy"></iframe>`; }
+function frame(src,h){ return `<iframe src="${src}" title="AWEMA" style="width:100%;height:${h||'78vh'};border:1px solid var(--border);border-radius:14px;margin-top:12px;background:var(--bg,#222222)" loading="lazy"></iframe>`; }
 function viewMemoire(){
   if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
   // Rétrospective hebdomadaire (si générée) : leçons + suggestions de mémoire — l'humain décide.
@@ -1048,7 +1048,7 @@ function viewMemoire(){
     const TCOL={succes:'#34E5C4',echec:'#FF7D9C',abandon:'#D4AF37'};
     add(`<h3>${ic('spark')} Rétrospective de la semaine</h3>
       <div class="sub">Ce que les données disent des propositions passées — à toi de mettre à jour la mémoire (rien n'est écrit automatiquement)</div>
-      ${(retro.items||[]).map(i=>{const col=TCOL[i.type]||'#4BA3FF';return `<div class="li" style="align-items:flex-start;gap:10px;padding:10px 8px">
+      ${(retro.items||[]).map(i=>{const col=TCOL[i.type]||'#FFC94D';return `<div class="li" style="align-items:flex-start;gap:10px;padding:10px 8px">
         <span class="pill" style="border-color:${col}66;color:${col};flex:0 0 auto">${escP(i.type||'')}</span>
         <span style="flex:1"><b style="font-size:13px">${escP(i.titre||'')}</b>
           <div style="font-size:12.3px;color:var(--muted);margin-top:3px">${escP(i.lecon||'')}</div>
@@ -1066,7 +1066,7 @@ const RX_CX=[['facebook','Facebook & Instagram','connect-facebook.html'],['tikto
 let CX_SEL='connect-facebook.html';
 function viewConnecter(){
   add(`<h3>${ic('bubble')} Connecter les réseaux</h3><div class="sub">Choisis un réseau — le guide s'ouvre ici. La connexion elle-même s'ouvre en plein écran (les fenêtres de login refusent l'affichage imbriqué).</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center" id="cxTiles">${RX_CX.map(r=>{const p=PLAT[r[0]]||{},col=p.c||'#4BA3FF';return `<button class="pill" data-pg="${r[2]}" style="cursor:pointer;border-color:${col}66;color:${col};padding:8px 13px;${r[2]===CX_SEL?'background:'+col+'22;':''}">${r[1]}</button>`;}).join('')}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center" id="cxTiles">${RX_CX.map(r=>{const p=PLAT[r[0]]||{},col=p.c||'#FFC94D';return `<button class="pill" data-pg="${r[2]}" style="cursor:pointer;border-color:${col}66;color:${col};padding:8px 13px;${r[2]===CX_SEL?'background:'+col+'22;':''}">${r[1]}</button>`;}).join('')}
       <a id="cxFull" href="../../${CX_SEL}" target="_blank" rel="noopener" class="pill" style="margin-left:auto;padding:8px 13px;text-decoration:none">↗ Ouvrir en plein écran</a></div>
     <div id="cxHost">${frame('../../'+CX_SEL,'72vh')}</div>`,'col12');
   $$('#cxTiles button').forEach(function(b){ b.onclick=function(){
@@ -1074,7 +1074,7 @@ function viewConnecter(){
     $("#cxHost").innerHTML=frame('../../'+b.dataset.pg,'72vh');
     const full=$("#cxFull"); if(full) full.href='../../'+b.dataset.pg;
     const key=(RX_CX.find(function(r){return r[2]===b.dataset.pg;})||[])[0];
-    const col=(PLAT[key]||{}).c||'#4BA3FF';
+    const col=(PLAT[key]||{}).c||'#FFC94D';
     $$('#cxTiles button').forEach(function(x){x.style.background='';});
     b.style.background=col+'22';
   };});
