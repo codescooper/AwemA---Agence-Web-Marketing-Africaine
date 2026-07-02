@@ -6,11 +6,11 @@
 <title>AWEMA — Planifier &amp; publier (calendrier éditorial)</title>
 <meta name="description" content="Compose ou laisse l'IA proposer, programme la date, et AWEMA publie tout seul sur les réseaux connectés.">
 <style>
-  :root{--nuit:#0A1F44;--ciel:#4BA3FF;--gold:#D4AF37;--violet:#7C5CFF;--mint:#34E5C4;--pink:#FF7D9C;
-    --tx:#eaf0fb;--muted:#9db0d6;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.13)}
+  :root{--nuit:#222222;--ciel:#FFC94D;--gold:#D4AF37;--violet:#EDA914;--mint:#34E5C4;--pink:#FF7D9C;
+    --tx:#F1EDE2;--muted:#B3AA92;--card:rgba(255,255,255,.05);--bord:rgba(255,255,255,.13)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;color:var(--tx);line-height:1.6;
-    background:radial-gradient(1100px 650px at 50% -12%,#16294f,#0A1F44 62%,#07162f);min-height:100vh;padding-bottom:80px}
+    background:radial-gradient(1100px 650px at 50% -12%,#2A2A2A,#222222 62%,#1E1E1E);min-height:100vh;padding-bottom:80px}
   .wrap{max-width:900px;margin:0 auto;padding:0 22px}
   header{padding:42px 0 6px}
   .back{color:var(--muted);text-decoration:none;font-size:13px}
@@ -39,7 +39,7 @@
   .item .tx{flex:1;font-size:13.5px}
   .badge{font-size:11px;font-weight:700;border-radius:20px;padding:3px 9px;border:1px solid currentColor;white-space:nowrap}
   .b-programme{color:var(--gold)} .b-publie{color:var(--mint)} .b-echec{color:var(--pink)} .b-partiel{color:var(--ciel)} .b-brouillon{color:var(--muted)}
-  .prop{border:1px solid var(--bord);border-radius:13px;padding:14px;margin-top:10px;background:rgba(124,92,255,.06)}
+  .prop{border:1px solid var(--bord);border-radius:13px;padding:14px;margin-top:10px;background:rgba(237,169,20,.06)}
   .empty{color:var(--muted);font-size:13.5px;text-align:center;padding:24px}
   a.inl{color:var(--ciel)}
   .charc{font-size:11.5px;color:var(--muted);text-align:right;margin-top:4px}
@@ -141,7 +141,7 @@
 
   // Cases réseaux
   var netWrap=document.getElementById('cNets');
-  NETS.forEach(function(n){ var p=PLAT[n[0]]||{}; var col=p.couleur||p.color||'#4BA3FF'; var gly=p.glyphe||p.glyph||n[1][0];
+  NETS.forEach(function(n){ var p=PLAT[n[0]]||{}; var col=p.couleur||p.color||'#FFC94D'; var gly=p.glyphe||p.glyph||n[1][0];
     var l=document.createElement('label'); l.className='netchk';
     l.innerHTML='<input type="checkbox" value="'+n[0]+'"><span class="pi" style="background:'+col+'">'+gly+'</span>'+n[1];
     netWrap.appendChild(l);
@@ -266,7 +266,7 @@
         d.innerHTML=
           '<div style="font-size:12px;color:var(--muted)">'+esc(c.nom||c.slug)+(reseau?' · <b style="color:var(--ciel)">'+esc(reseau)+'</b>':'')+(format?' · '+esc(format):'')+'</div>'+
           (hook?'<div style="font-weight:700;margin:6px 0 3px;font-size:14px">'+esc(hook)+'</div>':'')+
-          '<div style="font-size:13px;color:#cdd9f0;white-space:pre-wrap">'+esc(script).slice(0,700)+'</div>'+
+          '<div style="font-size:13px;color:#DED8C6;white-space:pre-wrap">'+esc(script).slice(0,700)+'</div>'+
           (it.prompt_image?'<div style="font-size:11.5px;color:var(--muted);margin-top:7px">🖼️ <i>'+esc(it.prompt_image).slice(0,220)+'</i></div>':'')+
           '<button class="btn gh" style="margin-top:11px">✍️ Utiliser ce contenu</button>';
         d.querySelector('button').onclick=function(){

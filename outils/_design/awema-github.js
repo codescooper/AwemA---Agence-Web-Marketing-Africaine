@@ -171,7 +171,7 @@ window.AwemaGH = (function () {
       '<div class="awgh"><h3>🔑 Dernier geste — ranger ta clé en sécurité</h3>' +
       '<p>Un « secret », c’est un <b>coffre-fort privé de ton site</b> : GitHub y garde ta clé sans jamais l’afficher. ' +
       'Ta valeur est <b>déjà copiée</b> ✓. Sur la page GitHub qui va s’ouvrir :</p>' +
-      '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#9db0d6);line-height:1.7">' +
+      '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#B3AA92);line-height:1.7">' +
       '<li>Champ <b>Name</b> (= Nom) → colle le nom ci-dessous.</li>' +
       '<li>Champ <b>Secret</b> (= Valeur) → colle (ta valeur est déjà copiée).</li>' +
       '<li>Bouton vert <b>Add secret</b> (= Ajouter).</li></ol>' +
@@ -193,20 +193,20 @@ window.AwemaGH = (function () {
       '.awgh-ov{position:fixed;inset:0;z-index:10000;background:rgba(4,10,26,.72);backdrop-filter:blur(4px);',
       'display:none;align-items:center;justify-content:center;padding:20px}',
       '.awgh-ov.on{display:flex}',
-      '.awgh{width:min(460px,100%);background:var(--card,#13234a);border:1px solid var(--bord,rgba(255,255,255,.14));',
-      'border-radius:18px;padding:22px;color:var(--tx,#eaf0fb);font-family:Poppins,system-ui,sans-serif;',
+      '.awgh{width:min(460px,100%);background:var(--card,#292929);border:1px solid var(--bord,rgba(255,255,255,.14));',
+      'border-radius:18px;padding:22px;color:var(--tx,#F1EDE2);font-family:Poppins,system-ui,sans-serif;',
       'box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}',
       '.awgh h3{font-family:Montserrat,Poppins,sans-serif;font-size:18px;margin:0 0 4px}',
-      '.awgh p{font-size:12.5px;color:var(--muted,#9db0d6);margin:0 0 12px;line-height:1.55}',
-      '.awgh label{display:block;font-size:11px;color:var(--muted,#9db0d6);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px}',
+      '.awgh p{font-size:12.5px;color:var(--muted,#B3AA92);margin:0 0 12px;line-height:1.55}',
+      '.awgh label{display:block;font-size:11px;color:var(--muted,#B3AA92);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px}',
       '.awgh input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bord,rgba(255,255,255,.14));',
       'background:rgba(0,0,0,.25);color:#fff;font:inherit;font-size:13.5px}',
       '.awgh .r{display:flex;gap:10px;margin-top:16px}',
       '.awgh button{flex:1;border:none;border-radius:11px;padding:11px;cursor:pointer;font:700 13px Poppins,sans-serif}',
-      '.awgh .go{background:linear-gradient(135deg,#4BA3FF,#7C5CFF);color:#fff}',
-      '.awgh .x{background:transparent;border:1px solid var(--bord,rgba(255,255,255,.14));color:var(--tx,#eaf0fb)}',
+      '.awgh .go{background:linear-gradient(135deg,#FFC94D,#EDA914);color:#fff}',
+      '.awgh .x{background:transparent;border:1px solid var(--bord,rgba(255,255,255,.14));color:var(--tx,#F1EDE2)}',
       '.awgh .msg{font-size:12px;margin-top:10px;min-height:16px}',
-      '.awgh a{color:#4BA3FF}'
+      '.awgh a{color:#FFC94D}'
     ].join('');
     document.head.appendChild(s);
   }
@@ -216,10 +216,10 @@ window.AwemaGH = (function () {
     var g = (window.AWEMA_CONFIG && window.AWEMA_CONFIG.github) || {};
     var ov = document.createElement('div'); ov.className = 'awgh-ov on';
     ov.innerHTML =
-      '<div class="awgh"><h3>🔗 Connecter ton compte GitHub <span style="font-weight:400;font-size:12px;color:var(--muted,#9db0d6)">(une seule fois)</span></h3>' +
+      '<div class="awgh"><h3>🔗 Connecter ton compte GitHub <span style="font-weight:400;font-size:12px;color:var(--muted,#B3AA92)">(une seule fois)</span></h3>' +
       '<p>AWEMA range tes données <b>dans ton espace GitHub</b> et travaille en arrière-plan. Il lui faut une ' +
       '<b>clé d’accès</b> (un « jeton »). <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Créer ma clé ↗</a>, puis :</p>' +
-      '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#9db0d6);line-height:1.7">' +
+      '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#B3AA92);line-height:1.7">' +
       '<li><b>Token name</b> : écris <code>awema</code>.</li>' +
       '<li><b>Repository access</b> → <i>Only select repositories</i> → choisis <b>ton dépôt</b>.</li>' +
       '<li><b>Expiration</b> : choisis <b>90 days</b> (une clé qui expire limite les dégâts si elle fuit ; tu en recréeras une en 1 min).</li>' +
@@ -229,7 +229,7 @@ window.AwemaGH = (function () {
       '<div style="font-size:11.5px;color:#ffe6ad;background:rgba(212,175,55,.1);border-left:3px solid #D4AF37;padding:7px 10px;border-radius:0 7px 7px 0;margin:0 0 12px">⚠️ GitHub n’affiche ta clé <b>qu’une seule fois</b>. Copie-la avant de fermer l’onglet ; perdue, recrée-en simplement une autre.</div>' +
       '<div style="font-size:11.5px;color:#ffc4d4;background:rgba(255,125,156,.08);border-left:3px solid #FF7D9C;padding:7px 10px;border-radius:0 7px 7px 0;margin:0 0 12px">🖥️ <b>Ordinateur partagé</b> (cybercafé, poste commun d’agence) ? Ta clé reste enregistrée dans CE navigateur et donne le contrôle de ton dépôt : clique <b>« Se déconnecter »</b> (Réglages du dashboard) avant de quitter le poste.</div>' +
       '<label>Ton compte GitHub (owner)</label><input id="awgh-o" value="' + (c.owner || g.owner || '') + '" placeholder="ton-pseudo">' +
-      '<div style="font-size:11px;color:var(--muted,#9db0d6);margin-top:3px">Ton nom d’utilisateur GitHub (en haut à droite de github.com, ou dans <code>github.com/<b>TON-NOM</b>/mon-depot</code>).</div>' +
+      '<div style="font-size:11px;color:var(--muted,#B3AA92);margin-top:3px">Ton nom d’utilisateur GitHub (en haut à droite de github.com, ou dans <code>github.com/<b>TON-NOM</b>/mon-depot</code>).</div>' +
       '<label>Nom du dépôt (repo)</label><input id="awgh-r" value="' + (c.repo || g.repo || '') + '" placeholder="mon-depot">' +
       '<label>Branche (où écrire)</label><input id="awgh-b" value="' + (c.branch || g.branch || 'main') + '" placeholder="main">' +
       '<label>Ta clé d’accès (jeton)</label><input id="awgh-t" type="password" placeholder="github_pat_… ou ghp_…">' +
@@ -243,7 +243,7 @@ window.AwemaGH = (function () {
           bch = ov.querySelector('#awgh-b').value.trim() || 'main', t = ov.querySelector('#awgh-t').value.trim();
       var m = ov.querySelector('#awgh-m');
       if (!o || !r || !t) { m.style.color = '#FF7D9C'; m.textContent = 'Remplis ton compte, le nom du dépôt et la clé.'; return; }
-      m.style.color = '#9db0d6'; m.textContent = 'Vérification…';
+      m.style.color = '#B3AA92'; m.textContent = 'Vérification…';
       localStorage.setItem(LS, JSON.stringify({ owner: o, repo: r, branch: bch, token: t }));
       var chk;
       try { chk = await repoCheck(); }

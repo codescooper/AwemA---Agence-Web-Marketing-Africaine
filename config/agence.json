@@ -12,10 +12,10 @@
     "repo": "AwemA---Agence-Web-Marketing-Africaine"
   },
   "charte": {
-    "nuit": "#0A1F44",
-    "ciel": "#4BA3FF",
+    "nuit": "#222222",
+    "ciel": "#FFC94D",
     "gold": "#D4AF37",
-    "violet": "#7C5CFF",
+    "violet": "#EDA914",
     "mint": "#34E5C4",
     "pink": "#FF7D9C"
   }

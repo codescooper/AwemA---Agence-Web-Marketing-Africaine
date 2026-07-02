@@ -5,10 +5,32 @@ prompts IA doivent la respecter strictement.
 
 ---
 
-## Charte AWEMA (agence)
+## Charte AWEMA (produit) — thème « Ruche » 🐝
 
-L'agence adopte par défaut une identité sobre et premium. Lorsqu'une mission client a sa
-propre charte, **la charte client prime** sur les visuels destinés au client.
+L'identité du produit AWEMA est celle de la ruche : **jaune or et noir**, sobre et premium.
+L'abeille (Awa, la mascotte) travaille ; la ruche est organisée ; le miel est le résultat.
+Lorsqu'une mission client a sa propre charte, **la charte client prime** sur les visuels
+destinés au client — le thème Ruche s'applique à l'interface AWEMA elle-même.
+
+### Couleurs (Ruche)
+
+| Rôle | Nom | HEX | Usage |
+|---|---|---|---|
+| Fond dominant | **Noir ruche** | `#222222` | Fonds, autorité, sobriété (profondeurs : `#1B1B1B`, `#191919`, `#161616`) |
+| Primaire | **Or** | `#D4AF37` | CTA, logo, détails premium |
+| Appui | **Miel** | `#FFC94D` | Liens, accents dynamiques, éléments actifs |
+| Accent | **Ambre** | `#EDA914` | Dégradés avec le miel, survols, badges |
+| Neutre clair | Crème | `#F7F4EA` | Thème clair, respirations |
+| Texte | Ivoire | `#F1EDE2` | Texte principal sur fonds noirs (secondaire : `#B3AA92`) |
+
+**Règles d'usage couleur**
+- Noir ruche = dominante (60 %). Or/miel/ambre = la famille d'accents (30 %).
+- Les couleurs de statut restent fonctionnelles : succès `#34E5C4`, erreur `#FF7D9C`.
+- Les couleurs de **marque des plateformes** (Facebook, TikTok…) ne changent jamais : elles portent l'identité de chaque réseau.
+- Contraste AA minimum pour l'accessibilité (texte sur fond).
+- Typographies : inchangées — **Montserrat** (titres) + **Poppins** (corps).
+
+> Source machine : `config/agence.json` → `charte` (injectée sur toutes les pages par `outils/_data/apply.js`).
 
 ---
 
