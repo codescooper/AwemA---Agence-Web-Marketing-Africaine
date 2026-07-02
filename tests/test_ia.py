@@ -111,5 +111,67 @@ class TestPostRetry(unittest.TestCase):
         self.assertEqual(appels["n"], 1)  # aucun retry sur une erreur cliente
 
 
+class TestModeJson(unittest.TestCase):
+    """Mode JSON natif (response_format) chez les fournisseurs OpenAI-compatibles + repli."""
+
+    def setUp(self):
+        self._saved = {k: os.environ.get(k) for k in AI_VARS}
+        for k in AI_VARS:
+            os.environ.pop(k, None)
+        os.environ["AWEMA_AI_PROVIDER"] = "groq"
+        os.environ["GROQ_API_KEY"] = "x"
+        self._post = awema_ai._post
+
+    def tearDown(self):
+        awema_ai._post = self._post
+        for k, v in self._saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+    def test_schema_demande_le_mode_json(self):
+        vus = []
+
+        def faux_post(url, headers, payload, **kw):
+            vus.append(payload)
+            return {"choices": [{"message": {"content": '{"items": []}'}}]}
+        awema_ai._post = faux_post
+        out = awema_ai.chat("liste", schema_hint='{"items":[]}')
+        self.assertEqual(out, {"items": []})
+        self.assertEqual(vus[0].get("response_format"), {"type": "json_object"})
+
+    def test_sans_schema_pas_de_mode_json(self):
+        vus = []
+
+        def faux_post(url, headers, payload, **kw):
+            vus.append(payload)
+            return {"choices": [{"message": {"content": "bonjour"}}]}
+        awema_ai._post = faux_post
+        self.assertEqual(awema_ai.chat("salut"), "bonjour")
+        self.assertNotIn("response_format", vus[0])
+
+    def test_repli_si_fournisseur_refuse_le_mode_json(self):
+        vus = []
+
+        def faux_post(url, headers, payload, **kw):
+            vus.append(dict(payload))
+            if "response_format" in payload:
+                raise RuntimeError("HTTP 400 — response_format is not supported")
+            return {"choices": [{"message": {"content": '{"items": [1]}'}}]}
+        awema_ai._post = faux_post
+        out = awema_ai.chat("liste", schema_hint='{"items":[]}')
+        self.assertEqual(out, {"items": [1]})
+        self.assertEqual(len(vus), 2)                       # 1 essai + 1 repli
+        self.assertNotIn("response_format", vus[1])          # repli sans le paramètre
+
+    def test_parsing_rate_leve_une_erreur_explicite(self):
+        awema_ai._post = lambda url, headers, payload, **kw: {
+            "choices": [{"message": {"content": "désolé, pas de JSON ici"}}]}
+        with self.assertRaises(RuntimeError) as cm:
+            awema_ai.chat("liste", schema_hint='{"items":[]}')
+        self.assertIn("non conforme", str(cm.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

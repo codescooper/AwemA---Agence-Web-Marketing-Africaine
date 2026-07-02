@@ -30,6 +30,33 @@ class TestEntrees(unittest.TestCase):
             self.assertEqual(ra._entrees({"entrees": []}, d), ({}, []))
 
 
+class TestEntreesComposites(unittest.TestCase):
+    """La Rétrospective lit l'historique des agents et la file de publication (statuts réels)."""
+
+    def test_agents_et_planning_rassembles(self):
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "_agents"))
+            os.makedirs(os.path.join(d, "_planning"))
+            with open(os.path.join(d, "_agents", "creatif.json"), "w", encoding="utf-8") as f:
+                json.dump({"agent": "creatif", "items": [{"hook": "h"}]}, f)
+            with open(os.path.join(d, "_agents", "retrospective.json"), "w", encoding="utf-8") as f:
+                json.dump({"agent": "retrospective", "items": []}, f)  # ne doit PAS se relire
+            with open(os.path.join(d, "_planning", "p1.json"), "w", encoding="utf-8") as f:
+                json.dump({"id": "p1", "statut": "publie"}, f)
+            with open(os.path.join(d, "_planning", "index.json"), "w", encoding="utf-8") as f:
+                json.dump({}, f)  # index ignoré
+            ctx, dispo = ra._entrees({"entrees": ["agents", "planning"]}, d)
+            self.assertIn("creatif", ctx["agents"])
+            self.assertNotIn("retrospective", ctx["agents"])   # pas d'auto-lecture
+            self.assertEqual([p["id"] for p in ctx["planning"]], ["p1"])
+            self.assertEqual(sorted(dispo), ["_agents/*", "_planning/*"])
+
+    def test_composites_absents_skippes(self):
+        with tempfile.TemporaryDirectory() as d:
+            ctx, dispo = ra._entrees({"entrees": ["agents", "planning"]}, d)
+            self.assertEqual((ctx, dispo), ({}, []))
+
+
 class TestContexteJson(unittest.TestCase):
     def test_toujours_json_valide_et_petites_entrees_entieres(self):
         ctx = {"memoire": {"ton": "chaleureux"}, "reseaux": {"abonnes": 100}}

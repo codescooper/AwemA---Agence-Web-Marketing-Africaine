@@ -1042,6 +1042,22 @@ function pubAfterGen(tries){ dashRefetch().then(function(){const cr=loadAgent(AC
 function frame(src,h){ return `<iframe src="${src}" title="AWEMA" style="width:100%;height:${h||'78vh'};border:1px solid var(--border);border-radius:14px;margin-top:12px;background:var(--bg,#0A1F44)" loading="lazy"></iframe>`; }
 function viewMemoire(){
   if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
+  // Rétrospective hebdomadaire (si générée) : leçons + suggestions de mémoire — l'humain décide.
+  const retro=(ACTIVE.agents&&ACTIVE.agents.retrospective)||null;
+  if(retro&&((retro.items||[]).length||(retro.suggestions_memoire||[]).length)){
+    const TCOL={succes:'#34E5C4',echec:'#FF7D9C',abandon:'#D4AF37'};
+    add(`<h3>${ic('spark')} Rétrospective de la semaine</h3>
+      <div class="sub">Ce que les données disent des propositions passées — à toi de mettre à jour la mémoire (rien n'est écrit automatiquement)</div>
+      ${(retro.items||[]).map(i=>{const col=TCOL[i.type]||'#4BA3FF';return `<div class="li" style="align-items:flex-start;gap:10px;padding:10px 8px">
+        <span class="pill" style="border-color:${col}66;color:${col};flex:0 0 auto">${escP(i.type||'')}</span>
+        <span style="flex:1"><b style="font-size:13px">${escP(i.titre||'')}</b>
+          <div style="font-size:12.3px;color:var(--muted);margin-top:3px">${escP(i.lecon||'')}</div>
+          ${i.preuve&&i.preuve.metrique?`<div style="font-size:11px;color:var(--muted);margin-top:3px">📊 ${escP(i.preuve.metrique)} : ${escP(String(i.preuve.valeur??''))}</div>`:''}</span></div>`;}).join('')}
+      ${(retro.suggestions_memoire||[]).length?`<div style="margin-top:10px;padding:10px 12px;border:1px dashed var(--border);border-radius:11px">
+        <div style="font-size:11px;color:var(--gold,#D4AF37);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Suggestions pour la mémoire (à coller ci-dessous si tu valides)</div>
+        ${retro.suggestions_memoire.map(s=>`<div style="font-size:12.4px;margin-bottom:7px"><b>${escP(s.champ||'')}</b> — ${escP(s.suggestion||'')}
+          <span style="color:var(--muted)">(${escP(s.raison||'')})</span></div>`).join('')}</div>`:''}`,'col12');
+  }
   add(`<h3>${ic('layers')} Mémoire Marketing — ${escP(ACTIVE.nom)}</h3>
     <div class="sub">L'ADN de marque qui nourrit les agents IA — édité ici, enregistré dans GitHub</div>
     ${frame('../../memoire.html?client='+encodeURIComponent(ACTIVE.id))}`,'col12');

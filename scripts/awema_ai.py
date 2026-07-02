@@ -206,9 +206,22 @@ def chat(user, system=None, schema_hint=None, model=None, max_tokens=None):
     else:  # compatible OpenAI (/chat/completions)
         msgs = ([{"role": "system", "content": system}] if system else []) + \
                [{"role": "user", "content": contenu}]
-        data = _post(base + "/chat/completions", {
-            "Authorization": f"Bearer {key}", "content-type": "application/json"},
-            {"model": model, "max_tokens": max_tokens, "messages": msgs})
+        entetes = {"Authorization": f"Bearer {key}", "content-type": "application/json"}
+        payload = {"model": model, "max_tokens": max_tokens, "messages": msgs}
+        if schema_hint:
+            # Mode JSON natif : la plupart des fournisseurs compatibles OpenAI (Groq, Gemini,
+            # Mistral, OpenAI…) garantissent alors un JSON syntaxiquement valide.
+            payload["response_format"] = {"type": "json_object"}
+        try:
+            data = _post(base + "/chat/completions", entetes, payload)
+        except RuntimeError as e:
+            # Certains fournisseurs ne supportent pas response_format → 400. On retente UNE fois
+            # sans, en s'appuyant sur le schema_hint du prompt (comportement historique).
+            if schema_hint and "HTTP 400" in str(e):
+                payload.pop("response_format", None)
+                data = _post(base + "/chat/completions", entetes, payload)
+            else:
+                raise
         texte = (((data.get("choices") or [{}])[0]).get("message") or {}).get("content", "")
 
     if not schema_hint:

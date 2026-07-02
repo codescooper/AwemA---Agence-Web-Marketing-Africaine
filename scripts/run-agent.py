@@ -47,10 +47,40 @@ def _clients():
 
 
 def _entrees(defn, donnees):
-    """Rassemble les entrées déclarées par l'agent (fichiers existants seulement)."""
+    """Rassemble les entrées déclarées par l'agent (fichiers existants seulement).
+
+    Entrées composites, pour l'agent Rétrospective :
+      - "agents"   : toutes les sorties passées de _agents/*.json (sauf retrospective elle-même)
+      - "planning" : la file de publication _planning/*.json (statuts réels publie/echec/partiel)
+    """
     dispo, ctx = [], {}
     mapping = {"reseaux": "reseaux.json", "memoire": "memoire.json", "campagne": "campagne.json"}
     for e in defn.get("entrees", []):
+        if e == "agents":
+            ag = {}
+            for aj in sorted(glob.glob(os.path.join(donnees, "_agents", "*.json"))):
+                nom_a = os.path.splitext(os.path.basename(aj))[0]
+                if nom_a == "retrospective":
+                    continue  # ne pas se relire soi-même
+                d = _lire(aj)
+                if d:
+                    ag[nom_a] = d
+            if ag:
+                ctx["agents"] = ag
+                dispo.append("_agents/*")
+            continue
+        if e == "planning":
+            pl = []
+            for pj in sorted(glob.glob(os.path.join(donnees, "_planning", "*.json"))):
+                if os.path.basename(pj) == "index.json":
+                    continue
+                d = _lire(pj)
+                if d:
+                    pl.append(d)
+            if pl:
+                ctx["planning"] = pl
+                dispo.append("_planning/*")
+            continue
         d = _lire(os.path.join(donnees, mapping.get(e, e + ".json")))
         if d is not None:
             ctx[e] = d
