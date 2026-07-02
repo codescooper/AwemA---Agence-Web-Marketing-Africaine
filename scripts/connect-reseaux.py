@@ -11,7 +11,7 @@ Remplit le contrat outils/_data (reseaux.json) à partir des réseaux sociaux. V
 
   2) META — UNE PAGE précise
      export META_TOKEN="EAAB..." FB_PAGE_ID="..." IG_USER_ID="..."
-     python3 connect-reseaux.py --meta modules/marketing/clients/exemple-client
+     python3 connect-reseaux.py --meta modules/marketing/clients/la-grande-vision
 
   3) IMPORT MANUEL (CSV exporté depuis Meta Business Suite / TwoMinuteReports / autre)
      python3 connect-reseaux.py --manuel <client_dir> <export.csv>

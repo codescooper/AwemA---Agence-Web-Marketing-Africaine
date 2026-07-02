@@ -49,6 +49,7 @@ python3 scripts/preparer-copie-beta.py ../awema-beta
 
 ## 🔒 Sécurité & données
 - [[13-securite-donnees]] — isolation (chaque pilote = son fork), repo privé, secrets, RGPD
+- [[18-sauvegarde-continuite]] — sauvegarde mensuelle, panne/suspension GitHub, fuite de clé (plan de reprise)
 
 ## 🔌 Connecter les plateformes
 - ⭐ **[[17-mise-en-route-complete]]** — **check-list complète** « faire tourner à 100 % » (quelles APIs, où ranger les secrets, dans quel ordre)

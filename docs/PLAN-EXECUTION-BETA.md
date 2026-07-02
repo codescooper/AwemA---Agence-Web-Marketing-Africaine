@@ -60,7 +60,7 @@
   `{items:[{type:"insight|reco", titre, explication, preuve:{metrique,valeur,variation}, action?}]}`.
 - Cockpit : panneau **« Pourquoi & Que faire »** sur la vue Présence digitale (rend `items`, étiquette
   « proposition IA », montre la **preuve** chiffrée réelle).
-**Acceptation** : sur un client à données réelles (ex. *Exemple Client*), l'Analyste produit ≥ 3 insights
+**Acceptation** : sur un client à données réelles (ex. *La Grande Vision*), l'Analyste produit ≥ 3 insights
 sourcés + ≥ 2 recommandations actionnables, en langage clair.
 **Garde-fou** : tests de schéma ; lecture seule des données réelles.
 

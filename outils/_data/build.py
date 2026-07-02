@@ -10,6 +10,12 @@ Scanne modules/<dept>/clients/<client>/_donnees/ et agrège, par client :
 Sortie : outils/_data/agence.js  →  window.AWEMA_REGISTRY = { genere, clients:[...] }
 Aucune donnée fictive : ce qui n'existe pas reste null/[].
 
+Poids du registre : les `contenus` d'une campagne ne sont EMBARQUÉS que si campagne.json reste
+raisonnable (≤ SEUIL_CAMPAGNE). Au-delà, le registre porte {"total", "differe": true} et les pages
+consommatrices (dashboard, revue-visuels) chargent le campagne.json source à la demande — il est
+déjà servi par GitHub Pages. Sans ça, UN client à grosse campagne (ex. 670 Ko) faisait exploser le
+registre téléchargé par toutes les pages.
+
 Usage : python3 build.py
 """
 import glob
@@ -18,6 +24,7 @@ import os
 
 ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.normpath(os.path.join(ICI, "..", ".."))
+SEUIL_CAMPAGNE = 64_000  # octets : au-delà, les contenus ne sont plus embarqués dans le registre
 
 
 def lire(path):
@@ -34,7 +41,9 @@ def main():
     for cj in sorted(glob.glob(motif)):
         donnees = os.path.dirname(cj)                 # .../_donnees
         client = lire(cj) or {}
-        campagne = lire(os.path.join(donnees, "campagne.json"))
+        camp_path = os.path.join(donnees, "campagne.json")
+        campagne = lire(camp_path)
+        camp_lourde = campagne is not None and os.path.getsize(camp_path) > SEUIL_CAMPAGNE
         reseaux = lire(os.path.join(donnees, "reseaux.json"))
         memoire = lire(os.path.join(donnees, "memoire.json"))   # Mémoire Marketing (M1)
         client_dir = os.path.dirname(donnees)         # .../<client>
@@ -57,8 +66,11 @@ def main():
             **client,
             "_dir": rel,
             "profils": client.get("reseaux", {}),          # handles (depuis client.json)
-            "campagne": {"total": (campagne or {}).get("total", 0),
-                         "contenus": (campagne or {}).get("contenus", [])} if campagne else None,
+            "campagne": (
+                {"total": (campagne or {}).get("total", 0), "differe": True} if camp_lourde
+                else {"total": (campagne or {}).get("total", 0),
+                      "contenus": (campagne or {}).get("contenus", [])}
+            ) if campagne else None,
             "reseaux": reseaux,                             # métriques (depuis reseaux.json) ou null
             "memoire": memoire,                             # Mémoire Marketing (depuis memoire.json) ou null
             "agents": agents or None,                       # sorties IA (depuis _agents/) ou null

@@ -26,12 +26,14 @@ MANIFEST = os.path.join(ICI, "agents.json")
 
 
 def _agents():
-    return (json.load(open(MANIFEST, encoding="utf-8")) or {}).get("agents", {})
+    with open(MANIFEST, encoding="utf-8") as f:
+        return (json.load(f) or {}).get("agents", {})
 
 
 def _lire(path):
     try:
-        return json.load(open(path, encoding="utf-8"))
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
     except Exception:
         return None
 
@@ -45,15 +47,71 @@ def _clients():
 
 
 def _entrees(defn, donnees):
-    """Rassemble les entrées déclarées par l'agent (fichiers existants seulement)."""
+    """Rassemble les entrées déclarées par l'agent (fichiers existants seulement).
+
+    Entrées composites, pour l'agent Rétrospective :
+      - "agents"   : toutes les sorties passées de _agents/*.json (sauf retrospective elle-même)
+      - "planning" : la file de publication _planning/*.json (statuts réels publie/echec/partiel)
+    """
     dispo, ctx = [], {}
     mapping = {"reseaux": "reseaux.json", "memoire": "memoire.json", "campagne": "campagne.json"}
     for e in defn.get("entrees", []):
+        if e == "agents":
+            ag = {}
+            for aj in sorted(glob.glob(os.path.join(donnees, "_agents", "*.json"))):
+                nom_a = os.path.splitext(os.path.basename(aj))[0]
+                if nom_a == "retrospective":
+                    continue  # ne pas se relire soi-même
+                d = _lire(aj)
+                if d:
+                    ag[nom_a] = d
+            if ag:
+                ctx["agents"] = ag
+                dispo.append("_agents/*")
+            continue
+        if e == "planning":
+            pl = []
+            for pj in sorted(glob.glob(os.path.join(donnees, "_planning", "*.json"))):
+                if os.path.basename(pj) == "index.json":
+                    continue
+                d = _lire(pj)
+                if d:
+                    pl.append(d)
+            if pl:
+                ctx["planning"] = pl
+                dispo.append("_planning/*")
+            continue
         d = _lire(os.path.join(donnees, mapping.get(e, e + ".json")))
         if d is not None:
             ctx[e] = d
             dispo.append(mapping.get(e, e + ".json"))
     return ctx, dispo
+
+
+def _contexte_json(ctx, budget=None):
+    """Sérialise le contexte pour le prompt SANS jamais couper en plein milieu d'une structure.
+
+    Les entrées entrent entières tant que le budget de caractères le permet ; une entrée trop
+    volumineuse (ex. campagne.json de plusieurs centaines de Ko) est remplacée par un aperçu borné,
+    de sorte que le JSON transmis à l'IA reste TOUJOURS valide (l'ancien `[:12000]` coupait au milieu
+    et invalidait le JSON, éjectant silencieusement mémoire/campagne des gros clients)."""
+    if budget is None:
+        try:
+            budget = int(os.environ.get("AWEMA_AI_CTX", "24000"))
+        except Exception:
+            budget = 24000
+    out, reste = {}, budget
+    for k, v in ctx.items():
+        s = json.dumps(v, ensure_ascii=False)
+        if len(s) <= reste:
+            out[k] = v
+            reste -= len(s)
+        else:
+            out[k] = {"_tronque": True,
+                      "_note": "%s trop volumineux (%d car.) : seul un aperçu est fourni" % (k, len(s)),
+                      "apercu": s[:max(0, min(reste, 2000))]}
+            reste = 0
+    return json.dumps(out, ensure_ascii=False)
 
 
 def _executer(nom, defn, client, donnees):
@@ -70,7 +128,7 @@ def _executer(nom, defn, client, donnees):
                          "(top_posts, formats et réseaux les plus performants des données ci-dessous).")
     prompt = (f"{defn.get('instruction','')}{consigne_idee}\n\n"
               f"Client : {client.get('nom')} ({client.get('secteur','')}).\n"
-              f"Données disponibles (JSON) :\n{json.dumps(ctx, ensure_ascii=False)[:12000]}")
+              f"Données disponibles (JSON) :\n{_contexte_json(ctx)}")
     schema_hint = defn.get("schema_hint") or '{"items":[{"titre":"...","explication":"..."}]}'
     try:
         rep = awema_ai.chat(prompt, system=defn.get("systeme"),

@@ -12,7 +12,7 @@ Outil **transverse** (réutilisable pour tout client de l'agence).
 
 ## Ouvrir (1 double-clic)
 
-1. `python3 build-data.py` → génère `data.js` (campagne Exemple Client par défaut).
+1. `python3 build-data.py` → génère `data.js` (campagne La Grande Vision par défaut).
 2. Ouvrir `index.html` dans un navigateur. C'est tout.
 
 > Pour une autre campagne : `python3 build-data.py <chemin/campagne.json>`,
@@ -56,7 +56,7 @@ pilier, hook, CTA, format, KPI, les 3 prompts et les aperçus Canva connus.
 
 ```bash
 # 1) régénérer la campagne (côté client)
-cd ../../modules/marketing/clients/exemple-client/_generateur && python3 generer.py
+cd ../../modules/marketing/clients/la-grande-vision/_generateur && python3 generer.py
 # 2) reconstruire les données de l'outil
 cd ../../../../../../outils/revue-visuels && python3 build-data.py
 ```

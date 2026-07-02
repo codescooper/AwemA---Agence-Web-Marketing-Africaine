@@ -222,10 +222,12 @@ window.AwemaGH = (function () {
       '<ol style="margin:0 0 12px 16px;font-size:11.8px;color:var(--muted,#9db0d6);line-height:1.7">' +
       '<li><b>Token name</b> : écris <code>awema</code>.</li>' +
       '<li><b>Repository access</b> → <i>Only select repositories</i> → choisis <b>ton dépôt</b>.</li>' +
+      '<li><b>Expiration</b> : choisis <b>90 days</b> (une clé qui expire limite les dégâts si elle fuit ; tu en recréeras une en 1 min).</li>' +
       '<li><b>Repository permissions</b> → mets sur <i>Read and write</i> (lecture+écriture) : ' +
       '<b>Contents</b>, <b>Actions</b>, <b>Variables</b>, <b>Secrets</b>.</li>' +
       '<li><b>Generate token</b> → <b>copie tout de suite</b> la clé.</li></ol>' +
       '<div style="font-size:11.5px;color:#ffe6ad;background:rgba(212,175,55,.1);border-left:3px solid #D4AF37;padding:7px 10px;border-radius:0 7px 7px 0;margin:0 0 12px">⚠️ GitHub n’affiche ta clé <b>qu’une seule fois</b>. Copie-la avant de fermer l’onglet ; perdue, recrée-en simplement une autre.</div>' +
+      '<div style="font-size:11.5px;color:#ffc4d4;background:rgba(255,125,156,.08);border-left:3px solid #FF7D9C;padding:7px 10px;border-radius:0 7px 7px 0;margin:0 0 12px">🖥️ <b>Ordinateur partagé</b> (cybercafé, poste commun d’agence) ? Ta clé reste enregistrée dans CE navigateur et donne le contrôle de ton dépôt : clique <b>« Se déconnecter »</b> (Réglages du dashboard) avant de quitter le poste.</div>' +
       '<label>Ton compte GitHub (owner)</label><input id="awgh-o" value="' + (c.owner || g.owner || '') + '" placeholder="ton-pseudo">' +
       '<div style="font-size:11px;color:var(--muted,#9db0d6);margin-top:3px">Ton nom d’utilisateur GitHub (en haut à droite de github.com, ou dans <code>github.com/<b>TON-NOM</b>/mon-depot</code>).</div>' +
       '<label>Nom du dépôt (repo)</label><input id="awgh-r" value="' + (c.repo || g.repo || '') + '" placeholder="mon-depot">' +

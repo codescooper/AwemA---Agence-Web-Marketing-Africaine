@@ -81,7 +81,7 @@ Pour **chaque** compte TikTok à suivre :
 - **Variable** `TIKTOK_TOKENS` — JSON associant **le slug du client** (nom du dossier dans
   `modules/marketing/clients/<slug>`) à son refresh_token :
   ```json
-  {"exemple-client": "rft.abc123...", "merveille-boutik": "rft.def456..."}
+  {"la-grande-vision": "rft.abc123...", "merveille-boutik": "rft.def456..."}
   ```
 
 ## Étape 4 — Lancer
@@ -93,7 +93,7 @@ Le workflow : rafraîchit chaque token → récupère profil + vidéos → fusio
 ## En local (équivalent)
 ```bash
 export TIKTOK_CLIENT_KEY="..." TIKTOK_CLIENT_SECRET="..."
-export TIKTOK_TOKENS='{"exemple-client":"rft.abc123..."}'
+export TIKTOK_TOKENS='{"la-grande-vision":"rft.abc123..."}'
 export TIKTOK_TOKENS_OUT=tiktok_tokens.out      # tokens rotés (à reporter dans la Variable)
 python3 scripts/connect-reseaux.py --tiktok-all
 python3 outils/_data/build.py

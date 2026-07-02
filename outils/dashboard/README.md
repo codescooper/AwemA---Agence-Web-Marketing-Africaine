@@ -5,7 +5,7 @@ Tableau de bord SaaS premium pour **piloter l'agence et les campagnes** : KPI, c
 machine éditoriale. **Un seul fichier HTML, zéro dépendance, zéro installation.**
 
 ## Ouvrir (1 double-clic)
-1. `python3 build-data.py` → génère `data.js` (campagne Exemple Client par défaut).
+1. `python3 build-data.py` → génère `data.js` (campagne La Grande Vision par défaut).
 2. Ouvrir `index.html` dans un navigateur.
 
 > Autre campagne : `python3 build-data.py <chemin/campagne.json>`.
@@ -35,6 +35,6 @@ digitale** affiche leurs réseaux. Ajouter/brancher un client : [`../_data/READM
 
 ## Reconstruire après une nouvelle génération
 ```bash
-cd ../../modules/marketing/clients/exemple-client/_generateur && python3 generer.py
+cd ../../modules/marketing/clients/la-grande-vision/_generateur && python3 generer.py
 cd ../../../../../../outils/dashboard && python3 build-data.py
 ```

@@ -50,15 +50,14 @@ DEMO_CLIENT = {
 }
 
 
-def main():
-    if len(sys.argv) < 2:
-        sys.exit("Usage : python3 scripts/preparer-copie-beta.py <dossier-cible>")
-    cible = os.path.abspath(sys.argv[1])
-    if os.path.exists(cible) and os.listdir(cible):
-        sys.exit(f"❌ {cible} existe déjà et n'est pas vide. Choisis un dossier neuf.")
-    print(f"→ Copie du projet vers {cible} (sans .git, .awema, données réelles)…")
-    shutil.copytree(RACINE, cible, ignore=IGNORE)
+def neutraliser(cible):
+    """Transforme une COPIE du projet (dossier `cible`) en template public VIERGE.
 
+    Aucune donnée réelle ne subsiste : un seul client de DÉMO, config/licence/alias
+    neutres, docs internes retirés, README sans liste de clients, registres régénérés.
+    Réutilisable : `preparer-copie-beta.py` (nouveau dépôt) ET `publier-template.py`
+    (régénère la branche `main`). N'altère JAMAIS le dépôt courant.
+    """
     # 1) Purge des clients réels → un seul client de DÉMO riche (effet « wow » immédiat,
     #    clairement étiqueté exemple, isolé des vraies données — cf. M6)
     clients_dir = os.path.join(cible, "modules", "marketing", "clients")
@@ -137,13 +136,40 @@ def main():
         except Exception:
             pass
 
+    # 3b) Généralise le .gitignore : ignore les visuels reçus de TOUS les clients
+    #     (et plus seulement un client codé en dur → évite de versionner des visuels réels)
+    gi = os.path.join(cible, ".gitignore")
+    if os.path.exists(gi):
+        lignes = open(gi, encoding="utf-8").read().splitlines()
+        out, vus = [], set()
+        for ln in lignes:
+            g = ln.replace("modules/marketing/clients/la-grande-vision/",
+                           "modules/marketing/clients/*/")
+            if g.strip().startswith("modules/marketing/clients/"):
+                if g in vus:
+                    continue
+                vus.add(g)
+            out.append(g)
+        open(gi, "w", encoding="utf-8").write("\n".join(out) + "\n")
+
     # 4) Régénère les registres dans la copie
     print("→ Régénération des registres (build.py)…")
     subprocess.call([sys.executable, os.path.join(cible, "outils", "_data", "build.py")], cwd=cible)
-
-    print("\n✅ Copie d'accueil prête :", cible)
     print("⚠️  À personnaliser (prose, non scrubable automatiquement) : docs/01-agence.md et "
           "docs/04-charte-graphique.md décrivent encore TON agence/exemple — remplace-les par les tiens.")
+
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit("Usage : python3 scripts/preparer-copie-beta.py <dossier-cible>")
+    cible = os.path.abspath(sys.argv[1])
+    if os.path.exists(cible) and os.listdir(cible):
+        sys.exit(f"❌ {cible} existe déjà et n'est pas vide. Choisis un dossier neuf.")
+    print(f"→ Copie du projet vers {cible} (sans .git, .awema, données réelles)…")
+    shutil.copytree(RACINE, cible, ignore=IGNORE)
+    neutraliser(cible)
+
+    print("\n✅ Copie d'accueil prête :", cible)
     print("\nProchaines étapes :")
     print("  1. cd", cible, "&& git init && git add -A && git commit -m \"AWEMA — copie d'accueil beta\"")
     print("  2. Crée un dépôt GitHub vide, puis : git remote add origin <url> && git push -u origin main")

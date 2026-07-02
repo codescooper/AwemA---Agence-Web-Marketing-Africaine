@@ -37,6 +37,14 @@ class TestEstDu(unittest.TestCase):
     def test_date_invalide_pas_du(self):
         self.assertFalse(publisher.est_du(post(publier_le="n'importe quoi"), REF))
 
+    def test_offset_de_fuseau_honore(self):
+        # Invariant fuseau (audit) : les offsets ISO sont honorés. Réf = 18:00 UTC.
+        # Lagos (UTC+1) 18:30 locale = 17:30 UTC → dû ; 19:30 locale = 18:30 UTC → futur.
+        self.assertTrue(publisher.est_du(post(publier_le="2026-07-02T18:30:00+01:00"), REF))
+        self.assertFalse(publisher.est_du(post(publier_le="2026-07-02T19:30:00+01:00"), REF))
+        # Sans offset : interprété UTC (documenté dans parse_iso).
+        self.assertEqual(publisher.parse_iso("2026-07-02T18:30:00").utcoffset().total_seconds(), 0)
+
 
 class TestPublierItem(unittest.TestCase):
     def faux_publish(self, mapping):
@@ -84,11 +92,43 @@ class TestPublierItem(unittest.TestCase):
         self.assertEqual(appels, [])
         self.assertEqual(it["statut"], "publie")
 
-    def test_video_differee_ne_passe_pas_en_echec(self):
+    def test_partiel_passe_en_echec_apres_max_tentatives(self):
+        # Régression (audit) : un post partiel (1 réseau ok, 1 en échec réel) était re-tenté
+        # indéfiniment car MAX_TENTATIVES ne s'appliquait qu'à la branche « zéro succès ».
+        it = post(reseaux=["facebook", "linkedin"], tentatives=publisher.MAX_TENTATIVES - 1,
+                  resultats={"facebook": {"ok": True, "url": "f"}})
+        it = publisher.publier_item(it, REF, publish=self.faux_publish(
+            {"linkedin": {"ok": False, "error": "scope"}}))
+        self.assertEqual(it["statut"], "echec")
+        self.assertTrue(it["resultats"]["facebook"]["ok"])  # le succès facebook n'est pas perdu
+        self.assertFalse(publisher.est_du(it, REF))  # ne sera plus re-sélectionné
+
+    def test_video_differee_va_en_attente_sans_boucle(self):
+        # Un post 100 % vidéo différée sort de la file (attente_video) au lieu de boucler tous les crons.
         it = post(reseaux=["youtube"], tentatives=publisher.MAX_TENTATIVES)
         it = publisher.publier_item(it, REF, publish=self.faux_publish(
             {"youtube": {"ok": False, "differe": True, "error": "à venir"}}))
-        self.assertEqual(it["statut"], "programme")  # différé ≠ échec définitif
+        self.assertEqual(it["statut"], "attente_video")
+        self.assertFalse(publisher.est_du(it, REF))  # plus de re-tentative en boucle
+
+    def test_erreur_reseau_brute_ne_crashe_pas(self):
+        # Régression (audit) : http() renvoie {"error": "<chaîne>"} sur timeout → les connecteurs
+        # faisaient .get("message") sur une chaîne (AttributeError) et avortaient tout le run.
+        self.assertEqual(publisher.msg_erreur({"error": "timeout"}), "timeout")
+        self.assertEqual(publisher.msg_erreur({"error": {"message": "scope manquant"}}), "scope manquant")
+        self.assertIsInstance(publisher.msg_erreur({}), str)
+
+    def test_exception_connecteur_isolee_par_reseau(self):
+        # Un réseau qui lève une exception ne doit pas faire perdre le réseau déjà publié du même item.
+        def pub(reseau, item, med):
+            if reseau == "linkedin":
+                raise RuntimeError("boom")
+            return {"ok": True, "url": "f"}
+        it = post(reseaux=["facebook", "linkedin"])
+        it = publisher.publier_item(it, REF, publish=pub)
+        self.assertTrue(it["resultats"]["facebook"]["ok"])
+        self.assertFalse(it["resultats"]["linkedin"]["ok"])
+        self.assertIn("boom", it["resultats"]["linkedin"]["error"])
 
 
 class TestMediasUrls(unittest.TestCase):

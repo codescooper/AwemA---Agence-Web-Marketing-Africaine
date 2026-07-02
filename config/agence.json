@@ -1,15 +1,15 @@
 {
-  "_doc": "Configuration de TON agence. Chaque agence forke le projet et personnalise CE fichier — tout le reste (page d'accueil, dashboard, guides, liens GitHub) s'adapte automatiquement. Après modification : python3 outils/_data/build.py (ou le workflow le fait).",
-  "nom": "AWEMA",
-  "nom_complet": "Agence Web Marketing Africaine",
+  "_doc": "Configuration de TON agence. Personnalise via setup.html ou `awema setup`, puis : python3 outils/_data/build.py.",
+  "nom": "Mon Agence",
+  "nom_complet": "Mon Agence — présence en ligne",
   "tagline": "Centre de pilotage",
-  "slogan": "La présence en ligne et l'activité de marché de vos clients, pilotées.",
-  "initiales": "A",
+  "slogan": "La présence en ligne de mes clients, pilotée.",
+  "initiales": "MA",
   "langue": "fr",
-  "contact": "codescooper@gmail.com",
+  "contact": "ton-email@exemple.com",
   "github": {
-    "owner": "codescooper",
-    "repo": "AwemA---Agence-Web-Marketing-Africaine"
+    "owner": "ton-pseudo",
+    "repo": "mon-agence"
   },
   "charte": {
     "nuit": "#0A1F44",

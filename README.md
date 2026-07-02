@@ -124,6 +124,19 @@ module → [`modules/marketing/clients/la-grande-vision/`](modules/marketing/cli
 5. Rien n'est « fini » sans la *Definition of Done* ([`docs/03-conventions.md`](docs/03-conventions.md)
    et [`docs/FOUNDATION/03-DESIGN_PRINCIPLES.md`](docs/FOUNDATION/03-DESIGN_PRINCIPLES.md)).
 
+## 📜 Licence
+
+**GNU Affero General Public License v3.0 (AGPL-3.0)** — voir [`LICENSE`](LICENSE).
+
+Copyright © 2026 AWEMA (codescooper).
+
+AWEMA OS est un logiciel serveur : l'AGPL est choisie pour ça. Concrètement — **si tu forkes et
+modifies AWEMA, puis le proposes à d'autres via un serveur (SaaS, hébergement pour des agences
+tierces), tu dois offrir à ces utilisateurs le code source de ta version modifiée** (section 13,
+« interaction réseau à distance »). Un usage interne à ta propre agence n'impose rien de plus que de
+conserver cette licence. C'est ce qui garde l'écosystème ouvert et protège le modèle « Tech
+Provider » : personne ne peut fermer un dérivé d'AWEMA en le cachant derrière un serveur.
+
 ---
 
-_AWEMA OS — open source · auto-hébergé · données réelles · l'IA travaille, l'humain décide._
+_AWEMA OS — open source (AGPL-3.0) · auto-hébergé · données réelles · l'IA travaille, l'humain décide._

@@ -28,9 +28,8 @@ AWEMA
 └── Direction & Opérations   ← coordination, qualité, finance, RH                        ⏳ à venir
 ```
 
-> Le seul module officiel aujourd'hui est **Marketing & Contenu** (cf. `docs/FOUNDATION/`). Un client
-> de **démonstration** est fourni (*Éclat Beauté — DÉMO*) ; ajoute tes propres clients via
-> `nouveau-client.html`.
+> La présente livraison concerne le **Département Marketing & Contenu** et sa **première
+> mission** : le cabinet d'optique **La Grande Vision** (Yopougon, Côte d'Ivoire).
 
 ## Comment un département est structuré
 

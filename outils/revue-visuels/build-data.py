@@ -7,7 +7,7 @@ définit window.CAMPAGNE, que l'application charge automatiquement.
 
 Usage :
   python3 build-data.py <chemin/vers/campagne.json>
-  # défaut : la campagne Exemple Client
+  # défaut : la campagne La Grande Vision
 """
 import json
 import os
@@ -16,7 +16,7 @@ import sys
 ICI = os.path.dirname(os.path.abspath(__file__))
 DEFAUT = os.path.normpath(os.path.join(
     ICI, "..", "..", "modules", "marketing", "clients",
-    "exemple-client", "_donnees", "campagne.json"))
+    "la-grande-vision", "_donnees", "campagne.json"))
 
 
 def main():

@@ -76,7 +76,7 @@ GET  me/accounts
 Réponse (extrait) :
 ```json
 { "data": [
-  { "name": "Exemple Client",
+  { "name": "La Grande Vision",
     "id": "1234567890",                ← FB_PAGE_ID
     "access_token": "EAAB...PAGE..." } ← Page token (à utiliser comme META_TOKEN)
 ]}
@@ -148,7 +148,7 @@ GitHub → **Settings → Secrets and variables → Actions** :
 | **Secret** | `META_TOKEN` | le Page token (étape 5) |
 | **Variable** | `FB_PAGE_ID` | étape 3 |
 | **Variable** | `IG_USER_ID` | étape 4 |
-| **Variable** | `CLIENT_DIR` | `modules/marketing/clients/exemple-client` |
+| **Variable** | `CLIENT_DIR` | `modules/marketing/clients/la-grande-vision` |
 
 Puis : onglet **Actions → « Sync présence digitale » → Run workflow**.
 (Détails : [`docs/05-connecter-reseaux.md`](05-connecter-reseaux.md).)
@@ -156,7 +156,7 @@ Puis : onglet **Actions → « Sync présence digitale » → Run workflow**.
 > En local plutôt qu'en Action :
 > ```bash
 > export META_TOKEN="EAAB..."; export FB_PAGE_ID="..."; export IG_USER_ID="..."
-> python3 scripts/connect-reseaux.py --meta modules/marketing/clients/exemple-client
+> python3 scripts/connect-reseaux.py --meta modules/marketing/clients/la-grande-vision
 > python3 outils/_data/build.py
 > ```
 
@@ -175,7 +175,7 @@ Puis : onglet **Actions → « Sync présence digitale » → Run workflow**.
 ### Note « App Review »
 Pour vos **propres** Pages / celles où vous êtes admin et ajouté au Business, l'**accès
 standard** suffit (pas de revue). Pour exploiter à grande échelle des Pages de tiers, Meta
-peut exiger une **App Review** des permissions. Pour démarrer avec Exemple Client (Page
+peut exiger une **App Review** des permissions. Pour démarrer avec La Grande Vision (Page
 gérée par vous), l'accès standard est suffisant.
 
 ---

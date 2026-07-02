@@ -13,7 +13,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CLIENT="$ROOT/modules/marketing/clients/exemple-client"
+CLIENT="$ROOT/modules/marketing/clients/la-grande-vision"
 OUT="$CLIENT/_exports-pdf"
 TMP="$(mktemp -d)"
 mkdir -p "$OUT"
@@ -28,11 +28,11 @@ csv_to_pdf() {  # $1 src.csv  $2 nom  $3 titre
   python3 "$ROOT/scripts/html2pdf.py" "$TMP/$2.html" "$OUT/$2.pdf"
 }
 
-echo "📄 Export PDF — Exemple Client"
+echo "📄 Export PDF — La Grande Vision"
 echo "• Google Doc (180 contenus)…"
-md_to_pdf "$CLIENT/03-contenus/contenus.md" "01-contenus-180" "Exemple Client — 180 contenus"
+md_to_pdf "$CLIENT/03-contenus/contenus.md" "01-contenus-180" "La Grande Vision — 180 contenus"
 echo "• Google Doc (60 scripts vidéo)…"
-md_to_pdf "$CLIENT/04-scripts-video/scripts-video.md" "02-scripts-video" "Exemple Client — 60 scripts vidéo"
+md_to_pdf "$CLIENT/04-scripts-video/scripts-video.md" "02-scripts-video" "La Grande Vision — 60 scripts vidéo"
 echo "• Google Sheet (calendrier éditorial)…"
 csv_to_pdf "$CLIENT/02-calendrier-editorial/calendrier-editorial.csv" "03-calendrier-editorial" "Calendrier Éditorial — 180 contenus"
 echo "• Google Sheet (scoring)…"
