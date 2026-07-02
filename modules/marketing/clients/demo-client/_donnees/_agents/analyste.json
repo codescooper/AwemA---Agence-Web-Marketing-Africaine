@@ -1,13 +1,72 @@
 {
   "agent": "analyste",
-  "genere_le": "2026-06-26T08:05:00+00:00",
-  "modele": "claude-opus-4-8 (démo)",
-  "provenance": {"client": "demo-client", "fichiers": ["reseaux.json", "memoire.json"], "demo": true},
+  "genere_le": "2026-07-02T09:40:35+00:00",
+  "modele": "llama-3.3-70b-versatile",
+  "provenance": {
+    "client": "demo-client",
+    "fichiers": [
+      "reseaux.json",
+      "memoire.json"
+    ],
+    "genere_par": "run-agent.py"
+  },
   "items": [
-    {"type": "insight", "titre": "TikTok est ton moteur de notoriété", "explication": "12 500 abonnés et 88 000 likes : c'est ton canal le plus viral, porté par les Reels.", "preuve": {"metrique": "abonnes_tiktok", "valeur": 12500}},
-    {"type": "insight", "titre": "Les Reels surperforment largement", "explication": "Engagement moyen 520 sur les Reels contre 140 sur les photos : le format vidéo court gagne nettement.", "preuve": {"metrique": "engagement_moyen_reel", "valeur": 520}},
-    {"type": "insight", "titre": "Instagram est ton audience la plus réactive", "explication": "6 800 abonnés pour 5 200 likes récents : idéal pour pousser les offres et le forfait mariée.", "preuve": {"metrique": "likes_instagram", "valeur": 5200}},
-    {"type": "reco", "titre": "Réponds aux 5 commentaires en attente", "explication": "Des prospects demandent les prix du forfait mariée — réponds vite pour convertir.", "preuve": {"metrique": "commentaires_a_repondre", "valeur": 5}, "action": "Réponds aujourd'hui via l'inbox"},
-    {"type": "reco", "titre": "Double tes Reels avant/après", "explication": "Ton meilleur post est un avant/après : reproduis ce format chaque semaine.", "preuve": {"metrique": "likes_top_post", "valeur": 5400}, "action": "Programme 2 Reels avant/après cette semaine"}
+    {
+      "type": "insight",
+      "titre": "TikTok, le réseau le plus performant",
+      "explication": "Le réseau TikTok affiche les chiffres les plus élevés en termes de likes et de vues, ce qui indique que la cible d'Éclat Beauté y est très active et réceptive.",
+      "preuve": {
+        "metrique": "Likes sur TikTok",
+        "valeur": 88000
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Augmenter la présence sur TikTok",
+      "explication": "Puisque TikTok montre les résultats les plus prometteurs, il serait bénéfique d'augmenter la fréquence et la qualité des publications sur cette plateforme pour capter davantage l'attention de la cible.",
+      "preuve": {
+        "metrique": "Taux d'engagement sur TikTok",
+        "valeur": 3.8
+      },
+      "action": "Publier au moins 3 fois par semaine des contenus attractifs sur TikTok"
+    },
+    {
+      "type": "insight",
+      "titre": "Les contenus en format Reel sont très populaires",
+      "explication": "Les données montrent que les contenus en format Reel sur les réseaux sociaux génèrent un engagement moyen élevé, indiquant une préférence de la part de l'audience pour ce type de contenu.",
+      "preuve": {
+        "metrique": "Engagement moyen pour les Reels",
+        "valeur": 520
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Créer plus de contenus en format Reel",
+      "explication": "Étant donné la popularité des Reels, il est conseillé de créer et de publier plus de contenus sous ce format pour augmenter l'engagement et la portée des publications d'Éclat Beauté.",
+      "preuve": {
+        "metrique": "Nombre de Reels publiés",
+        "valeur": 8
+      },
+      "action": "Développer un plan de contenu qui inclut au moins 2 nouveaux Reels par semaine"
+    },
+    {
+      "type": "insight",
+      "titre": "Les commentaires et messages nécessitent une réponse rapide",
+      "explication": "Il y a des commentaires et messages en attente de réponse, ce qui signifie qu'il est crucial de répondre rapidement pour maintenir une bonne relation avec la clientèle et améliorer la satisfaction.",
+      "preuve": {
+        "metrique": "Nombre de messages en attente de réponse",
+        "valeur": 5
+      }
+    },
+    {
+      "type": "reco",
+      "titre": "Répondre aux commentaires et messages en temps opportun",
+      "explication": "Pour offrir un meilleur service client et renforcer la fidélité des followers, il est essentiel de répondre aux commentaires et messages reçus sur les réseaux sociaux dans les plus brefs délais.",
+      "preuve": {
+        "metrique": "Délai moyen de réponse aux commentaires",
+        "valeur": null
+      },
+      "action": "Attribuer une personne pour gérer et répondre aux commentaires et messages quotidiennement"
+    }
   ]
 }

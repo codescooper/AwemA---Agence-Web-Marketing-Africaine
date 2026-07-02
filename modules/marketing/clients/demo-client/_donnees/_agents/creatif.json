@@ -1,22 +1,45 @@
 {
   "agent": "creatif",
-  "genere_le": "2026-06-26T08:07:00+00:00",
-  "modele": "claude-sonnet-4-6 (démo)",
-  "provenance": {"client": "demo-client", "demo": true},
+  "genere_le": "2026-07-02T09:41:10+00:00",
+  "modele": "llama-3.3-70b-versatile",
+  "provenance": {
+    "client": "demo-client",
+    "fichiers": [
+      "memoire.json",
+      "reseaux.json"
+    ],
+    "genere_par": "run-agent.py"
+  },
   "items": [
     {
-      "hook": "Ta peau mérite 15 minutes par jour. Pas plus.",
-      "script": "Hook → 3 gestes simples (nettoyer, hydrater, protéger) → « le 4e geste que personne ne fait » → CTA : réserve ton soin éclat sur WhatsApp.",
-      "format": "Reel", "reseau": "TikTok",
-      "prompt_image": "Jeune femme africaine souriante, peau lumineuse, lumière douce dorée, institut moderne épuré, charte or & bleu nuit, cadrage vertical",
-      "variantes": ["Le secret d'une peau qui brille (sans filtre)", "Routine peau en 15 min chrono"]
+      "hook": "Découvrez le secret d'un teint parfait avec notre Soin visage éclat !",
+      "script": "Vous rêvez d'une peau lumineuse et saine ? Notre soin visage éclat est là pour vous ! Il comprend un nettoyage approfondi suivie d'une hydratation profonde pour donner à votre peau l'éclat qu'elle mérite. Réservation facile via WhatsApp. Essayez-le dès aujourd'hui et découvrez la différence !",
+      "format": "Reel",
+      "reseau": "TikTok",
+      "prompt_image": "Une femme souriante avec une peau lumineuse, avec un écran de téléphone montrant le logo d'Éclat Beauté sur WhatsApp en arrière-plan, utilisant les couleurs #D4AF37 et #0A1F44.",
+      "variantes": [
+        "Obtenez la peau parfaite avec notre Soin visage éclat, réservable en quelques clics !"
+      ]
     },
     {
-      "hook": "Future mariée ? Ta peau se prépare maintenant, pas la veille.",
-      "script": "Carrousel : J-90 diagnostic, J-60 soins ciblés, J-30 éclat, jour J teint parfait. CTA : forfait mariée -10% ce mois.",
-      "format": "Carrousel", "reseau": "Instagram",
-      "prompt_image": "Mariée africaine radieuse, teint parfait, voile délicat, fond doré élégant, ambiance premium",
-      "variantes": ["3 mois pour un teint de mariée parfait"]
+      "hook": "Préparez-vous à briller pour votre grand jour avec notre Forfait mariée !",
+      "script": "Vous voulez être absolument parfaite pour votre mariage ? Notre forfait mariée est conçu spécialement pour vous. Avec trois séances de soins personnalisés, vous serez irradiante pour votre grand jour. Informations et réservations sur WhatsApp. N'attendez plus pour réserver votre place !",
+      "format": "Carrousel",
+      "reseau": "Instagram",
+      "prompt_image": "Une future mariée rayonnante après un soin de beauté, avec les produits Éclat Beauté et le logo de la marque (#D4AF37 et #0A1F44) en surimpression.",
+      "variantes": [
+        "Rêvez de vous sentir princesse le jour de votre mariage ? Notre Forfait mariée est la clé !"
+      ]
+    },
+    {
+      "hook": "Prenez soin de vous, vous êtes unique ! Découvrez nos soins personnalisés !",
+      "script": "Chaque peau est différente, c'est pourquoi nos soins sont personnalisés. Chez Éclat Beauté, nous croyons que tout le monde mérite de se sentir bien dans sa peau. Réservation de soins et informations sur notre gamme de produits adaptés à la peau africaine via WhatsApp. Rejoignez notre communauté pour plus de conseils et d'astuces de beauté !",
+      "format": "Post",
+      "reseau": "Facebook",
+      "prompt_image": "Une femme se détendant pendant un soin de beauté, avec un fond aux couleurs de la marque (#D4AF37 et #0A1F44), symbolisant la sérénité et la personnalisation.",
+      "variantes": [
+        " Vous seul(e) comptez ! Découvrez comment nos soins de beauté personnalisés peuvent vous aider à vous sentir unique."
+      ]
     }
   ]
 }
