@@ -310,6 +310,20 @@ function aggregate(){
   const wk={}; ITEMS.forEach(x=>{if(!x.date)return;const w=Math.floor((new Date(x.date)-new Date(A.start))/(7*864e5))+1;wk[w]=(wk[w]||0)+1;});
   A.semaines=wk;
 }
+/* Contenus « différés » : les grosses campagnes ne sont plus embarquées dans le registre
+   (build.py, SEUIL_CAMPAGNE) — on charge alors le campagne.json source à la demande (servi par
+   Pages), avec cache mémoire. Dégradation gracieuse : fetch impossible → liste vide, rien ne casse. */
+const CAMP_CACHE={};
+function chargerContenus(c){
+  if(!c||!c.campagne) return Promise.resolve([]);
+  const emb=c.campagne.contenus;
+  if(emb&&emb.length) return Promise.resolve(emb);          // embarqué dans le registre (cas courant)
+  if(!c.campagne.differe) return Promise.resolve([]);        // pas de campagne
+  if(CAMP_CACHE[c.id]) return Promise.resolve(CAMP_CACHE[c.id]);
+  const dir=c._dir||('modules/marketing/clients/'+(c.slug||c.id));
+  return fetch('../../'+dir+'/_donnees/campagne.json').then(r=>r.ok?r.json():null)
+    .then(d=>{const l=(d&&d.contenus)||[];CAMP_CACHE[c.id]=l;return l;}).catch(()=>[]);
+}
 function setClient(id){
   ACTIVE=CLIENTS.find(c=>c.id===id)||CLIENTS[0]||null;
   ITEMS=(ACTIVE&&ACTIVE.campagne&&ACTIVE.campagne.contenus)||[];
@@ -317,6 +331,14 @@ function setClient(id){
   try{localStorage.setItem('awema-client',ACTIVE?ACTIVE.id:'');}catch(e){}
   const sel=$("#clientSel"); if(sel&&ACTIVE)sel.value=ACTIVE.id;
   aggregate(); refreshPsub(); go(CURRENT||'overview');
+  if(ACTIVE&&ACTIVE.campagne&&ACTIVE.campagne.differe){
+    const cible=ACTIVE.id;
+    chargerContenus(ACTIVE).then(list=>{
+      if(list.length&&ACTIVE&&ACTIVE.id===cible&&ITEMS.length!==list.length){
+        ITEMS=list; aggregate(); refreshPsub(); go(CURRENT||'overview');
+      }
+    });
+  }
 }
 
 /* ---------- charts ---------- */
@@ -935,7 +957,7 @@ function propCount(){ const cr=ACTIVE&&loadAgent(ACTIVE,'creatif'); return (cr&&
 function refreshPsub(){ const el=$("#psub"); if(!el)return;
   if(!ACTIVE){el.textContent='Aucun client';return;}
   el.textContent=ACTIVE.nom+' · '+ITEMS.length+' contenus · '+propCount()+' proposition'+(propCount()>1?'s':'')+' · '+currentPlanning().length+' planifié'+(currentPlanning().length>1?'s':''); }
-function dashRefetch(){return fetch('../_data/agence.js?ts='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/=\s*(\{[\s\S]*\})\s*;?\s*$/);if(!m)throw 0;const d=JSON.parse(m[1]);CLIENTS=d.clients||[];window.AWEMA_REGISTRY=d;const cur=ACTIVE&&ACTIVE.id;ACTIVE=CLIENTS.find(c=>c.id===cur)||ACTIVE;ITEMS=(ACTIVE&&ACTIVE.campagne&&ACTIVE.campagne.contenus)||[];aggregate();refreshPsub();return ACTIVE;});}
+function dashRefetch(){return fetch('../_data/agence.js?ts='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/=\s*(\{[\s\S]*\})\s*;?\s*$/);if(!m)throw 0;const d=JSON.parse(m[1]);CLIENTS=d.clients||[];window.AWEMA_REGISTRY=d;const cur=ACTIVE&&ACTIVE.id;ACTIVE=CLIENTS.find(c=>c.id===cur)||ACTIVE;ITEMS=(ACTIVE&&ACTIVE.campagne&&ACTIVE.campagne.contenus)||[];aggregate();refreshPsub();return chargerContenus(ACTIVE).then(list=>{if(list.length){ITEMS=list;aggregate();refreshPsub();}return ACTIVE;});});}
 function viewPublier(){
   if(!ACTIVE){add('<h3>Aucun client sélectionné</h3>','col12');return;}
   const cr=loadAgent(ACTIVE,'creatif'), items=(cr&&cr.items)||[];

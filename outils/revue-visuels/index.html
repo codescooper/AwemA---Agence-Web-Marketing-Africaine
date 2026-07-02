@@ -510,12 +510,26 @@ function showEmpty(c){
   set("#vReco","Ce client n'a pas encore de plan de contenu. Sélectionne un autre client dans le menu en haut, ou génère son calendrier éditorial.");
   set("#vCta",""); set("#pos","—");
 }
+// Contenus « différés » (build.py SEUIL_CAMPAGNE) : les grosses campagnes ne sont plus dans le
+// registre — on charge le campagne.json source à la demande (servi par Pages).
+function chargerContenus(c){
+  const emb=c&&c.campagne&&c.campagne.contenus;
+  if(emb&&emb.length) return Promise.resolve(emb);
+  if(!(c&&c.campagne&&c.campagne.differe)) return Promise.resolve([]);
+  const dir=c._dir||('modules/marketing/clients/'+(c.slug||c.id));
+  return fetch('../../'+dir+'/_donnees/campagne.json').then(r=>r.ok?r.json():null)
+    .then(d=>(d&&d.contenus)||[]).catch(()=>[]);
+}
 // Init (skeleton élégant puis chargement)
 const _want=new URLSearchParams(location.search).get('client');
 const _cur=REG.find(c=>c.id===_want)||REG[0]||null;
 buildClientSelector(_cur?_cur.id:null);
-if(_cur && _cur.campagne && _cur.campagne.contenus && _cur.campagne.contenus.length){
-  skeletonList(); setTimeout(()=>load(clientData(_cur)),360);
+if(_cur && _cur.campagne && _cur.campagne.total){
+  skeletonList();
+  chargerContenus(_cur).then(list=>{
+    if(list.length){ const d=clientData(_cur); d.contenus=list; d.total=d.total||list.length; load(d); }
+    else showEmpty(_cur);
+  });
 } else if(_cur){ showEmpty(_cur); }
 else if(window.CAMPAGNE){ skeletonList(); setTimeout(()=>load(window.CAMPAGNE),360); }
 else { $("#drop").classList.remove("hidden"); }
