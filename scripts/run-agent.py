@@ -58,6 +58,32 @@ def _entrees(defn, donnees):
     return ctx, dispo
 
 
+def _contexte_json(ctx, budget=None):
+    """Sérialise le contexte pour le prompt SANS jamais couper en plein milieu d'une structure.
+
+    Les entrées entrent entières tant que le budget de caractères le permet ; une entrée trop
+    volumineuse (ex. campagne.json de plusieurs centaines de Ko) est remplacée par un aperçu borné,
+    de sorte que le JSON transmis à l'IA reste TOUJOURS valide (l'ancien `[:12000]` coupait au milieu
+    et invalidait le JSON, éjectant silencieusement mémoire/campagne des gros clients)."""
+    if budget is None:
+        try:
+            budget = int(os.environ.get("AWEMA_AI_CTX", "24000"))
+        except Exception:
+            budget = 24000
+    out, reste = {}, budget
+    for k, v in ctx.items():
+        s = json.dumps(v, ensure_ascii=False)
+        if len(s) <= reste:
+            out[k] = v
+            reste -= len(s)
+        else:
+            out[k] = {"_tronque": True,
+                      "_note": "%s trop volumineux (%d car.) : seul un aperçu est fourni" % (k, len(s)),
+                      "apercu": s[:max(0, min(reste, 2000))]}
+            reste = 0
+    return json.dumps(out, ensure_ascii=False)
+
+
 def _executer(nom, defn, client, donnees):
     ctx, fichiers = _entrees(defn, donnees)
     if not ctx:
@@ -72,7 +98,7 @@ def _executer(nom, defn, client, donnees):
                          "(top_posts, formats et réseaux les plus performants des données ci-dessous).")
     prompt = (f"{defn.get('instruction','')}{consigne_idee}\n\n"
               f"Client : {client.get('nom')} ({client.get('secteur','')}).\n"
-              f"Données disponibles (JSON) :\n{json.dumps(ctx, ensure_ascii=False)[:12000]}")
+              f"Données disponibles (JSON) :\n{_contexte_json(ctx)}")
     schema_hint = defn.get("schema_hint") or '{"items":[{"titre":"...","explication":"..."}]}'
     try:
         rep = awema_ai.chat(prompt, system=defn.get("systeme"),

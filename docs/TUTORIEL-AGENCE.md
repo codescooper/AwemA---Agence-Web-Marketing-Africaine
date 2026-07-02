@@ -26,6 +26,21 @@ dossiers. Elle t'appartient ; tes clients et tes chiffres restent chez toi.
 👉 **Bouton _Fork_** en haut à droite de la page du projet → _Create fork_.
 **C'est bon quand** le projet apparaît sous **ton** nom : `ton-pseudo / AwemA-…`.
 
+## Étape 1 bis — Activer l'automatisation (⚠️ à ne pas sauter)
+
+Sur **toute copie (fork)**, GitHub **désactive l'automatisation par sécurité** — sinon rien ne
+tournera tout seul (ni synchro, ni agents IA, ni publication programmée), sans aucun message d'erreur.
+C'est **le piège le plus courant** : on croit que « ça tourne » alors que rien n'est allumé.
+
+👉 Ouvre l'onglet **Actions** de ta copie. Si un bandeau jaune s'affiche
+(« _Workflows aren't being run on this forked repository_ »), clique le bouton vert
+**« I understand my workflows, go ahead and enable them »**.
+
+**C'est bon quand** l'onglet Actions liste tes workflows (Publication, Sync, Agents…) au lieu du bandeau jaune.
+
+> 💡 À refaire une seule fois par copie. Si tu ne publies rien pendant **60 jours**, GitHub rendort
+> les tâches planifiées : reviens dans **Actions** et clique **« Enable workflow »** pour les réveiller.
+
 ## Étape 2 — Allumer ton site (« GitHub Pages »)
 
 « Pages » transforme ta copie en **vrai site web** — c'est l'écran d'AWEMA que tu utiliseras tous les jours.
@@ -106,6 +121,10 @@ le feed **« 3 choses à faire aujourd'hui »**.
 
 AWEMA **resynchronise périodiquement** et fait travailler ses agents **chaque jour et après chaque synchro**. Ton
 cockpit reste à jour sans intervention. Tu ouvres ton AWEMA quand tu veux : c'est déjà frais.
+
+> ⚠️ **Condition** : que l'automatisation ait bien été activée (Étape 1 bis). Et si tu laisses ta copie
+> **inactive plus de 60 jours**, GitHub met les tâches planifiées en veille — un passage dans l'onglet
+> **Actions** → **« Enable workflow »** les relance.
 
 ## Étape 13 — Si quelque chose ne marche pas (c'est normal)
 

@@ -16,6 +16,7 @@ du premier fournisseur dont la clé est présente. Modèle surchargeable via `AW
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -79,9 +80,14 @@ def disponible():
 
 
 def _resolve_model(hint, cfg):
+    # Priorité : surcharge explicite AWEMA_AI_MODEL > modèle épinglé par l'agent > défaut du fournisseur.
+    # (Avant, la surcharge était ignorée pour les 3 agents Claude, contredisant la doc.)
+    override = (os.environ.get("AWEMA_AI_MODEL") or "").strip()
+    if override:
+        return override
     if cfg.get("type") == "anthropic" and hint and str(hint).startswith("claude"):
         return hint
-    return os.environ.get("AWEMA_AI_MODEL") or cfg.get("model")
+    return cfg.get("model")
 
 
 def modele_actif(hint=None):
@@ -112,44 +118,74 @@ def _extraire_json(texte):
     return None
 
 
-def _post(url, headers, payload):
+def _pause(secondes):
+    time.sleep(secondes)  # isolé pour être neutralisable en test
+
+
+def _post(url, headers, payload, tentatives=4):
     # User-Agent explicite : sans lui, le pare-feu Cloudflare de certains fournisseurs (ex. Groq)
     # bloque la requête « Python-urllib » avec un 403 / code 1010. On n'écrase pas un en-tête fourni.
     h = {"User-Agent": "AWEMA/1.0 (+https://github.com/codescooper/awema-os)",
          "Accept": "application/json"}
     h.update(headers or {})
-    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=h)
-    try:
-        with urllib.request.urlopen(req, timeout=90) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        body = ""
+    data = json.dumps(payload).encode("utf-8")
+    for essai in range(tentatives):
+        req = urllib.request.Request(url, data=data, headers=h)
         try:
-            body = e.read().decode("utf-8", "replace")
-        except Exception:
-            pass
-        msg = body
-        try:
-            j = json.loads(body)
-            msg = (j.get("error", {}).get("message") if isinstance(j.get("error"), dict)
-                   else j.get("error")) or j.get("message") or body
-        except Exception:
-            pass
-        raise RuntimeError(f"HTTP {e.code} — {msg}") from None
+            with urllib.request.urlopen(req, timeout=90) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            # 429 (quota) et 5xx (panne temporaire) : on retente avec backoff exponentiel,
+            # en respectant l'en-tête Retry-After s'il est fourni. Les autres codes échouent net.
+            retryable = e.code == 429 or 500 <= e.code < 600
+            if retryable and essai < tentatives - 1:
+                try:
+                    ra = int((e.headers.get("Retry-After") or "0").strip())
+                except Exception:
+                    ra = 0
+                _pause(ra if ra > 0 else min(2 ** essai, 30))
+                continue
+            body = ""
+            try:
+                body = e.read().decode("utf-8", "replace")
+            except Exception:
+                pass
+            msg = body
+            try:
+                j = json.loads(body)
+                msg = (j.get("error", {}).get("message") if isinstance(j.get("error"), dict)
+                       else j.get("error")) or j.get("message") or body
+            except Exception:
+                pass
+            raise RuntimeError(f"HTTP {e.code} — {msg}") from None
+        except urllib.error.URLError as e:
+            # Erreur réseau (timeout, DNS…) : on retente aussi.
+            if essai < tentatives - 1:
+                _pause(min(2 ** essai, 30))
+                continue
+            raise RuntimeError(f"réseau : {getattr(e, 'reason', e)}") from None
 
 
 # --------------------------------------------------------------------------- #
 # chat() — dispatch par type de fournisseur
 # --------------------------------------------------------------------------- #
-def chat(user, system=None, schema_hint=None, model=None, max_tokens=2000):
+def chat(user, system=None, schema_hint=None, model=None, max_tokens=None):
     """Appelle l'IA active. Renvoie le texte, ou (si schema_hint) un objet JSON parsé.
-    Renvoie None si aucune IA configurée (skip gracieux). Lève RuntimeError sur erreur API réelle."""
+
+    Renvoie None UNIQUEMENT si aucune IA n'est configurée (skip gracieux). Lève RuntimeError sur
+    erreur API réelle OU si la réponse n'est pas un JSON exploitable (schema_hint demandé) — ainsi
+    un échec de parsing n'est plus confondu par l'appelant avec « pas de clé IA »."""
     pid, cfg = actif()
     if not cfg:
         return None
     key = _lookup(cfg.get("cle", "")) or ("ollama" if pid == "ollama" else None)
     if not key:
         return None
+    if max_tokens is None:
+        try:
+            max_tokens = int(os.environ.get("AWEMA_AI_MAX_TOKENS", "4000"))
+        except Exception:
+            max_tokens = 4000
     model = _resolve_model(model, cfg)
     base = (cfg.get("base_url") or "").rstrip("/")
     contenu = user
@@ -175,7 +211,13 @@ def chat(user, system=None, schema_hint=None, model=None, max_tokens=2000):
             {"model": model, "max_tokens": max_tokens, "messages": msgs})
         texte = (((data.get("choices") or [{}])[0]).get("message") or {}).get("content", "")
 
-    return _extraire_json(texte) if schema_hint else texte
+    if not schema_hint:
+        return texte
+    obj = _extraire_json(texte)
+    if obj is None:
+        apercu = " ".join((texte or "").split())[:200] or "<réponse vide>"
+        raise RuntimeError("réponse IA non conforme (aucun JSON exploitable) — extrait : " + apercu)
+    return obj
 
 
 # --------------------------------------------------------------------------- #

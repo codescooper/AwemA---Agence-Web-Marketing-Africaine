@@ -1,7 +1,9 @@
 """Invariant : sélection de fournisseur IA agnostique + résolution du modèle (sans réseau)."""
+import io
 import os
 import sys
 import unittest
+import urllib.error
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts"))
 import awema_ai  # noqa: E402
@@ -55,6 +57,58 @@ class TestIA(unittest.TestCase):
         os.environ["AWEMA_AI_MODEL"] = "claude-sonnet-4-6"
         # hint non-claude (ex. d'un agent mal configuré) → on retombe sur la surcharge globale
         self.assertEqual(awema_ai.modele_actif("gpt-4o"), "claude-sonnet-4-6")
+
+    def test_override_bat_le_modele_epingle(self):
+        # Régression (audit) : AWEMA_AI_MODEL doit surcharger MÊME un agent épinglé sur un modèle
+        # claude — c'est le levier documenté pour forcer un modèle moins cher (ex. haiku).
+        os.environ["AWEMA_AI_PROVIDER"] = "anthropic"
+        os.environ["ANTHROPIC_API_KEY"] = "x"
+        os.environ["AWEMA_AI_MODEL"] = "claude-haiku-4-5"
+        self.assertEqual(awema_ai.modele_actif("claude-opus-4-8"), "claude-haiku-4-5")
+
+
+class _Resp(io.BytesIO):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+class TestPostRetry(unittest.TestCase):
+    def setUp(self):
+        self._pause = awema_ai._pause
+        self._urlopen = awema_ai.urllib.request.urlopen
+        awema_ai._pause = lambda s: None  # neutralise l'attente en test
+
+    def tearDown(self):
+        awema_ai._pause = self._pause
+        awema_ai.urllib.request.urlopen = self._urlopen
+
+    def test_retente_sur_429_puis_reussit(self):
+        appels = {"n": 0}
+
+        def faux(req, timeout=90):
+            appels["n"] += 1
+            if appels["n"] == 1:
+                raise urllib.error.HTTPError(req.full_url, 429, "rate", {"Retry-After": "0"},
+                                             io.BytesIO(b'{"error":"slow down"}'))
+            return _Resp(b'{"ok": true}')
+        awema_ai.urllib.request.urlopen = faux
+        out = awema_ai._post("http://x", {}, {"a": 1})
+        self.assertEqual(out, {"ok": True})
+        self.assertEqual(appels["n"], 2)  # 1 échec 429 + 1 succès
+
+    def test_400_ne_retente_pas(self):
+        appels = {"n": 0}
+
+        def faux(req, timeout=90):
+            appels["n"] += 1
+            raise urllib.error.HTTPError(req.full_url, 400, "bad", {}, io.BytesIO(b'{"error":"nope"}'))
+        awema_ai.urllib.request.urlopen = faux
+        with self.assertRaises(RuntimeError):
+            awema_ai._post("http://x", {}, {"a": 1})
+        self.assertEqual(appels["n"], 1)  # aucun retry sur une erreur cliente
 
 
 if __name__ == "__main__":
